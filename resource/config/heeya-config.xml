@@ -1,0 +1,34 @@
+<?xml version="1.0"  encoding="UTF-8"?>
+
+<root>
+
+	<section name="dev">
+		<prefilter class="net.ion.radon.impl.filter.SayHello" />
+		<prefilter class="net.ion.radon.impl.filter.CountDownCacheFilter" />
+
+		<path name="hello">
+			<urls>hello</urls>
+			<description>Default</description>
+			<handler class="net.ion.radon.impl.let.HelloWorldLet" scope="request" />
+		</path>
+				
+		<path name="monitor">
+			<urls>/monitor, /monitor/{section}, /monitor/{section}/{path} </urls>
+			<description>Monitor Aradon</description>
+			
+			<handler class="net.ion.radon.impl.let.monitor.MonitorLet" scope="request" />
+		</path>
+	</section>
+	
+	<section name="test">
+		<context>
+			<attribute id="message">Context Message</attribute>
+		</context>
+	
+		<path name="hello">
+			<urls>/hello</urls>
+			<description>Default</description>
+			<handler class="net.ion.radon.impl.let.HelloWorldLet" scope="request" />
+		</path>
+	</section>
+</root>

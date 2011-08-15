@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="builder_for_aradon" default="publish">
+
+	<property name="baseDir" value="." />
+	<property name="binDir" value="./bin" />
+	<property name="publishDir" value="./publish" />
+	
+	<tstamp>
+	  <format property="TODAY_MY" pattern="MM/dd/yyyy hh:mm"/>
+	</tstamp>
+	
+	
+	<target name="test_aradon">
+		<path id="test.classpath">
+			<pathelement location="aradon_lib/imsi/junit.jar" />
+			<pathelement location="bin" />
+			<fileset dir="aradon_lib/aradon/embed">
+			    <include name="*.jar"/>
+		  </fileset>
+		</path>
+
+		<mkdir dir="report/html" />
+		<junit printsummary="on" haltonfailure="on" fork="true">
+			<classpath refid="test.classpath" />
+			<formatter type="xml" />
+			<test name="net.ion.radon.TestAllAradon" />
+		</junit>
+	</target>
+	
+	<property name="manifest.main.class" value="net.ion.radon.ARadonServer" />
+	<!--property name="manifest.classpath" value="lib/rest_fat.jar lib/jetty_fat.jar lib/jci_fat.jar lib/iframework_2.1.jar lib/core_fat.jar lib/apache_extend_fat.jar" /-->
+	<property name="manifest.classpath" value="./" />
+	<property name="version.number" value="0" />
+	<property name="build.number" value="5" />
+
+	<target name="publish"  depends="test_aradon">
+		<delete file="publish/aradon_${version.number}.${build.number}.jar"></delete>
+		<jar destfile="publish/aradon_${version.number}.${build.number}.jar">
+			<manifest>
+			  <attribute name="Built-By" value="${user.name}"/>
+			  <attribute name="Created-By" value="${user.name}"/>
+			  <!-- attribute name="Main-Class" value="${manifest.main.class}"/ -->
+			  <attribute name="Built-Date" value="${TODAY_MY}" />
+			  <attribute name="Class-Path" value="${manifes.classpath}" />
+			  <section name="common">
+			    <attribute name="Specification-Title" value="i-on aradon platform"/>
+			    <attribute name="Specification-Version" value="${version.number}.${build.number}"/>
+			    <attribute name="Specification-Vendor" value="i-on"/>
+			  </section>
+			</manifest>
+			<fileset dir="${binDir}/" includes="net/**" />
+			<fileset dir="${binDir}/" includes="org/**" />
+		</jar>
+	</target>
+	
+	<target name="copy" depends="publish">
+		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../ICSS5/icss/WEB-INF/lib/" />
+		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../ICS6/ics/WEB-INF/lib/" />
+		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../IPublisher/lib/" />
+		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../ICSSearcher/lib/" />
+		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../AradonExtend/lib/" />
+	</target>	
+</project>

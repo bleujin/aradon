@@ -1,0 +1,20 @@
+<?xml version="1.0"  encoding="UTF-8"?>
+
+<root>
+
+	<!--  test only file -->
+
+	<section name="async">
+		<path name="hello">
+			<urls>/hello</urls>
+			<description> async</description>
+			<handler class="net.ion.radon.impl.let.HelloWorldLet" />
+		</path>
+	</section>
+	
+	
+	<section name="other" parse="net.ion.radon.core.TestSectionFactory">
+	</section>
+
+	
+</root>

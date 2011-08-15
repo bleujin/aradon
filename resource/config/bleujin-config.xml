@@ -1,0 +1,232 @@
+<?xml version="1.0"  encoding="UTF-8"?>
+
+<root>
+
+
+	<section name="dev" scope="application">
+		<!--
+			not impl 
+			Advanced 1 Type : user can defines filter-command -->
+		
+		<!-- path name="advanced 1 type">
+			<urls>/bulletin/{boardid}, /bulletin/{boardid}/{docid}, /bulletin/{boardid}/{docid}</urls>
+					
+			<handler class="net.ion.bulletin.BoardHandler" scope="request" />
+			
+			<prefilter language="groovy" source="test.groovy" />
+
+			<afterfilter>
+				<Ref name="boardBean">
+					<Controller-Call name="log"></Controller-Call>
+				</Ref>
+			</afterfilter>
+		</path -->
+
+
+		<!--
+			not impl 
+			Advanced 2 Type : user can defines handler-command -->
+
+		<!-- path url="/bulletin/notice/{forwardName}.do">
+		
+			<handler class="net.ion.bulletin.DefaultHandler" scope="request">
+			<command>
+				<lang language="sql" name="insert" type="usercommand" connection="defaultOracle">
+					insert into notice_tblc(subject, content) values(:subject, :content) ;
+					<params>
+						<param name="subject" value="@{param.subject}"></param>
+						<param name="content" value="@{param.content}"></param>
+					</params>
+				</lang>
+				<lang language="java" import="java.util.*;java.lang.*;" jars="../devjar/imsi.jar">System.out.println("Inserted") ;</lang>
+				<lang language="groovy" import="java.util.*;java.lang.*;">System.out.println("Inserted ") ;</lang>
+			</command>
+			</handler>
+			
+		</path -->
+
+
+		<!-- Premium Type : user can defines template of return type -->
+		<!-- path url="/template/example">
+			<template templateid="abc">
+				<lang language="groovy" script-soruce="ddd.grv">
+				
+				</lang>
+				<lang language="velocity">
+					dfdfd.d.d.d.d.d.d.
+				</lang>
+			</template>
+		</path -->
+
+
+		<!-- Premium Type : user can used push(notification) service -->
+		<!-- notification url="/chat">
+
+		</notification -->
+		
+	</section>
+		
+	
+	<section name="test">
+		<prefilter class="net.ion.radon.impl.filter.SampleRevokeAddress" >
+			<attribute id="allow.client.address">61.250.210.78</attribute>
+		</prefilter>
+
+		<path name="hello">
+			<urls>/hello</urls>
+			<handler class="net.ion.bleujin.HelloWorldLet2" scope="request" />
+		</path>
+
+		<path name="template">
+			<urls>/template</urls>
+			<handler class="net.ion.bleujin.HelloWorldLet2" scope="request" />
+
+
+		</path>
+		
+		<path name="external_hello">
+			<urls>/ehello</urls>
+			<handler class="net.ion.bleujin.HelloWorldLet" scope="request" />
+		</path>
+		
+		<path name="proxy">
+			<urls>/proxy</urls>
+			<handler class="net.ion.bleujin.ProxyLet" scope="request" />
+		</path>
+		
+		<path name="monitor">
+			<urls>/monitor</urls>
+			<handler class="net.ion.radon.impl.let.monitor.MonitorExampleLet" scope="request" />
+		</path>
+	</section>
+	
+
+
+	<section name="template">
+		<prefilter class="net.ion.radon.impl.let.template.VelocityLoaderFilter">
+
+			<attribute id="directive.foreach.counter.name">loopCounter</attribute>
+			<attribute id="directive.foreach.counter.initial.value">0</attribute>
+			
+			<attribute id="input.encoding">UTF-8</attribute>
+			<attribute id="output.encoding">UTF-8</attribute>
+			<attribute id="resource.loader">file\,string</attribute>
+			<!--
+			<attribute id="resource.manager.cache.class">net.ion.radon.impl.let.template.ResourceCacheImpl</attribute>
+			-->
+			<attribute id="velocity.toolboxConfigLocation">/resource/toolbox.xml</attribute>
+
+			<attribute id="file.resource.loader.cache">true</attribute>
+			<attribute id="file.resource.loader.repository.name">fsimple</attribute>
+			<attribute id="file.resource.loader.description">Velocity File Resource Loader</attribute>
+			<attribute id="file.resource.loader.class">org.apache.velocity.runtime.resource.loader.FileResourceLoader</attribute>
+			<attribute id="file.resource.loader.cache">true</attribute> <!-- second -->
+			<attribute id="file.resource.loader.modificationCheckInterval">60</attribute> <!-- second -->
+			<attribute id="file.resource.loader.path">./resource/template</attribute>
+
+			<attribute id="string.resource.loader.repository.name">string</attribute>
+			<attribute id="string.resource.loader.description">Velocity StringResource loader</attribute>
+			<attribute id="string.resource.loader.class">org.apache.velocity.runtime.resource.loader.StringResourceLoader</attribute>
+			<attribute id="string.resource.loader.cache">false</attribute> 
+			<attribute id="string.resource.loader.modificationCheckInterval">2</attribute> <!-- second -->
+			<attribute id="string.resource.loader.repository.class">org.apache.velocity.runtime.resource.util.StringResourceRepositoryImpl</attribute>
+		</prefilter>
+		
+		<context>
+			<attribute id="let.result.mediatype">text/html;charset=UTF-8</attribute>
+		</context>
+
+
+		<path name="velocity_simple">
+			<urls>/velocity/simple</urls>
+			<context>
+				<attribute id="template.param.name">template</attribute>
+			</context>			
+			<handler class="net.ion.radon.impl.let.template.SimpleVelocityLet" />
+
+
+
+		</path>
+
+		<path name="velocity_string">
+			<urls>/velocity/string/{groupid}/{uid}</urls>
+			<context>
+				<attribute id="template.param.name">template</attribute>
+			</context>
+			<handler class="net.ion.radon.impl.let.template.StringVelocityLet" />
+		</path>
+
+		<path name="velocity_file">
+			<urls>/velocity/file/{uid}</urls>
+			<context>
+				<attribute id="template.file.suffix">.vm</attribute>
+			</context>				
+			<handler class="net.ion.radon.impl.let.template.FileVelocityLet" />
+		</path>
+	</section>
+	
+
+
+	<context>
+
+		<configured-object id="aradon.template.velocity.entry" scope="application">
+			<class-name>net.ion.radon.core.template.VelocityEntry</class-name>
+	        <constructor>
+	            <constructor-param>
+	                <description>config file path</description>
+	                <type>java.lang.String</type>
+	                <value>./resource/config/velocity.init.props</value>
+	            </constructor-param>
+	        </constructor>
+	        <property name="toolBox" value="./resource/config/toolbox.xml" />
+		</configured-object>
+
+		
+		<configured-object id="aradon.search.engine" scope="application">
+			<class-name>net.ion.radon.core.search.EngineEntry</class-name>
+	        <constructor>
+	            <constructor-param>
+	                <description>file path</description>
+	                <type>java.lang.String</type>
+	                <value>/aradon/data/index</value>
+	            </constructor-param>
+	        </constructor>
+		</configured-object>
+		
+		
+		<configured-object id="my.index.count" scope="application">
+			<class-name>java.lang.Integer</class-name>
+	        <constructor>
+	            <constructor-param>
+	                <description>test integer</description>
+	                <type>int</type>
+	                <value>45</value>
+	            </constructor-param>
+	        </constructor>
+		</configured-object>
+		
+		<configured-object id="aradon.monitor.default" scope="application">
+	        <class-name>net.ion.radon.impl.let.monitor.RadonMonitor</class-name>
+	        <constructor>
+	            <constructor-param>
+	                <description>base Dir</description>
+	                <type>java.lang.String</type>
+	                <value>./</value>
+	            </constructor-param>
+	        </constructor>
+	    </configured-object>
+		
+		<configured-object id="my.http.client" scope="application">
+	        <class-name>net.ion.radon.core.context.HttpClient</class-name>
+	        <constructor>
+	            <constructor-param>
+	                <description>client name</description>
+	                <type>java.lang.String</type>
+	                <value>default client</value>
+	            </constructor-param>
+	        </constructor>
+	    </configured-object>
+	    
+	</context>
+	
+</root>

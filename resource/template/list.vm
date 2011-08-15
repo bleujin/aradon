@@ -1,0 +1,66 @@
+
+<h3>Result </h3>
+#set( $result = $request.attributes.get("org.restlet.Context").attributes.get("result") )
+
+#if ($result)
+	result.nodes : $result.nodes <br>
+	result.request <br>
+	#foreach( $entry in $result.request.attributes.entrySet())
+		$entry.key : $entry.value<br>
+	#end
+	result.response : $result.response.attributes<br>
+#end
+
+<table border=1 cellspacing=1 cellpadding=4 width=95% >
+<tr align=center class=title>
+	<td width=200 class=title_han height=30>사원번호</td>
+	<td class=title_han>사원이름</td>
+	<td width=100 class=title_han>입사일</td>
+	<td width=65 class=title_han>급여</td>
+	<td width=100 class=title_han><font class=title_han>부서번호</font></td>
+</tr>
+
+#foreach( $row in $result.nodes)
+<tr align=center class=list1>
+	<td class=list_eng>$row.empno</td>
+	<td align=left nowrap><a href="javascript:board.goViewPage('$row.empno')" ><font class=list_han>$row.ename</font></a></td> 
+	<td >$row.hiredate</td>
+	<td nowrap class=list_eng>$row.sal</td>
+	<td nowrap class=list_eng>$row.deptno</td></tr>
+#end
+<tr><td colspan="5"><a href="javascript:board.goAddPage()">Add Employee</a></td></tr>
+</table>
+
+
+#macro(printPageNavigationBar $pageNo $pageStart $pageEnd $pageCount $url)
+    #set ($left_arrow = "<img src='left_arrow.gif' alt='왼쪽 화살표' />")
+    #set ($left_big_arrow = "<img src='left_big_arrow.gif' alt='왼쪽 쌍화살표' />")
+    #set ($right_arrow = "<img src='right_arrow.gif' alt='오른쪽 쌍화살표' />")
+    #set ($right_big_arrow = "<img src='right_big_arrow.gif' alt='오른쪽 쌍화살표' />")
+
+    #if ($pageStart > 1)
+        #set ($pagePrev = $pageStart - 1)
+        <a href='${url}?pageNo=1' title='첫 페이지로 이동'>${left_big_arrow}</a>
+        <a href='${url}?pageNo=${pagePrev}' title='${pagePrev} 페이지로 이동'>${left_arrow}</a>
+    #else
+         ${left_big_arrow}
+         ${left_arrow}
+    #end   
+           
+    #foreach ( $i in [$pageStart..$pageEnd] )
+        #if ($pageNo == $i)
+            ${i}
+        #else
+            <a href='${url}?pageNo=$i' title='${i}페이지로 이동'>${i}</a>
+        #end
+    #end
+
+    #if ($pageEnd < $pageCount)
+        #set ($pageNext = $pageEnd + 1)
+        <a href='${url}?pageNo=${pageNext}' title='${pageNext} 페이지로 이동'>${right_arrow}</a>
+        <a href='${url}?pageNo=${pageCount}' title='마지막 페이지로 이동'>${right_big_arrow}</a>
+        #else
+        ${right_arrow}
+        ${right_big_arrow}
+    #end    
+#end

@@ -1,0 +1,169 @@
+{
+	procedures:[ 
+		{ 	
+			id:"selectAll", execType="query",
+			querylist:[
+				{	
+					sql:"select * from emp_sample ",
+					type:"command",
+					parameter : [ {name:"deptno", type:"INTEGER"} ]
+				}
+			]
+		}, 
+		{
+        	id:"employee_view", execType="query",
+        	querylist:[
+				{	
+        			sql:"Sample@viewEmployeeBy(:empno)", 
+        			type:"procedure",
+        			parameter:[  { name:"empno", type:"INTEGER" }  ]
+        		}
+        	]
+        },
+        {
+        	id:"employee_viewdept", execType="query",
+        	querylist:[
+				{	
+		        	sql:"Sample@viewEmployeeByDept(:empno,:deptno)", 
+        			type:"procedure",
+        			parameter:[
+        				{ name:"empno", type:"INTEGER" },
+        				{ name:"deptno", type:"INTEGER" }
+        			]
+        		}
+        	]
+        },
+        {
+        	id:"employee_list", execType="query",
+        	querylist:[
+				{	
+        			sql:"Sample@listEmployeeBy(:deptno)", 
+        			type:"procedure",
+        			parameter:[ { name:"deptno", type:"INTEGER" } ]
+        		}
+        	]
+        },
+        {
+        	id:"employee_remove", execType="update",
+        	querylist:[
+				{	
+        			sql:"Sample@removeEmployeeBy(:empno)",
+        			type:"procedure",
+        			parameter:[ { name:"empno", type:"INTEGER" } ]
+        		}
+        	]
+        },
+        {
+			id:"employee_add", execType="update",
+			querylist:[
+				{	
+		 			sql:"Sample@addEmployeeWith(:empno,:ename,:job,:mgr,:hiredate,:sal,:comm,:deptno)",
+		 			type:"procedure",
+        			parameter:[
+		        		{ name:"empno", 	type:"INTEGER"}, 
+		        		{ name:"ename", 	type:"VARCHAR"}, 
+		        		{ name:"job",   	type:"VARCHAR"},
+		        		{ name:"mgr",   	type:"INTEGER"},
+		        		{ name:"hiredate",  type:"VARCHAR"},
+		        		{ name:"sal",   	type:"INTEGER"},
+		        		{ name:"comm",   	type:"INTEGER"},
+		        		{ name:"deptno",   	type:"INTEGER"},
+		        	]
+		        }
+		    ]
+        },
+        {
+			id:"employee_edit", execType="update",
+			querylist:[
+				{	
+				 	sql:"Sample@editEmployeeWith(:empno,:ename,:job,:mgr,:hiredate,:sal,:comm,:deptno)",
+				 	type:"procedure",
+		        	parameter:[
+		        		{ name:"empno", 	type:"INTEGER"}, 
+		        		{ name:"ename", 	type:"VARCHAR"}, 
+		        		{ name:"job",   	type:"VARCHAR"},
+		        		{ name:"mgr",   	type:"INTEGER"},
+		        		{ name:"hiredate",  type:"VARCHAR"},
+		        		{ name:"sal",   	type:"INTEGER"},
+		        		{ name:"comm",   	type:"INTEGER"},
+		        		{ name:"deptno",   	type:"INTEGER"},
+		        	]
+		        }
+		    ]
+        },
+        {
+        	id:"dept_create", execType="update",
+        	querylist:[
+				{	
+		        	sql:"Sample@deptCreateWith(:deptno,:dname, :loc)", 
+		        	type:"procedurebatch",
+		        	parameter:[
+		        		{ name: "deptno", type:"INTEGER" },
+		        		{ name: "dname", type:"VARCHAR" },
+		        		{ name: "loc", type:"VARCHAR" }
+		        		
+		        	]
+		        }
+		    ]
+        },
+        {
+        	id:"dept_create1", execType="update",
+        	querylist:[
+				{	
+		        	sql:"Sample@deptCreateWith1(:deptno)",
+		        	type:"procedurebatch",
+		        	parameter:[  { name:"deptno", type:"INTEGER" }  ]
+		        }
+		    ]
+        },
+        {
+        	id:"dept_remove", execType="update",
+        	querylist:[
+				{	
+		        	sql:"Sample@deptRemoveWith(:deptno)",
+		        	type:"procedurebatch",
+		        	parameter:[ { name:"deptno", type:"INTEGER" }  ]
+		        }
+		    ]
+        },
+        {
+        	id:"dept_remove1", execType="update",
+        	querylist:[
+				{	
+		        	sql:"delete from dept_sample where deptno=:deptno",
+		        	type:"commandbatch",
+		        	parameter:[ { name:"deptno", type:"INTEGER" } ]
+		       }
+		    ]
+        },
+        {
+        	id:"dept_create_command", execType="update",
+        	querylist:[
+				{	
+		        	sql:"insert into dept_sample (deptno, dname, loc) values (:deptno, :dname, :loc) ",
+		        	type:"commandbatch",
+		        	parameter:[  { name:"deptno", type:"INTEGER" },
+		        				 { name:"dname", type:"VARCHAR" },
+		        				 { name:"loc", type:"VARCHAR" }
+		        			 ]
+		        }
+		    ]
+        },
+        {
+        	id:"dept_create_edit", execType="update",
+        	querylist:[ 
+        		{ 
+	        		sql:"insert into dept_sample (deptno, dname, loc) values (:deptno, 'create', 'create') ",
+	        		type:"commandbatch",
+	        		parameter:[  { name:"deptno", type:"INTEGER" } ]
+        		},
+        		{
+        			sql:"update dept_sample  set dname='update' where deptno=:deptno",
+        			type:"command",
+	        		parameter:[  { name:"deptno", type:"INTEGER" } ]
+        		}
+        	]
+        }
+    ]
+ }
+ 

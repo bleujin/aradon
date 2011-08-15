@@ -1,0 +1,1 @@
+java -Xms128m -Xmx256m -jar aradon_fat.jar -port:9002 -config:./resource/config/aradon-config.xml

@@ -1,0 +1,82 @@
+<?xml version="1.0"  encoding="UTF-8"?>
+
+<root>
+
+	<import path="resource/config/dev-config.xml" ></import>
+
+	<section name="">
+		<path name="default">
+			<urls>/</urls>
+			<description>Default</description>
+			<handler class="net.ion.radon.impl.let.HelloWorldLet" scope="request" />
+		</path>
+		
+		<path name="hello">
+			<urls>/hello, /hello2</urls>
+			<description>Default</description>
+			<handler class="net.ion.bleujin.HelloWorldLet2" scope="request" />
+			<afterfilter class="net.ion.radon.impl.filter.SayHello">
+			</afterfilter>
+		</path>
+		
+		<path name="favicon.ico">
+			<context>
+				<attribute id="base.dir">./resource/favicon.ico</attribute>
+			</context>
+			<urls>/favicon.ico</urls>
+			<handler class="net.ion.radon.impl.let.DirLet" scope="request" />
+		</path>
+	</section>
+	
+	
+	
+	<notification name="noti" host="61.250.201.78" port="9050">
+		<context>
+			<attribute id="socket.base.dir">./resource/socket/</attribute>
+		</context>
+		<path name="chat">
+			<urls>/chat.html</urls>
+			<handler class="net.ion.radon.socketio.examples.chat.ChatSocketServlet"/>
+		</path>
+	</notification>
+
+
+
+	<prefilter class="net.ion.radon.impl.filter.SayHello">
+	</prefilter>
+
+	<afterfilter class="net.ion.radon.impl.filter.SayHello">
+	</afterfilter>
+
+	<context>
+		<attribute id="let.contact.email">bleujin@i-on.net</attribute>
+		<attribute id="let.contact.help.doc">/help/doc</attribute>
+	</context>
+		
+	<plugin includepath="plugin/;lib/;">
+		
+	</plugin>
+	
+	
+	<server-config>
+		<!-- System.setProperty("java.util.logging.config.file", "./resource/config/myLogging.properties") ; -->
+		<log-config-file>./resource/config/log4j.properties</log-config-file>
+		<connector-config>
+			<parameter name="minThreads" description="Minimum threads waiting to service requests." >5</parameter> 
+			<parameter name="maxThreads" description="Maximum threads that will service requests." >255</parameter> 
+			<parameter name="threadMaxIdleTimeMs" description="Minimum threads waiting to service requests.">60000</parameter> 
+	
+			<parameter name="lowResourcesMaxIdleTimeMs" description="Time for an idle thread to wait for a request or read." >2500</parameter> 
+			<parameter name="acceptorThreads" description="Number of acceptor threads to set." >1</parameter>
+			<parameter name="acceptQueueSize" description="Size of the accept queue." >0</parameter>
+			<parameter name="requestHeaderSize" description="Size of the buffer to be used for request headers." >4096</parameter>
+			<parameter name="responseHeaderSize" description="Size of the buffer to be used for response headers." >4096</parameter>
+			<parameter name="requestBufferSize" description="Size of the content buffer for receiving requests." >4096</parameter>
+			<parameter name="responseBufferSize" description="Size of the content buffer for sending responses." >8192</parameter>
+			<parameter name="ioMaxIdleTimeMs" description="Maximum time to wait on an idle IO operation." >30000</parameter>
+			<parameter name="soLingerTime" description="SO linger time (see Jetty documentation)." >1000</parameter>
+			<parameter name="gracefulShutdown" description="The time (in ms) to wait for existing requests to complete before fully stopping the server." >500</parameter>
+		</connector-config>
+		<manage-port auto-start="false">4567</manage-port>
+	</server-config>
+</root>

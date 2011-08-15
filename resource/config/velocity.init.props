@@ -1,0 +1,16 @@
+input.encoding = utf-8
+output.encoding = utf-8
+resource.loader = file, string	 
+	    
+file.resource.loader.cache = false
+file.resource.loader.repository.name = fsimple
+file.resource.loader.description = Velocity File Resource Loader
+file.resource.loader.class = org.apache.velocity.runtime.resource.loader.FileResourceLoader
+file.resource.loader.modificationCheckInterval = 10
+file.resource.loader.path = ./resource/template
+
+string.resource.loader.repository.name = string
+string.resource.loader.description= Velocity StringResource loader
+string.resource.loader.class = org.apache.velocity.runtime.resource.loader.StringResourceLoader
+string.resource.loader.repository.class = org.apache.velocity.runtime.resource.util.StringResourceRepositoryImpl
+	    

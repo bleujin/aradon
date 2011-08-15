@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+
+<root>
+
+	<import path="resource/config/dev-config.xml" ></import>
+
+	<section name="">
+		<path name="default">
+			<urls>/</urls>
+			<description>Default</description>
+			<handler class="net.ion.radon.impl.let.HelloWorldLet" scope="request" />
+		</path>
+		
+		<path name="hello">
+			<urls>/hello, /hello2</urls>
+			<description>Default</description>
+			<handler class="net.ion.bleujin.HelloWorldLet2" scope="request" />
+			<afterfilter class="net.ion.radon.impl.filter.SayHello">
+			</afterfilter>
+		</path>
+		
+		<path name="favicon.ico">
+			<context>
+				<attribute id="base.dir">./resource/favicon.ico</attribute>
+			</context>
+			<urls>/favicon.ico</urls>
+			<handler class="net.ion.radon.impl.let.DirLet" scope="request" />
+		</path>
+
+	</section>
+
+	<section name="servlet">
+		<handler class="net.ion.radon.impl.servlet.jettyContainer" scope="application">
+			<property id="webroot">/src/test/webapp</property>
+			<property id="port">8090</property>
+		</handler>
+	</section>
+
+
+	<context>
+		<attribute id="let.contact.email">bleujin@i-on.net</attribute>
+		<attribute id="let.contact.help.doc">/help/doc</attribute>
+	</context>
+		
+	<plugin includepath="plugin/;lib/;">
+		
+	</plugin>
+	
+		
+</root>

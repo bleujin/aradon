@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
+	<script src="/system/dir/aradon.common.server.js"></script>
+</head>
+<body>
+	<div id="message"></div>
+	<div id="result"></div>   
+	
+	<script type="text/javascript">
+
+		var messageFn = function(e) {
+		  var data = e.data;
+		  // var origin = e.origin;
+		
+		  document.getElementById('message').innerHTML += e.origin + e.data.substring(0, 10) + e.data.length + ' My result...<br>';
+		  
+		  // $('#result').load('/testload/hello') ;
+		  
+		  
+		  // alert(new $net.ion.common.Browser().ie ) ;
+		  e.source.postMessage($('#result').val() + data, e.origin) ;
+		};
+		
+		if (typeof window.addEventListener != 'undefined') { // firefox
+		    window.addEventListener('message', messageFn, true);
+		} else if (typeof window.attachEvent != 'undefined') { // explorer
+		    window.attachEvent('onmessage', messageFn);
+		}
+	</script>
+
+
+</body>
+</html>

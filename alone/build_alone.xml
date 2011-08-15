@@ -1,0 +1,159 @@
+<?xml version="1.0"?>
+<project name="FatJar aradon(experimental)" default="publish" basedir=".">
+	<!-- this file was created by Fat-Jar Eclipse Plug-in -->
+	<!-- the ANT-Export is in a very early stage, so this -->
+	<!-- is only experimental, ANT 1.6 or above is        -->
+	<!-- required, feedback is always welcome:            -->
+	<!--       http://sourceforge.net/projects/fjep       -->
+	<!-- uncomment the following lines if using ANT outside Eclipse -->
+	<!--
+        <property name="fjepPath" value="reference:file:plugins/net.sf.fjep.fatjar_0.0.31.jarfatjar.jar"/>
+        <taskdef name="fatjar.build" classname="net.sf.fjep.anttask.FJBuildTask" classpath="${fjepPath}"/>
+        <typedef name="fatjar.manifest" classname="net.sf.fjep.anttask.FJManifestType" classpath="${fjepPath}"/>
+        <typedef name="fatjar.exclude" classname="net.sf.fjep.anttask.FJExcludeType" classpath="${fjepPath}"/>
+        <typedef name="fatjar.jarsource" classname="net.sf.fjep.anttask.FJJarSourceType" classpath="${fjepPath}"/>
+        <typedef name="fatjar.filesource" classname="net.sf.fjep.anttask.FJFileSourceType" classpath="${fjepPath}"/>
+    -->
+	<!-- uncomment the above lines to use ANT outside of Eclipse -->
+	<property name="baseDir" value="." />
+	<property name="buildDir" value="../bin/" />
+	<property name="embedLib" value="../aradon_lib/aradon/embed" />
+	<property name="defaultLib" value="../aradon_lib/aradon/default" />
+	<property name="extendLib" value="../aradon_lib/aradon/extend" />
+
+	<target name="copy_lib">
+		<delete dir="${baseDir}/lib">
+		</delete>
+		<mkdir dir="${baseDir}/lib" />
+		<copy todir="${baseDir}/lib">
+			<fileset dir="${embedLib}" includes="*.jar">
+			</fileset>
+		</copy>
+	</target>
+
+
+	<property name="graphicLib" value="../resource/graphicsbuilder/lib" />
+	<target name="make_ggraphic">
+		<fatjar.build output="${graphicLib}/ggraphic_fat.jar">
+			<fatjar.manifest manifestfile="MANIFEST.MF" />
+			<fatjar.jarsource file="${graphicLib}/batik-anim-1.7.jar" relpath="" />
+			<fatjar.jarsource file="${graphicLib}/batik-awt-util-1.7.jar" relpath=""/>
+			<fatjar.jarsource file="${graphicLib}/batik-bridge-1.7.jar" relpath=""/>
+			<fatjar.jarsource file="${graphicLib}/batik-codec-1.7.jar" relpath=""/>
+			<fatjar.jarsource file="${graphicLib}/batik-css-1.7.jar" relpath=""/>
+			<fatjar.jarsource file="${graphicLib}/batik-dom-1.7.jar" relpath=""/>
+			<fatjar.jarsource file="${graphicLib}/batik-ext-1.7.jar" relpath=""/>
+			<fatjar.jarsource file="${graphicLib}/batik-extension-1.7.jar" relpath=""/>
+			<fatjar.jarsource file="${graphicLib}/batik-gui-util-1.7.jar" relpath=""/>
+			<fatjar.jarsource file="${graphicLib}/batik-gvt-1.7.jar" relpath=""/>
+			<fatjar.jarsource file="${graphicLib}/batik-parser-1.7.jar" relpath=""/>
+			<fatjar.jarsource file="${graphicLib}/batik-script-1.7.jar" relpath=""/>
+			<fatjar.jarsource file="${graphicLib}/batik-svg-dom-1.7.jar" relpath=""/>
+			<fatjar.jarsource file="${graphicLib}/batik-svggen-1.7.jar" relpath=""/>
+			<fatjar.jarsource file="${graphicLib}/batik-swing-1.7.jar" relpath=""/>
+			<fatjar.jarsource file="${graphicLib}/batik-transcoder-1.7.jar" relpath=""/>
+			<fatjar.jarsource file="${graphicLib}/batik-util-1.7.jar" relpath=""/>
+			<fatjar.jarsource file="${graphicLib}/batik-xml-1.7.jar" relpath=""/>
+			<fatjar.jarsource file="${graphicLib}/Filters.jar" relpath=""/>
+			<fatjar.jarsource file="${graphicLib}/graphicsbuilder-0.6.1.jar" relpath=""/>
+			<fatjar.jarsource file="${graphicLib}/graphicsbuilder-ext-animation-0.6.1.jar" relpath=""/>
+			<fatjar.jarsource file="${graphicLib}/graphicsbuilder-ext-jdk6-0.6.1.jar" relpath=""/>
+			<fatjar.jarsource file="${graphicLib}/graphicsbuilder-ext-jhlabs-0.6.1.jar" relpath=""/>
+			<fatjar.jarsource file="${graphicLib}/graphicsbuilder-ext-substance-0.6.1.jar" relpath=""/>
+			<fatjar.jarsource file="${graphicLib}/graphicsbuilder-ext-svg-0.6.1.jar" relpath=""/>
+			<fatjar.jarsource file="${graphicLib}/graphicsbuilder-ext-swf-0.6.1.jar" relpath=""/>
+			<fatjar.jarsource file="${graphicLib}/graphicsbuilder-ext-swingx-0.6.1.jar" relpath=""/>
+			<fatjar.jarsource file="${graphicLib}/jsilhouette-geom-0.2.jar" relpath=""/>
+			<fatjar.jarsource file="${graphicLib}/MultipleGradientPaint.jar" relpath=""/>
+			<fatjar.jarsource file="${graphicLib}/substance-5.0.jar" relpath=""/>
+			<fatjar.jarsource file="${graphicLib}/substance-extras-5.0.jar" relpath=""/>
+			<fatjar.jarsource file="${graphicLib}/swingx-0.9.2.jar" relpath=""/>
+			<fatjar.jarsource file="${graphicLib}/timingframework-1.0.jar" relpath=""/>
+			<fatjar.jarsource file="${graphicLib}/transformSWF-2.3.jar" relpath=""/>
+			<fatjar.jarsource file="${graphicLib}/xml-apis-ext-1.3.04.jar" relpath=""/>			
+		</fatjar.build>
+	</target>
+
+	
+	<target name="test_aradon">
+		<path id="test.classpath">
+			<pathelement location="../aradon_lib/imsi/junit.jar" />
+			<pathelement location="../bin" />
+			<fileset dir="../aradon_lib/aradon/embed">
+			    <include name="*.jar"/>
+		  </fileset>
+		</path>
+
+		<mkdir dir="report/html" />
+		<junit printsummary="on" haltonfailure="on" fork="true">
+			<classpath refid="test.classpath" />
+			<formatter type="xml" />
+			<test name="net.ion.radon.TestAradonAll" />
+		</junit>
+	</target>
+
+	<target name="make_jar">
+		<property name="manifest.main.class" value="net.ion.radon.ARadonServer" />
+		<property name="manifest.classpath" value="lib/rest_fat.jar lib/jetty_fat.jar lib/jci_fat.jar lib/iframework_2.1.jar lib/core_fat.jar lib/apache_extend_fat.jar" />
+		<property name="version.number" value="0" />
+		<property name="build.number" value="5" />
+
+		<delete file="${baseDir}/aradon_${version.number}.${build.number}.jar">
+		</delete>
+		<jar destfile="${baseDir}/aradon_${version.number}.${build.number}.jar">
+			<manifest>
+				<attribute name="Manifest-Version" value="1.0" />
+				<attribute name="Built-By" value="${user.name}" />
+				<attribute name="Created-By" value="${user.name}" />
+				<attribute name="Main-Class" value="${manifest.main.class}" />
+				<attribute name="Built-Date" value="${TODAY_MY}" />
+				<attribute name="Class-Path" value="${manifest.classpath}" />
+				<section name="common">
+					<attribute name="Specification-Title" value="aradon" />
+					<attribute name="Specification-Version" value="${version.number}.${build.number}" />
+					<attribute name="Specification-Vendor" value="i-on" />
+				</section>
+			</manifest>
+			<fileset dir="${buildDir}/" includes="**/*" />
+		</jar>
+	</target>
+
+	<target name="make_alone">
+		<delete file="${baseDir}/aradon_fat.jar" />
+		<fatjar.build output="${baseDir}/aradon_fat.jar">
+			<fatjar.manifest manifestfile="MANIFEST.MF" />
+			<fatjar.filesource path="${buildDir}/" relpath="" />
+
+			<fatjar.jarsource file="${embedLib}/iframework_2.2.jar" relpath="" />
+			<fatjar.jarsource file="${embedLib}/apache_extend_fat.jar" relpath="" />
+			<fatjar.jarsource file="${embedLib}/core_fat.jar" relpath="" />
+			<fatjar.jarsource file="${embedLib}/jci_fat.jar" relpath="" />
+			<fatjar.jarsource file="${embedLib}/jetty_fat.jar" relpath="" />
+			<fatjar.jarsource file="${embedLib}/rest_fat.jar" relpath="" />
+		</fatjar.build>
+	</target>
+
+	<target name="copy_resource">
+		<delete dir="${baseDir}/resource">
+		</delete>
+		<copy todir="${baseDir}/resource">
+			<fileset dir="../resource/">
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="publish" depends="copy_lib, copy_resource, make_jar, make_alone">
+		<delete file="${baseDir}/aradon_fat.zip">
+		</delete>
+		<delete dir="${baseDir}/_">
+		</delete>
+		<zip destfile="${baseDir}/aradon_fat.zip">
+			<fileset dir="./">
+				<exclude name="build_alone.xml" />
+				<exclude name="manifest.mf" />
+			</fileset>
+		</zip>
+		<copy file="./aradon_0.5.jar" todir="../../AradonExtend/lib" />
+	</target>
+
+</project>

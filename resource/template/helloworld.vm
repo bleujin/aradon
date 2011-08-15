@@ -1,0 +1,42 @@
+
+<h3>Request : </h3>
+#foreach( $entry in $request.attributes.entrySet())
+	$entry.key : $entry.value <br>
+#end
+
+<h3>Request Param : </h3>
+#foreach( $entry in $request.attributes.get("org.restlet.Context").attributes.get("org.restlet.data.Form").entrySet())
+	$entry<br>
+#end
+
+
+<h3>Response : </h3>
+#foreach( $entry in $response.attributes.entrySet())
+	$entry.key : $entry.value <br>
+#end
+
+
+<h3>Context : </h3>
+#foreach( $entry in $request.attributes.get("org.restlet.Context").attributes)
+	$entry<br>
+#end
+
+
+<h3>Result </h3>
+#set( $result = $request.attributes.get("org.restlet.Context").attributes.get("result") )
+
+#if ($result)
+	result.nodes : $result.nodes <br>
+	result.request <br>
+	#foreach( $entry in $result.request.attributes.entrySet())
+		$entry.key : $entry.value<br>
+	#end
+	result.response : $result.response.attributes<br>
+#end
+
+
+
+
+
+<hr>
+하이 Hello ${source.name}, ${request.source}, ${request.template},  

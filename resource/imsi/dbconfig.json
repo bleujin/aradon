@@ -1,0 +1,61 @@
+{
+	procedures:[ 
+        {
+        	id:"employee_view", 
+        	name:"Sample@viewEmployeeBy(:empno)", 
+        	parameter:[
+        		{ name:"empno", type:"INTEGER" }
+        	]
+        },
+        {
+        	id:"employee_viewdept", 
+        	name:"Sample@viewEmployeeByDept(:empno,:deptno)", 
+        	parameter:[
+        		{ name:"empno", type:"INTEGER" },
+        		{ name:"deptno", type:"INTEGER" }
+        	]
+        },
+        {
+        	id:"employee_list", 
+        	name:"Sample@listEmployeeBy(:deptno)", 
+        	parameter:[
+        		{ name:"deptno", type:"INTEGER" }
+        	]
+        },
+        {
+        	id:"employee_remove", 
+        	name:"Sample@removeEmployeeBy(:empno)", 
+        	parameter:[
+        		{ name:"empno", type:"INTEGER" }
+        	]
+        },
+        {
+			id:"employee_add", 
+		 	name:"Sample@addEmployeeWith(:empno,:ename,:job,:mgr,:hiredate,:sal,:comm,:deptno)",
+        	parameter:[
+        		{ name:"empno", 	type:"INTEGER"}, 
+        		{ name:"ename", 	type:"VARCHAR"}, 
+        		{ name:"job",   	type:"VARCHAR"},
+        		{ name:"mgr",   	type:"INTEGER"},
+        		{ name:"hiredate",  type:"VARCHAR"},
+        		{ name:"sal",   	type:"INTEGER"},
+        		{ name:"comm",   	type:"INTEGER"},
+        		{ name:"deptno",   	type:"INTEGER"},
+        	]
+        },
+        {
+			id:"employee_edit", 
+		 	name:"Sample@editEmployeeWith(:empno,:ename,:job,:mgr,:hiredate,:sal,:comm,:deptno)",
+        	parameter:[
+        		{ name:"empno", 	type:"INTEGER"}, 
+        		{ name:"ename", 	type:"VARCHAR"}, 
+        		{ name:"job",   	type:"VARCHAR"},
+        		{ name:"mgr",   	type:"INTEGER"},
+        		{ name:"hiredate",  type:"VARCHAR"},
+        		{ name:"sal",   	type:"INTEGER"},
+        		{ name:"comm",   	type:"INTEGER"},
+        		{ name:"deptno",   	type:"INTEGER"},
+        	]
+        }
+    ]
+ }

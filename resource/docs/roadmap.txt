@@ -1,0 +1,96 @@
+
+Legend
+	E : Prepared
+	R : Required 
+	P : Preferred
+	D : Desired, but optional
+	
+
+ARadon
+
+* Clustering Infrastructure
+	- Basic Infrastructure(R) : Provide support for clustering infrastructure - Provide cluster lifecycle management(install, create, delete, start, stop, restart) and monitoring infrastructure
+	- Dynamic Re-config(E) 
+		: Dynamically make configuration changes
+		: Status/results/error reporting and try recovery
+		: Restart required status 
+		: View current administration config(R)
+		: Config validation(P)
+	- Deployment
+		: Maintain backward compatibility(R)
+		: Hot deploy : dynamically deploy plugin application to a cluster
+		: Performance, error reporting
+	- Transaction Service
+		: JDBC Transaction(E)
+		: Distribute Global Transaction(D)
+	- Security(R)
+		: Security for cluster infrastructure
+		Authentication
+			- Common Authentication Service(In-Memory Authentication(E), JDBC Authentication(R))
+			- Run-As Authentication Replacement(E)
+			- Form Authentication(R), Basic Authentication(E), Digest Authentication(E), Anonymous Authentication(E), LDAP Authentication(P), Container Adapter Authentication(D)
+			- RDB Query Verifier 
+		Authorization
+			- Filter Invocation Security Interceptor(R)
+			- AOP Alliance(URLInvocation) Security Interceptor(P)
+	- Monitor
+		: Call Flow monitoring(R) 
+		: Self Management(R)
+	- Push
+		: Comet 
+		: HTML5
+
+
+* Support Other Infrastructure (Ext
+	- Support Distribute Cache
+		: JCS(P)
+	- Support Scripting(R)
+		: Groovy(R), Rhino(R)
+	- Support Avro(P)
+		: provides efficient (de)serialization for a binary format and an RPC solution that uses this binary format. 
+		The formats as well as the RPC interfaces (¡°protocols¡±) are described using an IDL, allowing to support different programming languages.
+		
+		
+* Management API / Tools
+	- RESTful API(R) : Management and monitoring using REST API (RESTful Administration API)
+	- Provide documentation with examples on how to use RESTful APIs
+	- Console CLI Command
+		Support for centralized administration and clustering (R)
+	
+
+* Plugin Extend Product Delivery
+	- Auto Installer(E)
+	- Packaging(R)
+	- Upgrade(P)
+	
+
+
+
+ARadon Extend
+	
+* Functional Plugin Service
+	- Service Let
+		: Distribute Repository Service(E)(Mongo)
+		: RDB SQL Mapping Service(E)
+		: ReconfigLet(E)
+		: Let Monitor(R)
+		: HelpLet(R), WikiLet(R)
+		: UpgradeLet(R)
+		: JSR-283 RepositoryLet(R) - http://www.daisycms.org/daisy/about/features.html
+		: MapReduce Process(R)
+		: Index&SearchLet(E)
+	- Filter
+		: Intercepter 
+			Authentication(E or R)
+			Server Cache(Countdown, Method, Time)(E)
+			Client Cache(304, ExpireDate)
+		: Transform
+			ToText : (Velocity(E), Freemarker(R), JSTL(R)), Oracle-OutsideIn
+			ToPDF(R)
+		: Chain
+	- Context
+		: Notification Event for changed File(E), Service(R)
+	- Section
+		: Dynamic Board
+		: Help
+	

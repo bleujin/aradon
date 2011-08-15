@@ -1,0 +1,104 @@
+<?xml version="1.0"  encoding="UTF-8"?>
+
+<root>
+
+	<!-- 
+	<section name="async">
+
+		<path name="hello">
+			<urls>/hello</urls>
+			<description> async</description>
+			<handler class="net.ion.asyncrestlet.AsyncLet" />
+		</path>
+	</section>
+
+
+	<section name="other">
+		<context>
+			<attribute id="message">Context Message</attribute>
+		</context>
+	
+		<path name="hello">
+		<prefilter class="net.ion.radon.core.security.ChallengeAuthenticator">
+			<configured-object>
+				<class-name>net.ion.radon.core.security.ChallengeAuthenticator</class-name>
+				<constructor>
+					<constructor-param>
+						<description>realm id</description>
+						<type>java.lang.String</type>
+						<value>My Realm</value>
+					</constructor-param>
+					<constructor-param>
+						<description>verifier</description>
+						<type>org.restlet.security.Verifier</type>
+						<value><configured-object>
+								<class-name>net.ion.radon.core.security.SimpleVerifier</class-name>
+								</configured-object>
+						</value>
+					</constructor-param>
+				</constructor>
+			</configured-object>
+		</prefilter>
+			<urls>/hello</urls>
+			<description>Default</description>
+			<handler class="net.ion.radon.impl.let.HelloWorldLet" scope="request" />
+		</path>
+		
+		<path name="reload">
+
+			<urls>/reload</urls>
+			<description>Reload Aradon</description>
+			<handler class="net.ion.radon.impl.let.ReloadLet" scope="request" />
+		</path>
+	</section>
+	
+	 -->
+	<section name="another">
+		<prefilter class="net.ion.radon.impl.filter.SayHello" />
+		<path name="another_default">
+			<urls>/</urls>
+			<description>another default</description>
+			<handler class="net.ion.radon.impl.let.HelloWorldLet" />
+		</path>
+		
+		<path name="chain">
+			<urls>/chain</urls>
+			<description> required : to, from, subject, content</description>
+			<handler class="net.ion.radon.impl.let.TestChainLet" />
+		</path>
+	
+		<path name="hello">
+			<urls>/hello, /hello/{greeting}</urls>
+			<description>Default</description>
+			<handler class="net.ion.radon.impl.let.HelloWorldLet" scope="request" />
+		</path>
+		
+		
+		<path name="ghello">
+			<urls>/ghello, /ghello/{greeting}</urls>
+			<description>Default</description>
+			<handler class="net.ion.radon.impl.let.HelloWorldLet" scope="request" />
+			
+			<afterfilter lang="groovy" script-source="script-test/groovy/ScriptFilter.groovy">
+			</afterfilter>
+		</path>
+		
+		
+		<path name="object">
+			<urls>/object, /object/{greeting}</urls>
+			<description>Default</description>
+			<handler class="net.ion.radon.impl.let.ObjectLet" scope="request" />
+		</path>
+		
+		<context>
+			<attribute id="let.contact.email">bleujin@i-on.net</attribute>
+		</context>
+	</section>
+	
+	<!-- 
+	<prefilter class="net.ion.radon.impl.filter.SayHello" />
+		<context>
+		<attribute id="aradon.contact.email">bleujin@i-on.net</attribute>
+	</context>
+	 -->
+</root>

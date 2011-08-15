@@ -1,0 +1,30 @@
+<?xml version="1.0"  encoding="UTF-8"?>
+
+<root version="0.1">
+	<plugin>
+		<version>0.2</version>
+		<name>Sample Plugin</name>
+		<description></description>
+		<provider>
+			<homepage>http://www.i-on.net</homepage>
+			<developer>bleujin,heeya</developer>
+			<email>bleujin@i-on.net</email>
+		</provider>
+		<license>LGPL</license>
+	</plugin>
+
+	<section name="plugin">
+		<context>
+			<attribute id="let.contact.email">bleujin@i-on.net</attribute>
+			<attribute id="let.contact.help.doc">/help/doc</attribute>
+		</context>
+
+		<path name="hello">
+			<urls>/hello</urls>
+			<handler class="net.ion.radon.impl.let.HelloWorldLet"  scope="request" />
+		</path>
+	</section>
+	
+	
+
+</root>

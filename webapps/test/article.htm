@@ -1,0 +1,70 @@
+<html>
+<head>
+	<script language="javascript" src="../common/js/template.js"></script>
+	<script language="javascript" src="../common/js/ajax.js"></script>
+	<script language="javascript" src="../common/js/common_lang.js"></script>
+	<script language="javascript" src="../common/js/ics_river.js"></script>
+</head>
+<body>
+
+	<div id="bodyTable">
+	loading Node...
+	</div>
+
+
+
+
+	<textarea id="list_jst" style="display:none;">
+	<table border="1" cellpadding="2" cellspacing="0">
+		<tr><td>articleId</td>
+			<td>力格</td>
+	    	<td>积己老</td>
+	    	<td>殿废磊</td></tr>
+		{for row in nodes.rows}
+		<tr><td>{if row.artid >= 1172368}${'Higher'}{elseif}${row.artid}{/if}</td>
+			<td><a href="javascript:viewArticle('${row.catid}', ${row.artid})">${row.artsubject|substring:0,10}</a></td>
+			<td>${row.credate}</td>
+			<td>${row.reguserid}</td></tr>
+		{forelse}
+		<tr><td colspan="4">No articles in your session.</tr>
+		{/for}
+	</table>
+	</textarea>
+
+	<textarea id="view_jst" style="display:none;">
+	<table border="1" cellpadding="2" cellspacing="0">
+		{for row in node.rows}
+		<tr><td>力格</td>
+			<td>${row.artsubject|substring:0,10}</td></tr>
+		<tr><td>郴侩</td>
+			<td>${row.artcont}</td></tr>
+		<tr><td>积己老</td>
+			<td>${row.credate}</td></tr>
+		<tr><td>殿废磊</td>
+			<td>${row.userid}[${row.username}]</td></tr>
+		{/for}
+	</table>
+	</textarea>
+	
+
+	<script language="javascript">
+	var ics = new ICS(new Session('john'));
+	var category = ics.getCategory("at1236") ;
+	
+	var data = category.listNode() ;
+	
+	var result = TrimPath.processDOMTemplate("list_jst", data); 
+	document.getElementById("bodyTable").innerHTML = result  ;
+
+	function viewArticle(catid, artid){
+		var article = ics.getArticle(catid, artid) ;
+		var data = article.viewNode() ;
+		var result = TrimPath.processDOMTemplate("view_jst", data); 
+		document.getElementById("bodyTable").innerHTML = result  ;
+	}
+	</script>
+	
+
+</body>
+</html>
+

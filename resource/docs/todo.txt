@@ -1,0 +1,50 @@
+
+
+TreeLore [ WebDav ]
+Smart Client 연구
+cross site html 연구
+search export 붙이기
+FileNameLet ...
+DBLet...
+
+
+
+
+
+ICS 수정
+
+AfieldCont.dataBy(catId, artId) 해당하는 것 만들기.. 해당 카테고리에 설정된 afiled만 보이기.. articleXMLHandler, articleJSONHander로 수정해야 함. 
+
+
+일단 간단한 게시판을 만들자..(File Upload)
+
+
+
+
+개념적? 일관성
+단일지점 제어..
+
+
+systemLet
+wiki
+extend reference 고려.
+
+<path formtype="formname">
+
+<formtype />
+
+
+
+
+# 글이 길면 주제에 따라 구분할 수 있지는 않은가?
+# 주제와 무관한 내용을 끼워 넣지는 않았는가?
+# 새로운 개념을 소개할 때 필요성에 대한 소개를 빠뜨리지 않았는가?
+# 주요한 상황에 대한 고려를 빠뜨리지 않았는가?
+# 도래하지 않는 가정을 기반을 두고 있지 않은가?
+# 주요한 유관 개념을 설명하지 않고 쓰고 있지 않은가?
+# 그림으로 표현하면 좋을 내용은 없는가?
+# 독자를 고려한 난이도인가?
+
+
+
+
