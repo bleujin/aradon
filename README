@@ -1,9 +1,22 @@
 
-This is my first commit file
+<h1>Aradon - Lightweight Application Service Platform</h1>
+
+
+<h2>Quick start</h2>
+
+<p>Start a web server on port 8080 and serve some static files:</p>
+
+Aradon aradon = new Aradon() ;
+aradon.init(XMLConfig.BLANK) ;
+SectionService section = aradon.attach("section", XMLConfig.BLANK); // base section..
+section.attach(PathInfo.create("test", "/web", StaticFileLet.class)) ;
+
+aradon.startServer(8080) ;
 
 
 
-
+<p>sample test code. for more example, confirm test/net/ion/radon/TestAllAradon.java</p>
+<pre><code>
 	private Aradon aradon;
 	public void setUp() throws Exception {
 		this.aradon = new Aradon();
@@ -16,7 +29,6 @@ This is my first commit file
 	@Override
 	protected void tearDown() throws Exception {
 		aradon.stop() ;
-		
 		super.tearDown();
 	}
 
@@ -60,3 +72,5 @@ This is my first commit file
 	private InnerRequest getInnerRequest(){
 		return ((InnerResponse)Response.getCurrent()).getInnerRequest() ;		
 	}
+	
+</code></pre>
