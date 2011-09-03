@@ -259,7 +259,7 @@ public class Aradon extends Component implements IService {
 	public void slayReleasable() {
 		Debug.debug("Bye....... Aradon");
 		for (WrapperReleaseObject releasable : releasables) {
-			releasable.getValue().doRelease();
+			if (releasable != null && releasable.getValue() != null) releasable.getValue().doRelease();
 		}
 
 		for (SectionService section : sections.values()) {

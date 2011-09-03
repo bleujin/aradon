@@ -93,7 +93,8 @@ public class InnerRequest extends Request {
 	}
 
 	public String getParameter(String name) {
-		return StringUtil.toString(getFormParameter().get(name));
+		Object value = getFormParameter().get(name);
+		return (value == ObjectUtil.NULL ) ? "" : StringUtil.toString(value);
 	}
 
 	public int getParameterAsInteger(String name) {
