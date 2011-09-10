@@ -37,20 +37,6 @@ public class LocalServer {
 		return aradon ;
 	}
 
-
-	private static void shutdownHook(final Aradon aradon) {
-		Runtime.getRuntime().addShutdownHook(shutDownThread(aradon));
-	}
-
-	private static Thread shutDownThread(final Aradon aradon) {
-		return new Thread() {
-			public void run() {
-				aradon.slayReleasable() ;
-			}
-		};
-	}
-	
-
 	public static void main(final String[] args) throws Exception {
 		try {
 			/*Options options = new Options(args) ;

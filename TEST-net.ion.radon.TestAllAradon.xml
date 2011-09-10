@@ -1,0 +1,762 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="mycom" name="net.ion.radon.TestAllAradon" tests="90" time="5.156" timestamp="2011-09-10T06:15:32">
+  <properties>
+    <property name="java.vendor" value="Sun Microsystems Inc." />
+    <property name="sun.java.launcher" value="SUN_STANDARD" />
+    <property name="eclipse.pdebuild.templates" value="/D:/eclipse341/plugins/org.eclipse.pde.build_3.4.1.R34x_v20081217/templates/" />
+    <property name="sun.management.compiler" value="HotSpot Client Compiler" />
+    <property name="os.name" value="Windows XP" />
+    <property name="sun.boot.class.path" value="D:\java\jdk5_22\jre\lib\rt.jar;D:\java\jdk5_22\jre\lib\i18n.jar;D:\java\jdk5_22\jre\lib\sunrsasign.jar;D:\java\jdk5_22\jre\lib\jsse.jar;D:\java\jdk5_22\jre\lib\jce.jar;D:\java\jdk5_22\jre\lib\charsets.jar;D:\java\jdk5_22\jre\classes" />
+    <property name="TODAY" value="September 10 2011" />
+    <property name="build.number" value="5" />
+    <property name="sun.desktop" value="windows" />
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="ant.home" value="D:\eclipse341\plugins\org.apache.ant_1.7.0.v200803061910" />
+    <property name="java.runtime.version" value="1.5.0_22-b03" />
+    <property name="version.number" value="0" />
+    <property name="user.name" value="Administrator" />
+    <property name="publishDir" value="./publish" />
+    <property name="user.language" value="ko" />
+    <property name="sun.boot.library.path" value="D:\java\jdk5_22\jre\bin" />
+    <property name="manifest.main.class" value="net.ion.radon.ARadonServer" />
+    <property name="ant.project.name" value="builder_for_aradon" />
+    <property name="DSTAMP" value="20110910" />
+    <property name="java.version" value="1.5.0_22" />
+    <property name="user.timezone" value="" />
+    <property name="sun.arch.data.model" value="32" />
+    <property name="java.endorsed.dirs" value="D:\java\jdk5_22\jre\lib\endorsed" />
+    <property name="sun.cpu.isalist" value="pentium_pro+mmx pentium_pro pentium+mmx pentium i486 i386 i86" />
+    <property name="sun.jnu.encoding" value="MS949" />
+    <property name="file.encoding.pkg" value="sun.io" />
+    <property name="file.separator" value="\" />
+    <property name="java.specification.name" value="Java Platform API Specification" />
+    <property name="java.class.version" value="49.0" />
+    <property name="user.country" value="KR" />
+    <property name="java.home" value="D:\java\jdk5_22\jre" />
+    <property name="java.vm.info" value="mixed mode, sharing" />
+    <property name="ant.file" value="D:\eclipse\workspace\Aradon\build.xml" />
+    <property name="os.version" value="5.1" />
+    <property name="path.separator" value=";" />
+    <property name="java.vm.version" value="1.5.0_22-b03" />
+    <property name="user.variant" value="" />
+    <property name="ant.library.dir" value="D:\eclipse341\plugins\org.apache.ant_1.7.0.v200803061910\lib" />
+    <property name="manifest.classpath" value="./" />
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob" />
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit" />
+    <property name="ant.file.builder_for_aradon" value="D:\eclipse\workspace\Aradon\build.xml" />
+    <property name="eclipse.pdebuild.scripts" value="/D:/eclipse341/plugins/org.eclipse.pde.build_3.4.1.R34x_v20081217/scripts/" />
+    <property name="user.home" value="C:\Documents and Settings\Administrator" />
+    <property name="java.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="binDir" value="./bin" />
+    <property name="java.library.path" value="D:\java\jdk5_22\jre\bin;.;C:\WINDOWS\system32;C:\WINDOWS;D:/java/jdk5_22/bin/../jre/bin/client;D:/java/jdk5_22/bin/../jre/bin;D:\java\jdk5_22;D:\java\jdk5_22\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\Program Files\QuickTime\QTSystem\;C:\Program Files\TortoiseSVN\bin;C:\Program Files\TortoiseGit\bin;D:\java\jdk5se_22\bin;D:\java\jdk5_22;D:\java\jdk5_22\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\Program Files\QuickTime\QTSystem\;C:\Program Files\TortoiseSVN\bin;C:\Program Files\TortoiseGit\bin" />
+    <property name="java.vendor.url" value="http://java.sun.com/" />
+    <property name="java.vm.vendor" value="Sun Microsystems Inc." />
+    <property name="java.runtime.name" value="Java(TM) 2 Runtime Environment, Standard Edition" />
+    <property name="java.class.path" value="D:\eclipse\workspace\Aradon\aradon_lib\imsi\junit.jar;D:\eclipse\workspace\Aradon\bin;D:\eclipse\workspace\Aradon\aradon_lib\aradon\embed\apache_extend_fat.jar;D:\eclipse\workspace\Aradon\aradon_lib\aradon\embed\core_fat.jar;D:\eclipse\workspace\Aradon\aradon_lib\aradon\embed\groovy-all-1.7.6.jar;D:\eclipse\workspace\Aradon\aradon_lib\aradon\embed\iframework_2.2.jar;D:\eclipse\workspace\Aradon\aradon_lib\aradon\embed\jci_fat.jar;D:\eclipse\workspace\Aradon\aradon_lib\aradon\embed\jetty_fat.jar;D:\eclipse\workspace\Aradon\aradon_lib\aradon\embed\org.apache.felix.karaf.shell.console-1.4.0.jar;D:\eclipse\workspace\Aradon\aradon_lib\aradon\embed\rest_fat.jar;D:\eclipse\workspace\Aradon\aradon_lib\aradon\embed\rhino_fat.jar;D:\eclipse\workspace\Aradon\aradon_lib\aradon\embed\servlet-api.jar;D:\eclipse341\plugins\org.apache.ant_1.7.0.v200803061910\lib\ant-launcher.jar;D:\eclipse341\plugins\org.apache.ant_1.7.0.v200803061910\lib\ant.jar;D:\eclipse341\plugins\org.apache.ant_1.7.0.v200803061910\lib\ant-junit.jar" />
+    <property name="ant.version" value="Apache Ant version 1.7.0 compiled on December 13 2006" />
+    <property name="TSTAMP" value="0615" />
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+    <property name="java.vm.specification.version" value="1.0" />
+    <property name="sun.cpu.endian" value="little" />
+    <property name="sun.os.patch.level" value="Service Pack 3" />
+    <property name="eclipse.pdebuild.home" value="/D:/eclipse341/plugins/org.eclipse.pde.build_3.4.1.R34x_v20081217/./" />
+    <property name="java.io.tmpdir" value="C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\" />
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi" />
+    <property name="os.arch" value="x86" />
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment" />
+    <property name="java.ext.dirs" value="D:\java\jdk5_22\jre\lib\ext" />
+    <property name="user.dir" value="D:\eclipse\workspace\Aradon" />
+    <property name="line.separator" value="
+" />
+    <property name="java.vm.name" value="Java HotSpot(TM) Client VM" />
+    <property name="basedir" value="D:\eclipse\workspace\Aradon" />
+    <property name="baseDir" value="." />
+    <property name="ant.java.version" value="1.5" />
+    <property name="TODAY_MY" value="09/10/2011 06:15" />
+    <property name="ant.core.lib" value="D:\eclipse341\plugins\org.apache.ant_1.7.0.v200803061910\lib\ant.jar" />
+    <property name="file.encoding" value="MS949" />
+    <property name="java.specification.version" value="1.5" />
+  </properties>
+  <testcase classname="net.ion.radon.core.TestPlugin" name="testLoad" time="0.563" />
+  <testcase classname="net.ion.radon.core.config.TestConfigFile" name="testCreateFilter" time="0.015" />
+  <testcase classname="net.ion.radon.core.config.TestConfigFile" name="testFindAttribute" time="0.016" />
+  <testcase classname="net.ion.radon.core.config.TestConfigFile" name="testGetChild" time="0.015" />
+  <testcase classname="net.ion.radon.core.config.TestContextAttribute" name="testAradonContext" time="0.063" />
+  <testcase classname="net.ion.radon.core.config.TestContextAttribute" name="testSectionContext" time="0.047" />
+  <testcase classname="net.ion.radon.core.config.TestContextAttribute" name="testRootContext" time="0.14" />
+  <testcase classname="net.ion.radon.core.config.TestContextAttribute" name="testRootContext2" time="0.032" />
+  <testcase classname="net.ion.radon.core.config.TestContextAttribute" name="testHttpClient" time="0.0" />
+  <testcase classname="net.ion.radon.TestARadonMethod" name="testReload" time="0.062" />
+  <testcase classname="net.ion.radon.TestARadonMethod" name="testDetach" time="0.031" />
+  <testcase classname="net.ion.radon.TestARadonMethod" name="testSectionDetach" time="1.594" />
+  <testcase classname="net.ion.radon.TestARadonMethod" name="testGetName" time="0.031" />
+  <testcase classname="net.ion.radon.TestARadonMethod" name="testGetPath" time="0.016" />
+  <testcase classname="net.ion.radon.TestARadonMethod" name="testLoggerService" time="0.031" />
+  <testcase classname="net.ion.radon.core.filter.TestAdvanseFilter" name="testPathRevokeFilter" time="0.032" />
+  <testcase classname="net.ion.radon.core.filter.TestAdvanseFilter" name="testSectionRevokeFilter" time="0.015" />
+  <testcase classname="net.ion.radon.core.filter.TestAdvanseFilter" name="testOrderFilter" time="0.11" />
+  <testcase classname="net.ion.radon.core.filter.TestAdvanseFilter" name="testOrderFilter2" time="0.015" />
+  <testcase classname="net.ion.radon.core.filter.TestAdvanseFilter" name="testSkipFilter" time="0.047" />
+  <testcase classname="net.ion.radon.core.filter.TestAdvanseFilter" name="testSkipFilter2" time="0.016" />
+  <testcase classname="net.ion.radon.core.filter.TestFilter" name="testPathFilter" time="0.078" />
+  <testcase classname="net.ion.radon.core.filter.TestFilter" name="testSectionFilter" time="0.015" />
+  <testcase classname="net.ion.radon.core.filter.TestFilter" name="testApplicationFilter" time="0.016" />
+  <testcase classname="net.ion.radon.core.filter.TestFilter" name="testInit" time="0.031" />
+  <testcase classname="net.ion.radon.script.TestGroovyFilter" name="testObjectRun" time="0.11" />
+  <testcase classname="net.ion.radon.script.TestGroovyFilter" name="testScriptRun" time="0.14" />
+  <testcase classname="net.ion.radon.script.TestGroovyFilter" name="testRunSpeed" time="0.125" />
+  <testcase classname="net.ion.radon.script.TestGroovyFilter" name="testChartFilter" time="0.282" />
+  <testcase classname="net.ion.radon.script.TestGroovyFilter" name="testAradonClient" time="0.125" />
+  <testcase classname="net.ion.radon.core.TestAradonInit" name="testLoradAttribute" time="0.015" />
+  <testcase classname="net.ion.radon.core.TestAradonInit" name="testLoadGroovyScriptFilter" time="0.141" />
+  <testcase classname="net.ion.radon.core.TestAradonInit" name="testPatternMatch" time="0.0" />
+  <testcase classname="net.ion.radon.core.TestLogging" name="testBoolean" time="0.0" />
+  <testcase classname="net.ion.radon.core.TestPlugin" name="testLoad" time="0.015" />
+  <testcase classname="net.ion.radon.core.let.TestGeneral" name="testSectionFilter" time="0.047" />
+  <testcase classname="net.ion.radon.core.let.TestGeneral" name="testBeforeHandle" time="0.0" />
+  <testcase classname="net.ion.radon.core.let.TestGeneral" name="testNotFound" time="0.032" />
+  <testcase classname="net.ion.radon.core.let.TestGeneral" name="testChain" time="0.015" />
+  <testcase classname="net.ion.radon.core.let.TestGeneral" name="testSameResponse" time="0.016" />
+  <testcase classname="net.ion.radon.core.let.TestGeneral" name="testSameRequest" time="0.0" />
+  <testcase classname="net.ion.radon.core.let.TestLet" name="testFirst" time="0.015" />
+  <testcase classname="net.ion.radon.core.let.TestLet" name="testRequestAttribute" time="0.032" />
+  <testcase classname="net.ion.radon.core.let.TestLet" name="testSort" time="0.0" />
+  <testcase classname="net.ion.radon.core.let.TestRequest" name="testBeforeHandle" time="0.015" />
+  <testcase classname="net.ion.radon.core.let.TestRequest" name="testAttribute" time="0.016" />
+  <testcase classname="net.ion.radon.core.let.TestRequest" name="testPathInfo" time="0.016" />
+  <testcase classname="net.ion.radon.core.let.TestRequest" name="testRequestPath" time="0.015" />
+  <testcase classname="net.ion.radon.core.let.TestRequest" name="testGetParameter" time="0.016" />
+  <testcase classname="net.ion.radon.core.let.TestRequest" name="testPostParameter" time="0.015" />
+  <testcase classname="net.ion.radon.core.let.TestRequest" name="testMultiValue" time="0.016" />
+  <testcase classname="net.ion.radon.core.let.TestRequest" name="testMultipart" time="0.078" />
+  <testcase classname="net.ion.radon.core.let.TestResponse" name="testBeforeHandle" time="0.016" />
+  <testcase classname="net.ion.radon.core.let.TestPathInfo" name="testPattern" time="0.0" />
+  <testcase classname="net.ion.radon.core.let.TestPathInfo" name="testSubPathPattern" time="0.0" />
+  <testcase classname="net.ion.radon.core.let.TestPathInfo" name="testUrlPattern" time="0.0" />
+  <testcase classname="net.ion.radon.core.let.TestPathInfo" name="testPatterns" time="0.0" />
+  <testcase classname="net.ion.radon.core.let.TestPathInfo" name="testBlankPatterns" time="0.0" />
+  <testcase classname="net.ion.radon.core.let.TestPathInfo" name="testReference" time="0.0" />
+  <testcase classname="net.ion.radon.core.let.TestPathInfo" name="testSegment" time="0.0" />
+  <testcase classname="net.ion.radon.core.let.TestPathInfo" name="testStartWith" time="0.0" />
+  <testcase classname="net.ion.radon.core.let.TestPathInfo" name="testStartWith2" time="0.0" />
+  <testcase classname="net.ion.radon.core.let.TestInboundLet" name="testInboundCall" time="0.015" />
+  <testcase classname="net.ion.radon.core.let.TestAbstractLet" name="testAbstractLet" time="0.016" />
+  <testcase classname="net.ion.radon.core.let.TestAbstractLet" name="testParentService" time="0.016" />
+  <testcase classname="net.ion.radon.core.let.TestSection" name="testSettionName" time="0.015" />
+  <testcase classname="net.ion.radon.core.let.TestSection" name="testRestart" time="0.016" />
+  <testcase classname="net.ion.radon.core.let.TestSection" name="testGetPathName" time="0.016" />
+  <testcase classname="net.ion.radon.core.let.TestSection" name="testCrossCallSection0" time="0.015" />
+  <testcase classname="net.ion.radon.core.let.TestSection" name="testCrossCallSection" time="0.172" />
+  <testcase classname="net.ion.radon.impl.let.TestHelloLet" name="testHello" time="0.016" />
+  <testcase classname="net.ion.radon.impl.let.TestHelloLet" name="testGet" time="0.015" />
+  <testcase classname="net.ion.radon.impl.let.TestHelloLet" name="testHello2" time="0.016" />
+  <testcase classname="net.ion.radon.impl.let.TestHelloLet" name="testRun" time="0.219" />
+  <testcase classname="net.ion.radon.impl.let.TestMonitorLet" name="testMonitorLoad" time="0.078" />
+  <testcase classname="net.ion.radon.impl.let.TestMonitorLet" name="testPut" time="0.015" />
+  <testcase classname="net.ion.radon.impl.let.TestMonitorLet" name="testDelete" time="0.016" />
+  <testcase classname="net.ion.radon.param.request.TestAradonParameter" name="testGetPath" time="0.0" />
+  <testcase classname="net.ion.radon.param.request.TestAradonParameter" name="testParam" time="0.0" />
+  <testcase classname="net.ion.radon.param.request.TestAradonParameter" name="testGetMap" time="0.0" />
+  <testcase classname="net.ion.radon.param.request.TestAradonParameter" name="testGetParam" time="0.0" />
+  <testcase classname="net.ion.radon.param.TestParamterKey" name="testKeyName" time="0.0" />
+  <testcase classname="net.ion.radon.param.TestParamterKey" name="testNextKeyName" time="0.0" />
+  <testcase classname="net.ion.radon.param.TestParamterKey" name="testIsLast" time="0.0" />
+  <testcase classname="net.ion.radon.core.let.TestMultiValueMap" name="testMultiValue" time="0.0" />
+  <testcase classname="net.ion.radon.core.let.TestMultiValueMap" name="testMultipart" time="0.031" />
+  <testcase classname="net.ion.radon.core.let.TestMultiValueMap" name="testSingleValueMap" time="0.0" />
+  <testcase classname="net.ion.radon.core.let.TestMultiValueMap" name="testMultiValue2" time="0.0" />
+  <testcase classname="net.ion.radon.core.let.TestMultiValueMap" name="testDouble" time="0.0" />
+  <testcase classname="net.ion.radon.core.let.TestMultiValueMap" name="testNumeric" time="0.0" />
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[log4j:WARN No appenders could be found for logger (org.apache.commons.configuration.ConfigurationUtils).
+log4j:WARN Please initialize the log4j system properly.
+log4j:WARN See http://logging.apache.org/log4j/1.2/faq.html#noconfig for more info.
+Not Found (404) - section:another, path:/test
+	at net.ion.radon.core.RouterSection.handle(RouterSection.java:74)
+	at org.restlet.routing.Filter.doHandle(Filter.java:156)
+	at org.restlet.routing.Filter.handle(Filter.java:203)
+	at org.restlet.routing.Router.doHandle(Router.java:440)
+	at org.restlet.routing.Router.handle(Router.java:666)
+	at org.restlet.engine.component.ComponentClientDispatcher.doHandle(ComponentClientDispatcher.java:83)
+	at org.restlet.engine.TemplateDispatcher.handle(TemplateDispatcher.java:35)
+	at org.restlet.engine.component.ChildClientDispatcher.parentHandle(ChildClientDispatcher.java:139)
+	at org.restlet.engine.component.ChildClientDispatcher.doHandle(ChildClientDispatcher.java:91)
+	at org.restlet.engine.TemplateDispatcher.handle(TemplateDispatcher.java:35)
+	at org.restlet.engine.component.ChildClientDispatcher.parentHandle(ChildClientDispatcher.java:139)
+	at org.restlet.engine.component.ChildClientDispatcher.doHandle(ChildClientDispatcher.java:91)
+	at org.restlet.engine.TemplateDispatcher.handle(TemplateDispatcher.java:35)
+	at net.ion.radon.core.Aradon.handle(Aradon.java:233)
+	at net.ion.radon.core.Aradon.handle(Aradon.java:219)
+	at net.ion.radon.TestARadonMethod.testReload(TestARadonMethod.java:24)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at junit.framework.TestCase.runTest(TestCase.java:164)
+	at junit.framework.TestCase.runBare(TestCase.java:130)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:120)
+	at junit.framework.TestSuite.runTest(TestSuite.java:230)
+	at junit.framework.TestSuite.run(TestSuite.java:225)
+	at junit.framework.TestSuite.runTest(TestSuite.java:230)
+	at junit.framework.TestSuite.run(TestSuite.java:225)
+	at junit.framework.TestSuite.runTest(TestSuite.java:230)
+	at junit.framework.TestSuite.run(TestSuite.java:225)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+Can't load log handler "java.util.logging.FileHandler"
+java.io.IOException: Couldn't get lock for /aradon/log/glog-%u-%g.log
+java.io.IOException: Couldn't get lock for /aradon/log/glog-%u-%g.log
+	at java.util.logging.FileHandler.openFiles(FileHandler.java:372)
+	at java.util.logging.FileHandler.<init>(FileHandler.java:208)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:39)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:27)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:501)
+	at java.lang.Class.newInstance0(Class.java:350)
+	at java.lang.Class.newInstance(Class.java:303)
+	at java.util.logging.LogManager$7.run(LogManager.java:911)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.util.logging.LogManager.initializeGlobalHandlers(LogManager.java:903)
+	at java.util.logging.LogManager.access$900(LogManager.java:129)
+	at java.util.logging.LogManager$RootLogger.getHandlers(LogManager.java:1010)
+	at java.util.logging.Logger.log(Logger.java:436)
+	at java.util.logging.Logger.doLog(Logger.java:462)
+	at java.util.logging.Logger.log(Logger.java:485)
+	at java.util.logging.Logger.warning(Logger.java:988)
+	at net.ion.radon.core.Aradon.handle(Aradon.java:241)
+	at net.ion.radon.core.Aradon.handle(Aradon.java:219)
+	at net.ion.radon.TestARadonMethod.testReload(TestARadonMethod.java:24)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at junit.framework.TestCase.runTest(TestCase.java:164)
+	at junit.framework.TestCase.runBare(TestCase.java:130)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:120)
+	at junit.framework.TestSuite.runTest(TestSuite.java:230)
+	at junit.framework.TestSuite.run(TestSuite.java:225)
+	at junit.framework.TestSuite.runTest(TestSuite.java:230)
+	at junit.framework.TestSuite.run(TestSuite.java:225)
+	at junit.framework.TestSuite.runTest(TestSuite.java:230)
+	at junit.framework.TestSuite.run(TestSuite.java:225)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+2011. 9. 10 오전 6:15:33 net.ion.radon.core.Aradon handle
+경고: Not Found
+Can't load log handler "java.util.logging.FileHandler"
+java.io.IOException: Couldn't get lock for /aradon/log/glog-%u-%g.log
+java.io.IOException: Couldn't get lock for /aradon/log/glog-%u-%g.log
+	at java.util.logging.FileHandler.openFiles(FileHandler.java:372)
+	at java.util.logging.FileHandler.<init>(FileHandler.java:208)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:39)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:27)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:501)
+	at java.lang.Class.newInstance0(Class.java:350)
+	at java.lang.Class.newInstance(Class.java:303)
+	at java.util.logging.LogManager$7.run(LogManager.java:911)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.util.logging.LogManager.initializeGlobalHandlers(LogManager.java:903)
+	at java.util.logging.LogManager.access$900(LogManager.java:129)
+	at java.util.logging.LogManager$RootLogger.getHandlers(LogManager.java:1010)
+	at java.util.logging.Logger.log(Logger.java:436)
+	at java.util.logging.Logger.doLog(Logger.java:462)
+	at java.util.logging.Logger.log(Logger.java:485)
+	at java.util.logging.Logger.warning(Logger.java:988)
+	at net.ion.radon.core.Aradon.detach(Aradon.java:424)
+	at net.ion.radon.TestARadonMethod.testDetach(TestARadonMethod.java:48)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at junit.framework.TestCase.runTest(TestCase.java:164)
+	at junit.framework.TestCase.runBare(TestCase.java:130)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:120)
+	at junit.framework.TestSuite.runTest(TestSuite.java:230)
+	at junit.framework.TestSuite.run(TestSuite.java:225)
+	at junit.framework.TestSuite.runTest(TestSuite.java:230)
+	at junit.framework.TestSuite.run(TestSuite.java:225)
+	at junit.framework.TestSuite.runTest(TestSuite.java:230)
+	at junit.framework.TestSuite.run(TestSuite.java:225)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+2011. 9. 10 오전 6:15:33 net.ion.radon.core.Aradon detach
+경고: another section detattached..
+Can't load log handler "java.util.logging.FileHandler"
+java.io.IOException: Couldn't get lock for /aradon/log/glog-%u-%g.log
+java.io.IOException: Couldn't get lock for /aradon/log/glog-%u-%g.log
+	at java.util.logging.FileHandler.openFiles(FileHandler.java:372)
+	at java.util.logging.FileHandler.<init>(FileHandler.java:208)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:39)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:27)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:501)
+	at java.lang.Class.newInstance0(Class.java:350)
+	at java.lang.Class.newInstance(Class.java:303)
+	at java.util.logging.LogManager$7.run(LogManager.java:911)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.util.logging.LogManager.initializeGlobalHandlers(LogManager.java:903)
+	at java.util.logging.LogManager.access$900(LogManager.java:129)
+	at java.util.logging.LogManager$RootLogger.getHandlers(LogManager.java:1010)
+	at java.util.logging.Logger.log(Logger.java:436)
+	at java.util.logging.Logger.doLog(Logger.java:462)
+	at java.util.logging.Logger.log(Logger.java:485)
+	at java.util.logging.Logger.warning(Logger.java:988)
+	at net.ion.radon.core.RouterSection.detach(RouterSection.java:102)
+	at net.ion.radon.TestARadonMethod.testSectionDetach(TestARadonMethod.java:62)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at junit.framework.TestCase.runTest(TestCase.java:164)
+	at junit.framework.TestCase.runBare(TestCase.java:130)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:120)
+	at junit.framework.TestSuite.runTest(TestSuite.java:230)
+	at junit.framework.TestSuite.run(TestSuite.java:225)
+	at junit.framework.TestSuite.runTest(TestSuite.java:230)
+	at junit.framework.TestSuite.run(TestSuite.java:225)
+	at junit.framework.TestSuite.runTest(TestSuite.java:230)
+	at junit.framework.TestSuite.run(TestSuite.java:225)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+2011. 9. 10 오전 6:15:33 net.ion.radon.core.RouterSection detach
+경고: hello path detattached..
+Not Found (404) - section:another, path:/hello
+	at net.ion.radon.core.RouterSection.handle(RouterSection.java:74)
+	at org.restlet.routing.Filter.doHandle(Filter.java:156)
+	at org.restlet.routing.Filter.handle(Filter.java:203)
+	at org.restlet.routing.Router.doHandle(Router.java:440)
+	at org.restlet.routing.Router.handle(Router.java:666)
+	at org.restlet.engine.component.ComponentClientDispatcher.doHandle(ComponentClientDispatcher.java:83)
+	at org.restlet.engine.TemplateDispatcher.handle(TemplateDispatcher.java:35)
+	at org.restlet.engine.component.ChildClientDispatcher.parentHandle(ChildClientDispatcher.java:139)
+	at org.restlet.engine.component.ChildClientDispatcher.doHandle(ChildClientDispatcher.java:91)
+	at org.restlet.engine.TemplateDispatcher.handle(TemplateDispatcher.java:35)
+	at org.restlet.engine.component.ChildClientDispatcher.parentHandle(ChildClientDispatcher.java:139)
+	at org.restlet.engine.component.ChildClientDispatcher.doHandle(ChildClientDispatcher.java:91)
+	at org.restlet.engine.TemplateDispatcher.handle(TemplateDispatcher.java:35)
+	at net.ion.radon.core.Aradon.handle(Aradon.java:233)
+	at net.ion.radon.TestARadonMethod.testSectionDetach(TestARadonMethod.java:67)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at junit.framework.TestCase.runTest(TestCase.java:164)
+	at junit.framework.TestCase.runBare(TestCase.java:130)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:120)
+	at junit.framework.TestSuite.runTest(TestSuite.java:230)
+	at junit.framework.TestSuite.run(TestSuite.java:225)
+	at junit.framework.TestSuite.runTest(TestSuite.java:230)
+	at junit.framework.TestSuite.run(TestSuite.java:225)
+	at junit.framework.TestSuite.runTest(TestSuite.java:230)
+	at junit.framework.TestSuite.run(TestSuite.java:225)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+2011. 9. 10 오전 6:15:33 net.ion.radon.core.Aradon handle
+경고: Not Found
+Can't load log handler "java.util.logging.FileHandler"
+java.io.IOException: Couldn't get lock for /aradon/log/glog-%u-%g.log
+java.io.IOException: Couldn't get lock for /aradon/log/glog-%u-%g.log
+	at java.util.logging.FileHandler.openFiles(FileHandler.java:372)
+	at java.util.logging.FileHandler.<init>(FileHandler.java:208)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:39)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:27)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:501)
+	at java.lang.Class.newInstance0(Class.java:350)
+	at java.lang.Class.newInstance(Class.java:303)
+	at java.util.logging.LogManager$7.run(LogManager.java:911)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.util.logging.LogManager.initializeGlobalHandlers(LogManager.java:903)
+	at java.util.logging.LogManager.access$900(LogManager.java:129)
+	at java.util.logging.LogManager$RootLogger.getHandlers(LogManager.java:1010)
+	at java.util.logging.Logger.log(Logger.java:436)
+	at java.util.logging.Logger.doLog(Logger.java:462)
+	at java.util.logging.Logger.log(Logger.java:485)
+	at java.util.logging.Logger.info(Logger.java:1004)
+	at org.restlet.ext.net.HttpClientHelper.start(HttpClientHelper.java:221)
+	at org.restlet.Client.start(Client.java:246)
+	at org.restlet.routing.Filter.start(Filter.java:273)
+	at org.restlet.Restlet.handle(Restlet.java:225)
+	at org.restlet.routing.Filter.handle(Filter.java:199)
+	at org.restlet.resource.ClientResource.handle(ClientResource.java:941)
+	at org.restlet.resource.ClientResource.handle(ClientResource.java:909)
+	at org.restlet.resource.ClientResource.handle(ClientResource.java:864)
+	at org.restlet.resource.ClientResource.handle(ClientResource.java:772)
+	at org.restlet.resource.ClientResource.get(ClientResource.java:505)
+	at net.ion.radon.client.AnonyRequest.get(AnonyRequest.java:33)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at org.codehaus.groovy.runtime.callsite.PojoMetaMethodSite$PojoCachedMethodSiteNoUnwrapNoCoerce.invoke(PojoMetaMethodSite.java:229)
+	at org.codehaus.groovy.runtime.callsite.PojoMetaMethodSite.call(PojoMetaMethodSite.java:52)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:40)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:116)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:120)
+	at groovy.ChartFilter.run(ChartFilter.groovy:20)
+	at net.ion.radon.core.script.GroovyLetFilter.execute(GroovyLetFilter.java:51)
+	at net.ion.radon.core.script.GroovyLetFilter.afterHandle(GroovyLetFilter.java:36)
+	at net.ion.radon.core.let.FilterEntry.afterHandle(FilterUtil.java:160)
+	at net.ion.radon.core.let.FilterUtil.handleAfterFilter(FilterUtil.java:73)
+	at net.ion.radon.core.let.AbstractLet.doHandle(AbstractLet.java:87)
+	at org.restlet.resource.ServerResource.handle(ServerResource.java:898)
+	at org.restlet.resource.Finder.handle(Finder.java:244)
+	at org.restlet.routing.Filter.doHandle(Filter.java:156)
+	at org.restlet.routing.Filter.handle(Filter.java:203)
+	at org.restlet.routing.Router.doHandle(Router.java:440)
+	at org.restlet.routing.Router.handle(Router.java:666)
+	at org.restlet.routing.Filter.doHandle(Filter.java:156)
+	at org.restlet.routing.Filter.handle(Filter.java:203)
+	at org.restlet.routing.Filter.doHandle(Filter.java:156)
+	at org.restlet.routing.Filter.handle(Filter.java:203)
+	at org.restlet.routing.Filter.doHandle(Filter.java:156)
+	at org.restlet.engine.application.StatusFilter.doHandle(StatusFilter.java:151)
+	at org.restlet.routing.Filter.handle(Filter.java:203)
+	at org.restlet.routing.Filter.doHandle(Filter.java:156)
+	at org.restlet.routing.Filter.handle(Filter.java:203)
+	at org.restlet.engine.CompositeHelper.handle(CompositeHelper.java:158)
+	at org.restlet.engine.application.ApplicationHelper.handle(ApplicationHelper.java:73)
+	at org.restlet.Application.handle(Application.java:381)
+	at net.ion.radon.core.RouterSection.handle(RouterSection.java:69)
+	at org.restlet.routing.Filter.doHandle(Filter.java:156)
+	at org.restlet.routing.Filter.handle(Filter.java:203)
+	at org.restlet.routing.Router.doHandle(Router.java:440)
+	at org.restlet.routing.Router.handle(Router.java:666)
+	at org.restlet.engine.component.ComponentClientDispatcher.doHandle(ComponentClientDispatcher.java:83)
+	at org.restlet.engine.TemplateDispatcher.handle(TemplateDispatcher.java:35)
+	at org.restlet.engine.component.ChildClientDispatcher.parentHandle(ChildClientDispatcher.java:139)
+	at org.restlet.engine.component.ChildClientDispatcher.doHandle(ChildClientDispatcher.java:91)
+	at org.restlet.engine.TemplateDispatcher.handle(TemplateDispatcher.java:35)
+	at org.restlet.engine.component.ChildClientDispatcher.parentHandle(ChildClientDispatcher.java:139)
+	at org.restlet.engine.component.ChildClientDispatcher.doHandle(ChildClientDispatcher.java:91)
+	at org.restlet.engine.TemplateDispatcher.handle(TemplateDispatcher.java:35)
+	at net.ion.radon.core.Aradon.handle(Aradon.java:233)
+	at net.ion.radon.core.Aradon.handle(Aradon.java:219)
+	at net.ion.radon.script.TestGroovyFilter.testChartFilter(TestGroovyFilter.java:105)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at junit.framework.TestCase.runTest(TestCase.java:164)
+	at junit.framework.TestCase.runBare(TestCase.java:130)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:120)
+	at junit.framework.TestSuite.runTest(TestSuite.java:230)
+	at junit.framework.TestSuite.run(TestSuite.java:225)
+	at junit.framework.TestSuite.runTest(TestSuite.java:230)
+	at junit.framework.TestSuite.run(TestSuite.java:225)
+	at junit.framework.TestSuite.runTest(TestSuite.java:230)
+	at junit.framework.TestSuite.run(TestSuite.java:225)
+	at junit.framework.TestSuite.runTest(TestSuite.java:230)
+	at junit.framework.TestSuite.run(TestSuite.java:225)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+2011. 9. 10 오전 6:15:35 org.restlet.ext.net.HttpClientHelper start
+정보: Starting the HTTP client
+2011. 9. 10 오전 6:15:36 org.restlet.ext.net.HttpClientHelper start
+정보: Starting the HTTP client
+Can't load log handler "java.util.logging.FileHandler"
+java.io.IOException: Couldn't get lock for /aradon/log/glog-%u-%g.log
+java.io.IOException: Couldn't get lock for /aradon/log/glog-%u-%g.log
+	at java.util.logging.FileHandler.openFiles(FileHandler.java:372)
+	at java.util.logging.FileHandler.<init>(FileHandler.java:208)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:39)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:27)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:501)
+	at java.lang.Class.newInstance0(Class.java:350)
+	at java.lang.Class.newInstance(Class.java:303)
+	at java.util.logging.LogManager$7.run(LogManager.java:911)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.util.logging.LogManager.initializeGlobalHandlers(LogManager.java:903)
+	at java.util.logging.LogManager.access$900(LogManager.java:129)
+	at java.util.logging.LogManager$RootLogger.getHandlers(LogManager.java:1010)
+	at java.util.logging.Logger.log(Logger.java:436)
+	at java.util.logging.Logger.doLog(Logger.java:462)
+	at java.util.logging.Logger.log(Logger.java:485)
+	at java.util.logging.Logger.info(Logger.java:1004)
+	at org.restlet.ext.net.HttpClientHelper.stop(HttpClientHelper.java:227)
+	at org.restlet.Client.stop(Client.java:255)
+	at org.restlet.Restlet.finalize(Restlet.java:116)
+	at java.lang.ref.Finalizer.invokeFinalizeMethod(Native Method)
+	at java.lang.ref.Finalizer.runFinalizer(Finalizer.java:83)
+	at java.lang.ref.Finalizer.access$100(Finalizer.java:14)
+	at java.lang.ref.Finalizer$FinalizerThread.run(Finalizer.java:160)
+2011. 9. 10 오전 6:15:36 org.restlet.ext.net.HttpClientHelper stop
+정보: Stopping the HTTP client
+2011. 9. 10 오전 6:15:36 org.restlet.ext.net.HttpClientHelper stop
+정보: Stopping the HTTP client
+Not Found (404) - section:another, path:/no_path
+	at net.ion.radon.core.RouterSection.handle(RouterSection.java:74)
+	at org.restlet.routing.Filter.doHandle(Filter.java:156)
+	at org.restlet.routing.Filter.handle(Filter.java:203)
+	at org.restlet.routing.Router.doHandle(Router.java:440)
+	at org.restlet.routing.Router.handle(Router.java:666)
+	at org.restlet.engine.component.ComponentClientDispatcher.doHandle(ComponentClientDispatcher.java:83)
+	at org.restlet.engine.TemplateDispatcher.handle(TemplateDispatcher.java:35)
+	at org.restlet.engine.component.ChildClientDispatcher.parentHandle(ChildClientDispatcher.java:139)
+	at org.restlet.engine.component.ChildClientDispatcher.doHandle(ChildClientDispatcher.java:91)
+	at org.restlet.engine.TemplateDispatcher.handle(TemplateDispatcher.java:35)
+	at org.restlet.engine.component.ChildClientDispatcher.parentHandle(ChildClientDispatcher.java:139)
+	at org.restlet.engine.component.ChildClientDispatcher.doHandle(ChildClientDispatcher.java:91)
+	at org.restlet.engine.TemplateDispatcher.handle(TemplateDispatcher.java:35)
+	at net.ion.radon.core.Aradon.handle(Aradon.java:233)
+	at net.ion.radon.core.Aradon.handle(Aradon.java:219)
+	at net.ion.radon.TestAradon.handle(TestAradon.java:96)
+	at net.ion.radon.core.let.TestGeneral.testNotFound(TestGeneral.java:38)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at junit.framework.TestCase.runTest(TestCase.java:164)
+	at junit.framework.TestCase.runBare(TestCase.java:130)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:120)
+	at junit.framework.TestSuite.runTest(TestSuite.java:230)
+	at junit.framework.TestSuite.run(TestSuite.java:225)
+	at junit.framework.TestSuite.runTest(TestSuite.java:230)
+	at junit.framework.TestSuite.run(TestSuite.java:225)
+	at junit.framework.TestSuite.runTest(TestSuite.java:230)
+	at junit.framework.TestSuite.run(TestSuite.java:225)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+Can't load log handler "java.util.logging.FileHandler"
+java.io.IOException: Couldn't get lock for /aradon/log/glog-%u-%g.log
+java.io.IOException: Couldn't get lock for /aradon/log/glog-%u-%g.log
+	at java.util.logging.FileHandler.openFiles(FileHandler.java:372)
+	at java.util.logging.FileHandler.<init>(FileHandler.java:208)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:39)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:27)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:501)
+	at java.lang.Class.newInstance0(Class.java:350)
+	at java.lang.Class.newInstance(Class.java:303)
+	at java.util.logging.LogManager$7.run(LogManager.java:911)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.util.logging.LogManager.initializeGlobalHandlers(LogManager.java:903)
+	at java.util.logging.LogManager.access$900(LogManager.java:129)
+	at java.util.logging.LogManager$RootLogger.getHandlers(LogManager.java:1010)
+	at java.util.logging.Logger.log(Logger.java:436)
+	at java.util.logging.Logger.doLog(Logger.java:462)
+	at java.util.logging.Logger.log(Logger.java:485)
+	at java.util.logging.Logger.warning(Logger.java:988)
+	at net.ion.radon.core.Aradon.handle(Aradon.java:241)
+	at net.ion.radon.core.Aradon.handle(Aradon.java:219)
+	at net.ion.radon.TestAradon.handle(TestAradon.java:96)
+	at net.ion.radon.core.let.TestGeneral.testNotFound(TestGeneral.java:38)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at junit.framework.TestCase.runTest(TestCase.java:164)
+	at junit.framework.TestCase.runBare(TestCase.java:130)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:120)
+	at junit.framework.TestSuite.runTest(TestSuite.java:230)
+	at junit.framework.TestSuite.run(TestSuite.java:225)
+	at junit.framework.TestSuite.runTest(TestSuite.java:230)
+	at junit.framework.TestSuite.run(TestSuite.java:225)
+	at junit.framework.TestSuite.runTest(TestSuite.java:230)
+	at junit.framework.TestSuite.run(TestSuite.java:225)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+2011. 9. 10 오전 6:15:36 net.ion.radon.core.Aradon handle
+경고: Not Found
+Can't load log handler "java.util.logging.FileHandler"
+java.io.IOException: Couldn't get lock for /aradon/log/glog-%u-%g.log
+java.io.IOException: Couldn't get lock for /aradon/log/glog-%u-%g.log
+	at java.util.logging.FileHandler.openFiles(FileHandler.java:372)
+	at java.util.logging.FileHandler.<init>(FileHandler.java:208)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:39)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:27)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:501)
+	at java.lang.Class.newInstance0(Class.java:350)
+	at java.lang.Class.newInstance(Class.java:303)
+	at java.util.logging.LogManager$7.run(LogManager.java:911)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.util.logging.LogManager.initializeGlobalHandlers(LogManager.java:903)
+	at java.util.logging.LogManager.access$900(LogManager.java:129)
+	at java.util.logging.LogManager$RootLogger.getHandlers(LogManager.java:1010)
+	at java.util.logging.Logger.log(Logger.java:436)
+	at java.util.logging.Logger.doLog(Logger.java:462)
+	at java.util.logging.Logger.log(Logger.java:485)
+	at java.util.logging.Logger.warning(Logger.java:988)
+	at net.ion.radon.core.Aradon.stop(Aradon.java:292)
+	at net.ion.radon.impl.let.TestHelloLet.tearDown(TestHelloLet.java:33)
+	at junit.framework.TestCase.runBare(TestCase.java:136)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:120)
+	at junit.framework.TestSuite.runTest(TestSuite.java:230)
+	at junit.framework.TestSuite.run(TestSuite.java:225)
+	at junit.framework.TestSuite.runTest(TestSuite.java:230)
+	at junit.framework.TestSuite.run(TestSuite.java:225)
+	at junit.framework.TestSuite.runTest(TestSuite.java:230)
+	at junit.framework.TestSuite.run(TestSuite.java:225)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+2011. 9. 10 오전 6:15:37 net.ion.radon.core.Aradon stop
+경고: aradon server stoped
+Can't load log handler "java.util.logging.FileHandler"
+java.io.IOException: Couldn't get lock for /aradon/log/glog-%u-%g.log
+java.io.IOException: Couldn't get lock for /aradon/log/glog-%u-%g.log
+	at java.util.logging.FileHandler.openFiles(FileHandler.java:372)
+	at java.util.logging.FileHandler.<init>(FileHandler.java:208)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:39)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:27)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:501)
+	at java.lang.Class.newInstance0(Class.java:350)
+	at java.lang.Class.newInstance(Class.java:303)
+	at java.util.logging.LogManager$7.run(LogManager.java:911)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.util.logging.LogManager.initializeGlobalHandlers(LogManager.java:903)
+	at java.util.logging.LogManager.access$900(LogManager.java:129)
+	at java.util.logging.LogManager$RootLogger.getHandlers(LogManager.java:1010)
+	at java.util.logging.Logger.log(Logger.java:436)
+	at java.util.logging.Logger.doLog(Logger.java:462)
+	at java.util.logging.Logger.log(Logger.java:485)
+	at java.util.logging.Logger.warning(Logger.java:988)
+	at net.ion.radon.core.Aradon.stop(Aradon.java:292)
+	at net.ion.radon.impl.let.TestHelloLet.tearDown(TestHelloLet.java:33)
+	at junit.framework.TestCase.runBare(TestCase.java:136)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:120)
+	at junit.framework.TestSuite.runTest(TestSuite.java:230)
+	at junit.framework.TestSuite.run(TestSuite.java:225)
+	at junit.framework.TestSuite.runTest(TestSuite.java:230)
+	at junit.framework.TestSuite.run(TestSuite.java:225)
+	at junit.framework.TestSuite.runTest(TestSuite.java:230)
+	at junit.framework.TestSuite.run(TestSuite.java:225)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+2011. 9. 10 오전 6:15:37 net.ion.radon.core.Aradon stop
+경고: aradon server stoped
+Can't load log handler "java.util.logging.FileHandler"
+java.io.IOException: Couldn't get lock for /aradon/log/glog-%u-%g.log
+java.io.IOException: Couldn't get lock for /aradon/log/glog-%u-%g.log
+	at java.util.logging.FileHandler.openFiles(FileHandler.java:372)
+	at java.util.logging.FileHandler.<init>(FileHandler.java:208)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:39)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:27)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:501)
+	at java.lang.Class.newInstance0(Class.java:350)
+	at java.lang.Class.newInstance(Class.java:303)
+	at java.util.logging.LogManager$7.run(LogManager.java:911)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.util.logging.LogManager.initializeGlobalHandlers(LogManager.java:903)
+	at java.util.logging.LogManager.access$900(LogManager.java:129)
+	at java.util.logging.LogManager$RootLogger.getHandlers(LogManager.java:1010)
+	at java.util.logging.Logger.log(Logger.java:436)
+	at java.util.logging.Logger.doLog(Logger.java:462)
+	at java.util.logging.Logger.log(Logger.java:485)
+	at java.util.logging.Logger.warning(Logger.java:988)
+	at net.ion.radon.core.Aradon.stop(Aradon.java:292)
+	at net.ion.radon.impl.let.TestHelloLet.tearDown(TestHelloLet.java:33)
+	at junit.framework.TestCase.runBare(TestCase.java:136)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:120)
+	at junit.framework.TestSuite.runTest(TestSuite.java:230)
+	at junit.framework.TestSuite.run(TestSuite.java:225)
+	at junit.framework.TestSuite.runTest(TestSuite.java:230)
+	at junit.framework.TestSuite.run(TestSuite.java:225)
+	at junit.framework.TestSuite.runTest(TestSuite.java:230)
+	at junit.framework.TestSuite.run(TestSuite.java:225)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+2011. 9. 10 오전 6:15:37 net.ion.radon.core.Aradon stop
+경고: aradon server stoped
+2011-09-10 06:15:37.140:INFO::jetty-7.x.y-SNAPSHOT
+2011-09-10 06:15:37.171:INFO::Started SelectChannelConnector@0.0.0.0:9010
+Can't load log handler "java.util.logging.FileHandler"
+java.io.IOException: Couldn't get lock for /aradon/log/glog-%u-%g.log
+java.io.IOException: Couldn't get lock for /aradon/log/glog-%u-%g.log
+	at java.util.logging.FileHandler.openFiles(FileHandler.java:372)
+	at java.util.logging.FileHandler.<init>(FileHandler.java:208)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:39)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:27)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:501)
+	at java.lang.Class.newInstance0(Class.java:350)
+	at java.lang.Class.newInstance(Class.java:303)
+	at java.util.logging.LogManager$7.run(LogManager.java:911)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.util.logging.LogManager.initializeGlobalHandlers(LogManager.java:903)
+	at java.util.logging.LogManager.access$900(LogManager.java:129)
+	at java.util.logging.LogManager$RootLogger.getHandlers(LogManager.java:1010)
+	at java.util.logging.Logger.log(Logger.java:436)
+	at java.util.logging.Logger.doLog(Logger.java:462)
+	at java.util.logging.Logger.log(Logger.java:485)
+	at java.util.logging.Logger.warning(Logger.java:988)
+	at net.ion.radon.core.Aradon.startServer(Aradon.java:327)
+	at net.ion.radon.impl.let.TestHelloLet.testRun(TestHelloLet.java:65)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at junit.framework.TestCase.runTest(TestCase.java:164)
+	at junit.framework.TestCase.runBare(TestCase.java:130)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:120)
+	at junit.framework.TestSuite.runTest(TestSuite.java:230)
+	at junit.framework.TestSuite.run(TestSuite.java:225)
+	at junit.framework.TestSuite.runTest(TestSuite.java:230)
+	at junit.framework.TestSuite.run(TestSuite.java:225)
+	at junit.framework.TestSuite.runTest(TestSuite.java:230)
+	at junit.framework.TestSuite.run(TestSuite.java:225)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+2011. 9. 10 오전 6:15:37 net.ion.radon.core.Aradon startServer
+경고: aradon server started : 9010
+2011. 9. 10 오전 6:15:37 org.restlet.ext.net.HttpClientHelper start
+정보: Starting the HTTP client
+2011. 9. 10 오전 6:15:37 org.restlet.engine.log.LogFilter afterHandle
+정보: 2011-09-10	06:15:37	127.0.0.1	-	127.0.0.1	9010	GET	/section/hello	-	200	-	0	15	http://localhost:9010	Restlet-Framework/2.1snapshot	-
+2011. 9. 10 오전 6:15:37 net.ion.radon.core.Aradon stop
+경고: aradon server stoped
+]]></system-err>
+</testsuite>

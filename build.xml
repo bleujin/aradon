@@ -54,10 +54,6 @@
 	</target>
 	
 	<target name="copy" depends="publish">
-		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../ICSS5/icss/WEB-INF/lib/" />
-		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../ICS6/ics/WEB-INF/lib/" />
-		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../IPublisher/lib/" />
-		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../ICSSearcher/lib/" />
-		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../AradonExtend/lib/" />
+		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../websocketPlug/libs/aradon" />
 	</target>	
 </project>

@@ -256,7 +256,7 @@ public class Aradon extends Component implements IService {
 		releasables.add(WrapperReleaseObject.create(service, releasable));
 	}
 
-	public void slayReleasable() {
+	private void slayReleasable() {
 		Debug.debug("Bye....... Aradon");
 		for (WrapperReleaseObject releasable : releasables) {
 			if (releasable != null && releasable.getValue() != null) releasable.getValue().doRelease();

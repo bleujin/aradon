@@ -1,23 +1,15 @@
 package net.ion.radon.core;
 
-import static net.ion.radon.core.RadonAttributeKey.*;
+import static net.ion.radon.core.RadonAttributeKey.REQUEST_CONTEXT;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
-import net.ion.framework.util.InstanceCreationException;
 import net.ion.framework.util.StringUtil;
-import net.ion.radon.core.config.AttributeUtil;
-import net.ion.radon.core.config.XMLConfig;
-import net.ion.radon.core.let.FilterUtil;
 import net.ion.radon.core.let.InnerRequest;
 import net.ion.radon.impl.section.BasePathInfo;
 import net.ion.radon.impl.section.PluginConfig;
 
-import org.apache.commons.configuration.ConfigurationException;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.Restlet;
@@ -78,6 +70,7 @@ public class RouterSection extends SectionService{
 					return;
 				}
 			}
+			if (pathReference != null && "/favicon.ico".equals(pathReference.toString())) return ;
 			throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND,  "section:" + getName() + ", " + "path:" + pathReference);
 		} catch (ResourceException ex) {
 			throw ex;
