@@ -15,7 +15,7 @@ import java.util.Set;
 
 import net.ion.framework.util.Debug;
 import net.ion.framework.util.ListUtil;
-import net.ion.radon.ARadonServer;
+import net.ion.radon.AradonServer;
 
 import org.apache.commons.configuration.ConfigurationException;
 
@@ -80,7 +80,7 @@ public class ClassAppender {
 			}
 		});
 		jarFileList.addAll(Arrays.asList(jarFiles)) ;
-		File[] dirs = file.listFiles(ARadonServer.DIR_FILTER);
+		File[] dirs = file.listFiles(AradonServer.DIR_FILTER);
 		for (File dir : dirs) {
 			findJarFiles(dir, jarFileList) ;
 		}

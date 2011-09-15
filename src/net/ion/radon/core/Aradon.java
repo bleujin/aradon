@@ -29,6 +29,8 @@ import net.ion.radon.core.EnumClass.IZone;
 import net.ion.radon.core.config.AttributeUtil;
 import net.ion.radon.core.config.Releasable;
 import net.ion.radon.core.config.XMLConfig;
+import net.ion.radon.core.context.OnEventObject;
+import net.ion.radon.core.context.OnEventObject.AradonEvent;
 import net.ion.radon.core.filter.IRadonFilter;
 import net.ion.radon.core.let.FilterUtil;
 import net.ion.radon.core.let.InnerRequest;
@@ -62,7 +64,9 @@ public class Aradon extends Component implements IService {
 	private XMLConfig rootConfig;
 	private Map<Integer, WrapperServer> servers = MapUtil.newMap();
 	private static Aradon CURRENT;
+	public final static String CONFIG_PORT = "aradon.config.port";
 
+	
 	void setSection(String sectionName, Application section) {
 		if (sections.containsKey(sectionName)) {
 			Debug.warn("SECTION[" + sectionName + "] already exists. Ignored....======================");
@@ -325,8 +329,24 @@ public class Aradon extends Component implements IService {
 		// httpServer.start() ;
 		
 		getLogger().warning("aradon server started : " + port);
+		
+		rootContext.putAttribute(CONFIG_PORT, port) ;
+		onEventFire(AradonEvent.START, this) ;
 	}
 
+	private void onEventFire(AradonEvent event, IService service) {
+		for (Object key : service.getServiceContext().getAttributes().keySet()) {
+			Object value = service.getServiceContext().getAttributeObject(ObjectUtil.toString(key)) ;
+			if (OnEventObject.class.isInstance(value)){
+				((OnEventObject)value).onEvent(event, service) ;
+			}
+		}
+		
+		for (IService child : service.getChildren()) {
+			onEventFire(event, child) ;
+		}
+	}
+	
 	private void initLogConfig() throws SecurityException, FileNotFoundException, IOException {
 
 		// 

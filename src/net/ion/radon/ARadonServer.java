@@ -21,7 +21,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.restlet.data.Protocol;
 import org.restlet.data.Reference;
 
-public class ARadonServer {
+public class AradonServer {
 	
 	private final static class configFilter implements FileFilter {
 		public boolean accept(File file) {
@@ -46,7 +46,7 @@ public class ARadonServer {
 	public static FileFilter PLUGIN_CONFIG_FILE_FILTER = new configFilter() ;
 	public static FileFilter JAR_FILTER = new jarFilter();
 	
-	public ARadonServer(Options options) {
+	public AradonServer(Options options) {
 		this.options = options ;
 	}
 	
@@ -143,7 +143,7 @@ public class ARadonServer {
 	}
 
 	public static void main(String[] args) throws Exception {
-		ARadonServer as = new ARadonServer(new Options(args)) ;
+		AradonServer as = new AradonServer(new Options(args)) ;
 		Aradon aradon = as.start() ;
 		
 	}

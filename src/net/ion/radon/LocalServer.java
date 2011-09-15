@@ -49,7 +49,7 @@ public class LocalServer {
 			Debug.debug("Aradon Server Start") ;*/
 			
 			String[] opts = new String[]{"-port:9002", "-config:resource/config/aradon-config.xml"} ;
-			ARadonServer as = new ARadonServer(new Options(opts)) ;
+			AradonServer as = new AradonServer(new Options(opts)) ;
 			as.start() ;
 			
 		} catch (Exception e) {

@@ -22,7 +22,7 @@ public class TestAradonServer extends TestAradon {
 
 
 	public void xtestReStart() throws Exception {
-		ARadonServer as = new ARadonServer(new Options(new String[] { "-port:9002", "-config:resource/config/readonly-config.xml" }));
+		AradonServer as = new AradonServer(new Options(new String[] { "-port:9002", "-config:resource/config/readonly-config.xml" }));
 		Aradon aradon = as.start();
 
 		XMLConfig config = aradon.getRootConfig();

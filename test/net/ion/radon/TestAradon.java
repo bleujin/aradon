@@ -87,7 +87,7 @@ public class TestAradon extends TestCase {
 	protected void initAradon(String configPath) throws Exception{
 		aradon.init(configPath) ;
 		aradon.start() ;
-		new ARadonServer(new Options(new String[0])).loadPlugIn(aradon) ;
+		new AradonServer(new Options(new String[0])).loadPlugIn(aradon) ;
 	}
 	
 	protected Response handle(String configPath,  Request request) throws Exception {
