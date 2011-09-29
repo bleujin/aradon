@@ -2,7 +2,6 @@ package net.ion.radon.impl.servlet;
 
 import net.ion.framework.util.Debug;
 import net.ion.radon.TestAradon;
-import net.ion.radon.client.AnonyRequest;
 import net.ion.radon.client.AradonClient;
 import net.ion.radon.client.AradonClientFactory;
 import net.ion.radon.client.IAradonRequest;

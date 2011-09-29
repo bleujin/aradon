@@ -1,21 +1,13 @@
 package net.ion.framework.db.procedure;
 
-import java.io.InputStream;
-import java.io.Reader;
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
 
-import net.ion.framework.db.AradonDBManager;
 import net.ion.framework.db.IDBController;
-import net.ion.framework.db.Page;
 import net.ion.framework.db.Rows;
 import net.ion.framework.db.bean.ResultSetHandler;
-import net.ion.framework.db.procedure.IParameterQueryable;
-import net.ion.framework.db.procedure.IUserProcedure;
-import net.ion.framework.db.procedure.UserProcedure;
-import net.ion.radon.client.IAradonRequest;
 
 public class AradonUserProcedure extends UserProcedure {
 
@@ -45,7 +37,7 @@ public class AradonUserProcedure extends UserProcedure {
 	
 
 	@Override
-	public Object myHandlerQuery(Connection conn, ResultSetHandler handler) throws SQLException {
+	public Serializable myHandlerQuery(Connection conn, ResultSetHandler handler) throws SQLException {
 		return QueryHelper.myHandlerQuery(this, handler) ;
 	}
 

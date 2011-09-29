@@ -1,13 +1,13 @@
 package net.ion.framework.db;
 
-import net.ion.radon.client.IAradonRequest;
+import net.ion.radon.client.ISerialRequest;
 
 public interface RemoteManager {
 
-	public IAradonRequest getQueryRequest() ;
+	public ISerialRequest getQueryRequest() ;
 
-	public IAradonRequest getUpdateRequest()  ;
+	public ISerialRequest getUpdateRequest()  ;
 
-	public IAradonRequest getHandlerRequest() ; 
+	public ISerialRequest getHandlerRequest() ; 
 
 }

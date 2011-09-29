@@ -2,7 +2,6 @@ package net.ion.radon.client;
 
 import java.io.Serializable;
 
-import org.restlet.Response;
 import org.restlet.data.Method;
 import org.restlet.representation.ObjectRepresentation;
 

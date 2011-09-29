@@ -4,18 +4,8 @@ import net.ion.radon.core.Aradon;
 
 public class AradonInnerClient implements AradonClient{
 
-	
 	private Aradon aradon;
-	
-	
-	public AradonInnerClient(){
-		
-	}
-	
-	public void setAradon(Aradon aradon){
-		this.aradon = aradon ;
-	}
-	
+
 	private AradonInnerClient(Aradon aradon) {
 		this.aradon = aradon;
 	} 
@@ -29,14 +19,24 @@ public class AradonInnerClient implements AradonClient{
 	}
 
 	public IAradonRequest createRequest(String path, String id, String pwd) {
-		return AradonInnerRequest.create(aradon, path, id, pwd);
+		return AradonRequest.create(aradon, path, id, pwd);
 	}
 
+	public ISerialRequest createSerialRequest(String path) {
+		return AradonSerialRequest.create(aradon, path, "anony", "");
+	}
+
+	public ISerialRequest createSerialRequest(String path, String id, String pwd) {
+		return AradonSerialRequest.create(aradon, path, id, pwd);
+	}
+	
 	public String getHostAddress() {
 		return null;
 	}
 
 	public void stop() throws Exception {
 	}
+
+
 
 }

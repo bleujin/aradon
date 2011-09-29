@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
 import java.sql.SQLException;
@@ -49,8 +48,11 @@ import org.restlet.data.Protocol;
 import org.restlet.data.Reference;
 import org.restlet.data.Status;
 import org.restlet.ext.jetty.HttpServerHelper;
+import org.restlet.representation.ObjectRepresentation;
 import org.restlet.resource.ResourceException;
 import org.restlet.routing.Router;
+import org.restlet.service.ConverterService;
+import org.restlet.service.MetadataService;
 
 public class Aradon extends Component implements IService {
 
@@ -64,8 +66,11 @@ public class Aradon extends Component implements IService {
 	private XMLConfig rootConfig;
 	private Map<Integer, WrapperServer> servers = MapUtil.newMap();
 	private static Aradon CURRENT;
+
+	
 	public final static String CONFIG_PORT = "aradon.config.port";
 
+	
 	
 	void setSection(String sectionName, Application section) {
 		if (sections.containsKey(sectionName)) {
@@ -141,6 +146,7 @@ public class Aradon extends Component implements IService {
 		slayReleasable();
 
 		initConfig(this.rootConfig);
+		onEventFire(AradonEvent.RELOAD, this) ;
 	}
 
 	private void loadClassPath(XMLConfig rconfig, ClassAppender loader) throws ConfigurationException {
@@ -253,7 +259,7 @@ public class Aradon extends Component implements IService {
 			getLogger().warning(ex.getMessage());
 			throw new ResourceException(Status.SERVER_ERROR_INTERNAL, ex);
 		}
-
+		
 	}
 
 	public void addReleasable(IService service, Releasable releasable) {
@@ -280,6 +286,7 @@ public class Aradon extends Component implements IService {
 	public void stop() {
 		try {
 			super.stop();
+			onEventFire(AradonEvent.STOP, this) ;
 			for (WrapperServer server : servers.values()) {
 				try {
 					server.stop();
@@ -301,7 +308,10 @@ public class Aradon extends Component implements IService {
 		return rootConfig;
 	}
 
+	
 	public void startServer(int port) throws Exception {
+		if (! isStarted()) start() ;
+		
 		Server aradonServer = new Server(getContext(), Protocol.HTTP, port, this);
 
 		AradonServerHelper httpServer = new AradonServerHelper(aradonServer);
@@ -346,7 +356,7 @@ public class Aradon extends Component implements IService {
 			onEventFire(event, child) ;
 		}
 	}
-	
+
 	private void initLogConfig() throws SecurityException, FileNotFoundException, IOException {
 
 		// 
@@ -479,20 +489,39 @@ public class Aradon extends Component implements IService {
 		return getRadonLogService().recentLog(this, count);
 	}
 
-	public <T> T handle(Request request, Class<? extends T> resultClass) throws IOException, ClassNotFoundException {
+	public <T> T handle(Request request, Class<? extends T> resultClass) {
 		Response response = handle(request);
 		if (!response.getStatus().isSuccess())
 			throw new ResourceException(response.getStatus(), response.toString());
 
-		ObjectInputStream ois = new ObjectInputStream(response.getEntity().getStream());
-
-		Object obj = ois.readObject();
-		if (resultClass.isInstance(obj))
-			return (T) obj;
-
-		throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, resultClass.getCanonicalName() +  " expected but " + obj);
+		try {
+			Object resultObj = ((ObjectRepresentation)response.getEntity()).getObject() ;
+			return resultClass.cast(resultObj) ;
+		} catch (IOException e) {
+			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, e.getMessage());
+		}
 	}
 
+	public ConverterService getConverterService(){
+		ConverterService result = rootContext.getAttributeObject(ConverterService.class.getCanonicalName(), ConverterService.class) ;
+		if (result != null){
+			return result ;
+		}
+		rootContext.putAttribute(ConverterService.class.getCanonicalName(), new ConverterService()) ;
+		return getConverterService() ;
+	}
+	
+	public MetadataService getMetadataService(){
+		MetadataService result = rootContext.getAttributeObject(MetadataService.class.getCanonicalName(), MetadataService.class) ;
+		if (result == null){
+			rootContext.putAttribute(MetadataService.class.getCanonicalName(), new MetadataService()) ;
+		}
+		return getMetadataService() ;
+	}
+
+	public boolean containsSection(String sectionName) {
+		return sections.containsKey(sectionName);
+	}
 }
 
 class WrapperServer {

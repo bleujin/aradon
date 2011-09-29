@@ -1,18 +1,14 @@
 package net.ion.framework.db.procedure;
 
-import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Map;
 
 import net.ion.framework.db.AradonDBManager;
 import net.ion.framework.db.IDBController;
-import net.ion.framework.db.Page;
-import net.ion.framework.db.Rows;
-import net.ion.framework.db.bean.ResultSetHandler;
 import net.ion.framework.util.MapUtil;
 import net.ion.radon.client.IAradonRequest;
+import net.ion.radon.client.ISerialRequest;
 import net.ion.radon.impl.let.rdb.QueryResult;
 
 public class AradonCombinedUserProcedures extends CombinedUserProcedures{
@@ -28,14 +24,14 @@ public class AradonCombinedUserProcedures extends CombinedUserProcedures{
 
 	public int myUpdate(Connection conn) throws SQLException {
 		AradonDBManager dbm = (AradonDBManager) getDBController().getDBManager() ;
-		IAradonRequest request = dbm.getUpdateRequest() ;
+		ISerialRequest request = dbm.getUpdateRequest() ;
 		
-		QueryResult qr = request.execute(this, QueryResult.class) ; 
+		QueryResult qr = request.put(QueryHelper.toSerial(this), QueryResult.class) ; 
 		resultMap = qr.getData() ; 
 		return resultMap.size() ;
 	}
 	
-	public Map<String, Object> getResultMap() {
+	@Override public Map<String, Object> getResultMap() {
 		return resultMap;
 	}
 
