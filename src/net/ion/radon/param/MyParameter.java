@@ -154,8 +154,9 @@ public class MyParameter {
 		return (json== null) ? null : json.toString() ;
 	}
 
-
-
-
 	
+	public JSONObject getJSON(){
+		return json ;
+	}
+
 }

@@ -31,7 +31,7 @@ public class AradonInnerClient implements AradonClient{
 	}
 	
 	public String getHostAddress() {
-		return null;
+		return "riap://component";
 	}
 
 	public void stop() throws Exception {

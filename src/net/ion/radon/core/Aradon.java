@@ -25,6 +25,7 @@ import net.ion.framework.util.PathMaker;
 import net.ion.framework.util.StringUtil;
 import net.ion.radon.core.EnumClass.FilterLocation;
 import net.ion.radon.core.EnumClass.IZone;
+import net.ion.radon.core.cli.DirConfig;
 import net.ion.radon.core.config.AttributeUtil;
 import net.ion.radon.core.config.Releasable;
 import net.ion.radon.core.config.XMLConfig;
@@ -247,6 +248,7 @@ public class Aradon extends Component implements IService {
 			}
 			
 		} catch (ResourceException ex) {
+			
 			ex.printStackTrace();
 			getLogger().warning(ex.getMessage());
 			response.setStatus(ex.getStatus());

@@ -1,90 +1,97 @@
 package net.ion.radon.core.let;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.nio.charset.Charset;
 import java.util.Arrays;
-import java.util.Map.Entry;
 
+import junit.framework.TestCase;
 import net.ion.framework.util.Debug;
-import net.ion.radon.TestAradon;
+import net.ion.radon.client.MultipartEntity;
+import net.ion.radon.core.Aradon;
+import net.ion.radon.core.PathService;
 import net.ion.radon.core.RadonAttributeKey;
 import net.ion.radon.impl.section.BasePathInfo;
-import net.ion.radon.impl.section.PathInfo;
+import net.ion.radon.util.AradonTester;
+import net.sf.json.JSONObject;
 
-import org.apache.commons.httpclient.methods.multipart.FilePart;
-import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
-import org.apache.commons.httpclient.methods.multipart.Part;
-import org.apache.commons.httpclient.methods.multipart.StringPart;
-import org.apache.commons.httpclient.params.HttpClientParams;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.Form;
-import org.restlet.data.MediaType;
 import org.restlet.data.Method;
-import org.restlet.representation.OutputRepresentation;
+import org.restlet.data.Status;
 
-public class TestRequest extends TestAradon{
+public class TestRequest extends TestCase{
 
-	
-	public void testBeforeHandle() throws Exception {
-		Request request = new Request(Method.GET, "riap://component/another/hello?abcd=mu&aradon.result.method=POST") ;
-		Response response = handle(request) ;
-		assertEquals(200, response.getStatus().getCode()) ;
-		Debug.line(response.getEntityAsText()) ;
-		assertEquals(true, response.getEntityAsText().length() > 0) ;
-		Debug.debug(request.getAttributes().get(RadonAttributeKey.ATTRIBUTE_HEADERS)) ;
-		
-		assertTrue(request.getMethod().equals(Method.POST)) ;
+	private AradonTester at ; 
+	private Aradon aradon ;
+	@Override protected void setUp() throws Exception {
+		super.setUp();
+		at = AradonTester.create().register("", "/test", GetLet.class);
+		aradon = at.getAradon() ;
 	}
 	
+	public void testConnect() throws Exception {
 	
-	public void testAttribute() throws Exception {
-		Request request = new Request(Method.GET, "riap://component/another/hello/Hi") ;
-		Response response = handle(request) ;
-		
-		Debug.debug(request.getAttributes().get("greeting")) ;
-		Debug.debug(response.getRequest().getAttributes().get("greeting")) ;
-		
-		Debug.debug(request == response.getRequest()) ;
-		assertTrue(request == response.getRequest()) ;
-	}
-	
-	
-	public void testPathInfo() throws Exception {
-		Request request = new Request(Method.GET, "riap://component/another/hello/Hi") ;
-		Response response = handle( request) ;
-		
-		InnerRequest ireq = ((InnerResponse)Response.getCurrent()).getInnerRequest() ;
-		BasePathInfo pinfo = ireq.getPathInfo(aradon) ;
-		
-		assertEquals("hello", pinfo.getName()) ;
-	}
-	
-	
-	public void testRequestPath() throws Exception {
-		initAradon() ;
-
-		Request request = new Request(Method.GET, "riap://component/another/") ;
+		Request request = new Request(Method.GET, "riap://component/test") ;
 		Response response = aradon.handle(request) ;
 		
 		assertEquals(200, response.getStatus().getCode()) ;
 	}
+
+	
+	public void testMethod() throws Exception {
+		Request request = new Request(Method.GET, "riap://component/test") ;
+		Response response = aradon.handle(request) ;
+		
+		assertEquals(Status.SUCCESS_OK, response.getStatus()) ;
+		assertEquals(Method.GET, request.getMethod()) ;
+	}
+	
+	public void testModMethod() throws Exception {
+		Request request = new Request(Method.GET, "riap://component/test?aradon.result.method=POST") ;
+		Response response = aradon.handle(request) ;
+		
+		assertEquals(Status.SUCCESS_OK, response.getStatus()) ;
+		assertEquals(Method.POST, request.getMethod()) ;
+		
+	}
+	
+	public void testRequestAttribute() throws Exception {
+		AradonTester at = AradonTester.create().register("another", "/test/{greeting}", GetLet.class) ;
+		Aradon aradon = at.getAradon() ;
+		
+		Request request = new Request(Method.GET, "riap://component/another/test/hi");
+		Response response = aradon.handle(request);
+
+		assertEquals("hi", request.getAttributes().get("greeting")) ;
+		assertEquals(true, request.getAttributes().get(RadonAttributeKey.ATTRIBUTE_HEADERS) != null) ;
+		assertEquals(true, request.getAttributes().get(RadonAttributeKey.FORM_ATTRIBUTE_KEY) != null) ;
+		assertEquals(true, request.getAttributes().get(RadonAttributeKey.REQUEST_CONTEXT) != null) ;
+		
+		Debug.debug(request.getAttributes());
+	}
+
+	public void testSameRequest() throws Exception {
+		Request request = new Request(Method.GET, "riap://component/test") ;
+		Response response = aradon.handle(request) ;
+		assertTrue(request == response.getRequest()) ;
+	}
 	
 	
 	public void testGetParameter() throws Exception {
-		initAradon() ;
-		Request request = new Request(Method.GET, "riap://component/another/hello?abcd=efg&int=2") ;
+		Request request = new Request(Method.GET, "riap://component/test?abcd=efg&int=2") ;
 		
 		aradon.handle(request) ;
 		
-		assertEquals("efg", getInnerRequest().getFormParameter().get("abcd")) ;
-		assertEquals(2L, getInnerRequest().getFormParameter().get("int")) ;
+		MultiValueMap mmap = (MultiValueMap) request.getAttributes().get(RadonAttributeKey.FORM_ATTRIBUTE_KEY) ;
+		
+		assertEquals("efg", mmap.getFirstValue("abcd")) ;
+		assertEquals(2L, mmap.getFirstValue("int")) ;
 	}
 	
+	
 	public void testPostParameter() throws Exception {
-		initAradon() ;
-		Request request = new Request(Method.GET, "riap://component/another/hello") ;
+		Request request = new Request(Method.GET, "riap://component/test") ;
 		Form form = new Form() ;
 		form.add("abcd", "efg") ;
 		form.add("int", "2") ;
@@ -93,14 +100,14 @@ public class TestRequest extends TestAradon{
 		
 		aradon.handle(request) ;
 		
-		assertEquals("efg", getInnerRequest().getFormParameter().get("abcd")) ;
-		assertEquals(2L, getInnerRequest().getFormParameter().get("int")) ;
+		MultiValueMap mmap = (MultiValueMap) request.getAttributes().get(RadonAttributeKey.FORM_ATTRIBUTE_KEY) ;
+		
+		assertEquals("efg", mmap.getFirstValue("abcd")) ;
+		assertEquals(2L, mmap.getFirstValue("int")) ;
 	}
 	
-	
 	public void testMultiValue() throws Exception {
-		initAradon() ;
-		Request request = new Request(Method.GET, "riap://component/another/hello") ;
+		Request request = new Request(Method.GET, "riap://component/test") ;
 		Form form = new Form() ;
 		form.add("abcd", "efg") ;
 		form.add("abcd", "hij") ;
@@ -109,33 +116,45 @@ public class TestRequest extends TestAradon{
 		
 		aradon.handle(request) ;
 		
-		assertEquals("efg", getInnerRequest().getFormParameter().get("abcd")) ;
-		assertEquals(Arrays.asList("efg", "hij").toString(), getInnerRequest().getFormParameter().getAsList("abcd").toString()) ;
-
+		MultiValueMap mmap = (MultiValueMap) request.getAttributes().get(RadonAttributeKey.FORM_ATTRIBUTE_KEY) ;
+		
+		assertEquals("efg", mmap.get("abcd")) ;
+		assertEquals(Arrays.asList("efg", "hij").toString(), mmap.getAsList("abcd").toString()) ;
 	}
 	
-	
-	public void testMultipart() throws Exception {
-		Request request = new Request(Method.POST, "riap://component/another/hello");
-		Part[] parts = { new StringPart("from", "bleujin@i-on.net"),
-				new StringPart("to", "bleujin@i-on.net"),
-				new StringPart("subject", "ÇÑ±Û", "UTF-8"),
-				new StringPart("content", "¾È³çÇÏ¼¼¿ä.", "UTF-8"),
-				new FilePart("attach1", new File("./resource/config/dev-config.xml"))
-		} ; 
-				// , new FilePart("attach2", "ÇÑ±Û.csv", new File("./imsi/ÇÑ±Û.csv"), "text/plain", "UTF-8")};
-		final MultipartRequestEntity mre = new MultipartRequestEntity(parts, new HttpClientParams());
-		OutputRepresentation representation = new OutputRepresentation(MediaType.valueOf(mre.getContentType()), mre.getContentLength()) {
-			public void write(OutputStream out) throws IOException {
-				mre.writeRequest(out) ;
-			}
-		};
-		request.setEntity(representation) ;
-		aradon.handle(request);
+	public void testPathInfo() throws Exception {
+		Request request = new Request(Method.GET, "riap://component/test") ;
+		aradon.handle( request) ;
 		
-		for (Entry entry : getInnerRequest().getFormParameter().entrySet()){
-			Debug.debug(entry.getKey(), entry.getValue().getClass()) ;
-		}
+		InnerRequest ireq = ((InnerResponse)Response.getCurrent()).getInnerRequest() ;
+		BasePathInfo pinfo = ireq.getPathInfo(aradon) ;
+		
+		String settedname = aradon.getChildService("").getChildren().toArray(new PathService[0])[0].getName();
+		assertEquals(settedname, pinfo.getName()) ;
+	}
+
+
+	public void testMultipart() throws Exception {
+		
+		at.register("", "/multipart", MultipartLet.class) ;
+		
+		Request request = new Request(Method.POST, "riap://component/multipart");
+		
+		MultipartEntity entity = new MultipartEntity() ;
+		entity.addParameter("to", "bleujin@i-on.net") ;
+		entity.addParameter("subject", "í•œê¸€", Charset.forName("UTF-8")) ;
+		entity.addParameter("content", "ì•ˆë…•í•˜ì„¸ìš”.", Charset.forName("UTF-8")) ;
+		entity.addParameter("attach1", new File("./build.xml")) ;
+		
+		request.setEntity(entity.makeRepresentation()) ;
+		Response response = aradon.handle(request);
+		
+		JSONObject jso = JSONObject.fromObject(response.getEntityAsText()) ;
+		
+		assertEquals("bleujin@i-on.net", jso.getString("to")) ;
+		assertEquals("í•œê¸€", jso.getString("subject")) ;
+		assertEquals("ì•ˆë…•í•˜ì„¸ìš”.", jso.getString("content")) ;
+		assertEquals(true, jso.getString("attach1").length() > 10) ;
 	}
 	
 }

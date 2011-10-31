@@ -20,7 +20,7 @@ import org.restlet.data.Method;
 
 import net.ion.framework.util.Debug;
 import net.ion.radon.TestAradon;
-import net.ion.radon.TestAradonServer;
+import net.ion.radon.server.TestAradonServer;
 
 public class TestLogging extends TestAradon{
 

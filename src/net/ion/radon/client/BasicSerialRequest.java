@@ -40,11 +40,13 @@ public class BasicSerialRequest implements ISerialRequest{
 	}
 
 	public <V> V get(Class<? extends V> resultClass) {
-		return createResource(Method.GET, null, resultClass) ;
+		V result = createResource(Method.GET, null, resultClass);
+		return result ;
 	}
 
 	public <T, V> V put(T arg, Class<? extends V> clz) {
-		return createResource(Method.PUT, arg, clz);
+		V result = createResource(Method.PUT, arg, clz);
+		return result;
 	}
 	
 	public <T, V> V post(T arg, Class<? extends V> clz) {
@@ -56,7 +58,7 @@ public class BasicSerialRequest implements ISerialRequest{
 	}
 	
 	private <T, V> V createResource(Method method, T arg, Class<? extends V> resultClass) {
-		Request request = new Request(method, fullPath);
+		Request request  = new Request(method, fullPath);
 		request.setChallengeResponse(new ChallengeResponse(ChallengeScheme.HTTP_BASIC, user.getIdentifier(), user.getSecret()));
 		if (headerForm != null) request.getAttributes().put(RadonAttributeKey.ATTRIBUTE_HEADERS, headerForm) ;
 		
@@ -75,6 +77,8 @@ public class BasicSerialRequest implements ISerialRequest{
 			throw new IllegalStateException(e) ;
 		} catch (ClassNotFoundException e) {
 			throw new IllegalStateException(e) ;
+		} finally {
+			request.release() ;
 		}
 	}
 

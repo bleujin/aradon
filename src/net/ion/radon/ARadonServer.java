@@ -13,6 +13,8 @@ import net.ion.framework.util.StringUtil;
 import net.ion.framework.util.ZipUtil;
 import net.ion.radon.core.Aradon;
 import net.ion.radon.core.ClassAppender;
+import net.ion.radon.core.IService;
+import net.ion.radon.core.config.Releasable;
 import net.ion.radon.core.config.XMLConfig;
 import net.ion.radon.core.service.GroovyService;
 import net.ion.radon.core.service.GroovyShellService;
@@ -146,6 +148,27 @@ public class AradonServer {
 		AradonServer as = new AradonServer(new Options(args)) ;
 		Aradon aradon = as.start() ;
 		
+	}
+
+}
+
+
+class WrapperReleaseObject {
+
+	private IService service;
+	private Releasable releasable;
+
+	private WrapperReleaseObject(IService service, Releasable releasable) {
+		this.service = service;
+		this.releasable = releasable;
+	}
+
+	Releasable getValue() {
+		return releasable;
+	}
+
+	static WrapperReleaseObject create(IService service, Releasable releasable) {
+		return new WrapperReleaseObject(service, releasable);
 	}
 
 }

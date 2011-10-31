@@ -12,6 +12,7 @@ import net.ion.radon.core.RadonAttributeKey;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.restlet.Request;
+import org.restlet.Response;
 import org.restlet.data.ChallengeResponse;
 import org.restlet.data.ChallengeScheme;
 import org.restlet.data.Form;
@@ -59,6 +60,10 @@ public class AradonRequest implements IAradonRequest{
 		return this ;
 	}
 	
+	public Response handle(Method method){
+		return aradon.handle(makeRequest(method)) ;
+	}
+	
 	public Representation get() {
 		Request request = makeRequest(Method.GET) ;
 		return aradon.handle(request).getEntity();
@@ -80,7 +85,10 @@ public class AradonRequest implements IAradonRequest{
 		return aradon.handle(request).getEntity();
 	}
 
-	
+	public Representation multipart(Method method, Representation entity) {
+		return aradon.handle(makeRequest(method, entity)).getEntity();
+	}
+
 	private Request makeRequest(Method method) {
 		Request request = new Request(method, getFullPath());
 		ChallengeResponse challengeResponse = new ChallengeResponse(ChallengeScheme.HTTP_BASIC, user.getIdentifier(), user.getSecret());
@@ -88,7 +96,17 @@ public class AradonRequest implements IAradonRequest{
 		if (headerForm != null) request.getAttributes().put(RadonAttributeKey.ATTRIBUTE_HEADERS, headerForm) ;
 		//request.getClientInfo().setUser(user) ;
 
-		
+		return request;
+	}
+	
+	private Request makeRequest(Method method, Representation entity) {
+		Request request = new Request(method, getFullPath());
+		request.setEntity(entity);
+		ChallengeResponse challengeResponse = new ChallengeResponse(ChallengeScheme.HTTP_BASIC, user.getIdentifier(), user.getSecret());
+		request.setChallengeResponse(challengeResponse);
+		if (headerForm != null)
+			request.getAttributes().put(RadonAttributeKey.ATTRIBUTE_HEADERS, headerForm);
+
 		return request;
 	}
 

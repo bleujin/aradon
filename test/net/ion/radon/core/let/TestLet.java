@@ -1,66 +1,43 @@
 package net.ion.radon.core.let;
 
-import java.util.Arrays;
-import java.util.Comparator;
-
-import net.ion.framework.util.Debug;
-import net.ion.radon.TestAradon;
-import net.ion.radon.core.PathService;
-import net.ion.radon.core.SectionService;
-import net.ion.radon.impl.section.PathInfo;
+import junit.framework.TestCase;
+import net.ion.radon.client.AradonClientFactory;
+import net.ion.radon.client.IAradonRequest;
+import net.ion.radon.core.Aradon;
+import net.ion.radon.util.AradonTester;
 
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.Method;
 
-public class TestLet extends TestAradon {
+public class TestLet extends TestCase {
 
-	public void testFirst() throws Exception {
-		initAradon();
-		SectionService section = aradon.getChildService("another");
+	public void testHttp() throws Exception {
+		AradonTester at = AradonTester.create().register("another", "/test", GetLet.class) ;
+		at.getAradon().startServer(9080) ;
+		
+		IAradonRequest req = AradonClientFactory.create("http://127.0.0.1:9080").createRequest("/another/test") ;
+		assertEquals(GetLet.class.getCanonicalName(), req.get().getText());
+		
+		at.getAradon().stop() ;
+	}
+	
+	public void testUseClient() throws Exception {
+		AradonTester at = AradonTester.create().register("another", "/test", GetLet.class) ;
 
-		PathInfo pathInfo = PathInfo.create("mylet", "/bleujin", "", "test let", GreenLet.class);
-		section.attach(pathInfo);
+		IAradonRequest req = AradonClientFactory.create(at.getAradon()).createRequest("/another/test") ;
+		assertEquals(GetLet.class.getCanonicalName(), req.get().getText());
+	}
 
-		PathService pservice = section.getChildService("mylet");
-		assertEquals(true, pservice != null);
+	public void testRiapRequest() throws Exception {
+		AradonTester at = AradonTester.create().register("another", "/test", GetLet.class) ;
+		Aradon aradon = at.getAradon() ;
 
-		Request request = new Request(Method.GET, "riap://component/another/bleujin?param=abcd");
+		Request request = new Request(Method.GET, "riap://component/another/test");
 		Response response = aradon.handle(request);
 
-		assertEquals(GreenLet.class.getCanonicalName(), response.getEntityAsText());
+		assertEquals(GetLet.class.getCanonicalName(), response.getEntityAsText());
 	}
 	
 
-	public void testRequestAttribute() throws Exception {
-		initAradon();
-		SectionService section = aradon.getChildService("another");
-
-		PathInfo pathInfo = PathInfo.create("mylet", "/bleujin, /bleujin/{greeting}", "", "test let", GreenLet.class);
-		section.attach(pathInfo);
-
-		PathService pservice = section.getChildService("mylet");
-		assertEquals(true, pservice != null);
-
-		Request request = new Request(Method.GET, "riap://component/another/bleujin/hi");
-		Response response = aradon.handle(request);
-
-		InnerRequest ir = ((InnerResponse)Response.getCurrent()).getInnerRequest() ;
-		
-		Debug.debug(request.getAttributes()) ;
-		Debug.debug(ir.getAttributes());
-	}
-
-
-	
-	public void testSort() throws Exception {
-		String[] urls = new String[]{"a", "abcd", "123" , "98"} ;
-		Arrays.sort(urls, 0, urls.length, new Comparator<String>() {
-			public int compare(String left, String right) {
-				return left.length() - right.length();
-			}
-		}) ;
-		
-		assertTrue(Arrays.equals(urls, new String[]{"a", "98", "123", "abcd"})) ;
-	}
 }

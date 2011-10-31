@@ -12,8 +12,6 @@ public class TestLetAll {
 		
 		ts.addTestSuite(TestGeneral.class) ;
 		ts.addTestSuite(TestLet.class) ;
-		ts.addTestSuite(TestRequest.class) ;
-		ts.addTestSuite(TestResponse.class) ;
 		ts.addTestSuite(TestPathInfo.class) ;
 		
 		ts.addTestSuite(TestInboundLet.class) ;

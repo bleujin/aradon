@@ -4,10 +4,9 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import net.ion.framework.util.Debug;
-import net.ion.radon.core.TestAradonCoreAll;
+import net.ion.radon.core.TestAllCore;
 import net.ion.radon.core.TestPlugin;
 import net.ion.radon.core.config.TestConfigAll;
-import net.ion.radon.core.filter.TestFilterAll;
 import net.ion.radon.core.let.TestLetAll;
 import net.ion.radon.core.let.TestMultiValueMap;
 import net.ion.radon.impl.TestImplLetAll;
@@ -22,7 +21,7 @@ public class TestAllAradon extends TestCase{
 		ts.addTestSuite(TestPlugin.class) ;
 		
 		ts.addTest(TestConfigAll.suite());
-		ts.addTest(TestAradonCoreAll.suite()) ;
+		ts.addTest(TestAllCore.suite()) ;
 		ts.addTest(TestLetAll.suite()) ;
 		ts.addTest(TestImplLetAll.suite());
 		ts.addTest(TestParamAll.suite());

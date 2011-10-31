@@ -1,5 +1,6 @@
 package net.ion.radon.client;
 
+import net.ion.framework.util.Debug;
 import net.ion.framework.util.ListUtil;
 
 import org.restlet.Client;
@@ -7,6 +8,7 @@ import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.Protocol;
 import org.restlet.representation.Representation;
+import org.restlet.resource.ResourceException;
 
 public class AradonHttpClient implements AradonClient{
 	private String host;
@@ -46,10 +48,20 @@ public class AradonHttpClient implements AradonClient{
 		return host;
 	}
 
-	Representation handle(Request request) {
-		Response response = client.handle(request);
+	Representation handleRequest(Request request) {
+		Response response = handle(request);
+		
+		if (! response.getStatus().isSuccess()){
+			throw new ResourceException(response.getStatus()) ;
+		}
+		
 		return response.getEntity();
 	}
+	
+	Response handle(Request request){
+		return client.handle(request) ;
+	}
+	
 	
 	Client getClient(){
 		return client ;

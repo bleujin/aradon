@@ -21,7 +21,7 @@ import net.sf.ezmorph.array.IntArrayMorpher;
 public class TestAradonInit extends TestAradon{
 	
 
-	public void testLoradAttribute() throws Exception {
+	public void testLoadAttribute() throws Exception {
 		initAradon() ;
 		
 		assertEquals("bleujin@i-on.net", aradon.getServiceContext().getAttributeObject("let.contact.email")) ;

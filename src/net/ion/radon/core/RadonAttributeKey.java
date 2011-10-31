@@ -32,4 +32,5 @@ public interface RadonAttributeKey {
 	
 	public final static String LET_CONTACT_EMAIL = "let.contact.email" ;
 	public final static String LET_CONTACT_HELP_DOC = "let.contact.help.doc" ;
+	public final static String ARADON_VERSION_KEY = "X-Aradon-Version" ;
 }

@@ -1,4 +1,4 @@
-package net.ion.radon.core;
+package net.ion.radon.core.cli;
 
 import java.io.File;
 

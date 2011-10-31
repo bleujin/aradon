@@ -42,7 +42,7 @@ public class InnerResponse extends Response {
 
 	public static InnerResponse create(Response response, InnerRequest innerRequest) {
 		final InnerResponse innerResponse = new InnerResponse(response, innerRequest);
-		innerResponse.getHeaders().set("X-Aradon-Version", "0.4") ;
+		innerResponse.getHeaders().set("X-Aradon-Version", "0.5") ;
 		return innerResponse;
 	}
 	
