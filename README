@@ -22,8 +22,6 @@ Response response = aradon.handle(request) ;
 
 
 
-
-
 <p>sample test code. for more example, confirm test/net/ion/radon/TestAllAradon.java</p>
 <pre><code>
 	private Aradon aradon;
