@@ -6,12 +6,20 @@ import net.ion.framework.util.StringUtil;
 public class Options {
 
 	private String[] args ;
+	private char preChar = '-';
+	
 	public Options(String[] args) {
-		this.args = ObjectUtil.coalesce(args, new String[0]) ;
+		this(args, '-') ;
 	}
+
+	public Options(String[] args, char preChar) {
+		this.args = ObjectUtil.coalesce(args, new String[0]) ;
+		this.preChar = preChar ;
+	}
+
 	public String getString(String optionName, String defaultValue) {
 		for (int i = 0, last = args.length; i < last; i++) {
-			String prefix = "-" + optionName + ":";
+			String prefix = StringUtil.trim(preChar + optionName + ":");
 			if (args[i].startsWith(prefix)) {
 				return StringUtil.substringAfterLast(args[i], prefix).trim() ;
 			}

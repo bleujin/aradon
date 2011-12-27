@@ -76,7 +76,23 @@
 			<parameter name="ioMaxIdleTimeMs" description="Maximum time to wait on an idle IO operation." >30000</parameter>
 			<parameter name="soLingerTime" description="SO linger time (see Jetty documentation)." >1000</parameter>
 			<parameter name="gracefulShutdown" description="The time (in ms) to wait for existing requests to complete before fully stopping the server." >500</parameter>
+
+		<!-- 
+		// if use netty
+		<connector-config engine="netty" port="8183" protocol="https">
+			<parameter name="connectTimeoutMillis" description="Connect timeout of the channel in milliseconds. Sets to 0 to disable it." >0</parameter>
+			<parameter name="keepAlive" description="Turn on/off socket keep alive." >false</parameter>
+			<parameter name="reuseAddress" description="Enable/Disable reuse address for socket." >false</parameter>
+			<parameter name="receiveBufferSize" description="Provide the size of the buffer actually used by the platform when receiving in data on this socket." >0</parameter>
+			<parameter name="sendBufferSize" description="Set a hint the size of the underlying buffers for outgoing network I/O." >0</parameter>
+			<parameter name="trafficClass" description="Sets traffic class or type-of-service octet in the IP header for packets sent from this Socket. As the underlying network implementation may ignore this value applications should consider it a hint." >0</parameter>
+		 	<parameter name="keystorePath" description="SSL keystore path"></parameter> 
+		 	<parameter name="keystorePassword" description="SSL keystore password"></parameter>
+		 	<parameter name="keyPassword" description="SSL key password"></parameter>
+		-->>
 		</connector-config>
+		
+		
 		<manage-port auto-start="false">4567</manage-port>
 	</server-config>
 </root>

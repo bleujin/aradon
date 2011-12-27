@@ -8,7 +8,6 @@ import net.ion.radon.core.SectionService;
 import net.ion.radon.core.filter.IRadonFilter;
 import net.ion.radon.impl.filter.RevokeServiceFilter;
 import net.ion.radon.impl.section.BasePathInfo;
-import net.ion.radon.impl.section.PathInfo;
 
 public class MonitorItem {
 	

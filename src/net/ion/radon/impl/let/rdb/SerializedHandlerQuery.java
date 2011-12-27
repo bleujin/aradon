@@ -10,6 +10,7 @@ import net.ion.framework.db.procedure.SerializedQuery;
 
 public class SerializedHandlerQuery  implements Serializable{
 	
+	private static final long serialVersionUID = 7239940390420836103L;
 	private Queryable cmd;
 	private ResultSetHandler handler;
 	
@@ -23,11 +24,10 @@ public class SerializedHandlerQuery  implements Serializable{
 	}
 	
 	
-	public Object remoteQuery(IDBController dc) throws SQLException {
+	public Serializable remoteQuery(IDBController dc) throws SQLException {
 		SerializedQuery squery =  (SerializedQuery)cmd;
 		
-		
-		return squery.deserializable(dc).execHandlerQuery(handler);
+		return (Serializable)squery.deserializable(dc).execHandlerQuery(handler);
 		
 		
 	}

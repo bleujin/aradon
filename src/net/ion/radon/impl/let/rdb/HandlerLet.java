@@ -1,30 +1,24 @@
 package net.ion.radon.impl.let.rdb;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.sql.SQLException;
 
-import org.eclipse.jetty.io.ByteArrayBuffer;
-import org.restlet.representation.InputRepresentation;
-import org.restlet.representation.ObjectRepresentation;
-import org.restlet.representation.Representation;
-import org.restlet.resource.Execute;
+import net.ion.framework.db.IDBController;
+import net.ion.framework.db.bean.ResultSetHandler;
+import net.ion.framework.db.bean.handlers.MapListHandler;
+import net.ion.framework.db.procedure.Queryable;
+import net.ion.radon.core.let.AbstractServerResource;
 
-public class HandlerLet extends DBServerResource {
+import org.restlet.resource.Post;
 
-	@Execute
-	public Representation execQuery(SerializedHandlerQuery squery) throws IOException, SQLException {
+public class HandlerLet extends AbstractServerResource {
+
+	@Post
+	public Serializable execQuery(SerializedHandlerQuery squery) throws IOException, SQLException {
 		
-		Object result = squery.remoteQuery(getDBController());
-		
-		ByteArrayOutputStream bos = new ByteArrayOutputStream() ;
-		ObjectOutputStream oos = new ObjectOutputStream(bos);
-		oos.writeObject(result) ;
-		
-		return new InputRepresentation(new ByteArrayInputStream(bos.toByteArray()));
+		IDBController dc = getContext().getAttributeObject(IDBController.class.getCanonicalName(), IDBController.class) ;
+		return squery.remoteQuery(dc) ;
 	}
 
 }

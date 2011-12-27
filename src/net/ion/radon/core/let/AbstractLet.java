@@ -8,6 +8,7 @@ import java.util.Set;
 import net.ion.framework.rest.IMapListRepresentationHandler;
 import net.ion.framework.rest.IRequest;
 import net.ion.framework.rest.IResponse;
+import net.ion.framework.util.ListUtil;
 import net.ion.radon.core.PathService;
 import net.ion.radon.core.RadonAttributeKey;
 import net.ion.radon.core.SectionService;
@@ -32,7 +33,7 @@ import org.restlet.routing.Filter;
 
 public abstract class AbstractLet extends ServerResource implements RadonAttributeKey {
 	public final static Representation EMPTY_REPRESENTATION = new EmptyRepresentation();
-	public final static List<Map<String, Object>> EMPTY_DATAS = Collections.EMPTY_LIST;
+	public final static List<Map<String, ? extends Object>> EMPTY_DATAS = ListUtil.EMPTY_LIST;
 	
 	private Set<Method> disAllow_Method;
 

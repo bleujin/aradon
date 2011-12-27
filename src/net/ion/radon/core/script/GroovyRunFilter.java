@@ -8,16 +8,12 @@ import java.io.IOException;
 
 import net.ion.framework.util.Debug;
 import net.ion.radon.core.IService;
-import net.ion.radon.core.EnumClass.FilterLocation;
 import net.ion.radon.core.filter.IFilterResult;
 import net.ion.radon.core.filter.IRadonFilter;
 
-import org.apache.commons.collections.iterators.FilterListIterator;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.restlet.Request;
 import org.restlet.Response;
-import org.restlet.data.Status;
-import org.restlet.resource.ResourceException;
 
 public class GroovyRunFilter extends IRadonFilter {
 

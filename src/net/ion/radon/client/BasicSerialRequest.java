@@ -1,6 +1,8 @@
 package net.ion.radon.client;
 
+
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.nio.channels.IllegalSelectorException;
 
@@ -15,6 +17,7 @@ import org.restlet.data.Method;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.ClientResource;
+import org.restlet.resource.ResourceException;
 import org.restlet.resource.UniformResource;
 import org.restlet.security.User;
 import org.restlet.service.ConverterService;
@@ -59,6 +62,7 @@ public class BasicSerialRequest implements ISerialRequest{
 	
 	private <T, V> V createResource(Method method, T arg, Class<? extends V> resultClass) {
 		Request request  = new Request(method, fullPath);
+		request.getClientInfo().setUser(this.user) ;
 		request.setChallengeResponse(new ChallengeResponse(ChallengeScheme.HTTP_BASIC, user.getIdentifier(), user.getSecret()));
 		if (headerForm != null) request.getAttributes().put(RadonAttributeKey.ATTRIBUTE_HEADERS, headerForm) ;
 		
@@ -69,14 +73,16 @@ public class BasicSerialRequest implements ISerialRequest{
 		Response response = aclient.getClient().handle(request) ;
 		try {
 			if (! response.getStatus().isSuccess()){
-				throw new IllegalStateException(response.getEntityAsText()) ;
+				throw new ResourceException(response.getStatus()) ;
 			}
-			Object obj = new ObjectInputStream(response.getEntity().getStream()).readObject() ;
+			InputStream input = response.getEntity().getStream();
+			if (input == null) return null ;
+			Object obj = new ObjectInputStream(input).readObject() ;
 			return resultClass.cast(obj) ;
 		} catch (IOException e) {
-			throw new IllegalStateException(e) ;
+			throw new ResourceException(response.getStatus(), e.getMessage()) ;
 		} catch (ClassNotFoundException e) {
-			throw new IllegalStateException(e) ;
+			throw new ResourceException(response.getStatus(), e.getMessage()) ;
 		} finally {
 			request.release() ;
 		}

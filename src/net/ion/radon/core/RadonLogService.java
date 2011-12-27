@@ -3,46 +3,17 @@ package net.ion.radon.core;
 import java.util.Collections;
 import java.util.List;
 
-import javax.swing.plaf.ListUI;
-
-import net.ion.framework.util.Debug;
 import net.ion.framework.util.LimitedList;
 import net.ion.framework.util.ListUtil;
-import net.ion.radon.core.let.InnerRequest;
-import net.ion.radon.core.let.InnerResponse;
-import net.ion.radon.impl.section.PathInfo;
 
 import org.apache.commons.lang.ArrayUtils;
-import org.restlet.Request;
 import org.restlet.Response;
-import org.restlet.data.Method;
-import org.restlet.data.Reference;
-import org.restlet.data.Status;
-import org.restlet.engine.log.IdentClient;
 import org.restlet.service.LogService;
 
 public class RadonLogService extends LogService {
 
 	private List<LogRecord> recentRecord = Collections.synchronizedList(new LimitedList<LogRecord>(1000));
 
-	@Override
-	public String getDefaultResponseLogMessage(Response response, int duration) {
-		return super.getDefaultResponseLogMessage(response, duration);
-		// String result = super.getResponseLogMessage(response, duration) ;
-		//		
-		// final InnerResponse irep = (InnerResponse)response.getCurrent();
-		// if (irep != null){
-		// final InnerRequest ireq = irep.getInnerRequest();
-		// PathService ps = ireq.getPathService(Aradon.getCurrent()) ;
-		// recentRecord.add(LogRecord.create(ps, result)) ;
-		// }
-		// return result ;
-	}
-
-	@Override
-	public String getResponseLogMessage(Response response, int duration) {
-		return super.getResponseLogMessage(response, duration);
-	}
 
 	public List<String> recentLog(IService service) {
 		return recentLog(service, 20);

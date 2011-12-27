@@ -1,5 +1,9 @@
 package net.ion.radon.core;
 
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
 import net.ion.framework.util.Debug;
 import net.ion.radon.TestAradon;
 import net.ion.radon.core.SectionService;
@@ -8,7 +12,7 @@ import net.ion.radon.impl.section.PluginConfig;
 
 public class TestPlugin extends TestAradon{
 
-	
+	@Test
 	public void testLoad() throws Exception {
 		initAradon() ;
 		

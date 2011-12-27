@@ -1,5 +1,7 @@
 package net.ion.radon.core.let;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -24,15 +26,17 @@ import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.apache.commons.httpclient.params.HttpClientParams;
 import org.apache.commons.lang.CharSet;
 import org.apache.commons.lang.CharUtils;
+import org.junit.Test;
 import org.restlet.Request;
 import org.restlet.data.CharacterSet;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.representation.OutputRepresentation;
 
-public class TestMultiValueMap extends TestCase {
+public class TestMultiValueMap {
 
-	public void testSingleValueMap() throws Exception {
+	@Test
+	public void singleValueMap() throws Exception {
 		MultiValueMap vmap = new MultiValueMap();
 		vmap.put("name", "bleujin");
 		vmap.put("name", "hero");
@@ -40,7 +44,8 @@ public class TestMultiValueMap extends TestCase {
 		assertEquals("hero", vmap.get("name"));
 	}
 
-	public void testMultiValue() throws Exception {
+	@Test
+	public void multiValue() throws Exception {
 		MultiValueMap vmap = new MultiValueMap();
 		vmap.putParameter("name", new String[] { "bleujin", "hero" });
 
@@ -50,7 +55,8 @@ public class TestMultiValueMap extends TestCase {
 		assertEquals("hero", vmap.getAsList("name").get(1));
 	}
 
-	public void testMultiValue2() throws Exception {
+	@Test
+	public void multiValue2() throws Exception {
 		MultiValueMap vmap = new MultiValueMap();
 		vmap.putParameter("name", "bleujin");
 		vmap.putParameter("name", "hero");
@@ -59,14 +65,16 @@ public class TestMultiValueMap extends TestCase {
 		assertEquals("bleujin", vmap.getAsList("name").get(0));
 		assertEquals("hero", vmap.getAsList("name").get(1));
 	}
-
-	public void testDouble() throws Exception {
+	
+	@Test
+	public void doubleValue() throws Exception {
 		MultiValueMap map = new MultiValueMap();
 		map.putParameter("jum", ".9");
 		assertEquals("0.9", String.valueOf(map.get("jum")));
 	}
 
-	public void testNumeric() throws Exception {
+	@Test
+	public void numeric() throws Exception {
 		MultiValueMap map = new MultiValueMap();
 		map.putParameter("double", "3.3");
 		map.putParameter("long", "3");
@@ -82,7 +90,8 @@ public class TestMultiValueMap extends TestCase {
 		assertEquals(-3L, map.get("minus"));
 	}
 
-	public void testMultipart() throws Exception {
+	@Test
+	public void multipart() throws Exception {
 
 		Request request = new Request(Method.POST, "/");
 
@@ -109,7 +118,8 @@ public class TestMultiValueMap extends TestCase {
 		assertEquals("ÇÑ±Û", params.get("subject"));
 	}
 
-	public void testSort() throws Exception {
+	@Test
+	public void sort() throws Exception {
 		String[] urls = new String[] { "a", "abcd", "123", "98" };
 		Arrays.sort(urls, 0, urls.length, new Comparator<String>() {
 			public int compare(String left, String right) {

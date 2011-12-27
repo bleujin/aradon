@@ -1,5 +1,6 @@
 package net.ion.radon.core.let;
 
+import static org.junit.Assert.*;
 import net.ion.framework.util.Debug;
 import net.ion.radon.TestAradon;
 import net.ion.radon.core.SectionService;
@@ -7,13 +8,14 @@ import net.ion.radon.core.config.XMLConfig;
 import net.ion.radon.impl.let.HelloWorldLet;
 import net.ion.radon.impl.section.PathInfo;
 
+import org.junit.Test;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.Method;
 
 public class TestSection extends TestAradon{
 
-	
+	@Test
 	public void testSettionName() throws Exception {
 		initAradon() ;
 		
@@ -21,6 +23,7 @@ public class TestSection extends TestAradon{
 		Debug.debug(section.toString() );
 	}
 	
+	@Test
 	public void testRestart() throws Exception {
 		initAradon() ;
 		SectionService section = aradon.attach("test", XMLConfig.BLANK) ;
@@ -37,6 +40,7 @@ public class TestSection extends TestAradon{
 		assertEquals(503, res.getStatus().getCode()) ;
 	}
 	
+	@Test
 	public void testGetPathName() throws Exception {
 		initAradon() ;
 		SectionService section = aradon.attach("test", XMLConfig.BLANK) ;
@@ -47,6 +51,8 @@ public class TestSection extends TestAradon{
 		
 		
 	}
+	
+	@Test
 	public void testCrossCallSection0() throws Exception {
 		initAradon() ;
 		SectionService section1 = aradon.attach("test1", XMLConfig.BLANK) ;
@@ -60,6 +66,7 @@ public class TestSection extends TestAradon{
 		Debug.debug(response.getEntityAsText()) ;
 	}
 	
+	@Test
 	public void testCrossCallSection() throws Exception {
 		initAradon() ;
 		SectionService section1 = aradon.attach("test1", XMLConfig.BLANK) ;

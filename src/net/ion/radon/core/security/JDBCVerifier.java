@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import net.ion.framework.db.IDBController;
 import net.ion.framework.db.Rows;
 import net.ion.framework.db.procedure.IParameterQueryable;
-import net.ion.framework.util.Debug;
 
 import org.restlet.Request;
 import org.restlet.Response;

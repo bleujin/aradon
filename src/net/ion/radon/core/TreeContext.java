@@ -12,10 +12,12 @@ import net.ion.framework.util.ObjectUtil;
 import net.ion.radon.core.EnumClass.FilterLocation;
 import net.ion.radon.core.EnumClass.IZone;
 import net.ion.radon.core.config.ReferencedObject;
+import net.ion.radon.core.config.XMLConfig;
 import net.ion.radon.core.context.IParentContext;
 import net.ion.radon.core.filter.IRadonFilter;
 import net.ion.radon.impl.filter.RevokeServiceFilter;
 
+import org.apache.commons.configuration.ConfigurationException;
 import org.restlet.Client;
 import org.restlet.Context;
 import org.restlet.routing.VirtualHost;
@@ -42,12 +44,8 @@ public final class TreeContext extends Context {
 		if (zone == null) {
 			putAttribute(IZone.class.getCanonicalName(), IZone.Application);
 			newChild.putAttribute(IZone.class.getCanonicalName(), IZone.Section);
-		} else if (zone == IZone.Application) {
-			newChild.putAttribute(IZone.class.getCanonicalName(), IZone.Section);
-		} else if (zone == IZone.Section) {
-			newChild.putAttribute(IZone.class.getCanonicalName(), IZone.Path);
-		} else if (zone == IZone.Path) {
-			newChild.putAttribute(IZone.class.getCanonicalName(), IZone.Request);
+		} else {
+			newChild.putAttribute(IZone.class.getCanonicalName(), zone.getChildZone());
 		}
 
 		return newChild;
@@ -97,13 +95,19 @@ public final class TreeContext extends Context {
 			throw new IllegalStateException(ex);
 		}
 	}
+	
+	public boolean removeAttribute(String key) {
+		return context.getAttributes().remove(key) != null ;
+	}
+
+	
 
 	public Object putAttribute(String key, Object value) {
 		return getAttributes().put(key, value);
 	}
 
 	public ConcurrentMap getAttributes() {
-		return context.getAttributes();
+		return context.getAttributes() ;
 	}
 
 	public boolean contains(Object key) {
@@ -224,5 +228,10 @@ public final class TreeContext extends Context {
 	void suspend() {
 		addPreFilter(0, RevokeServiceFilter.SELF);
 	}
+
+	public void loadAttribute(IService service, XMLConfig config) throws ConfigurationException, InstanceCreationException {
+		AttributeUtil.load(service, config) ;
+	}
+
 
 }

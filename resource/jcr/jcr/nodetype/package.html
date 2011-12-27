@@ -1,0 +1,227 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+    <!--
+     package.html for javax.jcr.nodetype
+
+     This file is part of the Javadoc documentation for the
+     Content Repository for Java Technology API.
+    -->
+</head>
+<body>
+This package provides interfaces and classes for content repository node type functionality.
+<br>
+<br>
+The following node types are defined by the JCR 2.0 specification.
+Consult the specification document for details on their use.
+<ul class='toc'>
+<li><a class='nt_link' href='#mix:created'>mix:created</a></li>
+<li><a class='nt_link' href='#mix:etag'>mix:etag</a></li>
+<li><a class='nt_link' href='#mix:language'>mix:language</a></li>
+<li><a class='nt_link' href='#mix:lastModified'>mix:lastModified</a></li>
+<li><a class='nt_link' href='#mix:lifecycle'>mix:lifecycle</a></li>
+<li><a class='nt_link' href='#mix:lockable'>mix:lockable</a></li>
+<li><a class='nt_link' href='#mix:mimeType'>mix:mimeType</a></li>
+<li><a class='nt_link' href='#mix:referenceable'>mix:referenceable</a></li>
+<li><a class='nt_link' href='#mix:shareable'>mix:shareable</a></li>
+<li><a class='nt_link' href='#mix:simpleVersionable'>mix:simpleVersionable</a></li>
+<li><a class='nt_link' href='#mix:title'>mix:title</a></li>
+<li><a class='nt_link' href='#mix:versionable'>mix:versionable</a></li>
+<li><a class='nt_link' href='#nt:activity'>nt:activity</a></li>
+<li><a class='nt_link' href='#nt:address'>nt:address</a></li>
+<li><a class='nt_link' href='#nt:base'>nt:base</a></li>
+<li><a class='nt_link' href='#nt:childNodeDefinition'>nt:childNodeDefinition</a></li>
+<li><a class='nt_link' href='#nt:configuration'>nt:configuration</a></li>
+<li><a class='nt_link' href='#nt:file'>nt:file</a></li>
+<li><a class='nt_link' href='#nt:folder'>nt:folder</a></li>
+<li><a class='nt_link' href='#nt:frozenNode'>nt:frozenNode</a></li>
+<li><a class='nt_link' href='#nt:hierarchyNode'>nt:hierarchyNode</a></li>
+<li><a class='nt_link' href='#nt:linkedFile'>nt:linkedFile</a></li>
+<li><a class='nt_link' href='#nt:nodeType'>nt:nodeType</a></li>
+<li><a class='nt_link' href='#nt:propertyDefinition'>nt:propertyDefinition</a></li>
+<li><a class='nt_link' href='#nt:query'>nt:query</a></li>
+<li><a class='nt_link' href='#nt:resource'>nt:resource</a></li>
+<li><a class='nt_link' href='#nt:unstructured'>nt:unstructured</a></li>
+<li><a class='nt_link' href='#nt:version'>nt:version</a></li>
+<li><a class='nt_link' href='#nt:versionHistory'>nt:versionHistory</a></li>
+<li><a class='nt_link' href='#nt:versionLabels'>nt:versionLabels</a></li>
+<li><a class='nt_link' href='#nt:versionedChild'>nt:versionedChild</a></li>
+</ul>
+The node types are defined in CND notation, see the specification for information on this notation<br><br>
+<div class='cnd'>
+<span class='namespace'>&lt;'mix'='http://www.jcp.org/jcr/mix/1.0'&gt;</span><br>
+<span class='namespace'>&lt;'jcr'='http://www.jcp.org/jcr/1.0'&gt;</span><br>
+<span class='namespace'>&lt;'nt'='http://www.jcp.org/jcr/nt/1.0'&gt;</span><br>
+<span class='namespace'>&lt;'rep'='internal'&gt;</span><br>
+<br>
+<a name='mix:created'></a>[<span class='nt_name'>mix:created</span>]<br>
+&nbsp;&nbsp;<span class='nt_option'>MIXIN</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:created</span> (<span class='prop_type'>DATE</span>)<span class='prop_option'> AUTOCREATED</span><span class='prop_option'> PROTECTED</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:createdBy</span> (<span class='prop_type'>STRING</span>)<span class='prop_option'> PROTECTED</span><br>
+<br>
+<a name='mix:etag'></a>[<span class='nt_name'>mix:etag</span>]<br>
+&nbsp;&nbsp;<span class='nt_option'>MIXIN</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:etag</span> (<span class='prop_type'>STRING</span>) = '<span class='prop_value'></span>'<span class='prop_option'> AUTOCREATED</span><span class='prop_option'> PROTECTED</span><br>
+<br>
+<a name='mix:language'></a>[<span class='nt_name'>mix:language</span>]<br>
+&nbsp;&nbsp;<span class='nt_option'>MIXIN</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:language</span> (<span class='prop_type'>STRING</span>)<br>
+<br>
+<a name='mix:lastModified'></a>[<span class='nt_name'>mix:lastModified</span>]<br>
+&nbsp;&nbsp;<span class='nt_option'>MIXIN</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:lastModified</span> (<span class='prop_type'>DATE</span>)<br>
+&nbsp;&nbsp;- <span class='name'>jcr:lastModifiedBy</span> (<span class='prop_type'>STRING</span>)<br>
+<br>
+<a name='mix:lifecycle'></a>[<span class='nt_name'>mix:lifecycle</span>]<br>
+&nbsp;&nbsp;<span class='nt_option'>MIXIN</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:lifecyclePolicy</span> (<span class='prop_type'>REFERENCE</span>)<span class='prop_option'> PROTECTED</span> <span class='opv'>INITIALIZE</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:currentLifecycleState</span> (<span class='prop_type'>STRING</span>)<span class='prop_option'> PROTECTED</span> <span class='opv'>INITIALIZE</span><br>
+<br>
+<a name='mix:lockable'></a>[<span class='nt_name'>mix:lockable</span>]<br>
+&nbsp;&nbsp;<span class='nt_option'>MIXIN</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:lockOwner</span> (<span class='prop_type'>STRING</span>)<span class='prop_option'> PROTECTED</span> <span class='opv'>IGNORE</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:lockIsDeep</span> (<span class='prop_type'>BOOLEAN</span>)<span class='prop_option'> PROTECTED</span> <span class='opv'>IGNORE</span><br>
+<br>
+<a name='mix:mimeType'></a>[<span class='nt_name'>mix:mimeType</span>]<br>
+&nbsp;&nbsp;<span class='nt_option'>MIXIN</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:mimeType</span> (<span class='prop_type'>STRING</span>)<br>
+&nbsp;&nbsp;- <span class='name'>jcr:encoding</span> (<span class='prop_type'>STRING</span>)<br>
+<br>
+<a name='mix:referenceable'></a>[<span class='nt_name'>mix:referenceable</span>]<br>
+&nbsp;&nbsp;<span class='nt_option'>MIXIN</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:uuid</span> (<span class='prop_type'>STRING</span>)<span class='prop_option'> MANDATORY</span><span class='prop_option'> AUTOCREATED</span><span class='prop_option'> PROTECTED</span> <span class='opv'>INITIALIZE</span><br>
+<br>
+<a name='mix:shareable'></a>[<span class='nt_name'>mix:shareable</span>] &gt; <a class='nt_link' href='#mix:referenceable'>mix:referenceable</a><br>
+&nbsp;&nbsp;<span class='nt_option'>MIXIN</span><br>
+<br>
+<a name='mix:simpleVersionable'></a>[<span class='nt_name'>mix:simpleVersionable</span>]<br>
+&nbsp;&nbsp;<span class='nt_option'>MIXIN</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:isCheckedOut</span> (<span class='prop_type'>BOOLEAN</span>) = '<span class='prop_value'>true</span>'<span class='prop_option'> MANDATORY</span><span class='prop_option'> AUTOCREATED</span><span class='prop_option'> PROTECTED</span> <span class='opv'>IGNORE</span><br>
+<br>
+<a name='mix:title'></a>[<span class='nt_name'>mix:title</span>]<br>
+&nbsp;&nbsp;<span class='nt_option'>MIXIN</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:title</span> (<span class='prop_type'>STRING</span>)<br>
+&nbsp;&nbsp;- <span class='name'>jcr:description</span> (<span class='prop_type'>STRING</span>)<br>
+<br>
+<a name='mix:versionable'></a>[<span class='nt_name'>mix:versionable</span>] &gt; <a class='nt_link' href='#mix:referenceable'>mix:referenceable</a>, <a class='nt_link' href='#mix:simpleVersionable'>mix:simpleVersionable</a><br>
+&nbsp;&nbsp;<span class='nt_option'>MIXIN</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:versionHistory</span> (<span class='prop_type'>REFERENCE</span>)<span class='prop_option'> MANDATORY</span><span class='prop_option'> PROTECTED</span> <span class='opv'>IGNORE</span> &lt; '<span class='prop_constraint'>nt:versionHistory</span>'<br>
+&nbsp;&nbsp;- <span class='name'>jcr:baseVersion</span> (<span class='prop_type'>REFERENCE</span>)<span class='prop_option'> MANDATORY</span><span class='prop_option'> PROTECTED</span> <span class='opv'>IGNORE</span> &lt; '<span class='prop_constraint'>nt:version</span>'<br>
+&nbsp;&nbsp;- <span class='name'>jcr:predecessors</span> (<span class='prop_type'>REFERENCE</span>)<span class='prop_option'> MANDATORY</span><span class='prop_option'> PROTECTED</span> <span class='prop_option'> MULTIPLE</span> <span class='opv'>IGNORE</span> &lt; '<span class='prop_constraint'>nt:version</span>'<br>
+&nbsp;&nbsp;- <span class='name'>jcr:mergeFailed</span> (<span class='prop_type'>REFERENCE</span>)<span class='prop_option'> PROTECTED</span><span class='prop_option'> MULTIPLE</span> <span class='opv'>ABORT</span> &lt; '<span class='prop_constraint'>nt:version</span>'<br>
+&nbsp;&nbsp;- <span class='name'>jcr:activity</span> (<span class='prop_type'>REFERENCE</span>)<span class='prop_option'> PROTECTED</span> <span class='opv'>IGNORE</span> &lt; '<span class='prop_constraint'>nt:activity</span>'<br>
+&nbsp;&nbsp;- <span class='name'>jcr:configuration</span> (<span class='prop_type'>REFERENCE</span>)<span class='prop_option'> PROTECTED</span> <span class='opv'>IGNORE</span> &lt; '<span class='prop_constraint'>nt:configuration</span>'<br>
+<br>
+<a name='nt:activity'></a>[<span class='nt_name'>nt:activity</span>] &gt; <a class='nt_link' href='#mix:referenceable'>mix:referenceable</a><br>
+&nbsp;&nbsp;- <span class='name'>jcr:activityTitle</span> (<span class='prop_type'>STRING</span>)<span class='prop_option'> MANDATORY</span><span class='prop_option'> AUTOCREATED</span><span class='prop_option'> PROTECTED</span><br>
+<br>
+<a name='nt:address'></a>[<span class='nt_name'>nt:address</span>]<br>
+&nbsp;&nbsp;- <span class='name'>jcr:protocol</span> (<span class='prop_type'>STRING</span>)<br>
+&nbsp;&nbsp;- <span class='name'>jcr:host</span> (<span class='prop_type'>STRING</span>)<br>
+&nbsp;&nbsp;- <span class='name'>jcr:port</span> (<span class='prop_type'>STRING</span>)<br>
+&nbsp;&nbsp;- <span class='name'>jcr:repository</span> (<span class='prop_type'>STRING</span>)<br>
+&nbsp;&nbsp;- <span class='name'>jcr:workspace</span> (<span class='prop_type'>STRING</span>)<br>
+&nbsp;&nbsp;- <span class='name'>jcr:path</span> (<span class='prop_type'>PATH</span>)<br>
+&nbsp;&nbsp;- <span class='name'>jcr:id</span> (<span class='prop_type'>WEAKREFERENCE</span>)<br>
+<br>
+<a name='nt:base'></a>[<span class='nt_name'>nt:base</span>]<br>
+&nbsp;&nbsp;- <span class='name'>jcr:primaryType</span> (<span class='prop_type'>NAME</span>)<span class='prop_option'> MANDATORY</span><span class='prop_option'> AUTOCREATED</span><span class='prop_option'> PROTECTED</span> <span class='opv'>COMPUTE</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:mixinTypes</span> (<span class='prop_type'>NAME</span>)<span class='prop_option'> PROTECTED</span><span class='prop_option'> MULTIPLE</span> <span class='opv'>COMPUTE</span><br>
+<br>
+<a name='nt:childNodeDefinition'></a>[<span class='nt_name'>nt:childNodeDefinition</span>]<br>
+&nbsp;&nbsp;- <span class='name'>jcr:name</span> (<span class='prop_type'>NAME</span>)<span class='prop_option'> PROTECTED</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:autoCreated</span> (<span class='prop_type'>BOOLEAN</span>)<span class='prop_option'> MANDATORY</span><span class='prop_option'> PROTECTED</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:mandatory</span> (<span class='prop_type'>BOOLEAN</span>)<span class='prop_option'> MANDATORY</span><span class='prop_option'> PROTECTED</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:onParentVersion</span> (<span class='prop_type'>STRING</span>)<span class='prop_option'> MANDATORY</span><span class='prop_option'> PROTECTED</span> &lt; '<span class='prop_constraint'>COPY</span>', '<span class='prop_constraint'>VERSION</span>', '<span class='prop_constraint'>INITIALIZE</span>', '<span class='prop_constraint'>COMPUTE</span>', '<span class='prop_constraint'>IGNORE</span>', '<span class='prop_constraint'>ABORT</span>'<br>
+&nbsp;&nbsp;- <span class='name'>jcr:protected</span> (<span class='prop_type'>BOOLEAN</span>)<span class='prop_option'> MANDATORY</span><span class='prop_option'> PROTECTED</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:requiredPrimaryTypes</span> (<span class='prop_type'>NAME</span>) = '<span class='prop_value'>nt:base</span>'<span class='prop_option'> MANDATORY</span><span class='prop_option'> PROTECTED</span><span class='prop_option'> MULTIPLE</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:defaultPrimaryType</span> (<span class='prop_type'>NAME</span>)<span class='prop_option'> PROTECTED</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:sameNameSiblings</span> (<span class='prop_type'>BOOLEAN</span>)<span class='prop_option'> MANDATORY</span><span class='prop_option'> PROTECTED</span><br>
+<br>
+<a name='nt:configuration'></a>[<span class='nt_name'>nt:configuration</span>] &gt; <a class='nt_link' href='#mix:versionable'>mix:versionable</a><br>
+&nbsp;&nbsp;- <span class='name'>jcr:root</span> (<span class='prop_type'>REFERENCE</span>)<span class='prop_option'> MANDATORY</span><span class='prop_option'> AUTOCREATED</span><span class='prop_option'> PROTECTED</span><br>
+<br>
+<a name='nt:file'></a>[<span class='nt_name'>nt:file</span>] &gt; <a class='nt_link' href='#nt:hierarchyNode'>nt:hierarchyNode</a><br>
+&nbsp;&nbsp;<span class='nt_option'>PRIMARYITEM</span> <span class='nt_option'>JCR:CONTENT</span><br>
+&nbsp;&nbsp;+ <span class='name'>jcr:content</span> (<a class='nt_link' href='#nt:base'>nt:base</a>)<span class='node_option'> MANDATORY</span><br>
+<br>
+<a name='nt:folder'></a>[<span class='nt_name'>nt:folder</span>] &gt; <a class='nt_link' href='#nt:hierarchyNode'>nt:hierarchyNode</a><br>
+&nbsp;&nbsp;+ * (<a class='nt_link' href='#nt:hierarchyNode'>nt:hierarchyNode</a>) <span class='opv'>VERSION</span><br>
+<br>
+<a name='nt:frozenNode'></a>[<span class='nt_name'>nt:frozenNode</span>] &gt; <a class='nt_link' href='#mix:referenceable'>mix:referenceable</a><br>
+&nbsp;&nbsp;<span class='nt_option'>ORDERABLE</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:frozenPrimaryType</span> (<span class='prop_type'>NAME</span>)<span class='prop_option'> MANDATORY</span><span class='prop_option'> AUTOCREATED</span><span class='prop_option'> PROTECTED</span> <span class='opv'>ABORT</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:frozenMixinTypes</span> (<span class='prop_type'>NAME</span>)<span class='prop_option'> PROTECTED</span><span class='prop_option'> MULTIPLE</span> <span class='opv'>ABORT</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:frozenUuid</span> (<span class='prop_type'>STRING</span>)<span class='prop_option'> MANDATORY</span><span class='prop_option'> AUTOCREATED</span><span class='prop_option'> PROTECTED</span> <span class='opv'>ABORT</span><br>
+&nbsp;&nbsp;- * (<span class='prop_type'>UNDEFINED</span>)<span class='prop_option'> PROTECTED</span> <span class='opv'>ABORT</span><br>
+&nbsp;&nbsp;- * (<span class='prop_type'>UNDEFINED</span>)<span class='prop_option'> PROTECTED</span><span class='prop_option'> MULTIPLE</span> <span class='opv'>ABORT</span><br>
+&nbsp;&nbsp;+ * (<a class='nt_link' href='#nt:base'>nt:base</a>)<span class='node_option'> PROTECTED</span><span class='node_option'> SNS</span> <span class='opv'>ABORT</span><br>
+<br>
+<a name='nt:hierarchyNode'></a>[<span class='nt_name'>nt:hierarchyNode</span>] &gt; <a class='nt_link' href='#mix:created'>mix:created</a><br>
+<br>
+<a name='nt:linkedFile'></a>[<span class='nt_name'>nt:linkedFile</span>] &gt; <a class='nt_link' href='#nt:hierarchyNode'>nt:hierarchyNode</a><br>
+&nbsp;&nbsp;<span class='nt_option'>PRIMARYITEM</span> <span class='nt_option'>JCR:CONTENT</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:content</span> (<span class='prop_type'>REFERENCE</span>)<span class='prop_option'> MANDATORY</span><br>
+<br>
+<a name='nt:nodeType'></a>[<span class='nt_name'>nt:nodeType</span>]<br>
+&nbsp;&nbsp;- <span class='name'>jcr:nodeTypeName</span> (<span class='prop_type'>NAME</span>)<span class='prop_option'> MANDATORY</span><span class='prop_option'> PROTECTED</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:supertypes</span> (<span class='prop_type'>NAME</span>)<span class='prop_option'> PROTECTED</span><span class='prop_option'> MULTIPLE</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:isAbstract</span> (<span class='prop_type'>BOOLEAN</span>)<span class='prop_option'> MANDATORY</span><span class='prop_option'> PROTECTED</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:isQueryable</span> (<span class='prop_type'>BOOLEAN</span>)<span class='prop_option'> MANDATORY</span><span class='prop_option'> PROTECTED</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:isMixin</span> (<span class='prop_type'>BOOLEAN</span>)<span class='prop_option'> MANDATORY</span><span class='prop_option'> PROTECTED</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:hasOrderableChildNodes</span> (<span class='prop_type'>BOOLEAN</span>)<span class='prop_option'> MANDATORY</span><span class='prop_option'> PROTECTED</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:primaryItemName</span> (<span class='prop_type'>NAME</span>)<span class='prop_option'> PROTECTED</span><br>
+&nbsp;&nbsp;+ <span class='name'>jcr:propertyDefinition</span> (<a class='nt_link' href='#nt:propertyDefinition'>nt:propertyDefinition</a>) = <a class='nt_link' href='#nt:propertyDefinition'>nt:propertyDefinition</a><span class='node_option'> PROTECTED</span><span class='node_option'> SNS</span><br>
+&nbsp;&nbsp;+ <span class='name'>jcr:childNodeDefinition</span> (<a class='nt_link' href='#nt:childNodeDefinition'>nt:childNodeDefinition</a>) = <a class='nt_link' href='#nt:childNodeDefinition'>nt:childNodeDefinition</a><span class='node_option'> PROTECTED</span><span class='node_option'> SNS</span><br>
+<br>
+<a name='nt:propertyDefinition'></a>[<span class='nt_name'>nt:propertyDefinition</span>]<br>
+&nbsp;&nbsp;- <span class='name'>jcr:name</span> (<span class='prop_type'>NAME</span>)<span class='prop_option'> PROTECTED</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:autoCreated</span> (<span class='prop_type'>BOOLEAN</span>)<span class='prop_option'> MANDATORY</span><span class='prop_option'> PROTECTED</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:mandatory</span> (<span class='prop_type'>BOOLEAN</span>)<span class='prop_option'> MANDATORY</span><span class='prop_option'> PROTECTED</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:onParentVersion</span> (<span class='prop_type'>STRING</span>)<span class='prop_option'> MANDATORY</span><span class='prop_option'> PROTECTED</span> &lt; '<span class='prop_constraint'>COPY</span>', '<span class='prop_constraint'>VERSION</span>', '<span class='prop_constraint'>INITIALIZE</span>', '<span class='prop_constraint'>COMPUTE</span>', '<span class='prop_constraint'>IGNORE</span>', '<span class='prop_constraint'>ABORT</span>'<br>
+&nbsp;&nbsp;- <span class='name'>jcr:protected</span> (<span class='prop_type'>BOOLEAN</span>)<span class='prop_option'> MANDATORY</span><span class='prop_option'> PROTECTED</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:requiredType</span> (<span class='prop_type'>STRING</span>)<span class='prop_option'> MANDATORY</span><span class='prop_option'> PROTECTED</span> &lt; '<span class='prop_constraint'>STRING</span>', '<span class='prop_constraint'>URI</span>', '<span class='prop_constraint'>BINARY</span>', '<span class='prop_constraint'>LONG</span>', '<span class='prop_constraint'>DOUBLE</span>', '<span class='prop_constraint'>DECIMAL</span>', '<span class='prop_constraint'>BOOLEAN</span>', '<span class='prop_constraint'>DATE</span>', '<span class='prop_constraint'>NAME</span>', '<span class='prop_constraint'>PATH</span>', '<span class='prop_constraint'>REFERENCE</span>', '<span class='prop_constraint'>WEAKREFERENCE</span>', '<span class='prop_constraint'>UNDEFINED</span>'<br>
+&nbsp;&nbsp;- <span class='name'>jcr:valueConstraints</span> (<span class='prop_type'>STRING</span>)<span class='prop_option'> PROTECTED</span><span class='prop_option'> MULTIPLE</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:defaultValues</span> (<span class='prop_type'>UNDEFINED</span>)<span class='prop_option'> PROTECTED</span><span class='prop_option'> MULTIPLE</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:multiple</span> (<span class='prop_type'>BOOLEAN</span>)<span class='prop_option'> MANDATORY</span><span class='prop_option'> PROTECTED</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:availableQueryOperators</span> (<span class='prop_type'>NAME</span>)<span class='prop_option'> MANDATORY</span><span class='prop_option'> PROTECTED</span><span class='prop_option'> MULTIPLE</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:isFullTextSearchable</span> (<span class='prop_type'>BOOLEAN</span>)<span class='prop_option'> MANDATORY</span><span class='prop_option'> PROTECTED</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:isQueryOrderable</span> (<span class='prop_type'>BOOLEAN</span>)<span class='prop_option'> MANDATORY</span><span class='prop_option'> PROTECTED</span><br>
+<br>
+<a name='nt:query'></a>[<span class='nt_name'>nt:query</span>]<br>
+&nbsp;&nbsp;- <span class='name'>jcr:statement</span> (<span class='prop_type'>STRING</span>)<br>
+&nbsp;&nbsp;- <span class='name'>jcr:language</span> (<span class='prop_type'>STRING</span>)<br>
+<br>
+<a name='nt:resource'></a>[<span class='nt_name'>nt:resource</span>] &gt; <a class='nt_link' href='#mix:lastModified'>mix:lastModified</a>, <a class='nt_link' href='#mix:mimeType'>mix:mimeType</a><br>
+&nbsp;&nbsp;<span class='nt_option'>PRIMARYITEM</span> <span class='nt_option'>JCR:DATA</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:data</span> (<span class='prop_type'>BINARY</span>)<span class='prop_option'> MANDATORY</span><br>
+<br>
+<a name='nt:unstructured'></a>[<span class='nt_name'>nt:unstructured</span>]<br>
+&nbsp;&nbsp;<span class='nt_option'>ORDERABLE</span><br>
+&nbsp;&nbsp;- * (<span class='prop_type'>UNDEFINED</span>)<span class='prop_option'> MULTIPLE</span><br>
+&nbsp;&nbsp;- * (<span class='prop_type'>UNDEFINED</span>)<br>
+&nbsp;&nbsp;+ * (<a class='nt_link' href='#nt:base'>nt:base</a>) = <a class='nt_link' href='#nt:unstructured'>nt:unstructured</a><span class='node_option'> SNS</span> <span class='opv'>VERSION</span><br>
+<br>
+<a name='nt:version'></a>[<span class='nt_name'>nt:version</span>] &gt; <a class='nt_link' href='#mix:referenceable'>mix:referenceable</a><br>
+&nbsp;&nbsp;- <span class='name'>jcr:created</span> (<span class='prop_type'>DATE</span>)<span class='prop_option'> MANDATORY</span><span class='prop_option'> AUTOCREATED</span><span class='prop_option'> PROTECTED</span> <span class='opv'>ABORT</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:predecessors</span> (<span class='prop_type'>REFERENCE</span>)<span class='prop_option'> PROTECTED</span><span class='prop_option'> MULTIPLE</span> <span class='opv'>ABORT</span> &lt; '<span class='prop_constraint'>nt:version</span>'<br>
+&nbsp;&nbsp;- <span class='name'>jcr:successors</span> (<span class='prop_type'>REFERENCE</span>)<span class='prop_option'> PROTECTED</span><span class='prop_option'> MULTIPLE</span> <span class='opv'>ABORT</span> &lt; '<span class='prop_constraint'>nt:version</span>'<br>
+&nbsp;&nbsp;- <span class='name'>jcr:activity</span> (<span class='prop_type'>REFERENCE</span>)<span class='prop_option'> PROTECTED</span> <span class='opv'>ABORT</span> &lt; '<span class='prop_constraint'>nt:activity</span>'<br>
+&nbsp;&nbsp;+ <span class='name'>jcr:frozenNode</span> (<a class='nt_link' href='#nt:frozenNode'>nt:frozenNode</a>)<span class='node_option'> PROTECTED</span> <span class='opv'>ABORT</span><br>
+<br>
+<a name='nt:versionHistory'></a>[<span class='nt_name'>nt:versionHistory</span>] &gt; <a class='nt_link' href='#mix:referenceable'>mix:referenceable</a><br>
+&nbsp;&nbsp;- <span class='name'>jcr:versionableUuid</span> (<span class='prop_type'>STRING</span>)<span class='prop_option'> MANDATORY</span><span class='prop_option'> AUTOCREATED</span><span class='prop_option'> PROTECTED</span> <span class='opv'>ABORT</span><br>
+&nbsp;&nbsp;- <span class='name'>jcr:copiedFrom</span> (<span class='prop_type'>WEAKREFERENCE</span>)<span class='prop_option'> PROTECTED</span> <span class='opv'>ABORT</span> &lt; '<span class='prop_constraint'>nt:version</span>'<br>
+&nbsp;&nbsp;+ <span class='name'>jcr:rootVersion</span> (<a class='nt_link' href='#nt:version'>nt:version</a>) = <a class='nt_link' href='#nt:version'>nt:version</a><span class='node_option'> MANDATORY</span><span class='node_option'> AUTOCREATED</span><span class='node_option'> PROTECTED</span> <span class='opv'>ABORT</span><br>
+&nbsp;&nbsp;+ <span class='name'>jcr:versionLabels</span> (<a class='nt_link' href='#nt:versionLabels'>nt:versionLabels</a>) = <a class='nt_link' href='#nt:versionLabels'>nt:versionLabels</a><span class='node_option'> MANDATORY</span><span class='node_option'> AUTOCREATED</span><span class='node_option'> PROTECTED</span> <span class='opv'>ABORT</span><br>
+&nbsp;&nbsp;+ * (<a class='nt_link' href='#nt:version'>nt:version</a>) = <a class='nt_link' href='#nt:version'>nt:version</a><span class='node_option'> PROTECTED</span> <span class='opv'>ABORT</span><br>
+<br>
+<a name='nt:versionLabels'></a>[<span class='nt_name'>nt:versionLabels</span>]<br>
+&nbsp;&nbsp;- * (<span class='prop_type'>REFERENCE</span>)<span class='prop_option'> PROTECTED</span> <span class='opv'>ABORT</span> &lt; '<span class='prop_constraint'>nt:version</span>'<br>
+<br>
+<a name='nt:versionedChild'></a>[<span class='nt_name'>nt:versionedChild</span>]<br>
+&nbsp;&nbsp;- <span class='name'>jcr:childVersionHistory</span> (<span class='prop_type'>REFERENCE</span>)<span class='prop_option'> MANDATORY</span><span class='prop_option'> AUTOCREATED</span><span class='prop_option'> PROTECTED</span> <span class='opv'>ABORT</span> &lt; '<span class='prop_constraint'>nt:versionHistory</span>'<br>
+<br>
+</div>
+</body>
+</html>

@@ -6,9 +6,9 @@ import java.util.Map;
 import net.ion.framework.rest.IMapListRepresentationHandler;
 import net.ion.framework.rest.IRequest;
 import net.ion.framework.rest.IResponse;
-import net.ion.framework.util.Debug;
 import net.ion.radon.core.Aradon;
 import net.ion.radon.core.PathService;
+import net.ion.radon.core.RadonAttributeKey;
 import net.ion.radon.core.SectionService;
 import net.ion.radon.core.TreeContext;
 import net.ion.radon.core.EnumClass.IFormat;
@@ -17,20 +17,16 @@ import net.ion.radon.core.filter.IFilterResult;
 import org.json.JSONException;
 import org.restlet.Request;
 import org.restlet.Response;
-import org.restlet.data.Form;
-import org.restlet.data.Method;
 import org.restlet.data.Status;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
 import org.restlet.routing.Filter;
 
-import static net.ion.radon.core.RadonAttributeKey.*;
-
 public class AbstractServerResource extends ServerResource {
 
 	public TreeContext getContext() {
-		return (TreeContext) super.getContext();
+		return ((TreeContext) getRequest().getAttributes().get(RadonAttributeKey.REQUEST_CONTEXT));
 	}
 
 	protected Aradon getAradon() {

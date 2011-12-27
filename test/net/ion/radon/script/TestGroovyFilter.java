@@ -1,5 +1,6 @@
 package net.ion.radon.script;
 
+import static org.junit.Assert.*;
 import groovy.lang.Binding;
 import groovy.lang.Script;
 import groovy.util.GroovyScriptEngine;
@@ -23,6 +24,7 @@ import net.ion.radon.core.script.ScriptFactory;
 import net.ion.radon.impl.let.HelloWorldLet;
 import net.ion.radon.impl.section.PathInfo;
 
+import org.junit.Test;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.Method;
@@ -30,7 +32,8 @@ import org.restlet.representation.Representation;
 
 public class TestGroovyFilter extends TestAradon {
 
-	public void testObjectRun() throws Exception {
+	@Test
+	public void objectRun() throws Exception {
 		initAradon();
 		SectionService section = aradon.attach("test", XMLConfig.BLANK);
 		section.attach(PathInfo.create("test", "/test", "", "", HelloWorldLet.class));
@@ -47,7 +50,8 @@ public class TestGroovyFilter extends TestAradon {
 		}
 	}
 
-	public void testScriptRun() throws Exception {
+	@Test
+	public void scriptRun() throws Exception {
 		initAradon();
 		SectionService section = aradon.attach("test", XMLConfig.BLANK);
 		section.attach(PathInfo.create("test", "/test", "", "", HelloWorldLet.class));
@@ -65,7 +69,8 @@ public class TestGroovyFilter extends TestAradon {
 		}
 	}
 
-	public void testRunSpeed() throws Exception {
+	@Test
+	public void runSpeed() throws Exception {
 		initAradon();
 		SectionService section = aradon.attach("test", XMLConfig.BLANK);
 		section.attach(PathInfo.create("test", "/test", "", "", HelloWorldLet.class));
@@ -93,7 +98,8 @@ public class TestGroovyFilter extends TestAradon {
 		Debug.debug(response.getEntityAsText());
 	}
 	
-	public void testChartFilter() throws Exception {
+	@Test
+	public void chartFilter() throws Exception {
 		initAradon();
 		
 		final SectionService section = aradon.getChildService("another");
@@ -109,7 +115,8 @@ public class TestGroovyFilter extends TestAradon {
 		
 	}
 	
-	public void testAradonClient() throws Exception {
+	@Test
+	public void aradonClient() throws Exception {
 		
 		AradonClient client = AradonClientFactory.create("http://chart.apis.google.com"); 
 		IAradonRequest ir = client.createRequest("/chart?cht=p3&chs=500x250&chd=s:JMBJD&chl=Open+Source|J2EE|Web+Service|Ajax|Other");

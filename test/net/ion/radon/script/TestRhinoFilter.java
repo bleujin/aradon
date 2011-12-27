@@ -1,7 +1,10 @@
 package net.ion.radon.script;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 
+import org.junit.Test;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.Form;
@@ -19,7 +22,8 @@ import net.ion.radon.impl.section.PathInfo;
 
 public class TestRhinoFilter extends TestAradon{
 
-	public void testScriptRun() throws Exception {
+	@Test
+	public void scriptRun() throws Exception {
 		initAradon();
 		SectionService section = aradon.attach("test", XMLConfig.BLANK);
 		section.attach(PathInfo.create("test", "/test", "", "", HelloWorldLet.class));
@@ -32,7 +36,8 @@ public class TestRhinoFilter extends TestAradon{
 		assertEquals(200, response.getStatus().getCode()) ;
 	}
 	
-	public void testCheckParam() throws Exception {
+	@Test
+	public void checkParam() throws Exception {
 		initAradon();
 		SectionService section = aradon.attach("test", XMLConfig.BLANK);
 		section.attach(PathInfo.create("test", "/test", "", "", HelloWorldLet.class));

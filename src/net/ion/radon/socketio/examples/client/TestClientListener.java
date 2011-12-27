@@ -2,7 +2,6 @@ package net.ion.radon.socketio.examples.client;
 
 import net.ion.framework.util.Debug;
 import net.ion.radon.socketio.client.common.SocketIOConnection;
-import net.ion.radon.socketio.client.jre.SocketIOConnectionImpl;
 import net.ion.radon.socketio.client.jre.SocketIOConnectionXHRBase;
 import net.ion.radon.socketio.common.DisconnectReason;
 

@@ -11,8 +11,7 @@ public interface IService {
 
 	
 	public final static IService ROOT = new IService() {
-		
-		
+
 		private List<IRadonFilter> pres = ListUtil.newList() ;
 		private List<IRadonFilter> afters = ListUtil.newList() ;
 		public void suspend() {
@@ -74,7 +73,7 @@ public interface IService {
 		public Aradon getAradon(){
 			throw new IllegalStateException("i am root service") ;
 		}
-		
+
 		public List<IService> getChildren() {
 			throw new IllegalStateException("i am root service") ;
 		}
@@ -97,9 +96,11 @@ public interface IService {
 	public List<IRadonFilter> getAfterFilters();
 
 	public void reload() throws Exception ;
-	public Collection<? extends IService> getChildren() ;
 	public IService getChildService(String childName);
+	public Collection<? extends IService> getChildren() ;
 	public String getName(); 
 	public Aradon getAradon() ;
 	public String getNamePath() ;
+	
+	
 }

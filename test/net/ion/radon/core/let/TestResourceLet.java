@@ -1,13 +1,27 @@
 package net.ion.radon.core.let;
 
+import static org.junit.Assert.*;
+
+import org.junit.Ignore;
+import org.junit.Test;
+
 import junit.framework.TestCase;
 import net.ion.radon.client.AradonClientFactory;
 import net.ion.radon.client.IAradonRequest;
 import net.ion.radon.util.AradonTester;
 
-public class TestResourceLet extends TestCase {
+public class TestResourceLet {
 
-	public void testHttp() throws Exception {
+	@Test
+	public void useClient() throws Exception {
+		AradonTester at = AradonTester.create().register("", "/test", GetResourceLet.class);
+
+		IAradonRequest req = AradonClientFactory.create(at.getAradon()).createRequest("/test");
+		assertEquals(GetLet.class.getCanonicalName(), req.get().getText());
+	}
+
+	@Test
+	public void http() throws Exception {
 		AradonTester at = AradonTester.create().register("", "/test", GetResourceLet.class);
 		at.getAradon().startServer(9080);
 
@@ -15,13 +29,6 @@ public class TestResourceLet extends TestCase {
 		assertEquals(GetLet.class.getCanonicalName(), req.get().getText());
 
 		at.getAradon().stop();
-	}
-
-	public void testUseClient() throws Exception {
-		AradonTester at = AradonTester.create().register("", "/test", GetResourceLet.class);
-
-		IAradonRequest req = AradonClientFactory.create(at.getAradon()).createRequest("/test");
-		assertEquals(GetLet.class.getCanonicalName(), req.get().getText());
 	}
 
 }

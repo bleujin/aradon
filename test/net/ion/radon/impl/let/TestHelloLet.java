@@ -1,78 +1,59 @@
 package net.ion.radon.impl.let;
 
+import static org.junit.Assert.*;
 import junit.framework.TestCase;
 import net.ion.framework.util.Debug;
-import net.ion.radon.client.AradonClient;
-import net.ion.radon.client.AradonClientFactory;
-import net.ion.radon.core.Aradon;
+import net.ion.radon.TestAradon;
 import net.ion.radon.core.SectionService;
 import net.ion.radon.core.config.XMLConfig;
 import net.ion.radon.core.let.InnerRequest;
 import net.ion.radon.core.let.InnerResponse;
 import net.ion.radon.impl.section.PathInfo;
+import net.ion.radon.util.AradonTester;
 
+import org.junit.Before;
+import org.junit.Test;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.Method;
 import org.restlet.data.Status;
-import org.restlet.representation.Representation;
+import org.restlet.representation.StringRepresentation;
 
-public class TestHelloLet extends TestCase {
+public class TestHelloLet {
+	private AradonTester at;
 
-	private Aradon aradon;
+	@Before
 	public void setUp() throws Exception {
-		this.aradon = new Aradon();
-		aradon.init(XMLConfig.BLANK) ;
-		
-		SectionService section = aradon.attach("section", XMLConfig.BLANK); // base section..
-		section.attach(PathInfo.create("test", "/hello", HelloWorldLet.class)) ;
-	}
-	
-	@Override
-	protected void tearDown() throws Exception {
-		aradon.stop() ;
-		
-		super.tearDown();
+		at = AradonTester.create().register("", "/hello", HelloWorldResource.class);
 	}
 
-	public void testHello() throws Exception {
-		Request request = new Request(Method.GET, "riap://component/section/hello");
-		Response response = aradon.handle(request);
+	@Test
+	public void helloGet() throws Exception {
+		Request request = new Request(Method.GET, "riap://component/hello");
+		Response response = at.getAradon().handle(request);
 
 		assertEquals(Status.SUCCESS_OK, response.getStatus());
+		assertEquals(true, response.getEntityAsText().startsWith("Hello"));
 	}
 
-	public void testGet() throws Exception {
-		Request request = new Request(Method.GET, "riap://component/section/hello?abcd=test");
-		Response response = aradon.handle(request);
+	@Test
+	public void put() throws Exception {
+		Request request = new Request(Method.PUT, "riap://component/hello");
+		request.setEntity(new StringRepresentation("bleujin"));
+		Response response = at.getAradon().handle(request);
 
-		assertEquals("test", getInnerRequest().getFormParameter().get("abcd"));
+		InnerRequest ireq = ((InnerResponse) Response.getCurrent()).getInnerRequest();
+		assertEquals("bleujin", ireq.getContext().getSelfAttributeObject("context.id", String.class));
+	}
+
+	@Test
+	public void parameter() throws Exception {
+		Request request = new Request(Method.GET, "riap://component/hello?abcd=test");
+		Response response = at.getAradon().handle(request);
+
+		InnerRequest ireq = ((InnerResponse) Response.getCurrent()).getInnerRequest();
+		assertEquals("test", ireq.getFormParameter().get("abcd"));
 
 	}
 
-	public void testHello2() throws Exception {
-		SectionService section = aradon.attach("test", XMLConfig.BLANK);
-		section.attach(PathInfo.create("hello", "/hello", "", "", HelloWorldLet.class));
-
-		Request request = new Request(Method.GET, "riap://component/test/hello");
-		Response response = aradon.handle(request);
-
-		Debug.debug(response.getEntityAsText());
-
-	}
-
-	public void testRun() throws Exception {
-		aradon.startServer(9010) ;
-		
-		AradonClient ac = AradonClientFactory.create("http://localhost:9010") ;
-		Representation repr = ac.createRequest("/section/hello").get() ;
-		
-		Debug.debug(repr, repr.getText()) ;
-	}
-	
-	
-	
-	private InnerRequest getInnerRequest(){
-		return ((InnerResponse)Response.getCurrent()).getInnerRequest() ;		
-	}
 }

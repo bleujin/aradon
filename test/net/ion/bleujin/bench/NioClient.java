@@ -5,6 +5,7 @@ import org.restlet.Context;
 import org.restlet.data.Protocol;
 import org.restlet.engine.ConnectorHelper;
 import org.restlet.engine.Engine;
+import org.restlet.engine.http.connector.HttpClientHelper;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 
@@ -14,7 +15,7 @@ public class NioClient {
 		// TraceHandler.register();
 
 		ConnectorHelper<Client> helper;
-		helper = new org.restlet.engine.connector.HttpClientHelper(null);
+		helper = new HttpClientHelper(null);
 		// helper = new org.restlet.ext.httpclient.HttpClientHelper(null);
 		// helper = new org.restlet.ext.net.HttpClientHelper(null);
 		Engine.getInstance().getRegisteredClients().add(0, helper);

@@ -1,5 +1,6 @@
 package net.ion.radon.core.filter;
 
+import static org.junit.Assert.*;
 import net.ion.framework.util.Debug;
 import net.ion.radon.TestAradon;
 import net.ion.radon.core.IService;
@@ -15,12 +16,14 @@ import net.ion.radon.impl.filter.ExecuteTimeFilter;
 import net.ion.radon.impl.section.PathInfo;
 import net.ion.radon.param.ParamFilter;
 
+import org.junit.Test;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.Method;
 
 public class TestFilter extends TestAradon {
 
+	@Test
 	public void testPathFilter() throws Exception {
 		initAradon();
 		SectionService section = aradon.getChildService("another");
@@ -49,6 +52,7 @@ public class TestFilter extends TestAradon {
 		assertEquals("bleujin", bean.getName()) ;
 	}
 
+	@Test
 	public void testSectionFilter() throws Exception {
 		initAradon();
 		SectionService secSrv = aradon.getChildService("another");
@@ -70,6 +74,7 @@ public class TestFilter extends TestAradon {
 		assertEquals("bleujin", bean.getName()) ;
 	}
 	
+	@Test
 	public void testApplicationFilter() throws Exception {
 		initAradon();
 
@@ -89,6 +94,7 @@ public class TestFilter extends TestAradon {
 	}
 	
 	
+	@Test
 	public void testInit() throws Exception {
 		initAradon();
 		

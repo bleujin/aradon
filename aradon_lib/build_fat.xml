@@ -97,9 +97,9 @@
         	<fatjar.jarsource file="${basedir}\apache_extend\commons-configuration-1.6.jar" relpath=""/> 
         	<fatjar.jarsource file="${basedir}\apache_extend\commons-lang-2.4.jar" relpath=""/> 
         	<fatjar.jarsource file="${basedir}\apache_extend\commons-fileupload-1.2.1.jar" relpath=""/> 
-        	<fatjar.jarsource file="${basedir}\apache_extend\commons-httpclient-3.0.1.jar" relpath=""/> 
+        	<fatjar.jarsource file="${basedir}\apache_extend\commons-httpclient-4.0.jar" relpath=""/> 
         	<fatjar.jarsource file="${basedir}\apache_extend\commons-io-1.4.jar" relpath=""/> 
-            <fatjar.jarsource file="${basedir}\apache_extend\commons-lang-2.4.jar" relpath=""/> 
+            <fatjar.jarsource file="${basedir}\apache_extend\commons.lang_2.5.jar" relpath=""/> 
             <fatjar.jarsource file="${basedir}\apache_extend\commons-logging-1.1.jar" relpath=""/> 
         	<fatjar.jarsource file="${basedir}\apache_extend\ecs-1.4.2.jar" relpath=""/> 
         	<fatjar.jarsource file="${basedir}\apache_extend\ezmorph-1.0.5.jar" relpath=""/> 
@@ -111,17 +111,21 @@
     <target name="rest_fat">
         <fatjar.build output="${embedLibDir}/rest_fat.jar">
             <fatjar.manifest/>
-
+			<!-- 2.0.9 -->
+        	<fatjar.jarsource file="${basedir}\rest\org.restlet.jar" relpath=""/> 
+        	<fatjar.jarsource file="${basedir}\rest\org.restlet.ext.servlet.jar" relpath=""/> 
+        	<fatjar.jarsource file="${basedir}\rest\org.restlet.ext.jetty.jar" relpath=""/> 
+        	<fatjar.jarsource file="${basedir}\rest\org.restlet.ext.netty.jar" relpath=""/> 
         	<fatjar.jarsource file="${basedir}\rest\org.restlet.ext.crypto.jar" relpath=""/> 
         	<fatjar.jarsource file="${basedir}\rest\org.restlet.ext.fileupload.jar" relpath=""/> 
         	<fatjar.jarsource file="${basedir}\rest\org.restlet.ext.json.jar" relpath=""/> 
-        	<fatjar.jarsource file="${basedir}\rest\org.restlet.ext.servlet.jar" relpath=""/> 
         	<!--fatjar.jarsource file="${basedir}\rest\org.restlet.ext.sip.jar" relpath=""/ --> 
-        	<!--fatjar.jarsource file="${basedir}\rest\org.restlet.ext.jetty.jar" relpath=""/ --> 
-        	<fatjar.jarsource file="${basedir}\rest\org.restlet.ext.net.jar" relpath=""/> 
-        	<fatjar.jarsource file="${basedir}\rest\org.restlet.ext.velocity.jar" relpath=""/> 
-        	<fatjar.jarsource file="${basedir}\rest\org.restlet.ext.freemarker.jar" relpath=""/> 
-        	<fatjar.jarsource file="${basedir}\rest\org.restlet.jar" relpath=""/> 
+        	
+        	<!--fatjar.jarsource file="${basedir}\rest\org.restlet.ext.net.jar" relpath=""/--> 
+        	<!--fatjar.jarsource file="${basedir}\rest\org.restlet.ext.velocity.jar" relpath=""/--> 
+        	<!--fatjar.jarsource file="${basedir}\rest\org.restlet.ext.freemarker.jar" relpath=""/-->
+        	<!--fatjar.jarsource file="${basedir}\rest\org.restlet.ext.ssl.jar" relpath=""/-->
+        	
         	<!-- fatjar.jarsource file="${basedir}\rest\standalone_fat.jar" relpath=""/ -->
         	
 
@@ -156,7 +160,6 @@
            	<fatjar.jarsource file="${basedir}\jetty\jetty-webapp-7.1.6.v20100715.jar" relpath=""/>
            	<fatjar.jarsource file="${basedir}\jetty\jetty-websocket-7.1.6.v20100715.jar" relpath=""/>
             <fatjar.jarsource file="${basedir}\jetty\jetty-xml-7.1.6.v20100715.jar" relpath=""/>
-            <fatjar.jarsource file="${basedir}\jetty\org.restlet.ext.jetty.jar" relpath=""/>
         </fatjar.build>
     </target>
 

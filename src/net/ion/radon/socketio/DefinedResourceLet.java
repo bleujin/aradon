@@ -1,33 +1,21 @@
 package net.ion.radon.socketio;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.ion.framework.util.IOUtil;
+import net.ion.framework.util.MapUtil;
+import net.ion.radon.core.let.AbstractLet;
+
 import org.restlet.data.MediaType;
 import org.restlet.data.Status;
-import org.restlet.representation.FileRepresentation;
 import org.restlet.representation.InputRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.representation.StringRepresentation;
 import org.restlet.resource.ResourceException;
-
-import net.ion.framework.convert.html.CleanerProperties;
-import net.ion.framework.convert.html.HtmlCleaner;
-import net.ion.framework.convert.html.SimpleHtmlSerializer;
-import net.ion.framework.convert.html.TagNode;
-import net.ion.framework.convert.html.XPatherException;
-import net.ion.framework.util.Debug;
-import net.ion.framework.util.IOUtil;
-import net.ion.framework.util.MapUtil;
-import net.ion.framework.util.StringUtil;
-import net.ion.radon.core.let.AbstractLet;
 
 public class DefinedResourceLet extends AbstractLet{
 	@Override

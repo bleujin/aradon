@@ -1,17 +1,22 @@
 package net.ion.radon.client;
 
+import static org.junit.Assert.*;
+
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.junit.Test;
 
 import junit.framework.TestCase;
 import net.ion.framework.db.Rows;
 import net.ion.framework.util.Debug;
 import net.ion.radon.util.AradonTester;
 
-public class TestSerialRequest extends TestCase{
-	
-	public void testBasicGet() throws Exception {
+public class TestSerialRequest {
+
+	@Test
+	public void basicGet() throws Exception {
 		AradonTester at = AradonTester.create().register("", "/test", ParameterTestLet.class) ;
 		ISerialRequest request = AradonClientFactory.create(at.getAradon()).createSerialRequest("/test?name=bleujin") ;
 		
@@ -19,7 +24,8 @@ public class TestSerialRequest extends TestCase{
 		assertEquals("bleujin", muser.getName()) ;
 	}
 
-	public void testOpps() throws Exception {
+	@Test
+	public void opps() throws Exception {
 		AradonTester at = AradonTester.create().register("", "/test", ParameterTestLet.class);
 		at.startServer(9000);
 
@@ -29,9 +35,10 @@ public class TestSerialRequest extends TestCase{
 		ObjectInputStream ois = new ObjectInputStream(pr.get().getStream());
 		MyUser m = (MyUser) ois.readObject();
 		assertEquals("hero", m.getName());
+		at.getAradon().stop() ;
 	}
 	
-	
+	@Test
 	public void xtestPostSelect() throws Exception {
 		AradonTester at = AradonTester.create().register("", "/test", ParameterTestLet.class) ;
 		
@@ -43,8 +50,8 @@ public class TestSerialRequest extends TestCase{
 		at.getAradon().stop() ;
 	}
 
-
-	public void testBasicPut() throws Exception {
+	@Test
+	public void basicPut() throws Exception {
 		AradonTester at = AradonTester.create().register("", "/test", ParameterTestLet.class) ;
 		
 		ISerialRequest request = AradonClientFactory.create(at.getAradon()).createSerialRequest("/test?name=bleujin") ;
@@ -55,16 +62,16 @@ public class TestSerialRequest extends TestCase{
 		at.getAradon().stop() ;
 	}
 	
-	
-	public void testAradonGet() throws Exception {
+	@Test
+	public void aradonGet() throws Exception {
 		AradonTester at = AradonTester.create().register("", "/test", ParameterTestLet.class) ;
 
 		ISerialRequest request = AradonClientFactory.create(at.getAradon()).createSerialRequest("/test?name=bleujin") ;
 		MyUser muser = request.get(MyUser.class) ;
 		assertEquals("bleujin", muser.getName()) ;
 	}
-	
-	public void testAradonPut() throws Exception {
+	@Test
+	public void aradonPut() throws Exception {
 		AradonTester at = AradonTester.create().register("", "/test", ParameterTestLet.class) ;
 
 		ISerialRequest request = AradonClientFactory.create(at.getAradon()).createSerialRequest("/test") ;
@@ -75,7 +82,7 @@ public class TestSerialRequest extends TestCase{
 	}
 
 	
-	public void xtestAradonPost() throws Exception {
+	public void aradonPost() throws Exception {
 		AradonTester at = AradonTester.create().register("", "/test", ParameterTestLet.class) ;
 		
 		ISerialRequest request = AradonClientFactory.create(at.getAradon()).createSerialRequest("/test") ;
@@ -85,8 +92,8 @@ public class TestSerialRequest extends TestCase{
 		assertEquals(2, rows.getNextRows().firstRow().getInt(1)) ;
 	}
 
-	
-	public void testBasicHeader() throws Exception {
+	@Test
+	public void basicHeader() throws Exception {
 		AradonTester at = AradonTester.create().register("", "/test2", HeaderTestLet.class) ;
 		
 		ISerialRequest request = AradonClientFactory.create(at.getAradon()).createSerialRequest("/test2") ;
@@ -98,8 +105,8 @@ public class TestSerialRequest extends TestCase{
 		at.getAradon().stop() ;
 	}
 
-	
-	public void testAradonHeader() throws Exception {
+	@Test
+	public void aradonHeader() throws Exception {
 		AradonTester at = AradonTester.create().register("", "/test", HeaderTestLet.class) ;
 		ISerialRequest request = AradonClientFactory.create(at.getAradon()).createSerialRequest("/test") ;
 		request.addHeader("name", "bleujin") ;

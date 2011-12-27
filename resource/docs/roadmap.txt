@@ -36,9 +36,11 @@ ARadon
 	- Monitor
 		: Call Flow monitoring(R) 
 		: Self Management(R)
+		: JMX
 	- Push
 		: Comet 
-		: HTML5
+		: HTML5(WebSocket)
+		
 
 
 * Support Other Infrastructure (Ext

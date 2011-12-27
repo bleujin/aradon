@@ -1,5 +1,7 @@
 package net.ion.radon.core.filter;
 
+import static org.junit.Assert.*;
+
 import java.util.Arrays;
 
 import net.ion.framework.util.Debug;
@@ -9,6 +11,7 @@ import net.ion.radon.core.PathService;
 import net.ion.radon.core.SectionService;
 import net.ion.radon.impl.filter.RevokeServiceFilter;
 
+import org.junit.Test;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.Method;
@@ -16,6 +19,7 @@ import org.restlet.data.Status;
 
 public class TestAdvanseFilter extends TestAradon{
 	
+	@Test
 	public void testPathRevokeFilter() throws Exception {
 		initAradon();
 		SectionService section = aradon.getChildService("another");
@@ -27,6 +31,7 @@ public class TestAdvanseFilter extends TestAradon{
 		assertEquals(Status.SERVER_ERROR_SERVICE_UNAVAILABLE, response.getStatus()) ;
 	}
 	
+	@Test
 	public void testSectionRevokeFilter() throws Exception {
 		initAradon();
 		SectionService secSrv = aradon.getChildService("another");
@@ -41,6 +46,7 @@ public class TestAdvanseFilter extends TestAradon{
 	}
 	
 	
+	@Test
 	public void testOrderFilter() throws Exception {
 		initAradon();
 		SectionService section = aradon.getChildService("another");
@@ -57,6 +63,7 @@ public class TestAdvanseFilter extends TestAradon{
 		assertTrue(Arrays.equals(HiFilter.result.toArray(), new Object[]{1,2,3,4})) ;
 	}
 	
+	@Test
 	public void testOrderFilter2() throws Exception {
 		initAradon();
 		SectionService section = aradon.getChildService("another");
@@ -74,6 +81,7 @@ public class TestAdvanseFilter extends TestAradon{
 	}
 	
 	
+	@Test
 	public void testSkipFilter() throws Exception {
 		initAradon();
 		SectionService secSrv = aradon.getChildService("another");
@@ -93,7 +101,7 @@ public class TestAdvanseFilter extends TestAradon{
 		assertTrue(Arrays.equals(HiFilter.result.toArray(), new Object[]{1,2,3,4})) ;
 	}
 	
-	
+	@Test
 	public void testSkipFilter2() throws Exception {
 		initAradon();
 		SectionService secSrv = aradon.getChildService("another");

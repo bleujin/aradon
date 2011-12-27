@@ -1,7 +1,10 @@
 package net.ion.radon.core;
 
+import static org.junit.Assert.*;
+
 import java.util.List;
 
+import org.junit.Test;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.MediaType;
@@ -21,6 +24,7 @@ import net.sf.ezmorph.array.IntArrayMorpher;
 public class TestAradonInit extends TestAradon{
 	
 
+	@Test
 	public void testLoadAttribute() throws Exception {
 		initAradon() ;
 		
@@ -29,6 +33,7 @@ public class TestAradonInit extends TestAradon{
 	}
 	
 	
+	@Test
 	public void testLoadGroovyScriptFilter() throws Exception {
 		initAradon() ;
 		
@@ -40,6 +45,7 @@ public class TestAradonInit extends TestAradon{
 	}
 	
 	
+	@Test
 	public void testPatternMatch() throws Exception {
 		String url = "/system/lore/test/ion.dev.floor3" ;
 		String ptn1 = "/system/lore/{workspace}/{groupid}" ;

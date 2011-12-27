@@ -1,5 +1,6 @@
 package net.ion.radon.core.let;
 
+import static org.junit.Assert.*;
 import net.ion.radon.TestAradon;
 import net.ion.radon.core.IService;
 import net.ion.radon.core.PathService;
@@ -8,12 +9,14 @@ import net.ion.radon.core.config.XMLConfig;
 import net.ion.radon.impl.let.HelloWorldLet;
 import net.ion.radon.impl.section.PathInfo;
 
+import org.junit.Test;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.Method;
 
 public class TestAbstractLet extends TestAradon {
 
+	@Test
 	public void testAbstractLet() throws Exception {
 		initAradon();
 		
@@ -27,6 +30,7 @@ public class TestAbstractLet extends TestAradon {
 		assertEquals(true, ((PathService)getInnerResponse().getPathService(aradon)).getPathInfo() == pathInfo);
 	}
 	
+	@Test
 	public void testParentService() throws Exception {
 		initAradon();
 		

@@ -1,7 +1,6 @@
 package net.ion.radon.impl.section;
 
 import net.ion.radon.core.EnumClass.IMatchMode;
-import net.ion.radon.socketio.examples.chat.ChatSocketServlet;
 import net.ion.radon.socketio.server.SocketIOServlet;
 
 public class ServletInfo extends BasePathInfo{

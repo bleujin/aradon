@@ -6,12 +6,16 @@ import java.util.Map;
 import junit.framework.TestCase;
 import net.ion.framework.rest.StdObject;
 import net.ion.framework.util.Debug;
+import net.ion.radon.AradonServer;
+import net.ion.radon.Options;
 import net.ion.radon.core.Aradon;
+import net.ion.radon.core.EnumClass;
 import net.ion.radon.core.TreeContext;
 import net.ion.radon.core.EnumClass.IZone;
 import net.ion.radon.core.let.InnerRequest;
 import net.ion.radon.core.let.InnerResponse;
 
+import org.junit.Before;
 import org.restlet.Client;
 import org.restlet.Context;
 import org.restlet.Request;
@@ -20,14 +24,15 @@ import org.restlet.data.Form;
 import org.restlet.data.Method;
 import org.restlet.data.Protocol;
 
-public class TestAradon extends TestCase {
+public class TestAradon {
 
 	
 	protected static String TEST_CONFIG_FILE = "./resource/config/readonly-config.xml" ;
 	protected Aradon aradon = null;
+	
+	@Before
 	public void setUp() throws Exception {
 		aradon = new Aradon() ;
-		aradon.getServers().add(Protocol.RIAP);
 		
 		Debug.setPrintLevel(Debug.Level.Debug) ;
 	}

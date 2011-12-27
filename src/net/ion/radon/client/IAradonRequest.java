@@ -23,4 +23,8 @@ public interface IAradonRequest {
 	public User getUser();
 	
 	public Representation multipart(Method method, Representation entity) ;
+	
+	public String getFullPath() ;
+	public String getHost() ;
+	public String getPath() ;
 }

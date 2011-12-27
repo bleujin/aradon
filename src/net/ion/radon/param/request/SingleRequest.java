@@ -70,7 +70,7 @@ public class SingleRequest {
 		return Method.valueOf(getValueAsString("param." + DefaultLet.ARADON_HTTP_METHOD)) ;
 	}
 
-	public LetResponse handle(ARadonRequest aRadonRequest, DefaultLet radonLet) throws IOException {
+	public LetResponse handle(AradonRequest aRadonRequest, DefaultLet radonLet) throws IOException {
 		InboundLet let = InboundLet.create(radonLet.getInnerRequest(), (SectionService)radonLet.getApplication(), getPath()) ;
 		
 		Map<String, Object> params = myparam.getMap("param") ;

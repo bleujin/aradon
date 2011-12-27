@@ -7,18 +7,23 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.List;
 
+import net.ion.framework.util.StringUtil;
 import net.ion.radon.core.Aradon;
 import net.ion.radon.core.RadonAttributeKey;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
+import org.eclipse.jetty.http.HttpHeaders;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.ChallengeResponse;
 import org.restlet.data.ChallengeScheme;
+import org.restlet.data.CharacterSet;
 import org.restlet.data.Form;
 import org.restlet.data.Method;
 import org.restlet.data.Parameter;
 import org.restlet.data.Status;
+import org.restlet.engine.http.header.CookieReader;
+import org.restlet.engine.util.CookieSeries;
 import org.restlet.representation.ObjectRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ResourceException;
@@ -26,20 +31,30 @@ import org.restlet.security.User;
 
 public class AradonRequest implements IAradonRequest{
 
-	private Form form = new Form() ;
+	private Form form ;
 	private Aradon aradon ;
 	private String path ;
 	private User user ;
 	private Form headerForm ;
+	private ChallengeResponse challengeResponse;
 	
-	private AradonRequest(Aradon aradon, String path, User user) {
+	private AradonRequest(Aradon aradon, String path, User user, Form form) {
 		this.aradon = aradon ;
 		this.path = path ;
+		this.challengeResponse = new ChallengeResponse(ChallengeScheme.HTTP_BASIC, user.getIdentifier(), user.getSecret());
 		this.user = user ;
+		this.form = form ;
+		this.headerForm = new Form() ;
 	}
 
 	public static AradonRequest create(Aradon aradon, String path, String id, String pwd) {
-		return new AradonRequest(aradon, path, new User(id, pwd));
+		String[] getPath = StringUtil.split(path, '?');
+		if (getPath.length == 1) {
+			return new AradonRequest(aradon, path, new User(id, pwd), new Form());
+		} else {
+			Form form = new Form(getPath[1], CharacterSet.UTF_8);
+			return new AradonRequest(aradon, getPath[0], new User(id, pwd), form);
+		}
 	}
 	
 	public void clearParam(){
@@ -90,27 +105,38 @@ public class AradonRequest implements IAradonRequest{
 	}
 
 	private Request makeRequest(Method method) {
-		Request request = new Request(method, getFullPath());
-		ChallengeResponse challengeResponse = new ChallengeResponse(ChallengeScheme.HTTP_BASIC, user.getIdentifier(), user.getSecret());
-		request.setChallengeResponse(challengeResponse) ;
-		if (headerForm != null) request.getAttributes().put(RadonAttributeKey.ATTRIBUTE_HEADERS, headerForm) ;
-		//request.getClientInfo().setUser(user) ;
+		Request request = null;
+		if (method == Method.GET || method == Method.DELETE) {
+			request = new Request(method, getFullPath() + "?" + form.getQueryString()) ;
+		} else {
+			request = new Request(method, getFullPath());
+			request.setEntity(form.getWebRepresentation());
+		}
+
+		setHeader(request) ;
 
 		return request;
+	}
+	
+	private void setHeader(Request request) {
+		request.setChallengeResponse(challengeResponse);
+		String cookieValue = headerForm.getFirstValue(HttpHeaders.COOKIE);
+		if (StringUtil.isNotBlank(cookieValue)) {
+			request.setCookies(new CookieSeries(new CookieReader(cookieValue).readValues()));
+		}
+
+		if (headerForm.size() > 0) request.getAttributes().put(RadonAttributeKey.ATTRIBUTE_HEADERS, headerForm);
 	}
 	
 	private Request makeRequest(Method method, Representation entity) {
 		Request request = new Request(method, getFullPath());
 		request.setEntity(entity);
-		ChallengeResponse challengeResponse = new ChallengeResponse(ChallengeScheme.HTTP_BASIC, user.getIdentifier(), user.getSecret());
-		request.setChallengeResponse(challengeResponse);
-		if (headerForm != null)
-			request.getAttributes().put(RadonAttributeKey.ATTRIBUTE_HEADERS, headerForm);
+		setHeader(request) ;
 
 		return request;
 	}
 
-	private String getFullPath() {
+	public String getFullPath() {
 		return "riap://component" + (path.startsWith("/") ? "" : "/") + path;
 	}
 
@@ -119,12 +145,16 @@ public class AradonRequest implements IAradonRequest{
 	}
 
 	public IAradonRequest addHeader(String name, String value) {
-		if (headerForm == null){
-			headerForm = new Form() ;
-		}
-		
 		headerForm.add(name, value) ;
 		return this;
+	}
+
+	public String getHost() {
+		return "riap://component/" ;
+	}
+
+	public String getPath() {
+		return path;
 	}
 
 

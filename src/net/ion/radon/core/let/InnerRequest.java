@@ -53,12 +53,12 @@ public class InnerRequest extends Request {
 	private final static long MAX_FILESIZE = MAX_THRESHOLD_BYTE * 100; // 100M
 
 	private String sectionName ;
-	private Request outer;
+	private Request real;
 	private InnerRequest caller;
 
 	private InnerRequest(String sectionName, Request request) {
 		this.sectionName = sectionName ;
-		this.outer = request;
+		this.real = request;
 		initMethod();
 	}
 
@@ -68,7 +68,7 @@ public class InnerRequest extends Request {
 	
 	public final static InnerRequest create(String sectionName, Request request) {
 		final InnerRequest innerRequest = new InnerRequest(sectionName, request);
-		innerRequest.getHeaders().set("X-Aradon-Version", "0.4");
+		innerRequest.getHeaders().set("X-Aradon-Version", "0.6");
 		return innerRequest;
 	}
 	
@@ -94,7 +94,7 @@ public class InnerRequest extends Request {
 
 	public String getParameter(String name) {
 		Object value = getFormParameter().get(name);
-		return (value == ObjectUtil.NULL ) ? "" : StringUtil.toString(value);
+		return (value == ObjectUtil.NULL) ? "" : StringUtil.toString(value);
 	}
 
 	public int getParameterAsInteger(String name) {
@@ -351,227 +351,227 @@ public class InnerRequest extends Request {
 	}
 
 	public void setCookies(Series<Cookie> cookies) {
-		outer.setCookies(cookies);
+		real.setCookies(cookies);
 	}
 
 	public void setRanges(List<Range> ranges) {
-		outer.setRanges(ranges);
+		real.setRanges(ranges);
 	}
 
 	public boolean abort() {
-		return outer.abort();
+		return real.abort();
 	}
 
 	public void commit(Response response) {
-		outer.commit(response);
+		real.commit(response);
 	}
 
 	public ChallengeResponse getChallengeResponse() {
-		return outer.getChallengeResponse();
+		return real.getChallengeResponse();
 	}
 
 	public ClientInfo getClientInfo() {
-		return outer.getClientInfo();
+		return real.getClientInfo();
 	}
 
 	public Conditions getConditions() {
-		return outer.getConditions();
+		return real.getConditions();
 	}
 
 	public Series<Cookie> getCookies() {
-		return outer.getCookies();
+		return real.getCookies();
 	}
 
 	public Reference getHostRef() {
-		return outer.getHostRef();
+		return real.getHostRef();
 	}
 
 	public int getMaxForwards() {
-		return outer.getMaxForwards();
+		return real.getMaxForwards();
 	}
 
 	public Method getMethod() {
-		return outer.getMethod();
+		return real.getMethod();
 	}
 
 	public Uniform getOnResponse() {
-		return outer.getOnResponse();
+		return real.getOnResponse();
 	}
 
 	public Reference getOriginalRef() {
-		return outer.getOriginalRef();
+		return real.getOriginalRef();
 	}
 
 	public Protocol getProtocol() {
-		return outer.getProtocol();
+		return real.getProtocol();
 	}
 
 	public ChallengeResponse getProxyChallengeResponse() {
-		return outer.getProxyChallengeResponse();
+		return real.getProxyChallengeResponse();
 	}
 
 	public List<Range> getRanges() {
-		return outer.getRanges();
+		return real.getRanges();
 	}
 
 	public Reference getReferrerRef() {
-		return outer.getReferrerRef();
+		return real.getReferrerRef();
 	}
 
 	public Reference getResourceRef() {
-		return outer.getResourceRef();
+		return real.getResourceRef();
 	}
 
 	public Reference getRootRef() {
-		return outer.getRootRef();
+		return real.getRootRef();
 	}
 
 	public boolean isConfidential() {
-		return outer.isConfidential();
+		return real.isConfidential();
 	}
 
 	public boolean isExpectingResponse() {
-		return outer.isExpectingResponse();
+		return real.isExpectingResponse();
 	}
 
 	public void setChallengeResponse(ChallengeResponse challengeResponse) {
-		outer.setChallengeResponse(challengeResponse);
+		real.setChallengeResponse(challengeResponse);
 	}
 
 	public void setClientInfo(ClientInfo clientInfo) {
-		outer.setClientInfo(clientInfo);
+		real.setClientInfo(clientInfo);
 	}
 
 	public void setConditions(Conditions conditions) {
-		outer.setConditions(conditions);
+		real.setConditions(conditions);
 	}
 
 	public void setHostRef(Reference hostRef) {
-		outer.setHostRef(hostRef);
+		real.setHostRef(hostRef);
 	}
 
 	public void setHostRef(String hostUri) {
-		outer.setHostRef(hostUri);
+		real.setHostRef(hostUri);
 	}
 
 	public void setMaxForwards(int maxForwards) {
-		outer.setMaxForwards(maxForwards);
+		real.setMaxForwards(maxForwards);
 	}
 
 	public void setMethod(Method method) {
-		outer.setMethod(method);
+		real.setMethod(method);
 	}
 
 	public void setOnResponse(Uniform onResponseCallback) {
-		outer.setOnResponse(onResponseCallback);
+		real.setOnResponse(onResponseCallback);
 	}
 
 	public void setOriginalRef(Reference originalRef) {
-		outer.setOriginalRef(originalRef);
+		real.setOriginalRef(originalRef);
 	}
 
 	public void setProtocol(Protocol protocol) {
-		outer.setProtocol(protocol);
+		real.setProtocol(protocol);
 	}
 
 	public void setProxyChallengeResponse(ChallengeResponse challengeResponse) {
-		outer.setProxyChallengeResponse(challengeResponse);
+		real.setProxyChallengeResponse(challengeResponse);
 	}
 
 	public void setReferrerRef(Reference referrerRef) {
-		outer.setReferrerRef(referrerRef);
+		real.setReferrerRef(referrerRef);
 	}
 
 	public void setReferrerRef(String referrerUri) {
-		outer.setReferrerRef(referrerUri);
+		real.setReferrerRef(referrerUri);
 	}
 
 	public void setResourceRef(Reference resourceRef) {
-		outer.setResourceRef(resourceRef);
+		real.setResourceRef(resourceRef);
 	}
 
 	public void setResourceRef(String resourceUri) {
-		outer.setResourceRef(resourceUri);
+		real.setResourceRef(resourceUri);
 	}
 
 	public void setRootRef(Reference rootRef) {
-		outer.setRootRef(rootRef);
+		real.setRootRef(rootRef);
 	}
 
 	public String toString() {
-		return outer.toString();
+		return real.toString();
 	}
 
 	public void setAttributes(Map<String, Object> attributes) {
-		outer.setAttributes(attributes);
+		real.setAttributes(attributes);
 	}
 
 	public void setCacheDirectives(List cacheDirectives) {
-		outer.setCacheDirectives(cacheDirectives);
+		real.setCacheDirectives(cacheDirectives);
 	}
 
 	public void setRecipientsInfo(List recipientsInfo) {
-		outer.setRecipientsInfo(recipientsInfo);
+		real.setRecipientsInfo(recipientsInfo);
 	}
 
 	public void setWarnings(List<Warning> warnings) {
-		outer.setWarnings(warnings);
+		real.setWarnings(warnings);
 	}
 
 	public Map<String, Object> getAttributes() {
-		return outer.getAttributes();
+		return real.getAttributes();
 	}
 
 	public List<CacheDirective> getCacheDirectives() {
-		return outer.getCacheDirectives();
+		return real.getCacheDirectives();
 	}
 
 	public Date getDate() {
-		return outer.getDate();
+		return real.getDate();
 	}
 
 	public void setEntity(Representation entity) {
-		outer.setEntity(entity);
+		real.setEntity(entity);
 	}
 
 	public Representation getEntity() {
-		return outer.getEntity();
+		return real.getEntity();
 	}
 
 	public String getEntityAsText() {
-		return outer.getEntityAsText();
+		return real.getEntityAsText();
 	}
 
 	public Uniform getOnSent() {
-		return outer.getOnSent();
+		return real.getOnSent();
 	}
 
 	public List<RecipientInfo> getRecipientsInfo() {
-		return outer.getRecipientsInfo();
+		return real.getRecipientsInfo();
 	}
 
 	public List<Warning> getWarnings() {
-		return outer.getWarnings();
+		return real.getWarnings();
 	}
 
 	public boolean isEntityAvailable() {
-		return outer.isEntityAvailable();
+		return real.isEntityAvailable();
 	}
 
 	public void release() {
-		outer.release();
+		real.release();
 	}
 
 	public void setDate(Date date) {
-		outer.setDate(date);
+		real.setDate(date);
 	}
 
 	public void setEntity(String value, MediaType mediaType) {
-		outer.setEntity(value, mediaType);
+		real.setEntity(value, mediaType);
 	}
 
 	public void setOnSent(Uniform onSentCallback) {
-		outer.setOnSent(onSentCallback);
+		real.setOnSent(onSentCallback);
 	}
 
 	public void setCaller(InnerRequest caller) {

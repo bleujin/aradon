@@ -1,5 +1,6 @@
 package net.ion.bleujin;
 
+import net.ion.framework.util.Debug;
 import net.ion.radon.core.let.AbstractLet;
 
 import org.restlet.representation.Representation;
@@ -14,7 +15,8 @@ public class HelloWorldLet2 extends AbstractLet{
 
 	@Override
 	protected Representation myGet() throws Exception {
-		return new StringRepresentation("Hello World2 GET ");
+		Debug.line(getInnerRequest().getFormParameter()) ;
+		return new StringRepresentation("Hello World2 GET " + getInnerRequest().getParameter("name"));
 	}
 
 	@Override

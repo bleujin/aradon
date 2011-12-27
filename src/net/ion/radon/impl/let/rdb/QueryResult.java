@@ -8,13 +8,14 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.ion.framework.util.MapUtil;
+
 import org.restlet.representation.InputRepresentation;
 import org.restlet.representation.Representation;
 
-import net.ion.framework.util.MapUtil;
-
 public class QueryResult implements Serializable{
 
+	private static final long serialVersionUID = -4834641443133779120L;
 	private Map<String, Serializable> data = MapUtil.newMap() ;
 	private QueryResult() {
 	}

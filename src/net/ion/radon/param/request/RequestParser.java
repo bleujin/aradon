@@ -18,14 +18,14 @@ public class RequestParser {
 		return new RequestParser(param) ;
 	}
 
-	public final static ARadonRequest parse(String param){
+	public final static AradonRequest parse(String param){
 		return parse(MyParameter.create(param)) ;
 	}
 	
 	
-	public final static ARadonRequest parse(MyParameter param) {
+	public final static AradonRequest parse(MyParameter param) {
 		Object[] reqs = param.getParams("aradon") ;
-		ARadonRequest arequest = ARadonRequest.create() ; 
+		AradonRequest arequest = AradonRequest.create() ; 
 
 		for (int i=0 ; i < reqs.length ; i++) {
 			arequest.append(SingleRequest.create((JSONObject)reqs[i])) ;

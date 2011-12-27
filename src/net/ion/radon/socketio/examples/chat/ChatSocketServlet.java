@@ -24,17 +24,13 @@
 package net.ion.radon.socketio.examples.chat;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import net.ion.framework.util.Debug;
 import net.ion.radon.socketio.common.DisconnectReason;
@@ -44,7 +40,6 @@ import net.ion.radon.socketio.server.SocketIOInbound;
 import net.ion.radon.socketio.server.SocketIOServlet;
 import net.ion.radon.socketio.server.Transport;
 
-import org.eclipse.jetty.util.IO;
 import org.eclipse.jetty.util.ajax.JSON;
 
 public class ChatSocketServlet extends SocketIOServlet {

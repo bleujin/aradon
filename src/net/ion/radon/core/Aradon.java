@@ -6,7 +6,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.MalformedURLException;
+import java.net.Socket;
 import java.net.UnknownHostException;
 import java.sql.SQLException;
 import java.util.Collection;
@@ -26,7 +28,7 @@ import net.ion.framework.util.StringUtil;
 import net.ion.radon.core.EnumClass.FilterLocation;
 import net.ion.radon.core.EnumClass.IZone;
 import net.ion.radon.core.cli.DirConfig;
-import net.ion.radon.core.config.AttributeUtil;
+import net.ion.radon.core.config.ConnectorConfig;
 import net.ion.radon.core.config.Releasable;
 import net.ion.radon.core.config.XMLConfig;
 import net.ion.radon.core.context.OnEventObject;
@@ -35,6 +37,9 @@ import net.ion.radon.core.filter.IRadonFilter;
 import net.ion.radon.core.let.FilterUtil;
 import net.ion.radon.core.let.InnerRequest;
 import net.ion.radon.core.let.InnerResponse;
+import net.ion.radon.core.server.AradonJettyHelper;
+import net.ion.radon.core.server.ServerFactory;
+import net.ion.radon.core.server.AradonServerHelper;
 import net.ion.radon.impl.section.PluginConfig;
 
 import org.apache.commons.configuration.ConfigurationException;
@@ -55,7 +60,7 @@ import org.restlet.routing.Router;
 import org.restlet.service.ConverterService;
 import org.restlet.service.MetadataService;
 
-public class Aradon extends Component implements IService {
+public class Aradon extends Component implements IService{
 
 	private Map<String, SectionService> sections;
 	private List<WrapperReleaseObject> releasables;
@@ -65,9 +70,8 @@ public class Aradon extends Component implements IService {
 	public static ThreadLocal<DirConfig> DIR_LOCAL = new ThreadLocal<DirConfig>();
 
 	private XMLConfig rootConfig;
-	private Map<Integer, WrapperServer> servers = MapUtil.newMap();
 	private static Aradon CURRENT;
-
+	private AradonServerHelper serverHelper ;
 	
 	public final static String CONFIG_PORT = "aradon.config.port";
 
@@ -98,6 +102,8 @@ public class Aradon extends Component implements IService {
 		CURRENT = this;
 		setLogService(new RadonLogService());
 		getServers().add(Protocol.RIAP);		
+		
+		
 	}
 
 
@@ -288,15 +294,9 @@ public class Aradon extends Component implements IService {
 	public void stop() {
 		try {
 			super.stop();
+			
 			onEventFire(AradonEvent.STOP, this) ;
-			for (WrapperServer server : servers.values()) {
-				try {
-					server.stop();
-				} catch (Exception ignore) {
-					ignore.printStackTrace();
-				}
-			}
-			servers.clear();
+			if (serverHelper != null) serverHelper.stop() ;
 		} catch (Exception ignore) {
 			ignore.printStackTrace();
 			getLogger().warning(ignore.getMessage());
@@ -312,38 +312,50 @@ public class Aradon extends Component implements IService {
 
 	
 	public void startServer(int port) throws Exception {
-		if (! isStarted()) start() ;
-		
-		Server aradonServer = new Server(getContext(), Protocol.HTTP, port, this);
-
-		AradonServerHelper httpServer = new AradonServerHelper(aradonServer);
-		servers.put(port, new WrapperServer(aradonServer, httpServer));
-
-		XMLConfig cc = rootConfig.firstChild("server-config.connector-config");
-		Map<String, String> attr = cc.childMap("parameter", "name");
-		for (Entry<String, String> entry : attr.entrySet()) {
-			if (StringUtil.isNumeric(entry.getValue())) {
-				httpServer.getContext().getParameters().add(entry.getKey(), entry.getValue());
-				// Debug.info(entry.getKey(), entry.getValue());
-			} else {
-				Debug.warn(entry.getKey() + ":" + entry.getValue() + " is not int value. ignored");
-			}
+		if (alreadyUsePortNum(port)) {
+			Debug.warn(port + " port is occupied") ;
+			throw new IllegalArgumentException(port + " port is occupied") ;
 		}
+		
+		XMLConfig connConfig = rootConfig.firstChild("server-config.connector-config");
+		startServer(ConnectorConfig.create(connConfig, port)) ;
+	}
+	
+	public void startServer(ConnectorConfig cfig) throws Exception{
+		serverHelper = ServerFactory.create(getContext(), this, cfig);
+
+		serverHelper.start();
+		getServers().add(serverHelper.getReal()) ;
+
 		final Aradon aradon = this;
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			public void run() {
 				if (! aradon.isStopped()) aradon.slayReleasable();
 			}
 		});
+
+		getLogger().warning("aradon started : " + cfig.getPort());
 		
-		// this.start() ;
-		aradonServer.start();
-		// httpServer.start() ;
-		
-		getLogger().warning("aradon server started : " + port);
-		
-		rootContext.putAttribute(CONFIG_PORT, port) ;
+		rootContext.putAttribute(CONFIG_PORT, cfig.getPort()) ;
 		onEventFire(AradonEvent.START, this) ;
+	}
+
+	private boolean alreadyUsePortNum(int port) {
+		Socket s = null ;
+		try {
+			s = new Socket(InetAddress.getLocalHost(), port);
+			s.setSoTimeout(1000);
+			s.close() ;
+			return true ;
+		} catch (UnknownHostException e) {
+			e.getStackTrace() ;
+			return false ;
+		} catch (IOException e) {
+			e.getStackTrace() ;
+			return false ;
+		} finally {
+			if (s != null) try {s.close() ;} catch (IOException ignore) {ignore.printStackTrace();}
+		}
 	}
 
 	private void onEventFire(AradonEvent event, IService service) {
@@ -385,9 +397,6 @@ public class Aradon extends Component implements IService {
 		}
 	}
 
-	public Collection<WrapperServer> getServerList() {
-		return Collections.unmodifiableCollection(servers.values());
-	}
 
 	public void addAfterFilter(IRadonFilter filter) {
 		rootContext.addAfterFilter(this, filter);
@@ -430,13 +439,21 @@ public class Aradon extends Component implements IService {
 	}
 
 	public SectionService attach(String sectionName, XMLConfig xmlConfig) throws ConfigurationException, InstanceCreationException {
+		if (rootConfig == null){
+			try {
+				init(XMLConfig.BLANK) ;
+			} catch (SecurityException e) {
+				throw new InstanceCreationException(e) ;
+			} catch (FileNotFoundException e) {
+				throw new InstanceCreationException(e) ;
+			} catch (SQLException e) {
+				throw new InstanceCreationException(e) ;
+			} catch (IOException e) {
+				throw new InstanceCreationException(e) ;
+			}
+		}
 		
 		final SectionService section = SectionFactory.parse(this, sectionName, xmlConfig) ;
-//		
-//		final SectionService section = ("section".equals(xmlConfig.getTagName()) || xmlConfig.getTagName() == null) ? 
-//					RouterSection.create(this, sectionName, xmlConfig, PluginConfig.EMPTY) : 
-//					NotificationSection.create(this, sectionName, xmlConfig);
-		// final SectionService section = RouterSection.create(this, sectionName, xmlConfig, PluginConfig.EMPTY) ;
 		attach(section);
 		return section;
 	}
@@ -506,19 +523,22 @@ public class Aradon extends Component implements IService {
 
 	public ConverterService getConverterService(){
 		ConverterService result = rootContext.getAttributeObject(ConverterService.class.getCanonicalName(), ConverterService.class) ;
-		if (result != null){
+		if (result == null){
+			rootContext.putAttribute(ConverterService.class.getCanonicalName(), new ConverterService()) ;
+			return getConverterService() ;
+		} else {
 			return result ;
 		}
-		rootContext.putAttribute(ConverterService.class.getCanonicalName(), new ConverterService()) ;
-		return getConverterService() ;
 	}
 	
 	public MetadataService getMetadataService(){
 		MetadataService result = rootContext.getAttributeObject(MetadataService.class.getCanonicalName(), MetadataService.class) ;
 		if (result == null){
 			rootContext.putAttribute(MetadataService.class.getCanonicalName(), new MetadataService()) ;
+			return getMetadataService() ;
+		} else {
+			return result ;
 		}
-		return getMetadataService() ;
 	}
 
 	public boolean containsSection(String sectionName) {
@@ -526,25 +546,6 @@ public class Aradon extends Component implements IService {
 	}
 }
 
-class WrapperServer {
-	private Server server;
-	private HttpServerHelper shelper;
-
-	WrapperServer(Server server, HttpServerHelper shelper) {
-		this.server = server;
-		this.shelper = shelper;
-	}
-
-	public void stop() throws Exception {
-		server.stop();
-		HttpServerHelper.getConnectorService().stop();
-		shelper.stop();
-	}
-
-	public String toString() {
-		return server.toString();
-	}
-}
 
 class WrapperReleaseObject {
 

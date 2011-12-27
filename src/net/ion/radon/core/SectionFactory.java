@@ -7,16 +7,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.commons.configuration.ConfigurationException;
-
 import net.ion.framework.util.InstanceCreationException;
 import net.ion.framework.util.StringUtil;
-import net.ion.radon.core.config.AttributeUtil;
 import net.ion.radon.core.config.XMLConfig;
 import net.ion.radon.core.let.FilterUtil;
 import net.ion.radon.impl.section.BasePathInfo;
 import net.ion.radon.impl.section.PathInfo;
 import net.ion.radon.impl.section.PluginConfig;
+
+import org.apache.commons.configuration.ConfigurationException;
 
 public class SectionFactory {
 

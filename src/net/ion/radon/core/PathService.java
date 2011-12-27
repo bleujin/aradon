@@ -8,7 +8,6 @@ import java.util.Map;
 import net.ion.radon.core.EnumClass.FilterLocation;
 import net.ion.radon.core.filter.IRadonFilter;
 import net.ion.radon.impl.section.BasePathInfo;
-import net.ion.radon.impl.section.PathInfo;
 
 public class PathService implements IService {
 
@@ -28,6 +27,10 @@ public class PathService implements IService {
 
 	public BasePathInfo getPathInfo() {
 		return pinfo;
+	}
+	
+	public String[] getPathURL(){
+		return pinfo.getUrls() ;
 	}
 	
 	public void restart() {

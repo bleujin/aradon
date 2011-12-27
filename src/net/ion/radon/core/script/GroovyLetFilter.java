@@ -5,18 +5,10 @@ import groovy.lang.Script;
 import groovy.util.GroovyScriptEngine;
 import groovy.util.ResourceException;
 import groovy.util.ScriptException;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.Reader;
-
-import net.ion.framework.util.Debug;
 import net.ion.radon.core.IService;
-import net.ion.radon.core.EnumClass.FilterLocation;
 import net.ion.radon.core.filter.IFilterResult;
 import net.ion.radon.core.filter.IRadonFilter;
 
-import org.codehaus.groovy.jsr223.GroovyScriptEngineImpl;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.Status;

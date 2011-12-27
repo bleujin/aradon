@@ -1,7 +1,7 @@
 package net.ion.radon.core.filter;
 
 
-import static net.ion.radon.core.RadonAttributeKey.*;
+import static net.ion.radon.core.RadonAttributeKey.REQUEST_CONTEXT;
 
 import java.util.Map;
 

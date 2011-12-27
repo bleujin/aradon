@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import org.junit.Ignore;
+import org.junit.Test;
 import org.restlet.Client;
 import org.restlet.Request;
 import org.restlet.Response;
@@ -11,7 +13,7 @@ import org.restlet.data.CacheDirective;
 import org.restlet.data.Form;
 import org.restlet.data.Method;
 import org.restlet.data.Protocol;
-import org.restlet.engine.header.CacheDirectiveReader;
+import org.restlet.engine.http.header.CacheDirectiveReader;
 
 import net.ion.framework.message.MessageChannel;
 import net.ion.framework.util.Debug;
@@ -20,8 +22,11 @@ import net.ion.framework.util.NumberUtil;
 import net.ion.radon.core.RadonAttributeKey;
 import junit.framework.TestCase;
 
-public class TestClientCache extends TestCase {
+public class TestClientCache {
 
+	
+	@Ignore(" if needed")
+	@Test
 	public void testCallDaum() throws Exception {
 
 		AradonClient ac = AradonClientFactory.create("http://icon.daumcdn.net");
@@ -51,6 +56,8 @@ public class TestClientCache extends TestCase {
 
 	}
 
+	@Ignore(" if needed")
+	@Test
 	public void testCD() throws Exception {
 		CacheDirectiveReader cdr1 = new CacheDirectiveReader("no-cache, private, no-store");
 

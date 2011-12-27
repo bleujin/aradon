@@ -18,7 +18,7 @@ public class GetLet extends AbstractLet{
 
 	@Override
 	public Representation myPost(Representation entity) throws Exception {
-		return new StringRepresentation(GetLet.class.getName());
+		return new StringRepresentation("Hi");
 	}
 
 	@Override

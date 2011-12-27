@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="bleujin-SV" name="net.ion.radon.TestAllAradon" tests="0" time="0.036" timestamp="2011-12-27T08:26:51">
+  <properties>
+    <property name="java.vendor" value="Sun Microsystems Inc." />
+    <property name="sun.java.launcher" value="SUN_STANDARD" />
+    <property name="eclipse.pdebuild.templates" value="/C:/eclipse/plugins/org.eclipse.pde.build_3.5.2.R35x_20100114/templates/" />
+    <property name="sun.management.compiler" value="HotSpot Client Compiler" />
+    <property name="os.name" value="Windows 7" />
+    <property name="sun.boot.class.path" value="C:\Program Files (x86)\Java\jre6\lib\resources.jar;C:\Program Files (x86)\Java\jre6\lib\rt.jar;C:\Program Files (x86)\Java\jre6\lib\sunrsasign.jar;C:\Program Files (x86)\Java\jre6\lib\jsse.jar;C:\Program Files (x86)\Java\jre6\lib\jce.jar;C:\Program Files (x86)\Java\jre6\lib\charsets.jar;C:\Program Files (x86)\Java\jre6\classes" />
+    <property name="TODAY" value="December 27 2011" />
+    <property name="build.number" value="6" />
+    <property name="sun.desktop" value="windows" />
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="ant.home" value="C:\eclipse\plugins\org.apache.ant_1.7.1.v20090120-1145" />
+    <property name="java.runtime.version" value="1.6.0_20-b02" />
+    <property name="version.number" value="0" />
+    <property name="user.name" value="bleujin" />
+    <property name="publishDir" value="./publish" />
+    <property name="user.language" value="ko" />
+    <property name="sun.boot.library.path" value="C:\Program Files (x86)\Java\jre6\bin" />
+    <property name="manifest.main.class" value="net.ion.radon.ARadonServer" />
+    <property name="ant.project.name" value="builder_for_aradon" />
+    <property name="DSTAMP" value="20111227" />
+    <property name="java.version" value="1.6.0_20" />
+    <property name="user.timezone" value="" />
+    <property name="sun.arch.data.model" value="32" />
+    <property name="java.endorsed.dirs" value="C:\Program Files (x86)\Java\jre6\lib\endorsed" />
+    <property name="sun.cpu.isalist" value="pentium_pro+mmx pentium_pro pentium+mmx pentium i486 i386 i86" />
+    <property name="sun.jnu.encoding" value="MS949" />
+    <property name="file.encoding.pkg" value="sun.io" />
+    <property name="file.separator" value="\" />
+    <property name="java.specification.name" value="Java Platform API Specification" />
+    <property name="java.class.version" value="50.0" />
+    <property name="user.country" value="KR" />
+    <property name="java.home" value="C:\Program Files (x86)\Java\jre6" />
+    <property name="java.vm.info" value="mixed mode, sharing" />
+    <property name="ant.file" value="C:\Users\bleujin\workspace\ARadon\build.xml" />
+    <property name="os.version" value="6.1" />
+    <property name="path.separator" value=";" />
+    <property name="java.vm.version" value="16.3-b01" />
+    <property name="user.variant" value="" />
+    <property name="ant.library.dir" value="C:\eclipse\plugins\org.apache.ant_1.7.1.v20090120-1145\lib" />
+    <property name="manifest.classpath" value="./" />
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob" />
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit" />
+    <property name="ant.file.builder_for_aradon" value="C:\Users\bleujin\workspace\ARadon\build.xml" />
+    <property name="eclipse.pdebuild.scripts" value="/C:/eclipse/plugins/org.eclipse.pde.build_3.5.2.R35x_20100114/scripts/" />
+    <property name="user.home" value="C:\Users\bleujin" />
+    <property name="java.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="binDir" value="./bin" />
+    <property name="java.library.path" value="C:\Program Files (x86)\Java\jre6\bin;.;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:/Program Files (x86)/Java/jre6/bin/client;C:/Program Files (x86)/Java/jre6/bin;C:\Program Files\Common Files\Microsoft Shared\Windows Live;C:\Program Files (x86)\Common Files\Microsoft Shared\Windows Live;C:\oracle\product\10.2.0\client_1\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Common Files\Roxio Shared\DLLShared\;C:\Program Files (x86)\Common Files\Roxio Shared\10.0\DLLShared\;C:\Program Files\MySQL\MySQL Server 5.5\bin;C:\Program Files (x86)\Windows Live\Shared;C:\Program Files\TortoiseSVN\bin;C:\Program Files\TortoiseGit\bin;C:\Program Files (x86)\Git\cmd;C:\Program Files (x86)\QuickTime\QTSystem\;C:\java\jdk5_22\bin;C:\Program Files\Common Files\Microsoft Shared\Windows Live;C:\Program Files (x86)\Common Files\Microsoft Shared\Windows Live;C:\oracle\product\10.2.0\client_1\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Common Files\Roxio Shared\DLLShared\;C:\Program Files (x86)\Common Files\Roxio Shared\10.0\DLLShared\;C:\Program Files\MySQL\MySQL Server 5.5\bin;C:\Program Files (x86)\Windows Live\Shared;C:\Program Files\TortoiseSVN\bin;C:\Program Files\TortoiseGit\bin;C:\Program Files (x86)\Git\cmd;C:\Program Files (x86)\QuickTime\QTSystem\;" />
+    <property name="java.vendor.url" value="http://java.sun.com/" />
+    <property name="java.vm.vendor" value="Sun Microsystems Inc." />
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment" />
+    <property name="java.class.path" value="C:\Users\bleujin\workspace\ARadon\aradon_lib\imsi\junit4_5.jar;C:\Users\bleujin\workspace\ARadon\bin;C:\Users\bleujin\workspace\ARadon\aradon_lib\aradon\embed\ant.jar;C:\Users\bleujin\workspace\ARadon\aradon_lib\aradon\embed\apache_extend_fat.jar;C:\Users\bleujin\workspace\ARadon\aradon_lib\aradon\embed\core_fat.jar;C:\Users\bleujin\workspace\ARadon\aradon_lib\aradon\embed\groovy-all-1.7.6.jar;C:\Users\bleujin\workspace\ARadon\aradon_lib\aradon\embed\iframework_2.2.jar;C:\Users\bleujin\workspace\ARadon\aradon_lib\aradon\embed\jci_fat.jar;C:\Users\bleujin\workspace\ARadon\aradon_lib\aradon\embed\jetty_fat.jar;C:\Users\bleujin\workspace\ARadon\aradon_lib\aradon\embed\netty-3.2.6.Final.jar;C:\Users\bleujin\workspace\ARadon\aradon_lib\aradon\embed\org.apache.felix.karaf.shell.console-1.4.0.jar;C:\Users\bleujin\workspace\ARadon\aradon_lib\aradon\embed\org.jboss.netty.jar;C:\Users\bleujin\workspace\ARadon\aradon_lib\aradon\embed\rest_fat.jar;C:\Users\bleujin\workspace\ARadon\aradon_lib\aradon\embed\rhino_fat.jar;C:\Users\bleujin\workspace\ARadon\aradon_lib\aradon\embed\servlet-api.jar;C:\Users\bleujin\workspace\ARadon;C:\Program Files (x86)\Java\jre6\lib\ext\QTJava.zip;C:\eclipse\plugins\org.apache.ant_1.7.1.v20090120-1145\lib\ant-launcher.jar;C:\eclipse\plugins\org.apache.ant_1.7.1.v20090120-1145\lib\ant.jar;C:\eclipse\plugins\org.apache.ant_1.7.1.v20090120-1145\lib\ant-junit.jar" />
+    <property name="ant.version" value="Apache Ant version 1.7.1 compiled on June 27 2008" />
+    <property name="TSTAMP" value="1726" />
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+    <property name="java.vm.specification.version" value="1.0" />
+    <property name="sun.cpu.endian" value="little" />
+    <property name="sun.os.patch.level" value="" />
+    <property name="eclipse.pdebuild.home" value="/C:/eclipse/plugins/org.eclipse.pde.build_3.5.2.R35x_20100114/./" />
+    <property name="java.io.tmpdir" value="C:\Users\bleujin\AppData\Local\Temp\" />
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi" />
+    <property name="os.arch" value="x86" />
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment" />
+    <property name="java.ext.dirs" value="C:\Program Files (x86)\Java\jre6\lib\ext;C:\Windows\Sun\Java\lib\ext" />
+    <property name="user.dir" value="C:\Users\bleujin\workspace\ARadon" />
+    <property name="line.separator" value="
+" />
+    <property name="java.vm.name" value="Java HotSpot(TM) Client VM" />
+    <property name="basedir" value="C:\Users\bleujin\workspace\ARadon" />
+    <property name="baseDir" value="." />
+    <property name="ant.java.version" value="1.6" />
+    <property name="TODAY_MY" value="12/27/2011 05:26" />
+    <property name="ant.core.lib" value="C:\eclipse\plugins\org.apache.ant_1.7.1.v20090120-1145\lib\ant.jar" />
+    <property name="file.encoding" value="MS949" />
+    <property name="java.specification.version" value="1.6" />
+  </properties>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

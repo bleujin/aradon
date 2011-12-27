@@ -5,6 +5,7 @@ import static net.ion.radon.core.RadonAttributeKey.REQUEST_CONTEXT;
 import java.util.Collection;
 import java.util.Collections;
 
+import net.ion.framework.util.Debug;
 import net.ion.framework.util.StringUtil;
 import net.ion.radon.core.let.InnerRequest;
 import net.ion.radon.impl.section.BasePathInfo;
@@ -70,8 +71,13 @@ public class RouterSection extends SectionService{
 					return;
 				}
 			}
-			if (pathReference != null && "/favicon.ico".equals(pathReference.toString())) return ;
-			throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND,  "section:" + getName() + ", " + "path:" + pathReference);
+			if (pathReference != null && "/favicon.ico".equals(pathReference.toString())) {
+				response.setStatus(Status.SUCCESS_NO_CONTENT) ;
+				return ;
+			}
+			response.setStatus(Status.CLIENT_ERROR_NOT_FOUND) ;
+			
+			// throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND,  "section:" + getName() + ", " + "path:" + pathReference);
 		} catch (ResourceException ex) {
 			throw ex;
 		} catch (Exception ex) {

@@ -1,0 +1,7 @@
+#!/bin/sh
+
+GROOVY_APP_NAME=Svg2Groovy
+DIRNAME=`dirname "$0"`
+. "$DIRNAME/startGroovy"
+
+startGroovy groovy.swing.j2d.svg.Svg2Groovy "$@"

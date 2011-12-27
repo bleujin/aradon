@@ -22,6 +22,15 @@ public class SayHello extends IRadonFilter {
 		Debug.debug("Hello", request.getClass());
 
 		return IFilterResult.CONTINUE_RESULT;
-	} 
+	}
+	
+	public int hashCode(){
+		return getClass().getCanonicalName().hashCode() ;
+	}
+	
+	public boolean equals(Object obj){
+		if (obj instanceof SayHello) return true ;
+		return false ;
+	}
 
 }

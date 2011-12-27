@@ -84,13 +84,13 @@ SOAP Çì´õ, ¹Ùµð, FaultµîÀÇ envelope ¹æ¹ýÀÚÃ¼µµ ±×·¸°í º¸¾È, Æ®·£Àè¼Ç µî ºÎ¼öÀûÀÎ
 
 
 
-±×·¡¼­ Àú´Â ¼­ºñ½º ÇÃ·§ÆûÀ¸·Î SOAP À¥¼­ºñ½ºº¸´Ù´Â REST CallÀ» »ý°¢ÇÏ°Ô µÇ¾ú½À´Ï´Ù.  
+±×·¡¼­ Àú´Â ¼­ºñ½º ÇÃ·§ÆûÀÇ ÇÁ·ÎÅäÄÝ ¹æ½ÄÀ¸·Î SOAP À¥¼­ºñ½ºº¸´Ù´Â REST CallÀ» »ý°¢ÇÏ°Ô µÇ¾ú½À´Ï´Ù.  
 RESTful À¥ ¼­ºñ½ºÀÇ °­Á¡Àº ´Ü¼øÇÔ°ú °£°áÇÔÀÔ´Ï´Ù. Àß ±¸ÇöµÈ RESTful À¥¼­ºñ½º´Â °£°áÇÏ°í ÀÏ°üµÈ ÀÎÅÍÆäÀÌ½º(Uniform Interface)±¸Á¶¸¦ Áö´Ï°í ÀÖ¾î ¾î·Á¿ò ¾øÀÌ ½±°Ô »ç¿ëÀÌ °¡´ÉÇÏ´Ù.
 
 ¹°·Ð RESTfulÀº º¸¾È, Á¤Ã¥ µî¿¡ Ç¥ÁØÀÌ ¾ø±â ¶§¹®¿¡ ÀÌ·±°Í±îÁö °í·ÁÇØ¼­ Ãß°¡ ±¸ÇöÀ» ÇØ¾ß ÇÑ´Ùµç°¡ HTTP Protocol¿¡ ÀÇÁ¸ÀûÀÌ¶ó´Â µîÀÇ ´ÜÁ¡ÀÌ ÀÖ½À´Ï´Ù. 
-±×·¯³ª RESTÀÇ °¡Àå Å« ÀåÁ¡ÀÎ °£°áÇÔÀÇ Èûµµ ¹«½ÃÇÒ ¼ö ¾ø´Ù.
+±×·¯³ª RESTÀÇ °¡Àå Å« ÀåÁ¡ÀÎ °£°áÇÔÀÇ Èûµµ ¹«½ÃÇÒ ¼ö ¾ø½À´Ï´Ù.
 
-´Ü¼øÇÔ °£°áÇÔÀº Á÷°üÀûÀÌ¸ç ½±°Ô °³¹ßÇÏ°Å³ª »ç¿ëÇÒ ¼ö ÀÖ¾î ±â¼úÀÇ ÀüÆÄ ¼Óµµ°¡ ±²ÀåÈ÷ ºü¸¨´Ï´Ù. ´Ü¼øÇÔÀÌ³ª °£°áÇÔÀ» °¡Áö ±â¼úÀº ±»ÀÌ µû·Î ¹è¿ìÁö ¾Ê´õ¶óµµ ¹Ù·Î »ç¿ëÇÒ ¼ö ÀÖ´Â ÈûÀÌ ÀÖ°í,
+´Ü¼øÇÔ °£°áÇÔÀº Á÷°üÀûÀÌ¸ç ½±°Ô °³¹ßÇÏ°Å³ª »ç¿ëÇÒ ¼ö ÀÖ¾î ±â¼úÀÇ ÀüÆÄ ¼Óµµ°¡ ±²ÀåÈ÷ ºü¸¨´Ï´Ù. ´Ü¼øÇÔÀÌ³ª °£°áÇÔÀ» °¡Áö´Â ±â¼úÀº ±»ÀÌ µû·Î ¹è¿ìÁö ¾Ê´õ¶óµµ ¹Ù·Î »ç¿ëÇÒ ¼ö ÀÖ´Â ÈûÀÌ ÀÖ°í,
 µû¶ó¼­ ¾ÆÅ°ÅØÃ³³ª ¼³°è¿¡ ÀÖ¾î ´Ü¼øÇÔ, °£°áÇÔÀ» ¸Å¿ì °­Á¶ÇÏ´Â ÀÌÀ¯°¡ ¿©±â¿¡ ÀÖ½À´Ï´Ù.
 
 ¹°·Ð µÎ °¡ÁöÀÇ ±â¼ú Áß¿¡ ÇÑ °¡Áö¸¸ °íÁýÇÏ°í »ç¿ëÇÒ ÇÊ¿ä´Â ¾ø½À´Ï´Ù. 
@@ -100,7 +100,8 @@ RESTful À¥ ¼­ºñ½ºÀÇ °­Á¡Àº ´Ü¼øÇÔ°ú °£°áÇÔÀÔ´Ï´Ù. Àß ±¸ÇöµÈ RESTful À¥¼­ºñ½º´Â °
    * GoogleÀº SOAP ±â¼ú¿¡ ´ëÇØ ±×¸® ÁÁ°Ô º¸Áö ¾Ê°í ÀÖÀ¸¸ç ´õ ÀÌ»ó SOAP API¿¡ ´ëÇÑ Áö¿øÀ» ÇÏÁö ¾Ê´Â´Ù. (http://radar.oreilly.com/archives/2006/12/google-depreciates-SOAP-API.html)
    * ¾ßÈÄ´Â ÇöÀç±îÁö SOAP API¸¦ Á¦°øÇÒ °èÈ¹ÀÌ ¾ø´Ù. (http://developer.yahoo.com/faq/#soap)
 
-°á±¹ Àú´Â REST¹æ½ÄÀÇ Service PlatformÀ» ¸¸µé±â·Î ÇÕ´Ï´Ù. 
+°á±¹ Àú´Â REST¹æ½ÄÀ¸·Î ¸Þ½ÃÁö¸¦ ÁÖ°í ¹Þ´Â Service PlatformÀ» ¸¸µé±â·Î ÇÕ´Ï´Ù. 
+
 
 
 
@@ -145,32 +146,31 @@ HTML±Ô¾à°ú CSS±Ô¾àÀ» µû¸£¸é Á»´õ ½±´Ù°í´Â ÇÏÁö¸¸ È­¸é ÅÛÇÃ¸´µµ ¸Å¹ø ¹Ù²î¸ç µî·ÏÇ
 ÀÌÁø ÆÄÀÏÀº ±×·¸´Ù°í Ä¡°í ¾î¶² ¼­ºñ½º´Â Á¦¸ñ°ú ³»¿ëÀ» ÀúÀåÇÏ°í ¾î¶² ¼­ºñ½º´Â Á¦¸ñ°ú ³»¿ë°ú ÅÂ±×¸¦ ÀúÀåÇÑ´Ù°í ÇØº¸ÁÒ
 ÀÌ ¼­ºñ½º´Â Àç»ç¿ëÀÌ µÉ¼ö ÀÖÀ»±î¿ä? ¸Å¹ø ºñ½ÁÇÑ Å×ÀÌºí°ú ºñ½ÁÇÑ Äõ¸®¸¦ Â¥´Â ÀÏ¿¡ ÁöÃÆ´Ù¸é ÀÌÁ¦ ±×·±ÀÏÀ» "ÀÏ¹ÝÀûÀ¸·Î" ÇÒ¼ö ÀÖ´Â ¼­ºñ½º¸¦ ¸¸µå´Â°É »ý°¢ÇØ ºÁ¾ß°ÚÁÒ.   
 
-¾Õ¿¡¼­ Á¦°¡ ARadonÀº °¢°¢ÀÇ ¸Ó¸®¿¡ ÇØ´çÇÏ´Â ¼­ºñ½º¸¦ Rest ¹æ½ÄÀ¸·Î ¿¬°á½ÃÅ°ÁÖ´Â Rest Service PlatformÀÇ ¿ªÇÒÀ» ÇÑ´Ù. 
+¾Õ¿¡¼­ Á¦°¡ ARadonÀº °¢°¢ÀÇ ¸Ó¸®¿¡ ÇØ´çÇÏ´Â ¼­ºñ½º¸¦ Rest ¹æ½ÄÀ¸·Î ¿¬°á½ÃÅ°ÁÖ´Â Rest Service PlatformÀÇ ¿ªÇÒÀ» ÇÕ´Ï´Ù. 
 
 
 
 ¿¹ÄÁ´ë
 
-ÀÌ·¯ÇÑ Á¶±ÝÁ¶±ÝÀÇ Â÷ÀÌ´Â °Ô½ÃÆÇ¼­ºñ½º¶ó´Â ÇÏ³ªÀÇ ¼­ºñ½º·Î °áÇÕµÇ¾úÀ»¶§  Å« Â÷ÀÌ¸¦ ÀÏÀ¸Å°°Ô µÇ¸ç ¼­ºñ½ºÀÇ ÀçÈ°¿ëÀÌ ¸Å¿ì ¾î·Æ°Ô ¸¸µç´Ù.
-(¹°·Ð ÄÚµå º¹»ç¸¦ ÅëÇÑ ÀçÈ°¿ëµµ ÀçÈ°¿ëÀÌ¶ó¸é ÀçÈ°¿ëÀÌ¶ó°í ÇÒ¼ö´Â ÀÖ°ÚÁö¸¸ ±× °æ¿ì ´Ù½Ã Å×½ºÆ®ºÎÅÍ ¸¹Àº ÀÛ¾÷ÀÌ ´Ù½Ã ¿ä±¸µÈ´Ù. ) 
+ÀÌ·¯ÇÑ Á¶±ÝÁ¶±ÝÀÇ Â÷ÀÌ´Â °Ô½ÃÆÇ¼­ºñ½º¶ó´Â ÇÏ³ªÀÇ ¼­ºñ½º·Î °áÇÕµÇ¾úÀ»¶§  Å« Â÷ÀÌ¸¦ ÀÏÀ¸Å°°Ô µÇ¸ç ¼­ºñ½ºÀÇ ÀçÈ°¿ëÀÌ ¸Å¿ì ¾î·Æ°Ô ¸¸µì´Ï´Ù.
+(¹°·Ð ÄÚµå º¹»ç¸¦ ÅëÇÑ ÀçÈ°¿ëµµ ÀçÈ°¿ëÀÌ¶ó¸é ÀçÈ°¿ëÀÌ¶ó°í ÇÒ¼ö´Â ÀÖ°ÚÁö¸¸ ±× °æ¿ì ´Ù½Ã Å×½ºÆ®ºÎÅÍ ¸¹Àº ÀÛ¾÷ÀÌ ´Ù½Ã ¿ä±¸µË´Ï´Ù. ) 
 
-ÀÌ·¯ÇÑ ¼­ºñ½ºÀÇ Áßº¹ÀÇ ¹®Á¦¿¡ ´ëÇÏ¿© ÀÌ¹Ì À¥¼­ºñ½º¶ó´Â ±â¼úÀÌ ³ª¿ÍÀÖ´Ù. 
+ÀÌ·¯ÇÑ ¼­ºñ½ºÀÇ Áßº¹ÀÇ ¹®Á¦¿¡ ´ëÇÏ¿© ÀÌ¹Ì À¥¼­ºñ½º¶ó´Â ±â¼úÀÌ ³ª¿ÍÀÖ½À´Ï´Ù. 
 ÇÏÁö¸¸ ´©°¡ ¾îµð¼­ sequence ¼­ºñ½º¸¦ ÇÏ´ÂÁö ÀÏ´Ü Ã£¾Æ¾ß ÇÏ´Â ¹®Á¦°¡ ÀÖ°í 
-±× ¼­ºñ½º°¡ ¾ÈÁ¤ÀûÀÌ¸é¼­ »¡¶ó¾ß ÇÏ¸ç..
-ÃÖ¼Ò 5°³ ÀÌ»óÀÇ ¼­ºñ½ºÀÇ °áÇÕ Áï 5°³ ÀÌ»óÀÇ network IO ¼Óµµ¸¦ °¨³»ÇØ¾ß ÇÑ´Ù. 
-°Ô´Ù°¡ WebService ÇÁ·ÎÅäÄÝÀº ¹è¿ì±âµµ ±×¸® ¸¸¸¸Ä¡ ¾Ê´Ù. 
+±× ¼­ºñ½º°¡ ¾ÈÁ¤ÀûÀÌ¸é¼­ »¡¶ó¾ß ÇÏ¸ç..ÃÖ¼Ò 5°³ ÀÌ»óÀÇ ¼­ºñ½ºÀÇ °áÇÕ Áï 5°³ ÀÌ»óÀÇ network IO ¼Óµµ¸¦ °¨³»ÇØ¾ß ÇÕ´Ï´Ù. 
+°Ô´Ù°¡ WebService ÇÁ·ÎÅäÄÝÀº ¹è¿ì±âµµ ±×¸® ¸¸¸¸Ä¡ ¾Ê½À´Ï´Ù. 
 
 
 
 
 
-Áö±Ý±îÁö °³¹ßÀÚÀÇ ¹®Á¦ Áï °³¹ß»óÀÇ ¹®Á¦¿¡ ´ëÇØ¼­¸¸ ¾ê±âÇß¾ú´Ù.
+Áö±Ý±îÁö °³¹ßÀÚÀÇ ¹®Á¦ Áï °³¹ß»óÀÇ ¹®Á¦¿¡ ´ëÇØ¼­¸¸ ¾ê±âÇß½À´Ï´Ù.
 ±×·¯³ª ³ÃÁ¤ÇÏ°Ô µé¸±Áö ¸ð¸£Áö¸¸ °í°´Àº ÀÌ·± ¹®Á¦¿¡ °ü½ÉÀÌ ¾ø½À´Ï´Ù. °í°´ÀÇ ÀÔÀå¿¡¼­ Áß¿äÇÑÁ¡Àº ¹«¾ùÀÏ±î¿ä?  
 
 
-°³¹ßÀÚ¸¦ Ã¤ÂïÁúÇØ¼­ ±× ±â´ÉÀ» µÎ¹ø ¸¸µéµç °í°´ÀÔÀå¿¡¼­ ±×°Ç º°·Î °ü½ÉÀÌ ¾ø´Ù. 
-´Ù¸¸ °í°´ÀÌ °ü½ÉÀÖ¾î¾ß ÇÒ ¹®Á¦´Â ±×·¡ ¿Ã¶ó°¬´Ù Ä¡ÀÚ ±× ÆÄÀÏµéÀ» ´Ù¸¥ ¼­ºñ½º¿¡¼­ ½±°Ô ÀÌ¿ëÇÒ¼ö ÀÖ´Â°¡? ¿¡ ´ëÇÑ ¹®Á¦ÀÌ´Ù. 
-Á¦°¡ ¿À·§µ¿¾È °³¹ßÀÚ·Î¼­ »ýÈ°ÇÏ¸é¼­ ´À³¤Á¡Àº °í°´Àº ±×·¸°Ô »ý°¢ÇÏÁö ¾ÊÁö¸¸ °áÄÚ ¼ÒÇÁÆ®¿þ¾î´Â ¼ÒÇÁÆ® ÇÏÁö ¾Ê´Â´Ù´Â »ç½ÇÀÔ´Ï´Ù. 
+°³¹ßÀÚ¸¦ Ã¤ÂïÁúÇØ¼­ ±× ±â´ÉÀ» µÎ¹ø ¸¸µéµç °í°´ÀÔÀå¿¡¼­ ±×°Ç º°·Î °ü½ÉÀÌ ¾ø½À´Ï´Ù. 
+´Ù¸¸ °í°´ÀÌ °ü½ÉÀÖ¾î¾ß ÇÒ ¹®Á¦´Â ±×·¡ ¿Ã¶ó°¬´Ù Ä¡ÀÚ ±× ÆÄÀÏµéÀ» ´Ù¸¥ ¼­ºñ½º¿¡¼­ ½±°Ô ÀÌ¿ëÇÒ¼ö ÀÖ´Â°¡? ¿¡ ´ëÇÑ ¹®Á¦ÀÔ´Ï´Ù. 
+Á¦°¡ ¿À·§µ¿¾È °³¹ßÀÚ·Î¼­ »ýÈ°ÇÏ¸é¼­ ´À³¤Á¡Àº °áÄÚ ¼ÒÇÁÆ®¿þ¾î´Â ¼ÒÇÁÆ® ÇÏÁö ¾Ê´Â´Ù´Â »ç½ÇÀÔ´Ï´Ù. 
 
 ¿©±â¿¡ ÀÌ ÇÊµå ÇÏ³ª¸¸ Ãß°¡ÇØ ÁÖ¼¼¿ä ¶ó´Â ¿ä±¸»çÇ×ÀÌ °íÀÛ ¸îºÐ ¸¹¾Æ¾ß ¸î½Ã°£ÀÌ¸é µÉ°Í °°Àºµ¥ ¿Ö °³¹ßÀÚ°¡ ³­°¨ÇØ ÇÏ°í 
 ¸î°³ ÀÌ°Í Àú°Í °íÃÄ´Þ¶ó°í Çß´õ´Ï ½É°¢ÇÑ ¾ó±¼·Î ±×·³ Àü¸é Àç°³¹ßÇØ¾ß ÇÑ´Ù´Â È²´çÇÑ ¼Ò¸®¸¦ ÇÏ´ÂÁö ÀÌÇØÇÒ¼ö ¾ø¾î ÇÏ´Â °æ¿ì¸¦ ¸¹ÀÌ º¾´Ï´Ù. 
@@ -216,14 +216,14 @@ HTML±Ô¾à°ú CSS±Ô¾àÀ» µû¸£¸é Á»´õ ½±´Ù°í´Â ÇÏÁö¸¸ È­¸é ÅÛÇÃ¸´µµ ¸Å¹ø ¹Ù²î¸ç µî·ÏÇ
  
 
 
-½ÃÀåÀÇ °üÁ¡¿¡¼­ º¸ÀÚ. 
+½ÃÀåÀÇ °üÁ¡¿¡¼­ º¸¸é. 
 
-±¸±Û°ú MS ±×¸®°í IBM, ¾Æ¸¶Á¸µî ¼ÒÇÁÆ®¿þ¾î È¸»ç¿¡¼­ Å¬¶ó¿ìµå ¼­ºñ½º¸¦ ÇÑ´Ù. 
+±¸±Û°ú MS ±×¸®°í IBM, ¾Æ¸¶Á¸µî ¼ÒÇÁÆ®¿þ¾î È¸»ç¿¡¼­ Å¬¶ó¿ìµå ¼­ºñ½º¸¦ ÇÕ´Ï´Ù. 
 ¾Û ¼­ºñ½º 
-½º¸¶Æ®Æù ±×¸®°í ÆÐµå ½Ã¸®ÁîµîÀÇ »õ·Î¿î ÇÃ·§ÆûÀÌ ¶ß°í ÀÖ´Ù. 
-±¸±ÛÀº Å©·ÒÀÌ¶ó´Â ºê¶ó¿ìÀú¸¦ ³»³õ¾Ò´Ù. 
-Çâ»óµÈ ³×Æ®¿öÅ© ±×¸®°í Á¶¹ÐÇÑ ¹«¼± ¸ÁÀÌ È®´ëµÇ°í ÀÖ´Ù. 
-Àú°¡ PC¿Í UMPC ³ëÆ®ºÏ ¾÷Ã¼µéÀÌ ´Ù½Ã ³ªÅ¸³­´Ù. 
+½º¸¶Æ®Æù ±×¸®°í ÆÐµå ½Ã¸®ÁîµîÀÇ »õ·Î¿î ÇÃ·§ÆûÀÌ ¶ß°í ÀÖ½À´Ï´Ù. 
+±¸±ÛÀº Å©·ÒÀÌ¶ó´Â ºê¶ó¿ìÀú¸¦ ³»³õ¾Ò½À´Ï´Ù. 
+Çâ»óµÈ ³×Æ®¿öÅ© ±×¸®°í Á¶¹ÐÇÑ ¹«¼± ¸ÁÀÌ È®´ëµÇ°í ÀÖ½À´Ï´Ù. 
+Àú°¡ PC¿Í UMPC ³ëÆ®ºÏ ¾÷Ã¼µéÀÌ ´Ù½Ã ³ªÅ¸³³´Ï´Ù. 
  
  
  ..... -> 
@@ -372,36 +372,23 @@ PS...
 ¿ª»ç°¡ ±×¸® ±æÁö ¾ÊÀº ÀÚ¹Ù°¡ ÂªÀº ½Ã°£¿¡ ´ëÁßÈ­µÇ¸é¼­ ±â¼ú °³¹ß ÁÖ±âÀÇ ¹®Á¦Á¡µéÀ» ÃÊ·¡ÇÏ°í ÀÖ´Ù. »õ·Î¿î API¿Í ¼­ºñ½º°¡ Áö¼ÓÀûÀ¸·Î °³¹ßµÇ°í ÀÖ°í, ¶ÇÇÑ ¸¹Àº ÀÚ¹Ù ±â¼ú ¾÷Ã¼´Â ÀÌ
 ¸¦ °æÀïÀûÀ¸·Î ±¸ÇöÇØ ÀÚ½ÅÀÇ ¼ÒÇÁÆ®¿þ¾î¿¡ Æ÷ÇÔ½ÃÅ°°í ÀÖÀ¸¸ç Áö¼ÓÀûÀÎ »õ·Î¿î ±â¼ú °³¹ß·Î ÀÎÇØ ÃÖ½Å ±â¼úµµ ±Ý¹æ ±¸½ÄÀ¸·Î Àü¶ôµÇ°í ÀÖ´Â Çö½ÇÀÌ´Ù.
 
-ÇÁ·¹ÀÓ¿öÅ©´Â °³¹ßÀÚ°¡ ¾ÖÇÃ¸®ÄÉÀÌ¼ÇÀ» »óÈ£ÀÛ¿ëÇÏ´Â °´Ã¼
-µéÀÇ ÁýÇÕÀ¸·Î ³ª´©¾î Àç»ç¿ëÇÒ ¼ö ÀÖ´Â ¹æ¹ýÀÌ´Ù. ÇÁ·¹ÀÓ¿öÅ©
-´Â ÇÁ·¹ÀÓ¿öÅ© ÄÄÆ÷³ÍÆ®µéÀÌ ±¸ÇöÇÒ ÀÎÅÍÆäÀÌ½º, ÄÄÆ÷³ÍÆ®°£
-ÀÇ Á¦¾îÈå¸§(flow of control), ÄÄÆ÷³ÍÆ®¿Í ½Ã½ºÅÛ°£ÀÇ °ü°è¸¦
-Á¤ÀÇÇÏ°í ÀÖ´Ù. Ç¥ÁØ ÀÎÅÍÆäÀÌ½º¿Í Ç¥ÁØ »óÈ£ÀÛ¿ëÀº ±âÁ¸ÀÇ ÄÄ
-Æ÷³ÍÆ®¸¦ ¿¬µ¿, ¹èÇÕ, ±×¸®°í ±âÁ¸ÀÇ ÇÙ½É ÄÄÆ÷³ÍÆ® ÁýÇÕÀ¸·Î
-ºÎÅÍ ´Ù¾çÇÑ ½Ã½ºÅÛ °³¹ßÀ» °¡´ÉÇÏ°Ô ÇØÁØ´Ù.
-ÀÚ¹Ù ¼­¹ö ¾ÖÇÃ¸®ÄÉÀÌ¼Ç ÇÁ·¹ÀÓ¿öÅ©
-ÀÚ¹ÙÀÇ AWT¿Í ½ºÀ®À» »ç¿ëÇØ GUI È­¸éÀ» ¸¸µé¾î º» °³¹ß
-ÀÚ´Â ÀÚ¹ÙÀÇ ÀÌº¥Æ® ÇÁ·¹ÀÓ¿öÅ©¿Í ÀÚ¹Ùºó ÇÁ·¹ÀÓ¿öÅ©¸¦ ´Ù
-È°¿ëÇØºÃÀ» °ÍÀÌ´Ù. ÇÏÁö¸¸ ¼­¹ö ¾ÖÇÃ¸®ÄÉÀÌ¼ÇÀ» À§ÇÑ ¹ü¿ë
-ÀûÀÎ ÇÁ·¹ÀÓ¿öÅ©´Â ¾ÆÁ÷Àº »ý¼ÒÇÏ°Ô ´À²¸Áú °ÍÀÌ´Ù. ±×¸®°í
-JSP/Servlet/EJB¸¦ À§ÇÑ ÄÁÅ×ÀÌ³Ê ¶ÇÇÑ ÀÏÁ¾ÀÇ ¼­¹ö ¾Ö
-ÇÃ¸®ÄÉÀÌ¼ÇÀ» À§ÇÑ ÇÁ·¹ÀÓ¿öÅ©ÀÌ´Ù. ÇÏÁö¸¸ ÀÌ¹ø ¿¬Àç¿¡¼­
-´Ù·ç°íÀÚ ÇÏ´Â ÀÚ¹Ù ¼­ºñ½º ÇÁ·¹ÀÓ¿öÅ©´Â Á»´õ ¹ü¿ëÀûÀÌ°í
-´ë´Ù¼öÀÇ ¼­¹ö ¾ÖÇÃ¸®ÄÉÀÌ¼ÇÀ» ÀÛ¼ºÇÏ´Â µ¥ Àû¿ëÇÒ ¼ö ÀÖ´Â
-°Í¿¡ ´ëÇÑ ¼Ò°³¶ó ÇÒ ¼ö ÀÖ´Ù. ´ëÇ¥ÀûÀÎ ¿¹·Î¼­ ¾ÆÆÄÄ¡ ±×
-·ìÀÇ ¾Æ¹ß·Ð ÇÁ·ÎÁ§Æ®¿Í HP-BluestoneÀÌ ÀÌ²ø¾î °¡°í ÀÖ
-´Â JSF(Java Services Framework) ½ºÆå(JSR 111)ÀÇ
-ÂüÁ¶±¸Çö ¸ðµ¨ÀÎ CSF(Core Services Framework)¸¦ µé
-¼ö ÀÖ´Ù.
-¾Æ¹ß·ÐÀº ¾ÆÆÄÄ¡ ±×·ìÀÇ Æ¯Â¡ÀÎ ¿ÀÇÂ¼Ò½º ÇüÅÂ·Î Áö¼ÓÀûÀ¸
-·Î °³¹ßÀÌ ÀÌ·ïÁö°í ÀÖÀ¸¸ç ÇöÀç 4.x ¹öÀüÀÌ ¹èÆ÷µÇ°í ÀÖ´Ù. ¾Æ
-ÆÄÄ¡ ±×·ìÀÇ ÀÚÄ«¸£Å¸ ÇÁ·ÎÁ§Æ®¿¡¼­´Â ÀÚ¹Ù¿Í °ü·ÃµÈ ´Ù¾çÇÑ
-¿ÀÇÂ¼Ò½º ÇÁ·ÎÁ§Æ®µéÀÌ ÁøÇàµÇ°í ÀÖ´Ù. ±×¸®°í CSF(Core
-Services Framework)´Â HP-Bluestone¿¡¼­ ½ºÆåÀ» ÁÖµµÇØ
-JSR 111À» ÀÛ¼ºÇÏ°í ÇöÀç Àü¹®°¡ ±×·ì¿¡ ÀÇÇÑ Ã¹ ¹øÂ° ¸®ºä¸¦
-¸¶Ä£ »óÅÂ´Ù. ¾ÕÀ¸·Î ÃÖÁ¾ ½ºÆåÀÌ ³ª¿À±â±îÁö´Â ¾à°£ÀÇ ½Ã°£ÀÌ
-¼Ò¿äµÉ °ÍÀÌ´Ù. Àç¹ÌÀÖ´Â »ç½ÇÀº CSFÀÇ Àü¹®°¡ ±×·ì¿¡ ¾ÆÆÄÄ¡
-±×·ìÀÌ Âü°¡ÇÏ°í ÀÖ°í CSF ¿ª½Ã ¿ÀÇÂ¼Ò½º·Î ¹«·á·Î Á¦°øÇÏ°í
+ÇÁ·¹ÀÓ¿öÅ©´Â °³¹ßÀÚ°¡ ¾ÖÇÃ¸®ÄÉÀÌ¼ÇÀ» »óÈ£ÀÛ¿ëÇÏ´Â °´Ã¼µéÀÇ ÁýÇÕÀ¸·Î ³ª´©¾î Àç»ç¿ëÇÒ ¼ö ÀÖ´Â ¹æ¹ýÀÌ´Ù. ÇÁ·¹ÀÓ¿öÅ©
+´Â ÇÁ·¹ÀÓ¿öÅ© ÄÄÆ÷³ÍÆ®µéÀÌ ±¸ÇöÇÒ ÀÎÅÍÆäÀÌ½º, ÄÄÆ÷³ÍÆ®°£ÀÇ Á¦¾îÈå¸§(flow of control), ÄÄÆ÷³ÍÆ®¿Í ½Ã½ºÅÛ°£ÀÇ °ü°è¸¦ Á¤ÀÇÇÏ°í ÀÖ´Ù. 
+
+Ç¥ÁØ ÀÎÅÍÆäÀÌ½º¿Í Ç¥ÁØ »óÈ£ÀÛ¿ëÀº ±âÁ¸ÀÇ ÄÄÆ÷³ÍÆ®¸¦ ¿¬µ¿, ¹èÇÕ, ±×¸®°í ±âÁ¸ÀÇ ÇÙ½É ÄÄÆ÷³ÍÆ® ÁýÇÕÀ¸·Î ºÎÅÍ ´Ù¾çÇÑ ½Ã½ºÅÛ °³¹ßÀ» °¡´ÉÇÏ°Ô ÇØÁØ´Ù.
+ÀÚ¹Ù ¼­¹ö ¾ÖÇÃ¸®ÄÉÀÌ¼Ç ÇÁ·¹ÀÓ¿öÅ© ÀÚ¹ÙÀÇ AWT¿Í ½ºÀ®À» »ç¿ëÇØ GUI È­¸éÀ» ¸¸µé¾î º» °³¹ß ÀÚ´Â ÀÚ¹ÙÀÇ ÀÌº¥Æ® ÇÁ·¹ÀÓ¿öÅ©¿Í ÀÚ¹Ùºó ÇÁ·¹ÀÓ¿öÅ©¸¦ ´Ù È°¿ëÇØºÃÀ» °ÍÀÌ´Ù. 
+
+ÇÏÁö¸¸ ¼­¹ö ¾ÖÇÃ¸®ÄÉÀÌ¼ÇÀ» À§ÇÑ ¹ü¿ëÀûÀÎ ÇÁ·¹ÀÓ¿öÅ©´Â ¾ÆÁ÷Àº »ý¼ÒÇÏ°Ô ´À²¸Áú °ÍÀÌ´Ù. 
+±×¸®°í JSP/Servlet/EJB¸¦ À§ÇÑ ÄÁÅ×ÀÌ³Ê ¶ÇÇÑ ÀÏÁ¾ÀÇ ¼­¹ö ¾ÖÇÃ¸®ÄÉÀÌ¼ÇÀ» À§ÇÑ ÇÁ·¹ÀÓ¿öÅ©ÀÌ´Ù. 
+
+ÇÏÁö¸¸ ÀÌ¹ø ¿¬Àç¿¡¼­ ´Ù·ç°íÀÚ ÇÏ´Â ÀÚ¹Ù ¼­ºñ½º ÇÁ·¹ÀÓ¿öÅ©´Â Á»´õ ¹ü¿ëÀûÀÌ°í ´ë´Ù¼öÀÇ ¼­¹ö ¾ÖÇÃ¸®ÄÉÀÌ¼ÇÀ» ÀÛ¼ºÇÏ´Â µ¥ Àû¿ëÇÒ ¼ö ÀÖ´Â °Í¿¡ ´ëÇÑ ¼Ò°³¶ó ÇÒ ¼ö ÀÖ´Ù. 
+
+´ëÇ¥ÀûÀÎ ¿¹·Î¼­ ¾ÆÆÄÄ¡ ±×·ìÀÇ ¾Æ¹ß·Ð ÇÁ·ÎÁ§Æ®¿Í HP-BluestoneÀÌ ÀÌ²ø¾î °¡°í ÀÖ´Â JSF(Java Services Framework) ½ºÆå(JSR 111)ÀÇÂüÁ¶±¸Çö ¸ðµ¨ÀÎ CSF(Core Services Framework)¸¦ µé¼ö ÀÖ´Ù.
+¾Æ¹ß·ÐÀº ¾ÆÆÄÄ¡ ±×·ìÀÇ Æ¯Â¡ÀÎ ¿ÀÇÂ¼Ò½º ÇüÅÂ·Î Áö¼ÓÀûÀ¸·Î °³¹ßÀÌ ÀÌ·ïÁö°í ÀÖÀ¸¸ç ÇöÀç 4.x ¹öÀüÀÌ ¹èÆ÷µÇ°í ÀÖ´Ù. 
+
+¾ÆÆÄÄ¡ ±×·ìÀÇ ÀÚÄ«¸£Å¸ ÇÁ·ÎÁ§Æ®¿¡¼­´Â ÀÚ¹Ù¿Í °ü·ÃµÈ ´Ù¾çÇÑ¿ÀÇÂ¼Ò½º ÇÁ·ÎÁ§Æ®µéÀÌ ÁøÇàµÇ°í ÀÖ´Ù. 
+±×¸®°í CSF(Core Services Framework)´Â HP-Bluestone¿¡¼­ ½ºÆåÀ» ÁÖµµÇØ JSR 111À» ÀÛ¼ºÇÏ°í ÇöÀç Àü¹®°¡ ±×·ì¿¡ ÀÇÇÑ Ã¹ ¹øÂ° ¸®ºä¸¦ ¸¶Ä£ »óÅÂ´Ù. 
+¾ÕÀ¸·Î ÃÖÁ¾ ½ºÆåÀÌ ³ª¿À±â±îÁö´Â ¾à°£ÀÇ ½Ã°£ÀÌ ¼Ò¿äµÉ °ÍÀÌ´Ù. Àç¹ÌÀÖ´Â »ç½ÇÀº CSFÀÇ Àü¹®°¡ ±×·ì¿¡ ¾ÆÆÄÄ¡ ±×·ìÀÌ Âü°¡ÇÏ°í ÀÖ°í CSF ¿ª½Ã ¿ÀÇÂ¼Ò½º·Î ¹«·á·Î Á¦°øÇÏ°í
 
 
 ÀÚ¹Ù ¼­ºñ½º ÇÁ·¹ÀÓ¿öÅ© ±âÃÊ ´ÙÁö±â
@@ -626,13 +613,22 @@ Restlet¼Ò°³
 
 ¾à·Â
 
-À¥°ú ÀÚ¹Ù´Â ÀÌ¹Ì ³Î¸® ¾Ë·ÁÁø ´ë·Î ±ä ¿ª»ç¸¦ °¡Áö°í ÀÖ´Ù. 1994³â¿¡ ¸¸µé¾îÁø ÀÌÈÄ·Î ÀÚ¹Ù´Â java.net ÆÐÅ°Áö¿Í HttpURLConnection Å¬·¡½º¸¦ ÀÌ¿ëÇÏ´Â Æ¯Á¤ HTTP Å¬¶óÀÌ¾ðÆ®¸¦ Æ÷ÇÔÇÏ°í ÀÖ´Ù. ´ç½Ã ¾ÖÇÃ¸´Àº ±âÁ¸ À¥ ¼­¹ö·Î ÄÝ¹éÀ» ¼öÇàÇÏ±â À§ÇÏ¿© À¥ ºê¶ó¿ìÀú»ó¿¡¼­ ½ÇÇàµÇ´Â ÀÎ±âÀÖ´Â ±â¼úÀÌ¾ú´Ù. HTTP Å¬¶óÀÌ¾ðÆ®¸¦ ÀÌ¿ëÇÏ´Â °ÍÀº ÀÌ·¯ÇÑ ÀÛ¾÷À» ÇÏ±â¿¡ ÁÁÀº ¹æ¹ýÀÌ¾úÀ¸¸ç, ¹æÈ­º®°ú °ü·ÃµÈ º¸¾È ¹®Á¦¸¦ Á¦ÇÑÇÏ¿´´Ù.
+À¥°ú ÀÚ¹Ù´Â ÀÌ¹Ì ³Î¸® ¾Ë·ÁÁø ´ë·Î ±ä ¿ª»ç¸¦ °¡Áö°í ÀÖ´Ù. 1994³â¿¡ ¸¸µé¾îÁø ÀÌÈÄ·Î ÀÚ¹Ù´Â java.net ÆÐÅ°Áö¿Í HttpURLConnection Å¬·¡½º¸¦ ÀÌ¿ëÇÏ´Â Æ¯Á¤ HTTP Å¬¶óÀÌ¾ðÆ®¸¦ Æ÷ÇÔÇÏ°í ÀÖ´Ù. 
+´ç½Ã ¾ÖÇÃ¸´Àº ±âÁ¸ À¥ ¼­¹ö·Î ÄÝ¹éÀ» ¼öÇàÇÏ±â À§ÇÏ¿© À¥ ºê¶ó¿ìÀú»ó¿¡¼­ ½ÇÇàµÇ´Â ÀÎ±âÀÖ´Â ±â¼úÀÌ¾ú´Ù. HTTP Å¬¶óÀÌ¾ðÆ®¸¦ ÀÌ¿ëÇÏ´Â °ÍÀº ÀÌ·¯ÇÑ ÀÛ¾÷À» ÇÏ±â¿¡ ÁÁÀº ¹æ¹ýÀÌ¾úÀ¸¸ç, ¹æÈ­º®°ú °ü·ÃµÈ º¸¾È ¹®Á¦¸¦ Á¦ÇÑÇÏ¿´´Ù.
 
-±× ÀÌÈÄ·Î 1998³â ÁîÀ½, HTTP ¼­¹ö»óÀÇ µ¿Àû ÄÁÅÙÃ÷ »ý¼ºÀ» À§ÇÑ ÇÑ ¹æ¹ýÀ¸·Î¼­ ¼­ºí¸´ API°¡ ¼Ò°³µÇ¾ú´Ù. ¼­ºí¸´ API´Â HTTP ¿äÃ»/ÀÀ´ä ÁÖ±â¸¦ °´Ã¼ÁöÇâÀûÀÎ ¸ðµ¨·Î Ç¥ÇöÇÏ·Á°í ÇÏ¿´´Ù. ÀÚ¸Å ½ºÆåÀÎ ÀÚ¹Ù ¼­¹ö ÆäÀÌÁö(JSP)¿Í ÇÔ²², ¼­ºí¸´ API´Â ÀÚ¹Ù Å×Å©³î·ÎÁö¸¦ ±â¾÷È¯°æÀ¸·Î °¡Á®°¡µµ·Ï ÇÏ´Âµ¥ Å©°Ô ÀÌ¹ÙÁöÇÏ¿´´Ù. ÀÚ¹Ù Å×Å©³î·ÎÁö¸¦ »ç¿ëÇÏ´Â ¾ÖÇÃ¸®ÄÉÀÌ¼Ç¿¡¼­´Â °³¹ßÀÚ´Â º¸Åë ¡°¸ðµ¨ 2¡± Á¢±Ù¹ýÀÌ¶ó ¾Ë·ÁÁ® ÀÖ±âµµ ÇÑ °´Ã¼ÁöÇâÀûÀÎ MVC (Model-View-Controller) µðÀÚÀÎ ÆÐÅÏÀ» µµÀÔÇÏ¿´´Ù. ÀÌ ¸ðµ¨¿¡¼­ ¼­ºí¸´Àº ÄÁÆ®·Ñ·¯·Î¼­, JSP ÆäÀÌÁö´Â ºä·Î¼­, ±×¸®°í ÀÚ¹Ùºó(JavaBean) °´Ã¼´Â ¸ðµ¨·Î¼­ ¼öÇàµÈ´Ù.
+±× ÀÌÈÄ·Î 1998³â ÁîÀ½, HTTP ¼­¹ö»óÀÇ µ¿Àû ÄÁÅÙÃ÷ »ý¼ºÀ» À§ÇÑ ÇÑ ¹æ¹ýÀ¸·Î¼­ ¼­ºí¸´ API°¡ ¼Ò°³µÇ¾ú´Ù. ¼­ºí¸´ API´Â HTTP ¿äÃ»/ÀÀ´ä ÁÖ±â¸¦ °´Ã¼ÁöÇâÀûÀÎ ¸ðµ¨·Î Ç¥ÇöÇÏ·Á°í ÇÏ¿´´Ù. 
+ÀÚ¸Å ½ºÆåÀÎ ÀÚ¹Ù ¼­¹ö ÆäÀÌÁö(JSP)¿Í ÇÔ²², ¼­ºí¸´ API´Â ÀÚ¹Ù Å×Å©³î·ÎÁö¸¦ ±â¾÷È¯°æÀ¸·Î °¡Á®°¡µµ·Ï ÇÏ´Âµ¥ Å©°Ô ÀÌ¹ÙÁöÇÏ¿´´Ù. 
+ÀÚ¹Ù Å×Å©³î·ÎÁö¸¦ »ç¿ëÇÏ´Â ¾ÖÇÃ¸®ÄÉÀÌ¼Ç¿¡¼­´Â °³¹ßÀÚ´Â º¸Åë ¡°¸ðµ¨ 2¡± Á¢±Ù¹ýÀÌ¶ó ¾Ë·ÁÁ® ÀÖ±âµµ ÇÑ °´Ã¼ÁöÇâÀûÀÎ MVC (Model-View-Controller) µðÀÚÀÎ ÆÐÅÏÀ» µµÀÔÇÏ¿´´Ù. 
+ÀÌ ¸ðµ¨¿¡¼­ ¼­ºí¸´Àº ÄÁÆ®·Ñ·¯·Î¼­, JSP ÆäÀÌÁö´Â ºä·Î¼­, ±×¸®°í ÀÚ¹Ùºó(JavaBean) °´Ã¼´Â ¸ðµ¨·Î¼­ ¼öÇàµÈ´Ù.
 
-°°Àº ½Ã±â¿¡ XML Ç¥ÁØÀÌ W3C ¿öÅ· ±×·ì¿¡¼­ ÃâÇöÇÏ¿´´Ù. XSLT, XSL-FO, XPATH Ç¥ÁØ°ú ÇÔ²², XMLÀº ¼­ºí¸´°ú JSP ÆäÀÌÁö¿¡ ÇÊÀûÇÏ´Â µ¿Àû ÆäÀÌÁö¸¦ »ý¼ºÇÏ´Â »õ·Î¿î ¹æ¹ýÀ» Á¦°øÇØ ÁÖ¾ú´Ù. ±× °á°ú XMLÀº ¸ðµç ÀÚ¹Ù ÇÃ·§Æû°ú JSP¿¡ ¹Þ¾Æµé¿©Á® XML ¹®¼­¸¦ »ý¼ºÇÒ ¼ö ÀÖµµ·Ï ¹ßÀüµÇ¾ú´Ù. ¶Ç ´Ù¸¥ ¹æÇâÀº ¾ÆÆÄÄ¡ ÄÚÄï ÇÁ·ÎÁ§Æ®¸¦ ½ÃÀÛÇÑ Stefano Mazzocchi¿¡ ÀÇÇØ ÁÖµµµÈ °ÍÀÎµ¥, °ü½ÉÀÇ ºÐ¸®(separation of concern)°ú ÄÄÆ÷³ÍÆ® ÁöÇâ(component-oriented) µðÀÚÀÎ °³³ä¿¡ µû¶ó ±¸ÃàµÈ XML ÆÛºí¸®½Ì ÇÁ·¹ÀÓ¿öÅ©(XML publishing framework)¿´´Ù.
+°°Àº ½Ã±â¿¡ XML Ç¥ÁØÀÌ W3C ¿öÅ· ±×·ì¿¡¼­ ÃâÇöÇÏ¿´´Ù. XSLT, XSL-FO, XPATH Ç¥ÁØ°ú ÇÔ²², XMLÀº ¼­ºí¸´°ú JSP ÆäÀÌÁö¿¡ ÇÊÀûÇÏ´Â µ¿Àû ÆäÀÌÁö¸¦ »ý¼ºÇÏ´Â »õ·Î¿î ¹æ¹ýÀ» Á¦°øÇØ ÁÖ¾ú´Ù. 
+±× °á°ú XMLÀº ¸ðµç ÀÚ¹Ù ÇÃ·§Æû°ú JSP¿¡ ¹Þ¾Æµé¿©Á® XML ¹®¼­¸¦ »ý¼ºÇÒ ¼ö ÀÖµµ·Ï ¹ßÀüµÇ¾ú´Ù. 
 
-2000³â, ½ºÆ®·¯Ã÷(Struts) ÇÁ·ÎÁ§Æ®¿¡¼­´Â ±âÁ¸ ¸ðµ¨2/MVC ÆÐÅÏ¿¡ µû¶ó ¾×¼Ç(Action)ÀÌ¶ó ºÒ¸®´Â Ç¥ÁØ ÄÁÆ®·Ñ·¯¸¦ Á¤ÀÇÇÏ¿´´Ù. ½ºÆ®·¯Ã÷¿¡¼­´Â ActionForms¸¦ »ç¿ëÇÏ¿© ¸ðµ¨°ú ºä °£ÀÇ ¾ÖÇÃ¸®ÄÉÀÌ¼Ç »óÅÂ¸¦ ±³È¯ÇÑ´Ù. ½ºÆ®·¯Ã÷´Â Æ¯È÷ Æû Ã³¸®¿¡ ÀÖ¾î ¼ø¼ö ¼­ºí¸´ÀÌ Á¦°øÇÏ´Â °Íº¸´Ù ´õ ³ôÀº ¼öÁØÀÇ Ãß»óÈ­¸¦ Á¦°øÇÏ¿© ºü¸£°Ô ÀÎ±â¸¦ ¾ò¾ú´Ù. ±× ÈÄ  ¼ö¸¹Àº ´Ù¸¥ ÇÁ·¹ÀÓ¿öÅ©µéÀÌ ºñ½ÁÇÑ ¹®Á¦¸¦ ÇØ°áÇÏ±â À§ÇØ ³ªÅ¸³µ´Ù. °¡Àå ÁÖ¸ñÇÒ ¸¸ÇÑ °ÍÀº SpringÀÎµ¥, ½ºÆ®·¯Ã÷º¸´Ù ´õ Æ÷°ýÀûÀÎ ÀÚ¹Ù/J2EE ¾ÖÇÃ¸®ÄÉÀÌ¼Ç ÇÁ·¹ÀÓ¿öÅ©ÀÌ¸ç MVC Á¢±Ù¹ý ¶ÇÇÑ ±¸ÇöÇÏ°í ÀÖ´Ù.
+¶Ç ´Ù¸¥ ¹æÇâÀº ¾ÆÆÄÄ¡ ÄÚÄï ÇÁ·ÎÁ§Æ®¸¦ ½ÃÀÛÇÑ Stefano Mazzocchi¿¡ ÀÇÇØ ÁÖµµµÈ °ÍÀÎµ¥, °ü½ÉÀÇ ºÐ¸®(separation of concern)°ú ÄÄÆ÷³ÍÆ® ÁöÇâ(component-oriented) µðÀÚÀÎ °³³ä¿¡ µû¶ó ±¸ÃàµÈ XML ÆÛºí¸®½Ì ÇÁ·¹ÀÓ¿öÅ©(XML publishing framework)¿´´Ù.
+
+2000³â, ½ºÆ®·¯Ã÷(Struts) ÇÁ·ÎÁ§Æ®¿¡¼­´Â ±âÁ¸ ¸ðµ¨2/MVC ÆÐÅÏ¿¡ µû¶ó ¾×¼Ç(Action)ÀÌ¶ó ºÒ¸®´Â Ç¥ÁØ ÄÁÆ®·Ñ·¯¸¦ Á¤ÀÇÇÏ¿´´Ù. 
+½ºÆ®·¯Ã÷¿¡¼­´Â ActionForms¸¦ »ç¿ëÇÏ¿© ¸ðµ¨°ú ºä °£ÀÇ ¾ÖÇÃ¸®ÄÉÀÌ¼Ç »óÅÂ¸¦ ±³È¯ÇÑ´Ù. ½ºÆ®·¯Ã÷´Â Æ¯È÷ Æû Ã³¸®¿¡ ÀÖ¾î ¼ø¼ö ¼­ºí¸´ÀÌ Á¦°øÇÏ´Â °Íº¸´Ù ´õ ³ôÀº ¼öÁØÀÇ Ãß»óÈ­¸¦ Á¦°øÇÏ¿© ºü¸£°Ô ÀÎ±â¸¦ ¾ò¾ú´Ù. 
+±× ÈÄ  ¼ö¸¹Àº ´Ù¸¥ ÇÁ·¹ÀÓ¿öÅ©µéÀÌ ºñ½ÁÇÑ ¹®Á¦¸¦ ÇØ°áÇÏ±â À§ÇØ ³ªÅ¸³µ´Ù. °¡Àå ÁÖ¸ñÇÒ ¸¸ÇÑ °ÍÀº SpringÀÎµ¥, ½ºÆ®·¯Ã÷º¸´Ù ´õ Æ÷°ýÀûÀÎ ÀÚ¹Ù/J2EE ¾ÖÇÃ¸®ÄÉÀÌ¼Ç ÇÁ·¹ÀÓ¿öÅ©ÀÌ¸ç MVC Á¢±Ù¹ý ¶ÇÇÑ ±¸ÇöÇÏ°í ÀÖ´Ù.
 
 °°Àº ÇØ HTTP¿Í URI ½ºÆåÀÇ °øÀúÀÚÀÌ¸ç ¾ÆÆÄÄ¡ HTTP ¼­¹öÀÇ ÇÙ½É ±â¿©ÀÚ¿´´ø Roy T. FieldingÀº ¼ÒÇÁÆ®¿þ¾î ¾ÆÅ°ÅØÃ³¿¡ °üÇÑ ³í¹®À» ÀÛ¼ºÇÏ¿´´Ù. ÀÌ ³í¹®ÀÇ 5Àå¿¡¼­ ±×´Â °ø½ÄÀûÀ¸·Î À¥À» Áö¿øÇÏ´Â ¾ÆÅ°ÅØÃ³ ½ºÅ¸ÀÏÀ» Á¤ÀÇÇÏ¿´°í ±×°ÍÀ» REST(REpresentational State Transfer)¶ó ÀÌ¸§Áö¾ú´Ù. REST´Â °´Ã¼ÁöÇâ°ú´Â ´ëÁ¶ÀûÀ¸·Î ÀÚ¿øÀÌ µµ¸ÞÀÎÀÇ ½Äº°°¡´ÉÇÑ °³³ä(°´Ã¼¿¡ ÇÊÀûÇÏ´Â)µéÀ» Ç¥ÇöÇÏ´Â ÀÚ¿øÁöÇâ(resource-oriented)ÀÌ¶ó´Â »õ·Î¿î ÆÐ·¯´ÙÀÓÀ» Á¤ÀÇÇß´Ù. ÀÚ¿øÀº Ç¥ÁØ URI(URLÀÌ³ª URN)¸¦ ÀÌ¿ëÇÏ¿© ÂüÁ¶µÇ¸ç ÅëÀÏµÈ ÀÎÅÍÆäÀÌ½º¸¦ ÅëÇØ ÄÄÆ÷³ÍÆ®(ºê¶ó¿ìÀú, ¼­¹ö, ÇÁ·Ï½Ã, °ÔÀÌÆ®¿þÀÌ µî)¿¡ ÀÇÇØ Á¶ÀÛµÈ´Ù. ÀÌ·¯ÇÑ ÀÎÅÍÆäÀÌ½º´Â ÇÑÁ¤µÈ µ¿»çÀÇ ¸ñ·ÏÀ» °¡Áö´Âµ¥, º»ÁúÀûÀ¸·Î´Â HTTP ¸Þ¼ÒµåµéÀÌ´Ù. ¶ÇÇÑ ÀÚ¿øÀº Àý´ë·Î Á÷Á¢ÀûÀ¸·Î ±³È¯µÇÁö ¾ÊÀ¸¸ç ¿ÀÁ÷ ±× »óÅÂ¿¡ ´ëÇÑ Ç¥Çö¿¡ ÀÇÇØ ±³È¯µÈ´Ù. Ä¿³ØÅÍ(Connector)´Â ¿¹¸¦ µéÀÚ¸é HTTP ÇÁ·ÎÅäÄÝÀÇ Å¬¶óÀÌ¾ðÆ® ÃøÀ» ±¸ÇöÇÏ´Â ÄÄÆ÷³ÍÆ®µé°£ÀÇ Ç¥ÇöµéÀÇ Åë½ÅÀ» °¡´ÉÇÏ°Ô ÇØÁÖ´Â ¾ÆÅ°ÅØÃ³ ¿ä¼ÒÀÌ´Ù.
 
@@ -646,20 +642,45 @@ l  ºí·ÏIO»óÀÇ °¡Á¤¿¡ ±âÀÎÇÑ ºñºí·Ï NIOÀÇ ¿ÏÀüÇÑ ÀÌÁ¡À» ´©¸± ¼ö ¾ø´Ù.
 
 l  ¿ÏÀüÇÑ ¼­ºí¸´ À¥ ÄÁÅ×ÀÌ³Ê´Â ¿ÀÈ÷·Á ¸¹Àº ¾ÖÇÃ¸®ÄÉÀÌ¼ÇµéÀ» Áö³ªÄ¡°Ô Á¦ÇÑ(overkill)ÇÑ´Ù.
 
-±×´Â Á¤¸»·Î ÇÁ·ÎÅäÄÝ¿¡ µ¶¸³ÀûÀÌ¸ç ÄÁÅÙÃ÷¿Í ±×°ÍÀÇ ¸ÞÅ¸µ¥ÀÌÅÍ¸¦ ³ëÃâÇÏ´Â ÄÁÅÙÆ²¸´(contentlet)À» Á¤ÀÇÇØÁÙ »õ·Î¿î API¸¦ Á¦Á¤ÇÏÀÚ°í Á¦¾ÈÇÏ¿´´Ù. ÀÌ·¯ÇÑ »ý°¢Àº Restlet ÇÁ·ÎÁ§Æ®¸¦ ¸¸µå´Âµ¥ ¸¹Àº ºÎºÐÀ» ½Ã»çÇÏ°í ¶Ç ¿µ°¨À» ºÒ¾î³Ö¾ú´Ù. ÀÌÈÄ ºí·Î±× Æ÷½ºÆÃ¿¡¼­ ±×´Â ¿Ö ÄÁÅÙÆ²¸´°ú °°Àº °³³äÀ» °¡ÁöÁö ¾Ê´Â Çö ¼­ºí¸´ API°¡ ºñºí·Ï NIO API¸¦ È¿À²ÀûÀ¸·Î »ç¿ëÇÏ´Â °ÍÀ» Á¦ÇÑÇÏ´ÂÁö¿¡ °üÇØ »ó¼¼ÇÏ°Ô ¼³¸íÇß´Ù. ÀÌ´Â ÀüÅëÀûÀ¸·Î Ã³¸®ÇØ¾ß ÇÒ °¢°¢ÀÇ HTTP ¿äÃ»À» º°µµÀÇ ¾²·¹µå¸¦ ÀÌ¿ëÇÏµµ·Ï µÇ¾îÀÖ±â ¶§¹®ÀÌ´Ù. ±×´Â ´õ ³ª¾Æ°¡ ÀÌ Æ÷½ºÆÃ¿¡¼­ Â÷¼¼´ë ¼­ºí¸´¿¡ °üÇØ¼­µµ ¼³¸íÇÏ°í ÀÖ´Ù.
+±×´Â Á¤¸»·Î ÇÁ·ÎÅäÄÝ¿¡ µ¶¸³ÀûÀÌ¸ç ÄÁÅÙÃ÷¿Í ±×°ÍÀÇ ¸ÞÅ¸µ¥ÀÌÅÍ¸¦ ³ëÃâÇÏ´Â ÄÁÅÙÆ²¸´(contentlet)À» Á¤ÀÇÇØÁÙ »õ·Î¿î API¸¦ Á¦Á¤ÇÏÀÚ°í Á¦¾ÈÇÏ¿´´Ù. 
+ÀÌ·¯ÇÑ »ý°¢Àº Restlet ÇÁ·ÎÁ§Æ®¸¦ ¸¸µå´Âµ¥ ¸¹Àº ºÎºÐÀ» ½Ã»çÇÏ°í ¶Ç ¿µ°¨À» ºÒ¾î³Ö¾ú´Ù. ÀÌÈÄ ºí·Î±× Æ÷½ºÆÃ¿¡¼­ ±×´Â ¿Ö ÄÁÅÙÆ²¸´°ú °°Àº °³³äÀ» °¡ÁöÁö ¾Ê´Â Çö ¼­ºí¸´ API°¡ ºñºí·Ï NIO API¸¦ È¿À²ÀûÀ¸·Î »ç¿ëÇÏ´Â °ÍÀ» Á¦ÇÑÇÏ´ÂÁö¿¡ °üÇØ »ó¼¼ÇÏ°Ô ¼³¸íÇß´Ù. 
+ÀÌ´Â ÀüÅëÀûÀ¸·Î Ã³¸®ÇØ¾ß ÇÒ °¢°¢ÀÇ HTTP ¿äÃ»À» º°µµÀÇ ¾²·¹µå¸¦ ÀÌ¿ëÇÏµµ·Ï µÇ¾îÀÖ±â ¶§¹®ÀÌ´Ù. ±×´Â ´õ ³ª¾Æ°¡ ÀÌ Æ÷½ºÆÃ¿¡¼­ Â÷¼¼´ë ¼­ºí¸´¿¡ °üÇØ¼­µµ ¼³¸íÇÏ°í ÀÖ´Ù.
 
-¶Ç ´Ù¸¥ ÁÖ¿ä ÀÌ½´´Â API°¡ ¾ÖÇÃ¸®ÄÉÀÌ¼Ç °³¹ßÀÚµé·Î ÇÏ¿©±Ý ¾ÖÇÃ¸®ÄÉÀÌ¼ÇÀÌ³ª »ç¿ëÀÚ ¼¼¼Ç ¼öÁØÀÇ ¼¼¼Ç »óÅÂ¸¦ ¸Þ¸ð¸®¿¡ Á÷Á¢ ÀúÀåÇÏµµ·Ï Á¶ÀåÇÑ´Ù´Â Á¡ÀÌ´Ù. ÀÌ°ÍÀº ÁÁÀº ±â´ÉÃ³·³ º¸ÀÏÁö´Â ¸ð¸£°ÚÁö¸¸, ¼­ºí¸´ ÄÁÅ×ÀÌ³ÊÀÇ È®Àå¼º°ú °í°¡¿ë¼º¿¡ ´ëÇÑ ÁÖ¿ä ÀÌ½´°¡ µÇ¾ú´Ù. ÀÌ·¯ÇÑ ¹®Á¦¸¦ º¸»óÇÏ±â À§ÇØ º¹ÀâÇÑ ·Îµå ¹ë·±½Ì, ¼¼¼Ç º¹Á¦ ¹× ÆÛ½Ã½ºÅÏ½º ¸ÞÄ¿´ÏÁòÀÌ ±¸ÇöµÇ¾î¾ß¸¸ ÇÑ´Ù. ±×·¸Áö¸¸ °á±¹ È®Àå¼ºÀº ºÎµæÀÌÇÏ°Ô °Þ°Ô µÈ´Ù.
+¶Ç ´Ù¸¥ ÁÖ¿ä ÀÌ½´´Â API°¡ ¾ÖÇÃ¸®ÄÉÀÌ¼Ç °³¹ßÀÚµé·Î ÇÏ¿©±Ý ¾ÖÇÃ¸®ÄÉÀÌ¼ÇÀÌ³ª »ç¿ëÀÚ ¼¼¼Ç ¼öÁØÀÇ ¼¼¼Ç »óÅÂ¸¦ ¸Þ¸ð¸®¿¡ Á÷Á¢ ÀúÀåÇÏµµ·Ï Á¶ÀåÇÑ´Ù´Â Á¡ÀÌ´Ù. 
+ÀÌ°ÍÀº ÁÁÀº ±â´ÉÃ³·³ º¸ÀÏÁö´Â ¸ð¸£°ÚÁö¸¸, ¼­ºí¸´ ÄÁÅ×ÀÌ³ÊÀÇ È®Àå¼º°ú °í°¡¿ë¼º¿¡ ´ëÇÑ ÁÖ¿ä ÀÌ½´°¡ µÇ¾ú´Ù. ÀÌ·¯ÇÑ ¹®Á¦¸¦ º¸»óÇÏ±â À§ÇØ º¹ÀâÇÑ ·Îµå ¹ë·±½Ì, ¼¼¼Ç º¹Á¦ ¹× ÆÛ½Ã½ºÅÏ½º ¸ÞÄ¿´ÏÁòÀÌ ±¸ÇöµÇ¾î¾ß¸¸ ÇÑ´Ù. 
+±×·¸Áö¸¸ °á±¹ È®Àå¼ºÀº ºÎµæÀÌÇÏ°Ô °Þ°Ô µÈ´Ù.
+
 
 RestletÀÇ ½ÃÀÛ
 
-»õ·Î¿î À¥ »çÀÌÆ® °³¹ßÀ» ½ÃÀÛÇÒ ¶§, ³ª´Â ±â¼úÀûÀ¸·Î °¡´ÉÇÑ ¸¸Å­ REST ¾ÆÅ°ÅØÃ³ ½ºÅ¸ÀÏÀ» µû¸£±â¸¦ ¿øÇß´Ù. ¸¹Àº ¿¬±¸¸¦ °ÅÃÄ ³ª´Â ÀÚ¹Ù REST ÇÁ·¹ÀÓ¿öÅ©°¡ ºÎÁ·ÇÏ´Ù´Â °ÍÀ» ±ú´Þ¾Ò´Ù. ±×°Í¿¡ °¡Àå ±ÙÁ¢ÇÑ ÇÁ·ÎÁ§Æ®´Â 1060 Research¿¡ ÀÇÇØ °³¹ßµÈ 1060 NetKernel »ÓÀÌ¾ú´Âµ¥, ³ª¿¡°Ô ÇÊ¿äÇÑ °Í¿¡ ºñÇØ ³Ê¹« ¸¹Àº ±â´ÉÀ» °¡Áö°í ÀÖ¾ú°í REST °³³ä¿¡ ´ëÇÑ ¸ÅÇÎÀÌ ³»°¡ ±â´ëÇÑ °Í¸¸Å­ Á÷Á¢ÀûÀÌÁö´Â ¾Ê¾Ò´Ù.
+»õ·Î¿î À¥ »çÀÌÆ® °³¹ßÀ» ½ÃÀÛÇÒ ¶§, ³ª´Â ±â¼úÀûÀ¸·Î °¡´ÉÇÑ ¸¸Å­ REST ¾ÆÅ°ÅØÃ³ ½ºÅ¸ÀÏÀ» µû¸£±â¸¦ ¿øÇß´Ù. 
+¸¹Àº ¿¬±¸¸¦ °ÅÃÄ ³ª´Â ÀÚ¹Ù REST ÇÁ·¹ÀÓ¿öÅ©°¡ ºÎÁ·ÇÏ´Ù´Â °ÍÀ» ±ú´Þ¾Ò´Ù. ±×°Í¿¡ °¡Àå ±ÙÁ¢ÇÑ ÇÁ·ÎÁ§Æ®´Â 1060 Research¿¡ ÀÇÇØ °³¹ßµÈ 1060 NetKernel »ÓÀÌ¾ú´Âµ¥, 
+³ª¿¡°Ô ÇÊ¿äÇÑ °Í¿¡ ºñÇØ ³Ê¹« ¸¹Àº ±â´ÉÀ» °¡Áö°í ÀÖ¾ú°í REST °³³ä¿¡ ´ëÇÑ ¸ÅÇÎÀÌ ³»°¡ ±â´ëÇÑ °Í¸¸Å­ Á÷Á¢ÀûÀÌÁö´Â ¾Ê¾Ò´Ù.
 
-ÀÌ·¯ÇÑ ¿¬À¯·Î ³ª´Â ³ª¸¸ÀÇ REST ÇÁ·¹ÀÓ¿öÅ©¸¦ ¼­ºí¸´ API¸¦ ±â¹ÝÀ¸·Î °³¹ßÇÏ°Ô µÇ¾ú´Ù. ±× ÇÁ·¹ÀÓ¿öÅ©°¡ ¾î´ÀÁ¤µµ±îÁö Àß ÀÛµ¿Çß´ø °ÍÀº ¼­ºí¸´ API¸¦ ¿ÏÀüÈ÷ °¨Ãè±â ¶§¹®ÀÌ¾ú´Ù. ³ª´Â Greg WilkinsÀÌ Á¦¾ÈÇß´ø °ÍÀ» ±â¾ïÇØ ³Â°í ¼­ºí¸´ API¸¦ ¿ÏÀüÈ÷ »ý·«ÇÏ±â·Î ¸¶À½¸Ô¾ú´Ù. ¿î ÁÁ°Ôµµ Jetty°¡ ÀÚÃ¼ÀûÀÎ HTTP ÇÁ·ÎÅäÄÝ ±¸Çö°ú ¼­ºí¸´ APIÀ» Àß ºÐ¸®ÇÏ°í ÀÖ¾ú´Ù. °á±¹ ³ª´Â Á÷Á¢ÀûÀ¸·Î REST uniform È£ÃâÀ» ¼öÇàÇÏ´Â ÃÖÃÊÀÇ Restlet Ä¿³ØÅÍÀÎ HTTP ¼­¹ö Ä¿³ØÅÍ¸¦ °³¹ßÇÒ ¼ö ÀÖ¾ú´Ù.
+ÀÌ·¯ÇÑ ¿¬À¯·Î ³ª´Â ³ª¸¸ÀÇ REST ÇÁ·¹ÀÓ¿öÅ©¸¦ ¼­ºí¸´ API¸¦ ±â¹ÝÀ¸·Î °³¹ßÇÏ°Ô µÇ¾ú´Ù. 
+±× ÇÁ·¹ÀÓ¿öÅ©°¡ ¾î´ÀÁ¤µµ±îÁö Àß ÀÛµ¿Çß´ø °ÍÀº ¼­ºí¸´ API¸¦ ¿ÏÀüÈ÷ °¨Ãè±â ¶§¹®ÀÌ¾ú´Ù. 
+³ª´Â Greg WilkinsÀÌ Á¦¾ÈÇß´ø °ÍÀ» ±â¾ïÇØ ³Â°í ¼­ºí¸´ API¸¦ ¿ÏÀüÈ÷ »ý·«ÇÏ±â·Î ¸¶À½¸Ô¾ú´Ù. 
+¿î ÁÁ°Ôµµ Jetty°¡ ÀÚÃ¼ÀûÀÎ HTTP ÇÁ·ÎÅäÄÝ ±¸Çö°ú ¼­ºí¸´ APIÀ» Àß ºÐ¸®ÇÏ°í ÀÖ¾ú´Ù. 
+°á±¹ ³ª´Â Á÷Á¢ÀûÀ¸·Î REST uniform È£ÃâÀ» ¼öÇàÇÏ´Â ÃÖÃÊÀÇ Restlet Ä¿³ØÅÍÀÎ HTTP ¼­¹ö Ä¿³ØÅÍ¸¦ °³¹ßÇÒ ¼ö ÀÖ¾ú´Ù.
 
-°Ô´Ù°¡ ³ª´Â ÀÌ ºí·Î±× Æ÷½ºÆÃÀÇ Benjamin CarlyleÀÇ ÁÁÀº Á¶¾ð¿¡ µû¶ó ÀÚ¹Ù¸¦ ÀÌ¿ëÇÏ¿© À¥ »óÀÇ Å¬¶óÀÌ¾ðÆ®Ãø°ú ¼­¹öÃø ºä »çÀÌÀÇ ÀÚ¿¬½º·´Áö ¸øÇÑ ºÐ¸®¸¦ ¾ø¾Ö°í ½Í¾ú´Ù. ¿À´Ã³¯ÀÇ ³×Æ®¿öÅ© È¯°æ¿¡¼­´Â ±×·¯ÇÑ Â÷ÀÌÁ¡ÀÌ ¸¸µé¾îÁöÁö ¸»¾Æ¾ß ÇÏ´Âµ¥, ´©±¸¶óµµ, µ¿ÀÏÇÑ ½Ã°£¿¡, À¥ Å¬¶óÀÌ¾ðÆ®¿Í À¥ ¼­¹ö·Î¼­ ¾×¼ÇÀ» ÃëÇÒ ¼ö ÀÖ¾î¾ß ÇÑ´Ù. REST¿¡¼­ ¸ðµç ÄÄÆ÷³ÍÆ®´Â ÇÊ¿äÇÑ ¸¸Å­ÀÇ Å¬¶óÀÌ¾ðÆ®¿Í ¼­¹ö Ä¿³ØÅÍ¸¦ °¡Áú ¼ö ÀÖÀ¸¹Ç·Î ³ª´Â À§¿¡¼­ ¾ð±ÞÇÑ HttpURLConnection Å¬·¡½º¿¡ ±â¹ÝÇÏ¿© °£´ÜÇÏ°Ô Å¬¶óÀÌ¾ðÆ® HTTP Ä¿³ØÅÍ¸¦ °³¹ßÇÏ¿´´Ù. ¹°·Ð ÃÖ±Ù¿¡ Ãß°¡µÈ Jakarta Commons HTTP Client ¿¡ ±â¹ÝÇÑ °Í°ú °°Àº ´Ù¸¥ ±¸ÇöÃ¼µéµµ Á¦°øµÉ ¼ö ÀÖ´Ù.
+°Ô´Ù°¡ ³ª´Â ÀÌ ºí·Î±× Æ÷½ºÆÃÀÇ Benjamin CarlyleÀÇ ÁÁÀº Á¶¾ð¿¡ µû¶ó ÀÚ¹Ù¸¦ ÀÌ¿ëÇÏ¿© À¥ »óÀÇ Å¬¶óÀÌ¾ðÆ®Ãø°ú ¼­¹öÃø ºä »çÀÌÀÇ ÀÚ¿¬½º·´Áö ¸øÇÑ ºÐ¸®¸¦ ¾ø¾Ö°í ½Í¾ú´Ù. 
+¿À´Ã³¯ÀÇ ³×Æ®¿öÅ© È¯°æ¿¡¼­´Â ±×·¯ÇÑ Â÷ÀÌÁ¡ÀÌ ¸¸µé¾îÁöÁö ¸»¾Æ¾ß ÇÏ´Âµ¥, ´©±¸¶óµµ, µ¿ÀÏÇÑ ½Ã°£¿¡, À¥ Å¬¶óÀÌ¾ðÆ®¿Í À¥ ¼­¹ö·Î¼­ ¾×¼ÇÀ» ÃëÇÒ ¼ö ÀÖ¾î¾ß ÇÑ´Ù. 
+REST¿¡¼­ ¸ðµç ÄÄÆ÷³ÍÆ®´Â ÇÊ¿äÇÑ ¸¸Å­ÀÇ Å¬¶óÀÌ¾ðÆ®¿Í ¼­¹ö Ä¿³ØÅÍ¸¦ °¡Áú ¼ö ÀÖÀ¸¹Ç·Î ³ª´Â À§¿¡¼­ ¾ð±ÞÇÑ HttpURLConnection Å¬·¡½º¿¡ ±â¹ÝÇÏ¿© °£´ÜÇÏ°Ô Å¬¶óÀÌ¾ðÆ® HTTP Ä¿³ØÅÍ¸¦ °³¹ßÇÏ¿´´Ù. 
+¹°·Ð ÃÖ±Ù¿¡ Ãß°¡µÈ Jakarta Commons HTTP Client ¿¡ ±â¹ÝÇÑ °Í°ú °°Àº ´Ù¸¥ ±¸ÇöÃ¼µéµµ Á¦°øµÉ ¼ö ÀÖ´Ù.
 
-¸î ¹øÀ» ¹Ýº¹ÇÏ°í ³ª¼­ Restlet ÇÁ·ÎÁ§Æ®¸¦ µÎ ºÎºÐÀ¸·Î ºÐ¸®ÇÏ´Â °ÍÀÌ °³¹ßÀÚ¿¡°Ô ´õ ÀÌ·Î¿ï °ÍÀÌ¶ó´Â °ÍÀÌ È®½ÇÇØ Á³´Ù. Ã¹ ¹øÂ° ºÎºÐÀº Restlet API¶ó ºÒ¸®´Â ÀÏ¹ÝÀûÀÎ Å¬·¡½º ÁýÇÕÀÌ¸ç ¸î °¡Áö ÇïÆÛ Å¬·¡½º¿Í Restlet ±¸ÇöÃ¼¸¦ µî·ÏÇÏ´Â ¸ÞÄ¿´ÏÁòÀ» Æ÷ÇÔÇÏ°í ÀÖ´Ù. µÎ ¹øÂ° ºÎºÐÀº Noelios Restlet ¿£ÁøÀÌ¶ó ºÒ¸®´Â ÂüÁ¶ ±¸ÇöÃ¼·Î¼­ ¸î °¡Áö ¼­¹ö ¹× Å¬¶óÀÌ¾ðÆ® Ä¿³ØÅÍ(HTTP, JDBC, SMTP µî)¿Í Ç¥Çö(¹®ÀÚ¿­, ÆÄÀÏ, XML ¹®¼­, ÅÛÇÃ¸´, ½ºÆ®¸² µî¿¡ ±â¹ÝÇÑ) ÁýÇÕ, ±×¸®°í ÆÄÀÏ È®ÀåÀÚ¿¡ ±â¹ÝÇÏ¿© automatic content negotiationÀ» ÅëÇØ µð·ºÅÍ¸® Æ®¸®·ÎºÎÅÍ Á¤Àû ÆÄÀÏµéÀ» Ã³¸®ÇÒ ¼ö ÀÖ´Â µð·ºÅÍ¸®(Directory)¸¦ Æ÷ÇÔÇÑ´Ù. 2005³â 11¿ù¿¡ Ã³À½ ÀÏ¹Ý¿¡ °ø°³µÈ ÀÌÈÄ ÇÁ·ÎÁ§Æ®´Â È°¹ßÇÑ Ä¿¹Â´ÏÆ¼ »ç¿ëÀÚ¿Í °³¹ßÀÚ°¡ µµ¿òÀ» ÁÖ´Â ´öÅÃ¿¡ ¼º¼÷ÇØÁö°í ÀÖ´Ù.
+¸î ¹øÀ» ¹Ýº¹ÇÏ°í ³ª¼­ Restlet ÇÁ·ÎÁ§Æ®¸¦ µÎ ºÎºÐÀ¸·Î ºÐ¸®ÇÏ´Â °ÍÀÌ °³¹ßÀÚ¿¡°Ô ´õ ÀÌ·Î¿ï °ÍÀÌ¶ó´Â °ÍÀÌ È®½ÇÇØ Á³´Ù. 
+Ã¹ ¹øÂ° ºÎºÐÀº Restlet API¶ó ºÒ¸®´Â ÀÏ¹ÝÀûÀÎ Å¬·¡½º ÁýÇÕÀÌ¸ç ¸î °¡Áö ÇïÆÛ Å¬·¡½º¿Í Restlet ±¸ÇöÃ¼¸¦ µî·ÏÇÏ´Â ¸ÞÄ¿´ÏÁòÀ» Æ÷ÇÔÇÏ°í ÀÖ´Ù. 
+µÎ ¹øÂ° ºÎºÐÀº Noelios Restlet ¿£ÁøÀÌ¶ó ºÒ¸®´Â ÂüÁ¶ ±¸ÇöÃ¼·Î¼­ ¸î °¡Áö ¼­¹ö ¹× Å¬¶óÀÌ¾ðÆ® Ä¿³ØÅÍ(HTTP, JDBC, SMTP µî)¿Í Ç¥Çö(¹®ÀÚ¿­, ÆÄÀÏ, XML ¹®¼­, ÅÛÇÃ¸´, ½ºÆ®¸² µî¿¡ ±â¹ÝÇÑ) ÁýÇÕ, 
+±×¸®°í ÆÄÀÏ È®ÀåÀÚ¿¡ ±â¹ÝÇÏ¿© automatic content negotiationÀ» ÅëÇØ µð·ºÅÍ¸® Æ®¸®·ÎºÎÅÍ Á¤Àû ÆÄÀÏµéÀ» Ã³¸®ÇÒ ¼ö ÀÖ´Â µð·ºÅÍ¸®(Directory)¸¦ Æ÷ÇÔÇÑ´Ù. 
+2005³â 11¿ù¿¡ Ã³À½ ÀÏ¹Ý¿¡ °ø°³µÈ ÀÌÈÄ ÇÁ·ÎÁ§Æ®´Â È°¹ßÇÑ Ä¿¹Â´ÏÆ¼ »ç¿ëÀÚ¿Í °³¹ßÀÚ°¡ µµ¿òÀ» ÁÖ´Â ´öÅÃ¿¡ ¼º¼÷ÇØÁö°í ÀÖ´Ù.
 
 °á·Ð
 
-º¹ÀâÇÏ°Ô ÁýÁßÈ­µÈ ¸ðµ¨ÀÇ °­·ÂÇÔ¿¡µµ ºÒ±¸ÇÏ°í °´Ã¼ÁöÇâÀûÀÎ ÆÐ·¯´ÙÀÓÀÌ À¥ °³¹ß¿¡ ÀÖ¾î ¾ðÁ¦³ª ÃÖÀûÀÇ ¼±ÅÃÀº ¾Æ´Ï´Ù. ÀÚ¹Ù °³¹ßÀÚµéÀº ÀÌ°ÍÀ» ±ú´Ý°í »õ·Î¿î À¥ ¼­¹ö³ª »õ·Î¿î AJAX ±â¹ÝÀÇ À¥ Å¬¶óÀÌ¾ðÆ®¸¦ °³¹ßÇÒ ¶§ Á» ´õ RESTfullyÇÏ°Ô »ý°¢ÇÏ´Â °ÍÀ» ½ÃÀÛÇÒ ÇÊ¿ä°¡ ÀÖ´Ù. Restlet ÇÁ·ÎÁ§Æ®´Â ¿©·¯ºÐÀÌ °ð¹Ù·Î À¥ 2.0¿¡ ¿Ã¶óÅ» ¼ö ÀÖµµ·Ï ÇØÁÖ´Â ´Ü¼øÇÏÁö¸¸ °ß°íÇÑ ±â¹ÝÀ» Á¦°øÇØ ÁØ´Ù.
+º¹ÀâÇÏ°Ô ÁýÁßÈ­µÈ ¸ðµ¨ÀÇ °­·ÂÇÔ¿¡µµ ºÒ±¸ÇÏ°í °´Ã¼ÁöÇâÀûÀÎ ÆÐ·¯´ÙÀÓÀÌ À¥ °³¹ß¿¡ ÀÖ¾î ¾ðÁ¦³ª ÃÖÀûÀÇ ¼±ÅÃÀº ¾Æ´Ï´Ù. 
+ÀÚ¹Ù °³¹ßÀÚµéÀº ÀÌ°ÍÀ» ±ú´Ý°í »õ·Î¿î À¥ ¼­¹ö³ª »õ·Î¿î AJAX ±â¹ÝÀÇ À¥ Å¬¶óÀÌ¾ðÆ®¸¦ °³¹ßÇÒ ¶§ Á» ´õ RESTfullyÇÏ°Ô »ý°¢ÇÏ´Â °ÍÀ» ½ÃÀÛÇÒ ÇÊ¿ä°¡ ÀÖ´Ù. 
+Restlet ÇÁ·ÎÁ§Æ®´Â ¿©·¯ºÐÀÌ °ð¹Ù·Î À¥ 2.0¿¡ ¿Ã¶óÅ» ¼ö ÀÖµµ·Ï ÇØÁÖ´Â ´Ü¼øÇÏÁö¸¸ °ß°íÇÑ ±â¹ÝÀ» Á¦°øÇØ ÁØ´Ù.
+
+
+
+
+

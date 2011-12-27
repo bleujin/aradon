@@ -16,6 +16,7 @@ import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
 import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.apache.commons.httpclient.params.HttpClientParams;
+import org.junit.Test;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.representation.OutputRepresentation;
@@ -30,10 +31,10 @@ import org.restlet.representation.Representation;
  * @author novision
  * @version 1.0
  */
-public class TestMultiPartRequest extends TestCase{
+public class TestMultiPartRequest {
 	
-	
-	public void testPost() throws Exception {
+	@Test
+	public void post() throws Exception {
 		AradonTester at = AradonTester.create().register("", "/hello", TestMultipartLet.class) ;
 		at.getAradon().startServer(9999) ;
 		

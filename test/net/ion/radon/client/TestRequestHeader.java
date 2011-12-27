@@ -1,16 +1,22 @@
 package net.ion.radon.client;
 
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
 import junit.framework.TestCase;
+import net.ion.radon.core.Aradon;
 import net.ion.radon.util.AradonTester;
 
-public class TestRequestHeader extends TestCase{
+public class TestRequestHeader {
 	
-	public void testHeader() throws Exception {
+	@Test
+	public void header() throws Exception {
 		AradonTester at = AradonTester.create().register("", "/hello", TestHeaderLet.class) ;
-		at.startServer(9000) ;
+		Aradon aradon = at.getAradon() ;
 		
 		
-		AradonClient ac = AradonClientFactory.create("http://127.0.0.1:9000") ;
+		AradonClient ac = AradonClientFactory.create(aradon) ;
 		IAradonRequest req = ac.createRequest("/hello") ;
 		req.addHeader("name", "bleujin") ;
 		

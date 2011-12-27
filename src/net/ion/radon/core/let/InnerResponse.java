@@ -6,10 +6,13 @@ import java.util.Map;
 import java.util.Set;
 
 import net.ion.framework.rest.StdObject;
+import net.ion.framework.util.StringUtil;
 import net.ion.radon.core.Aradon;
 import net.ion.radon.core.IService;
 import net.ion.radon.core.RadonAttributeKey;
 
+import org.apache.commons.httpclient.util.DateParseException;
+import org.apache.commons.httpclient.util.DateUtil;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.Uniform;
@@ -26,6 +29,7 @@ import org.restlet.data.Reference;
 import org.restlet.data.ServerInfo;
 import org.restlet.data.Status;
 import org.restlet.data.Warning;
+import org.restlet.engine.http.header.ContentType;
 import org.restlet.representation.Representation;
 import org.restlet.util.Series;
 
@@ -42,7 +46,7 @@ public class InnerResponse extends Response {
 
 	public static InnerResponse create(Response response, InnerRequest innerRequest) {
 		final InnerResponse innerResponse = new InnerResponse(response, innerRequest);
-		innerResponse.getHeaders().set("X-Aradon-Version", "0.5") ;
+		innerResponse.getHeaders().set(RadonAttributeKey.ARADON_VERSION_KEY, "0.5") ;
 		return innerResponse;
 	}
 	
@@ -265,6 +269,7 @@ public class InnerResponse extends Response {
 	public String getEntityAsText(){
 		return inner.getEntityAsText() ;
 	}
+
 	
 	public Uniform getOnSent() {
 		return inner.getOnSent() ;
@@ -315,5 +320,24 @@ public class InnerResponse extends Response {
 		return getInnerRequest().getPathService(aradon) ;
 	}
 
+	public ContentType getContentType(){
+		return new ContentType(getHeaders().getFirstValue("Content-Type")) ;
+	}
 	
+    public long getLastModified() {
+        String value = getHeaders().getFirstValue("Last-Modified");
+        return getLastModified(value);
+    }
+    
+	public static long getLastModified(String value) {
+		try {
+			if (StringUtil.isBlank(value)) return -1L ;
+		    Date date = DateUtil.parseDate(value);
+		    return date.getTime();
+		} catch (DateParseException e) {
+		    return -1L ;
+		}
+	}
+
+    
 }

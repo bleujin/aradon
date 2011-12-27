@@ -1,20 +1,28 @@
 package net.ion.radon.param;
 
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
 import junit.framework.TestCase;
 
-public class TestParamterKey extends TestCase{
+public class TestParamterKey {
 
-	String path = "a.b.c" ;
+	private String path = "a.b.c" ;
+	
+	@Test
 	public void testKeyName() throws Exception {
 		MyParameterKey key = MyParameterKey.create(path) ;
 		assertEquals("a", key.getName()) ;
 	}
 
+	@Test
 	public void testNextKeyName() throws Exception {
 		MyParameterKey key = MyParameterKey.create(path) ;
 		assertEquals("b", key.getNext().getName()) ;
 	}
 	
+	@Test
 	public void testIsLast() throws Exception {
 		MyParameterKey key = MyParameterKey.create(path) ;
 		String buffer = new String() ;

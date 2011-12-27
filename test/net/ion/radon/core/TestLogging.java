@@ -1,5 +1,7 @@
 package net.ion.radon.core;
 
+import static org.junit.Assert.*;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+import org.junit.Test;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.Method;
@@ -24,6 +27,7 @@ import net.ion.radon.server.TestAradonServer;
 
 public class TestLogging extends TestAradon{
 
+	
 	public void xtestViewRecentLog() throws Exception {
 		initAradon();
 		Logger log = aradon.getLogger();
@@ -46,7 +50,8 @@ public class TestLogging extends TestAradon{
 		
 		logger.warning("Hello") ;
 	}
-	
+
+	@Test
 	public void testBoolean() throws Exception {
 		assertTrue(Boolean.valueOf("true")) ;
 	}

@@ -84,7 +84,29 @@ public class EnumClass {
 	}
 	
 	public enum IZone {
-		Application, Section, Path, Request
+		Application {
+			public IZone getChildZone(){
+				return Section ;
+			}
+		}, Section{
+			public IZone getChildZone(){
+				return Path ;
+			}
+		}, Path{
+			public IZone getChildZone(){
+				return Request ;
+			}
+		}, Request {
+			public IZone getChildZone(){
+				return NONE ;
+			}
+		}, NONE {
+			public IZone getChildZone(){
+				return null ;
+			}
+		} ;
+		
+		public abstract IZone getChildZone() ;
 	}
 	
 	

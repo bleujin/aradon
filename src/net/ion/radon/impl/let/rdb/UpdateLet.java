@@ -4,29 +4,37 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import net.ion.framework.db.IDBController;
+import net.ion.framework.db.procedure.AradonCombinedUserProcedures;
 import net.ion.framework.db.procedure.CombinedUserProcedures;
+import net.ion.framework.db.procedure.ICombinedUserProcedures;
 import net.ion.framework.db.procedure.Queryable;
 import net.ion.framework.db.procedure.SerializedQuery;
 import net.ion.framework.db.procedure.SerializedQuery.SerialType;
+import net.ion.radon.core.let.AbstractServerResource;
 
 import org.restlet.representation.ObjectRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.Execute;
+import org.restlet.resource.Post;
+import org.restlet.resource.Put;
 
 
-public class UpdateLet extends DBServerResource {
-
-	@Execute
-	public Representation execQuery(SerializedQuery squery) throws IOException, SQLException {
+public class UpdateLet extends AbstractServerResource {
+	
+	@Put
+	public QueryResult execCombinedQuery(Queryable squery) throws SQLException {
+		IDBController dc = getContext().getAttributeObject(IDBController.class.getCanonicalName(), IDBController.class) ;
 		
-		IDBController dc = getDBController();
-		final Queryable query = squery.deserializable(dc);
-		int count = query.execUpdate();
-		if (squery.getSerialType() == SerialType.CombinedUserProcedures){
-			return QueryResult.create(((CombinedUserProcedures)query).getResultMap()).toRepresentation();
-		}
+		ICombinedUserProcedures cups =  (ICombinedUserProcedures)((SerializedQuery)squery).deserializable(dc) ;
+		cups.execUpdate() ;
+		return QueryResult.create(cups.getResultMap()) ;
+	}
+	
+	@Post
+	public int execUpdate(Queryable squery) throws IOException, SQLException {
 		
-		return new ObjectRepresentation(count);
+		IDBController dc = getContext().getAttributeObject(IDBController.class.getCanonicalName(), IDBController.class) ;
+		return dc.execUpdate(squery) ;
 	}
 
 }

@@ -1,16 +1,12 @@
 package net.ion.radon.core;
 
-import static net.ion.radon.core.RadonAttributeKey.*;
+import static net.ion.radon.core.RadonAttributeKey.REQUEST_CONTEXT;
 
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.ion.framework.util.InstanceCreationException;
 import net.ion.framework.util.MapUtil;
 import net.ion.framework.util.StringUtil;
-import net.ion.radon.core.config.AttributeUtil;
-import net.ion.radon.core.config.XMLConfig;
-import net.ion.radon.core.let.FilterUtil;
 import net.ion.radon.core.let.InnerRequest;
 import net.ion.radon.impl.section.BasePathInfo;
 import net.ion.radon.impl.section.PathInfo;
@@ -20,7 +16,6 @@ import net.ion.radon.socketio.StaticFileLet;
 import net.ion.radon.socketio.server.SocketIOServlet;
 import net.ion.radon.socketio.server.transport.FlashSocketTransport;
 
-import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.lang.ClassUtils;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;

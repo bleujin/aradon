@@ -13,15 +13,15 @@ import org.json.JSONObject;
 import org.restlet.ext.json.JsonRepresentation;
 import org.restlet.representation.Representation;
 
-public class ARadonRequest {
+public class AradonRequest {
 
 	private Map<String, SingleRequest> srs ; 
-	private ARadonRequest() {
+	private AradonRequest() {
 		this.srs = new HashMap<String, SingleRequest>() ;
 	}
 
-	static ARadonRequest create() {
-		return new ARadonRequest();
+	static AradonRequest create() {
+		return new AradonRequest();
 	}
 	
 	public SingleRequest getRequest(String name){

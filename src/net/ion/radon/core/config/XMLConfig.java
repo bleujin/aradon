@@ -1,7 +1,7 @@
 package net.ion.radon.core.config;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -15,6 +15,7 @@ import net.ion.framework.util.StringUtil;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.HierarchicalConfiguration;
 import org.apache.commons.configuration.XMLConfiguration;
+import org.apache.commons.io.FileUtils;
 
 public class XMLConfig {
 
@@ -28,6 +29,13 @@ public class XMLConfig {
 
 	public static XMLConfig create(File file) throws ConfigurationException {
 		return create(new XMLConfiguration(file));
+	}
+	
+	public static XMLConfig load(String configString) throws IOException, ConfigurationException{
+		File tfile = File.createTempFile("aradon", "config");
+		FileUtils.writeStringToFile(tfile, configString);
+
+		return XMLConfig.create(tfile);
 	}
 
 	private static XMLConfig create(HierarchicalConfiguration hconfig) {
