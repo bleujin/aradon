@@ -33,67 +33,55 @@ public class WebSocketConnectionWrapper implements WebSocketConnection {
 		}
 	}
 
-	@Override
 	public HttpRequest httpRequest() {
 		return connection.httpRequest();
 	}
 
-	@Override
 	public WebSocketConnectionWrapper send(String message) {
 		connection.send(message);
 		return this;
 	}
 
-	@Override
 	public WebSocketConnectionWrapper send(byte[] message) {
 		connection.send(message);
 		return this;
 	}
 
-	@Override
 	public WebSocketConnectionWrapper ping(String message) {
 		connection.ping(message);
 		return this;
 	}
 
-	@Override
 	public WebSocketConnectionWrapper close() {
 		connection.close();
 		return this;
 	}
 
-	@Override
 	public Map<String, Object> data() {
 		return connection.data();
 	}
 
-	@Override
 	public Object data(String key) {
 		return connection.data(key);
 	}
 
-	@Override
 	public WebSocketConnectionWrapper data(String key, Object value) {
 		connection.data(key, value);
 		return this;
 	}
 
-	@Override
 	public Set<String> dataKeys() {
 		return connection.dataKeys();
 	}
 
-	@Override
 	public Executor handlerExecutor() {
 		return connection.handlerExecutor();
 	}
 
-	@Override
 	public String version() {
 		return connection.version();
 	}
 
-	@Override
 	public void execute(Runnable command) {
 		connection.execute(command);
 	}

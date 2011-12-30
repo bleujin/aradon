@@ -38,7 +38,6 @@ public class StaleConnectionTrackingHandler extends SimpleChannelHandler {
 
 	private void stamp(final Channel channel) {
 		executor.execute(new Runnable() {
-			@Override
 			public void run() {
 				stamps.put(channel, System.currentTimeMillis());
 			}
@@ -47,7 +46,6 @@ public class StaleConnectionTrackingHandler extends SimpleChannelHandler {
 
 	public void closeStaleConnections() {
 		executor.execute(new Runnable() {
-			@Override
 			public void run() {
 				Iterator<Map.Entry<Channel, Long>> entries = stamps.entrySet().iterator();
 				while (entries.hasNext()) {
@@ -68,7 +66,6 @@ public class StaleConnectionTrackingHandler extends SimpleChannelHandler {
 	 */
 	public void stopTracking(final Channel channel) {
 		executor.execute(new Runnable() {
-			@Override
 			public void run() {
 				stamps.remove(channel);
 			}

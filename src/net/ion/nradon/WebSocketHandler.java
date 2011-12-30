@@ -1,13 +1,13 @@
 package net.ion.nradon;
 
 public interface WebSocketHandler {
-	void onOpen(WebSocketConnection connection) throws Exception;
+	void onOpen(WebSocketConnection conn) throws Exception;
 
-	void onClose(WebSocketConnection connection) throws Exception;
+	void onClose(WebSocketConnection conn) throws Exception;
 
-	void onMessage(WebSocketConnection connection, String msg) throws Throwable;
+	void onMessage(WebSocketConnection conn, String msg) throws Throwable;
 
-	void onMessage(WebSocketConnection connection, byte[] msg) throws Throwable;
+	void onMessage(WebSocketConnection conn, byte[] msg) throws Throwable;
 
-	void onPong(WebSocketConnection connection, String msg) throws Throwable;
+	void onPong(WebSocketConnection conn, String msg) throws Throwable;
 }

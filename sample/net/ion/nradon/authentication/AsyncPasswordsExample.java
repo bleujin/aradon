@@ -1,15 +1,16 @@
-package net.ion.nradon.sample.authentication;
+package net.ion.nradon.authentication;
 
-import net.ion.nradon.*;
-import net.ion.nradon.handler.StaticFileHandler;
-import net.ion.nradon.handler.authentication.BasicAuthenticationHandler;
-import net.ion.nradon.handler.authentication.PasswordAuthenticator;
+import static net.ion.nradon.WebServers.createWebServer;
 
 import java.io.IOException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import static net.ion.nradon.WebServers.createWebServer;
+import net.ion.nradon.HttpRequest;
+import net.ion.nradon.WebServer;
+import net.ion.nradon.handler.StaticFileHandler;
+import net.ion.nradon.handler.authentication.BasicAuthenticationHandler;
+import net.ion.nradon.handler.authentication.PasswordAuthenticator;
 
 /**
  * This example how to verify username/passwords in the background without blocking the
@@ -34,7 +35,6 @@ public class AsyncPasswordsExample {
      * Custom password authenticator. This runs on the main Webbit handler thread.
      */
     private static class SlowPasswordAuthenticator implements PasswordAuthenticator {
-        @Override
         public void authenticate(HttpRequest request, final String username, final String password, final ResultCallback callback, final Executor handlerExecutor) {
             // Submit some slow work to a background thread, so we don't block the main Webbit thread.
             backgroundAuthenticatorThread.execute(new BackgroundWorker(username, password, callback, handlerExecutor));
@@ -58,7 +58,6 @@ public class AsyncPasswordsExample {
             this.handlerExecutor = handlerExecutor;
         }
 
-        @Override
         public void run() {
             // Do something slowly in the background
             try {
@@ -86,7 +85,6 @@ public class AsyncPasswordsExample {
             this.callback = callback;
         }
 
-        @Override
         public void run() {
             if (authenticated) {
                 callback.success();

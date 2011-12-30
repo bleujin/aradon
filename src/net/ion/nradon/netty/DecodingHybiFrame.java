@@ -85,7 +85,6 @@ public class DecodingHybiFrame {
 	// Uncaught exception handler including the connection for context.
 	private static Thread.UncaughtExceptionHandler exceptionHandlerWithConnectionForContext(final NettyWebSocketConnection connection, final Thread.UncaughtExceptionHandler exceptionHandler) {
 		return new Thread.UncaughtExceptionHandler() {
-			@Override
 			public void uncaughtException(Thread t, Throwable e) {
 				exceptionHandler.uncaughtException(t, AradonRuntimeException.fromException(e, connection.getChannel()));
 			}
@@ -99,7 +98,6 @@ public class DecodingHybiFrame {
 			this.exceptionHandler = exceptionHandler;
 		}
 
-		@Override
 		public void run() {
 			try {
 				go();

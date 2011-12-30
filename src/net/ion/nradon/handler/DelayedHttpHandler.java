@@ -26,13 +26,12 @@ public class DelayedHttpHandler implements HttpHandler {
 		this.executor = executor;
 	}
 
-	@Override
 	public void handleHttpRequest(final HttpRequest request, final HttpResponse response, final HttpControl control) throws Exception {
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
 				executor.execute(new Runnable() {
-					@Override
+
 					public void run() {
 						try {
 							handler.handleHttpRequest(request, response, control);

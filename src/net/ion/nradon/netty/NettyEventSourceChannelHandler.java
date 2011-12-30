@@ -66,7 +66,6 @@ public class NettyEventSourceChannelHandler extends SimpleChannelUpstreamHandler
 	@Override
 	public void channelDisconnected(ChannelHandlerContext ctx, final ChannelStateEvent e) throws Exception {
 		executor.execute(new Runnable() {
-			@Override
 			public void run() {
 				try {
 					handler.onClose(eventSourceConnection);
@@ -89,7 +88,6 @@ public class NettyEventSourceChannelHandler extends SimpleChannelUpstreamHandler
 		} else {
 			final Thread thread = Thread.currentThread();
 			executor.execute(new Runnable() {
-				@Override
 				public void run() {
 					ioExceptionHandler.uncaughtException(thread, AradonRuntimeException.fromExceptionEvent(e));
 				}

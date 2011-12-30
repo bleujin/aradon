@@ -29,12 +29,10 @@ public class StubConnection extends StubDataHolder implements EventSourceConnect
 		this(new StubHttpRequest());
 	}
 
-	@Override
 	public HttpRequest httpRequest() {
 		return httpRequest;
 	}
 
-	@Override
 	public StubConnection send(EventSourceMessage message) {
 		return send(message.build()).send("\n");
 	}
@@ -44,25 +42,21 @@ public class StubConnection extends StubDataHolder implements EventSourceConnect
 		return this;
 	}
 
-	@Override
 	public StubConnection send(String message) {
 		sentMessages.add(message);
 		return this;
 	}
 
-	@Override
 	public StubConnection send(byte[] message) {
 		sentBinaryMessages.add(message);
 		return this;
 	}
 
-	@Override
 	public StubConnection ping(String message) {
 		sentPings.add(message);
 		return this;
 	}
 
-	@Override
 	public StubConnection close() {
 		closed = true;
 		return this;
@@ -90,12 +84,10 @@ public class StubConnection extends StubDataHolder implements EventSourceConnect
 		return this;
 	}
 
-	@Override
 	public Executor handlerExecutor() {
 		return this;
 	}
 
-	@Override
 	public String version() {
 		return version;
 	}
@@ -105,7 +97,6 @@ public class StubConnection extends StubDataHolder implements EventSourceConnect
 		return this;
 	}
 
-	@Override
 	public void execute(Runnable command) {
 		command.run();
 	}

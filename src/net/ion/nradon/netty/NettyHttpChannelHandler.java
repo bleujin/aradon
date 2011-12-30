@@ -53,7 +53,6 @@ public class NettyHttpChannelHandler extends SimpleChannelUpstreamHandler {
 		final HttpControl control = new NettyHttpControl(httpHandlers.iterator(), executor, ctx, nettyHttpRequest, nettyHttpResponse, httpRequest, new DefaultHttpResponse(HTTP_1_1, OK), exceptionHandler, ioExceptionHandler);
 
 		executor.execute(new Runnable() {
-			@Override
 			public void run() {
 				try {
 					control.nextHandler(nettyHttpRequest, nettyHttpResponse);
@@ -71,7 +70,6 @@ public class NettyHttpChannelHandler extends SimpleChannelUpstreamHandler {
 		} else {
 			final Thread thread = Thread.currentThread();
 			executor.execute(new Runnable() {
-				@Override
 				public void run() {
 					ioExceptionHandler.uncaughtException(thread, AradonRuntimeException.fromExceptionEvent(e));
 				}

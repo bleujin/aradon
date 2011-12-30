@@ -1,10 +1,11 @@
 package net.ion.nradon;
 
 import java.io.InputStream;
-import java.net.HttpCookie;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.Date;
+
+import org.restlet.data.Cookie;
 
 /**
  * Writes a response back to the client.
@@ -70,7 +71,7 @@ public interface HttpResponse {
 	 * @param httpCookie
 	 *            the cookie
 	 */
-	HttpResponse cookie(HttpCookie httpCookie);
+	HttpResponse cookie(Cookie httpCookie);
 
 	/**
 	 * Write text based content back to the client.

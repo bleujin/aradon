@@ -21,41 +21,37 @@ import org.junit.Test;
 
 public class TestCompression {
 
-    private final WebServer webServer = createWebServer(59504);
+	private final WebServer webServer = createWebServer(59504);
 
-    private final String content = "Very short string for which there is no real point in compressing, but we're going to do it anyway.";
+	private final String content = "Very short string for which there is no real point in compressing, but we're going to do it anyway.";
 
-    @After
-    public void die() throws IOException, InterruptedException {
-        webServer.stop().join();
-    }
+	@After
+	public void die() throws IOException, InterruptedException {
+		webServer.stop().join();
+	}
 
-    @Test
-    public void compressedPostIsUncompressedProperly() throws IOException {
-        webServer.add(new HttpHandler() {
-            @Override
-            public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control)
-                    throws Exception {
-                response.content(request.body()).end();
-            }
-        }).start();
-        String result = contents(httpPostCompressed(webServer, "/", content));
-        assertEquals(content, result);
-    }
+	@Test
+	public void compressedPostIsUncompressedProperly() throws IOException {
+		webServer.add(new HttpHandler() {
+			public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
+				response.content(request.body()).end();
+			}
+		}).start();
+		String result = contents(httpPostCompressed(webServer, "/", content));
+		assertEquals(content, result);
+	}
 
-    @Test
-    public void compressedResponseIsSentProperly() throws IOException {
-        webServer.add(new HttpHandler() {
-            @Override
-            public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control)
-                    throws Exception {
-                response.content(content).end();
-            }
-        }).start();
-        HttpURLConnection urlConnection = (HttpURLConnection) httpGetAcceptCompressed(webServer, "/");
-        String result = decompressContents(urlConnection);
-        assertEquals(content, result);
-        assertEquals("gzip", urlConnection.getContentEncoding());
-    }
+	@Test
+	public void compressedResponseIsSentProperly() throws IOException {
+		webServer.add(new HttpHandler() {
+			public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
+				response.content(content).end();
+			}
+		}).start();
+		HttpURLConnection urlConnection = (HttpURLConnection) httpGetAcceptCompressed(webServer, "/");
+		String result = decompressContents(urlConnection);
+		assertEquals(content, result);
+		assertEquals("gzip", urlConnection.getContentEncoding());
+	}
 
 }

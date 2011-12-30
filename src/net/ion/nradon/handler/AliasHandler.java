@@ -12,7 +12,6 @@ public class AliasHandler implements HttpHandler {
 		this.uri = uri;
 	}
 
-	@Override
 	public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
 		request.uri(uri);
 		control.nextHandler(request, response);

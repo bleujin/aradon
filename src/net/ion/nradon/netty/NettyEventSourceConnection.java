@@ -23,55 +23,45 @@ public class NettyEventSourceConnection implements EventSourceConnection {
 		this.ctx = ctx;
 	}
 
-	@Override
 	public NettyHttpRequest httpRequest() {
 		return nettyHttpRequest;
 	}
 
-	@Override
 	public EventSourceConnection send(EventSourceMessage message) {
 		return send(message.build() + "\n");
 	}
 
-	@Override
 	public NettyEventSourceConnection send(String message) {
 		ctx.getChannel().write(copiedBuffer(message, CharsetUtil.UTF_8));
 		return this;
 	}
 
-	@Override
 	public NettyEventSourceConnection close() {
 		ctx.getChannel().close();
 		return this;
 	}
 
-	@Override
 	public void execute(Runnable command) {
 		executor.execute(command);
 	}
 
-	@Override
 	public Map<String, Object> data() {
 		return nettyHttpRequest.data();
 	}
 
-	@Override
 	public Object data(String key) {
 		return data().get(key);
 	}
 
-	@Override
 	public NettyEventSourceConnection data(String key, Object value) {
 		data().put(key, value);
 		return this;
 	}
 
-	@Override
 	public Set<String> dataKeys() {
 		return data().keySet();
 	}
 
-	@Override
 	public Executor handlerExecutor() {
 		return executor;
 	}

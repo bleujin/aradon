@@ -33,7 +33,7 @@ public class HttpClient {
         urlConnection.setRequestMethod("POST");
         urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
         urlConnection.setDoOutput(true);
-        urlConnection.getOutputStream().write(body.getBytes(Charset.forName("UTF8")));
+        urlConnection.getOutputStream().write(body.getBytes("UTF8"));
         return urlConnection;
     }
 
@@ -47,7 +47,7 @@ public class HttpClient {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         GZIPOutputStream gzip = new GZIPOutputStream(baos);
-        gzip.write(body.getBytes(Charset.forName("UTF8")));
+        gzip.write(body.getBytes("UTF8"));
         gzip.close();
 
         urlConnection.getOutputStream().write(baos.toByteArray());

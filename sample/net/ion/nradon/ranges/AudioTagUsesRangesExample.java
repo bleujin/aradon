@@ -1,4 +1,4 @@
-package net.ion.nradon.sample.ranges;
+package net.ion.nradon.ranges;
 
 import net.ion.nradon.WebServer;
 import net.ion.nradon.handler.StaticFileHandler;
@@ -15,7 +15,7 @@ public class AudioTagUsesRangesExample {
 
     public static void main(String[] args) throws IOException {
         WebServer webServer = createWebServer(45453)
-                .add(new StaticFileHandler("src/test/java/samples/ranges/content"))
+                .add(new StaticFileHandler("sample/net/ion/nradon/ranges/content"))
                 .start();
 
         System.out.println("Running on " + webServer.getUri());

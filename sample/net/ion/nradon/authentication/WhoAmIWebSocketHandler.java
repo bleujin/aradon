@@ -1,11 +1,11 @@
-package net.ion.nradon.sample.authentication;
+package net.ion.nradon.authentication;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import net.ion.nradon.WebSocketConnection;
 import net.ion.nradon.WebSocketHandler;
 import net.ion.nradon.handler.authentication.BasicAuthenticationHandler;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * WebSocket handler that keeps track of whos connected and broadcasts to other users.
@@ -14,7 +14,6 @@ public class WhoAmIWebSocketHandler implements WebSocketHandler {
 
     private final Set<WebSocketConnection> connections = new HashSet<WebSocketConnection>();
 
-    @Override
     public void onOpen(WebSocketConnection connection) throws Exception {
         String username = (String) connection.data(BasicAuthenticationHandler.USERNAME);
         connection.send("Hello " + username);
@@ -25,7 +24,6 @@ public class WhoAmIWebSocketHandler implements WebSocketHandler {
         connections.add(connection);
     }
 
-    @Override
     public void onClose(WebSocketConnection connection) throws Exception {
         String username = (String) connection.data(BasicAuthenticationHandler.USERNAME);
         connections.remove(connection);
@@ -35,17 +33,14 @@ public class WhoAmIWebSocketHandler implements WebSocketHandler {
         }
     }
 
-    @Override
     public void onMessage(WebSocketConnection connection, String msg) throws Exception {
         // Do nothing
     }
 
-    @Override
     public void onMessage(WebSocketConnection connection, byte[] msg) {
         // Do nothing
     }
 
-    @Override
     public void onPong(WebSocketConnection connection, String msg) {
         // Do nothing
     }

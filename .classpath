@@ -3,6 +3,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="src" path="groovy"/>
+	<classpathentry kind="src" path="sample"/>
 	<classpathentry kind="lib" path="aradon_lib/aradon/embed/apache_extend_fat.jar"/>
 	<classpathentry kind="lib" path="aradon_lib/aradon/embed/core_fat.jar"/>
 	<classpathentry kind="lib" path="aradon_lib/aradon/embed/groovy-all-1.7.6.jar"/>
@@ -19,7 +20,7 @@
 	<classpathentry kind="lib" path="aradon_lib/aradon/imsi/jmxtools-1.2.jar"/>
 	<classpathentry kind="lib" path="aradon_lib/aradon/imsi/mockito-all-1.9.0-rc1.jar"/>
 	<classpathentry kind="lib" path="aradon_lib/aradon/imsi/gson-1.7.2.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.5.22"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

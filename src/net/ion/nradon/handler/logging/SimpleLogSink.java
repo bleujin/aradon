@@ -1,5 +1,6 @@
 package net.ion.nradon.handler.logging;
 
+import net.ion.framework.util.StringUtil;
 import net.ion.nradon.EventSourceConnection;
 import net.ion.nradon.HttpRequest;
 import net.ion.nradon.WebSocketConnection;
@@ -38,62 +39,50 @@ public class SimpleLogSink implements LogSink {
 		this(System.out, dataValuesToLog);
 	}
 
-	@Override
 	public void httpStart(HttpRequest request) {
 		custom(request, "HTTP-START", null);
 	}
 
-	@Override
 	public void httpEnd(HttpRequest request) {
 		custom(request, "HTTP-END", null); // TODO: Time request
 	}
 
-	@Override
 	public void webSocketConnectionOpen(WebSocketConnection connection) {
 		custom(connection.httpRequest(), "WEB-SOCKET-" + connection.version() + "-OPEN", null);
 	}
 
-	@Override
 	public void webSocketConnectionClose(WebSocketConnection connection) {
 		custom(connection.httpRequest(), "WEB-SOCKET-" + connection.version() + "-CLOSE", null);
 	}
 
-	@Override
 	public void webSocketInboundData(WebSocketConnection connection, String data) {
 		custom(connection.httpRequest(), "WEB-SOCKET-" + connection.version() + "-IN-STRING", data);
 	}
 
-	@Override
 	public void webSocketInboundData(WebSocketConnection connection, byte[] data) {
 		custom(connection.httpRequest(), "WEB-SOCKET-" + connection.version() + "-IN-HEX", toHex(data));
 	}
 
-	@Override
 	public void webSocketInboundPong(WebSocketConnection connection, String message) {
 		custom(connection.httpRequest(), "WEB-SOCKET-" + connection.version() + "-IN-PONG", message);
 	}
 
-	@Override
 	public void webSocketOutboundData(WebSocketConnection connection, String data) {
 		custom(connection.httpRequest(), "WEB-SOCKET-" + connection.version() + "-OUT-STRING", data);
 	}
 
-	@Override
 	public void webSocketOutboundData(WebSocketConnection connection, byte[] data) {
 		custom(connection.httpRequest(), "WEB-SOCKET-" + connection.version() + "-OUT-HEX", toHex(data));
 	}
 
-	@Override
 	public void webSocketOutboundPing(WebSocketConnection connection, String message) {
 		custom(connection.httpRequest(), "WEB-SOCKET-" + connection.version() + "-PING", message);
 	}
 
-	@Override
 	public void error(HttpRequest request, Throwable error) {
 		custom(request, "ERROR-OPEN", error.toString());
 	}
 
-	@Override
 	public void custom(HttpRequest request, String action, String data) {
 		if (trouble) {
 			return;
@@ -107,17 +96,14 @@ public class SimpleLogSink implements LogSink {
 		}
 	}
 
-	@Override
 	public void eventSourceConnectionOpen(EventSourceConnection connection) {
 		custom(connection.httpRequest(), "EVENT-SOURCE-OPEN", null);
 	}
 
-	@Override
 	public void eventSourceConnectionClose(EventSourceConnection connection) {
 		custom(connection.httpRequest(), "EVENT-SOURCE-CLOSE", null);
 	}
 
-	@Override
 	public void eventSourceOutboundData(EventSourceConnection connection, String data) {
 		custom(connection.httpRequest(), "EVENT-SOURCE-OUT", data);
 	}
@@ -176,7 +162,7 @@ public class SimpleLogSink implements LogSink {
 			return out.append("-\t");
 		}
 		String string = value.toString().trim();
-		if (string.isEmpty()) {
+		if (StringUtil.isEmpty(string)) {
 			return out.append("-\t");
 		}
 		return out.append(string).append('\t');

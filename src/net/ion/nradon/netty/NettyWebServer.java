@@ -97,12 +97,10 @@ public class NettyWebServer implements WebServer {
 		add(new DateHeaderHandler());
 	}
 
-	@Override
 	public URI getUri() {
 		return publicUri;
 	}
 
-	@Override
 	public int getPort() {
 		if (publicUri.getPort() == -1) {
 			return publicUri.getScheme().equalsIgnoreCase("https") ? 443 : 80;
@@ -110,39 +108,32 @@ public class NettyWebServer implements WebServer {
 		return publicUri.getPort();
 	}
 
-	@Override
 	public Executor getExecutor() {
 		return executor;
 	}
 
-	@Override
 	public NettyWebServer staleConnectionTimeout(long millis) {
 		staleConnectionTimeout = millis;
 		return this;
 	}
 
-	@Override
 	public NettyWebServer add(HttpHandler handler) {
 		handlers.add(handler);
 		return this;
 	}
 
-	@Override
 	public NettyWebServer add(String path, HttpHandler handler) {
 		return add(new PathMatchHandler(path, handler));
 	}
 
-	@Override
 	public NettyWebServer add(String path, WebSocketHandler handler) {
 		return add(path, new HttpToWebSocketHandler(handler));
 	}
 
-	@Override
 	public NettyWebServer add(String path, EventSourceHandler handler) {
 		return add(path, new HttpToEventSourceHandler(handler));
 	}
 
-	@Override
 	public synchronized NettyWebServer start() {
 		if (isRunning()) {
 			throw new IllegalStateException("Server already started.");
@@ -153,7 +144,7 @@ public class NettyWebServer implements WebServer {
 
 		// Set up the event pipeline factory.
 		bootstrap.setPipelineFactory(new ChannelPipelineFactory() {
-			@Override
+
 			public ChannelPipeline getPipeline() throws Exception {
 				long timestamp = timestamp();
 				Object id = nextId();
@@ -174,7 +165,7 @@ public class NettyWebServer implements WebServer {
 		staleConnectionTrackingHandler = new StaleConnectionTrackingHandler(staleConnectionTimeout, executor);
 		ScheduledExecutorService staleCheckExecutor = Executors.newSingleThreadScheduledExecutor();
 		staleCheckExecutor.scheduleWithFixedDelay(new Runnable() {
-			@Override
+
 			public void run() {
 				staleConnectionTrackingHandler.closeStaleConnections();
 			}
@@ -195,7 +186,6 @@ public class NettyWebServer implements WebServer {
 		return channel != null && channel.isBound();
 	}
 
-	@Override
 	public synchronized NettyWebServer stop() throws IOException {
 		if (channel != null) {
 			channel.close();
@@ -216,7 +206,6 @@ public class NettyWebServer implements WebServer {
 		return this;
 	}
 
-	@Override
 	public synchronized NettyWebServer join() throws InterruptedException {
 		if (channel != null) {
 			channel.getCloseFuture().await();
@@ -224,13 +213,11 @@ public class NettyWebServer implements WebServer {
 		return this;
 	}
 
-	@Override
 	public NettyWebServer uncaughtExceptionHandler(Thread.UncaughtExceptionHandler exceptionHandler) {
 		this.exceptionHandler = exceptionHandler;
 		return this;
 	}
 
-	@Override
 	public NettyWebServer connectionExceptionHandler(Thread.UncaughtExceptionHandler ioExceptionHandler) {
 		this.ioExceptionHandler = ioExceptionHandler;
 		return this;

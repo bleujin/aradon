@@ -2,6 +2,8 @@ package net.ion.nradon.netty.contrib;
 
 import java.util.regex.Pattern;
 
+import net.ion.framework.util.StringUtil;
+
 public class EventSourceMessage {
 	private static final Pattern START = Pattern.compile("^", Pattern.MULTILINE);
 	private static final String DATA = "data: ";
@@ -56,7 +58,7 @@ public class EventSourceMessage {
 
 	private void appendFieldValue(String field, String value) {
 		payload.append(field);
-		if (value != null && !value.isEmpty()) {
+		if (value != null && ! StringUtil.isEmpty(value)) {
 			payload.append(COLON);
 			payload.append(value);
 		}

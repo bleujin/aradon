@@ -1,20 +1,19 @@
 package net.ion.nradon.netty;
 
-import net.ion.nradon.WebSocketHandler;
-import net.ion.nradon.helpers.Base64;
-import net.ion.radon.core.except.AradonRuntimeException;
+import static org.jboss.netty.handler.codec.http.HttpHeaders.Names.CONNECTION;
+import static org.jboss.netty.handler.codec.http.HttpHeaders.Names.ORIGIN;
+import static org.jboss.netty.handler.codec.http.HttpHeaders.Names.SEC_WEBSOCKET_KEY1;
+import static org.jboss.netty.handler.codec.http.HttpHeaders.Names.SEC_WEBSOCKET_KEY2;
+import static org.jboss.netty.handler.codec.http.HttpHeaders.Names.SEC_WEBSOCKET_LOCATION;
+import static org.jboss.netty.handler.codec.http.HttpHeaders.Names.SEC_WEBSOCKET_ORIGIN;
+import static org.jboss.netty.handler.codec.http.HttpHeaders.Names.SEC_WEBSOCKET_PROTOCOL;
+import static org.jboss.netty.handler.codec.http.HttpHeaders.Names.UPGRADE;
+import static org.jboss.netty.handler.codec.http.HttpHeaders.Names.WEBSOCKET_LOCATION;
+import static org.jboss.netty.handler.codec.http.HttpHeaders.Names.WEBSOCKET_ORIGIN;
+import static org.jboss.netty.handler.codec.http.HttpHeaders.Names.WEBSOCKET_PROTOCOL;
+import static org.jboss.netty.handler.codec.http.HttpHeaders.Values.WEBSOCKET;
 
-import org.jboss.netty.buffer.ChannelBuffer;
-import org.jboss.netty.buffer.ChannelBuffers;
-import org.jboss.netty.channel.*;
-import org.jboss.netty.handler.codec.http.HttpHeaders;
-import org.jboss.netty.handler.codec.http.HttpRequest;
-import org.jboss.netty.handler.codec.http.HttpResponse;
-import org.jboss.netty.handler.codec.http.HttpResponseStatus;
-import org.jboss.netty.handler.codec.http.websocket.WebSocketFrame;
-import org.jboss.netty.handler.codec.http.websocket.WebSocketFrameDecoder;
-import org.jboss.netty.handler.codec.http.websocket.WebSocketFrameEncoder;
-
+import java.io.UnsupportedEncodingException;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.nio.channels.ClosedChannelException;
 import java.nio.charset.Charset;
@@ -22,8 +21,26 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.Executor;
 
-import static org.jboss.netty.handler.codec.http.HttpHeaders.Names.*;
-import static org.jboss.netty.handler.codec.http.HttpHeaders.Values.WEBSOCKET;
+import net.ion.nradon.WebSocketHandler;
+import net.ion.nradon.helpers.Base64;
+import net.ion.radon.core.except.AradonRuntimeException;
+
+import org.jboss.netty.buffer.ChannelBuffer;
+import org.jboss.netty.buffer.ChannelBuffers;
+import org.jboss.netty.channel.ChannelHandler;
+import org.jboss.netty.channel.ChannelHandlerContext;
+import org.jboss.netty.channel.ChannelPipeline;
+import org.jboss.netty.channel.ChannelStateEvent;
+import org.jboss.netty.channel.ExceptionEvent;
+import org.jboss.netty.channel.MessageEvent;
+import org.jboss.netty.channel.SimpleChannelUpstreamHandler;
+import org.jboss.netty.handler.codec.http.HttpHeaders;
+import org.jboss.netty.handler.codec.http.HttpRequest;
+import org.jboss.netty.handler.codec.http.HttpResponse;
+import org.jboss.netty.handler.codec.http.HttpResponseStatus;
+import org.jboss.netty.handler.codec.http.websocket.WebSocketFrame;
+import org.jboss.netty.handler.codec.http.websocket.WebSocketFrameDecoder;
+import org.jboss.netty.handler.codec.http.websocket.WebSocketFrameEncoder;
 
 public class NettyWebSocketChannelHandler extends SimpleChannelUpstreamHandler {
 	private static final MessageDigest SHA_1;
@@ -100,7 +117,6 @@ public class NettyWebSocketChannelHandler extends SimpleChannelUpstreamHandler {
 	public void channelDisconnected(ChannelHandlerContext ctx, final ChannelStateEvent e) throws Exception {
 		final Thread thread = Thread.currentThread();
 		executor.execute(new Runnable() {
-			@Override
 			public void run() {
 				try {
 					handler.onClose(webSocketConnection);
@@ -123,7 +139,6 @@ public class NettyWebSocketChannelHandler extends SimpleChannelUpstreamHandler {
 		} else {
 			final Thread thread = Thread.currentThread();
 			executor.execute(new Runnable() {
-				@Override
 				public void run() {
 					ioExceptionHandler.uncaughtException(thread, AradonRuntimeException.fromExceptionEvent(e));
 				}
@@ -161,7 +176,11 @@ public class NettyWebSocketChannelHandler extends SimpleChannelUpstreamHandler {
 	}
 
 	private byte[] sha1(String s) {
-		return SHA_1.digest(s.getBytes(ASCII));
+		try {
+			return SHA_1.digest(s.getBytes(ASCII.toString()));
+		} catch (UnsupportedEncodingException e) {
+			throw new IllegalStateException(e) ;
+		}
 	}
 
 	private void upgradeResponseHixie76(HttpRequest req, HttpResponse res) {
@@ -219,7 +238,6 @@ public class NettyWebSocketChannelHandler extends SimpleChannelUpstreamHandler {
 			// Hixie 75/76
 			final WebSocketFrame frame = (WebSocketFrame) message;
 			executor.execute(new Runnable() {
-				@Override
 				public void run() {
 					try {
 						handler.onMessage(webSocketConnection, frame.getTextData());

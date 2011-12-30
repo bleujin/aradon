@@ -1,5 +1,14 @@
 package net.ion.nradon.netty;
 
+import static org.jboss.netty.buffer.ChannelBuffers.copiedBuffer;
+import static org.jboss.netty.buffer.ChannelBuffers.wrappedBuffer;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.util.Date;
+
 import net.ion.nradon.helpers.DateHelper;
 import net.ion.radon.core.except.AradonRuntimeException;
 
@@ -11,17 +20,8 @@ import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.handler.codec.http.HttpResponse;
 import org.jboss.netty.handler.codec.http.HttpResponseStatus;
 import org.jboss.netty.util.CharsetUtil;
-
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.net.HttpCookie;
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
-import java.util.Date;
-
-import static org.jboss.netty.buffer.ChannelBuffers.copiedBuffer;
-import static org.jboss.netty.buffer.ChannelBuffers.wrappedBuffer;
+import org.restlet.data.Cookie;
+import org.restlet.engine.http.header.CookieWriter;
 
 public class NettyHttpResponse implements net.ion.nradon.HttpResponse {
 
@@ -45,29 +45,24 @@ public class NettyHttpResponse implements net.ion.nradon.HttpResponse {
 		responseBuffer = ChannelBuffers.dynamicBuffer();
 	}
 
-	@Override
 	public NettyHttpResponse charset(Charset charset) {
 		this.charset = charset;
 		return this;
 	}
 
-	@Override
 	public Charset charset() {
 		return charset;
 	}
 
-	@Override
 	public NettyHttpResponse status(int status) {
 		response.setStatus(HttpResponseStatus.valueOf(status));
 		return this;
 	}
 
-	@Override
 	public int status() {
 		return response.getStatus().getCode();
 	}
 
-	@Override
 	public NettyHttpResponse header(String name, String value) {
 		if (value == null) {
 			response.removeHeader(name);
@@ -77,39 +72,32 @@ public class NettyHttpResponse implements net.ion.nradon.HttpResponse {
 		return this;
 	}
 
-	@Override
 	public NettyHttpResponse header(String name, long value) {
 		response.addHeader(name, value);
 		return this;
 	}
 
-	@Override
 	public NettyHttpResponse header(String name, Date value) {
 		response.addHeader(name, DateHelper.rfc1123Format(value));
 		return this;
 	}
 
-	@Override
 	public boolean containsHeader(String name) {
 		return response.containsHeader(name);
 	}
 
-	@Override
-	public NettyHttpResponse cookie(HttpCookie httpCookie) {
-		return header(SET_COOKIE_HEADER, httpCookie.toString());
+	public NettyHttpResponse cookie(Cookie httpCookie) {
+		return header(SET_COOKIE_HEADER, CookieWriter.write(httpCookie));
 	}
 
-	@Override
 	public NettyHttpResponse content(String content) {
 		return content(copiedBuffer(content, charset()));
 	}
 
-	@Override
 	public NettyHttpResponse content(byte[] content) {
 		return content(copiedBuffer(content));
 	}
 
-	@Override
 	public NettyHttpResponse content(ByteBuffer buffer) {
 		return content(wrappedBuffer(buffer));
 	}
@@ -120,13 +108,11 @@ public class NettyHttpResponse implements net.ion.nradon.HttpResponse {
 		return this;
 	}
 
-	@Override
 	public NettyHttpResponse write(String content) {
 		write(copiedBuffer(content, CharsetUtil.UTF_8));
 		return this;
 	}
 
-	@Override
 	public NettyHttpResponse error(Throwable error) {
 		response.setStatus(HttpResponseStatus.INTERNAL_SERVER_ERROR);
 		String message = getStackTrace(error);
@@ -147,7 +133,6 @@ public class NettyHttpResponse implements net.ion.nradon.HttpResponse {
 		return buffer.toString();
 	}
 
-	@Override
 	public NettyHttpResponse end() {
 		flushResponse();
 		return this;

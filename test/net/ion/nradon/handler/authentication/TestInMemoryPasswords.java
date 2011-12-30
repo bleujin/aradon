@@ -56,12 +56,10 @@ public class TestInMemoryPasswords {
 	class TestResultCallback implements ResultCallback {
 		private boolean result = false;
 		
-		@Override
 		public void success() {
 			result = true;
 		}
 
-		@Override
 		public void failure() {
 			result = false;
 		}

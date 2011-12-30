@@ -32,7 +32,6 @@ public class TestNettyWebServer {
         final CountDownLatch stopper = new CountDownLatch(1);
         final WebServer server = new NettyWebServer(Executors.newSingleThreadScheduledExecutor(), 9080).start();
         server.add(new HttpHandler() {
-            @Override
             public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
                 server.stop().join();
                 stopper.countDown();

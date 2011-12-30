@@ -36,47 +36,38 @@ public class HttpControlWrapper implements HttpControl {
 		}
 	}
 
-	@Override
 	public void nextHandler() {
 		control.nextHandler();
 	}
 
-	@Override
 	public void nextHandler(HttpRequest request, HttpResponse response) {
 		control.nextHandler(request, response);
 	}
 
-	@Override
 	public void nextHandler(HttpRequest request, HttpResponse response, HttpControl control) {
 		control.nextHandler(request, response, control);
 	}
 
-	@Override
 	public WebSocketConnection upgradeToWebSocketConnection(WebSocketHandler handler) {
 		return control.upgradeToWebSocketConnection(handler);
 	}
 
-	@Override
 	public WebSocketConnection webSocketConnection() {
 		return control.webSocketConnection();
 	}
 
-	@Override
 	public EventSourceConnection upgradeToEventSourceConnection(EventSourceHandler handler) {
 		return control.upgradeToEventSourceConnection(handler);
 	}
 
-	@Override
 	public EventSourceConnection eventSourceConnection() {
 		return control.eventSourceConnection();
 	}
 
-	@Override
 	public Executor handlerExecutor() {
 		return control.handlerExecutor();
 	}
 
-	@Override
 	public void execute(Runnable command) {
 		control.execute(command);
 	}

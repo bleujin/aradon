@@ -13,7 +13,6 @@ public class HttpToEventSourceHandler implements HttpHandler {
 		this.handler = handler;
 	}
 
-	@Override
 	public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
 		control.upgradeToEventSourceConnection(handler);
 	}

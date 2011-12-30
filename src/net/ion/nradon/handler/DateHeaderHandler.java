@@ -14,7 +14,6 @@ import java.util.Date;
  */
 public class DateHeaderHandler implements HttpHandler {
 
-	@Override
 	public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
 		if (!response.containsHeader(HttpHeaders.Names.DATE)) {
 			response.header(HttpHeaders.Names.DATE, new Date());

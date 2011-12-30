@@ -30,7 +30,6 @@ public class TestEmbeddedResourceHandler {
     @Before
     public void createHandler() {
         Executor immediateExecutor = new Executor() {
-            @Override
             public void execute(Runnable command) {
                 command.run();
             }

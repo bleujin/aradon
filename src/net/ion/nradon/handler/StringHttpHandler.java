@@ -23,7 +23,6 @@ public class StringHttpHandler implements HttpHandler {
 		this.body = body;
 	}
 
-	@Override
 	public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) {
 		response.charset(charset).header("Content-Type", contentType + "; charset=" + charset.name()).header("Content-Length", body.length()).content(body).end();
 	}

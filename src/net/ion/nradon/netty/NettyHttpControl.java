@@ -40,17 +40,14 @@ public class NettyHttpControl implements HttpControl {
 		this.exceptionHandler = exceptionHandler;
 	}
 
-	@Override
 	public void nextHandler() {
 		nextHandler(defaultRequest, defaultResponse, defaultControl);
 	}
 
-	@Override
 	public void nextHandler(HttpRequest request, HttpResponse response) {
 		nextHandler(request, response, defaultControl);
 	}
 
-	@Override
 	public void nextHandler(HttpRequest request, HttpResponse response, HttpControl control) {
 		this.defaultRequest = request;
 		this.defaultResponse = response;
@@ -67,14 +64,12 @@ public class NettyHttpControl implements HttpControl {
 		}
 	}
 
-	@Override
 	public NettyWebSocketConnection upgradeToWebSocketConnection(WebSocketHandler handler) {
 		NettyWebSocketConnection webSocketConnection = webSocketConnection();
 		new NettyWebSocketChannelHandler(executor, handler, ctx, exceptionHandler, nettyHttpRequest, ioExceptionHandler, webSocketConnection, httpRequest, defaultHttpResponse);
 		return webSocketConnection;
 	}
 
-	@Override
 	public NettyWebSocketConnection webSocketConnection() {
 		if (nettyWebSocketConnection == null) {
 			nettyWebSocketConnection = new NettyWebSocketConnection(executor, nettyHttpRequest, ctx);
@@ -82,14 +77,12 @@ public class NettyHttpControl implements HttpControl {
 		return nettyWebSocketConnection;
 	}
 
-	@Override
 	public NettyEventSourceConnection upgradeToEventSourceConnection(EventSourceHandler handler) {
 		NettyEventSourceConnection eventSourceConnection = eventSourceConnection();
 		new NettyEventSourceChannelHandler(executor, handler, ctx, exceptionHandler, nettyHttpRequest, ioExceptionHandler, eventSourceConnection, httpRequest, defaultHttpResponse);
 		return eventSourceConnection;
 	}
 
-	@Override
 	public NettyEventSourceConnection eventSourceConnection() {
 		if (nettyEventSourceConnection == null) {
 			nettyEventSourceConnection = new NettyEventSourceConnection(executor, nettyHttpRequest, ctx);
@@ -97,12 +90,10 @@ public class NettyHttpControl implements HttpControl {
 		return nettyEventSourceConnection;
 	}
 
-	@Override
 	public Executor handlerExecutor() {
 		return executor;
 	}
 
-	@Override
 	public void execute(Runnable command) {
 		handlerExecutor().execute(command);
 	}

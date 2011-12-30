@@ -1,12 +1,12 @@
-package net.ion.nradon.sample.flashchatroom;
+package net.ion.nradon.chatroom;
 
-import com.google.gson.Gson;
+import java.util.HashSet;
+import java.util.Set;
 
 import net.ion.nradon.WebSocketConnection;
 import net.ion.nradon.WebSocketHandler;
 
-import java.util.HashSet;
-import java.util.Set;
+import com.google.gson.Gson;
 
 public class Chatroom implements WebSocketHandler {
 
@@ -32,12 +32,10 @@ public class Chatroom implements WebSocketHandler {
 
     private Set<WebSocketConnection> connections = new HashSet<WebSocketConnection>();
 
-    @Override
     public void onOpen(WebSocketConnection connection) throws Exception {
         connections.add(connection);
     }
 
-    @Override
     public void onMessage(WebSocketConnection connection, String msg) throws Exception {
         Incoming incoming = json.fromJson(msg, Incoming.class);
         switch (incoming.action) {
@@ -50,11 +48,9 @@ public class Chatroom implements WebSocketHandler {
         }
     }
 
-    @Override
     public void onMessage(WebSocketConnection connection, byte[] msg) {
     }
 
-    @Override
     public void onPong(WebSocketConnection connection, String msg) {
     }
 
@@ -87,7 +83,6 @@ public class Chatroom implements WebSocketHandler {
         }
     }
 
-    @Override
     public void onClose(WebSocketConnection connection) throws Exception {
         String username = (String) connection.data(USERNAME_KEY);
         if (username != null) {

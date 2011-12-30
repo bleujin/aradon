@@ -1,4 +1,4 @@
-package net.ion.nradon.sample.authentication;
+package net.ion.nradon.authentication;
 
 import net.ion.nradon.*;
 import net.ion.nradon.handler.StaticFileHandler;

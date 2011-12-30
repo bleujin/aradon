@@ -1,4 +1,4 @@
-package net.ion.nradon.sample.eventsource;
+package net.ion.nradon.eventsource;
 
 import net.ion.nradon.EventSourceConnection;
 import net.ion.nradon.EventSourceHandler;
@@ -36,7 +36,6 @@ public class Main {
             while (true) {
                 sleep(1000);
                 webThread.submit(new Runnable() {
-                    @Override
                     public void run() {
                         broadcast(new Date().toString());
                     }
@@ -57,17 +56,15 @@ public class Main {
 
         WebServer webServer = createWebServer(webThread, 9876)
                 .add("/events/my", new EventSourceHandler() {
-                    @Override
                     public void onOpen(EventSourceConnection connection) throws Exception {
                         pusher.addConnection(connection);
                     }
 
-                    @Override
                     public void onClose(EventSourceConnection connection) throws Exception {
                         pusher.removeConnection(connection);
                     }
                 })
-                .add(new EmbeddedResourceHandler("net/ion/nradon/sample/eventsource/content"))
+                .add(new EmbeddedResourceHandler("./sample/net/ion/nradon/eventsource/content"))
                 .start();
 
         System.out.println("EventSource demo running on: " + webServer.getUri());

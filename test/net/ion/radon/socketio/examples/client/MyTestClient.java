@@ -1,5 +1,8 @@
 package net.ion.radon.socketio.examples.client;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
 import net.ion.radon.socketio.client.common.SocketIOConnection;
 import net.ion.radon.socketio.client.jre.SocketIOConnectionXHRBase;
 import net.ion.radon.socketio.common.DisconnectReason;

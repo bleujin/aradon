@@ -1,35 +1,22 @@
-package net.ion.nradon.handler;
+package net.ion.nradon.handler.aradon;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.net.HttpCookie;
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
-import net.ion.framework.db.AradonConnection;
 import net.ion.framework.util.IOUtil;
-import net.ion.framework.util.MapUtil;
-import net.ion.nradon.HttpControl;
-import net.ion.nradon.HttpHandler;
 import net.ion.nradon.HttpRequest;
 import net.ion.nradon.HttpResponse;
-import net.ion.radon.client.AradonClient;
-import net.ion.radon.client.AradonClientFactory;
-import net.ion.radon.core.Aradon;
 import net.ion.radon.core.RadonAttributeKey;
 import net.ion.radon.core.let.InnerRequest;
-import net.ion.radon.core.let.InnerResponse;
 
 import org.eclipse.jetty.http.HttpHeaders;
 import org.restlet.Request;
 import org.restlet.Response;
-import org.restlet.data.CharacterSet;
 import org.restlet.data.ClientInfo;
 import org.restlet.data.Cookie;
 import org.restlet.data.Form;
@@ -41,45 +28,10 @@ import org.restlet.representation.InputRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.util.Series;
 
-public class AradonHandler implements HttpHandler {
+public class AradonUtil {
 
-	private AradonClient ac;
-	private Aradon aradon;
 
-	public AradonHandler(Aradon aradon) {
-		this.aradon = aradon;
-		this.ac = AradonClientFactory.create(aradon);
-	}
-
-	@Override
-	public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
-		Request req = toAradonRequest(request);
-		Response res = aradon.handle(req);
-		toHttpResponse(res, response).end();
-	}
-
-	private HttpResponse toHttpResponse(Response res, HttpResponse response) throws IOException {
-
-		Form headers = (Form) res.getAttributes().get(RadonAttributeKey.ATTRIBUTE_HEADERS) ;
-		if (headers == null) headers = new Form() ;
-		for (String name : headers.getNames()) {
-			response.header(name, headers.getValues(name));
-		}
-		response.status(res.getStatus().getCode());
-		Representation entity = res.getEntity();
-		if (entity != null && entity.getCharacterSet() != null)
-			response.charset(entity.getCharacterSet().toCharset());
-
-		Representation representation = entity;
-		if (representation == null) {
-			return response;
-		}
-		ByteBuffer bytebuffer = ByteBuffer.wrap(IOUtil.toByteArray(representation.getStream()));
-		response.content(bytebuffer);
-		return response;
-	}
-
-	private Request toAradonRequest(HttpRequest hreq) {
+	public final static Request toAradonRequest(HttpRequest hreq) {
 		Request request = new Request(Method.valueOf(hreq.method()), "http://" + hreq.header(HttpHeaders.HOST) + hreq.uri());
 		
 		request.setDate(GregorianCalendar.getInstance().getTime()) ;
@@ -91,8 +43,8 @@ public class AradonHandler implements HttpHandler {
 		ireq.setEntity(re);
 
 		Series<Cookie> cookies = ireq.getCookies();
-		for (HttpCookie hc : hreq.cookies()) {
-			cookies.add(new Cookie(hc.getVersion(), hc.getName(), hc.getValue(), hc.getPath(), hc.getDomain()));
+		for (Cookie hc : hreq.cookies()) {
+			cookies.add(hc);
 		}
 
 		Form headers = ireq.getHeaders();
@@ -103,7 +55,7 @@ public class AradonHandler implements HttpHandler {
 		return ireq;
 	}
 
-	private ClientInfo getClientInfo(HttpRequest hreq) {
+	private static ClientInfo getClientInfo(HttpRequest hreq) {
 		final ClientInfo result = new ClientInfo();
 
 		Headers headers = Headers.create(hreq.allHeaders()) ;
@@ -160,26 +112,26 @@ public class AradonHandler implements HttpHandler {
 
 		return result;
 	}
+	
+	public static HttpResponse toHttpResponse(Response res, HttpResponse response) throws IOException {
 
-}
-
-class Headers {
-
-	private Map<String, String> inners ;
-	private Headers(List<Entry<String, String>> allHeaders) {
-		this.inners = MapUtil.newMap() ;
-		for (Entry<String, String> entry : allHeaders) {
-			inners.put(entry.getKey(), entry.getValue()) ;
+		Form headers = (Form) res.getAttributes().get(RadonAttributeKey.ATTRIBUTE_HEADERS);
+		if (headers == null)
+			headers = new Form();
+		for (String name : headers.getNames()) {
+			response.header(name, headers.getValues(name));
 		}
-	}
+		response.status(res.getStatus().getCode());
+		Representation entity = res.getEntity();
+		if (entity != null && entity.getCharacterSet() != null)
+			response.charset(entity.getCharacterSet().toCharset());
 
-	public String getValues(String headerKey) {
-		return inners.get(headerKey);
+		Representation representation = entity;
+		if (representation == null) {
+			return response;
+		}
+		ByteBuffer bytebuffer = ByteBuffer.wrap(IOUtil.toByteArray(representation.getStream()));
+		response.content(bytebuffer);
+		return response;
 	}
-
-	public static Headers create(List<Entry<String, String>> allHeaders) {
-		return new Headers(allHeaders);
-	}
-	
-	
 }

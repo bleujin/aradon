@@ -23,7 +23,6 @@ public class PathMatchHandler implements HttpHandler {
 		this(Pattern.compile(path), httpHandler);
 	}
 
-	@Override
 	public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
 		String path = URI.create(request.uri()).getPath();
 		Matcher matcher = pathPattern.matcher(path);

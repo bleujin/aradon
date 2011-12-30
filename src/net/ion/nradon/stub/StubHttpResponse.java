@@ -1,11 +1,8 @@
 package net.ion.nradon.stub;
 
-import net.ion.nradon.HttpResponse;
-import net.ion.nradon.helpers.DateHelper;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.net.HttpCookie;
+import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -13,6 +10,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import net.ion.nradon.HttpResponse;
+import net.ion.nradon.helpers.DateHelper;
+
+import org.eclipse.jetty.http.HttpCookie;
+import org.restlet.data.Cookie;
 
 /**
  * Implementation of HttpResponse that is easy to construct manually, and inspect results. Useful for testing.
@@ -25,31 +28,26 @@ public class StubHttpResponse implements HttpResponse {
 	private Throwable error;
 	private boolean ended;
 	private ByteArrayOutputStream contents = new ByteArrayOutputStream();
-	private List<HttpCookie> cookies = new ArrayList<HttpCookie>();
+	private List<Cookie> cookies = new ArrayList<Cookie>();
 
-	@Override
 	public StubHttpResponse charset(Charset charset) {
 		this.charset = charset;
 		return this;
 	}
 
-	@Override
 	public Charset charset() {
 		return charset;
 	}
 
-	@Override
 	public StubHttpResponse status(int status) {
 		this.status = status;
 		return this;
 	}
 
-	@Override
 	public int status() {
 		return status;
 	}
 
-	@Override
 	public StubHttpResponse header(String name, String value) {
 		if (value == null) {
 			headers.remove(name);
@@ -59,46 +57,43 @@ public class StubHttpResponse implements HttpResponse {
 		return this;
 	}
 
-	@Override
 	public StubHttpResponse header(String name, long value) {
 		return header(name, String.valueOf(value));
 	}
 
-	@Override
 	public StubHttpResponse header(String name, Date value) {
 		return header(name, DateHelper.rfc1123Format(value));
 	}
 
-	@Override
-	public StubHttpResponse cookie(HttpCookie httpCookie) {
+	public StubHttpResponse cookie(Cookie httpCookie) {
 		cookies.add(httpCookie);
 		return this;
 	}
 
 	public StubHttpResponse cookie(String name, String value) {
-		return cookie(new HttpCookie(name, value));
+		return cookie(new Cookie(name, value));
 	}
 
 	public String header(String name) {
 		return headers.get(name);
 	}
 
-	@Override
 	public boolean containsHeader(String name) {
 		return headers.containsKey(name);
 	}
 
-	@Override
 	public StubHttpResponse content(String content) {
-		return content(content.getBytes(charset));
+		try {
+			return content(content.getBytes(charset.toString()));
+		} catch (UnsupportedEncodingException e) {
+			throw new IllegalStateException(e) ;
+		}
 	}
 
-	@Override
 	public StubHttpResponse write(String content) {
 		return content(content);
 	}
 
-	@Override
 	public StubHttpResponse content(byte[] content) {
 		try {
 			contents.write(content);
@@ -108,7 +103,6 @@ public class StubHttpResponse implements HttpResponse {
 		return this;
 	}
 
-	@Override
 	public StubHttpResponse content(ByteBuffer buffer) {
 		while (buffer.hasRemaining()) {
 			contents.write(buffer.get());
@@ -121,10 +115,13 @@ public class StubHttpResponse implements HttpResponse {
 	}
 
 	public String contentsString() {
-		return new String(contents(), charset);
+		try {
+			return new String(contents(), charset.toString());
+		} catch (UnsupportedEncodingException e) {
+			throw new IllegalArgumentException(e) ;
+		}
 	}
 
-	@Override
 	public StubHttpResponse error(Throwable error) {
 		this.error = error;
 		status = 500;
@@ -140,7 +137,6 @@ public class StubHttpResponse implements HttpResponse {
 		return error;
 	}
 
-	@Override
 	public StubHttpResponse end() {
 		ended = true;
 		return this;
@@ -150,7 +146,7 @@ public class StubHttpResponse implements HttpResponse {
 		return ended;
 	}
 
-	public List<HttpCookie> cookies() {
+	public List<Cookie> cookies() {
 		return cookies;
 	}
 

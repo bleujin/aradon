@@ -26,12 +26,10 @@ public class NettyWebSocketConnection implements WebSocketConnection {
 		this.ctx = ctx;
 	}
 
-	@Override
 	public NettyHttpRequest httpRequest() {
 		return nettyHttpRequest;
 	}
 
-	@Override
 	public NettyWebSocketConnection send(String message) {
 		if (hybi) {
 			return write(new EncodingHybiFrame(Opcodes.OPCODE_TEXT, true, 0, ChannelBuffers.copiedBuffer(message, CharsetUtil.UTF_8)));
@@ -40,12 +38,10 @@ public class NettyWebSocketConnection implements WebSocketConnection {
 		}
 	}
 
-	@Override
 	public NettyWebSocketConnection send(byte[] message) {
 		return write(new EncodingHybiFrame(Opcodes.OPCODE_BINARY, true, 0, ChannelBuffers.wrappedBuffer(message)));
 	}
 
-	@Override
 	public NettyWebSocketConnection ping(String message) {
 		return write(new EncodingHybiFrame(Opcodes.OPCODE_PING, true, 0, ChannelBuffers.copiedBuffer(message, CharsetUtil.UTF_8)));
 	}
@@ -55,44 +51,36 @@ public class NettyWebSocketConnection implements WebSocketConnection {
 		return this;
 	}
 
-	@Override
 	public NettyWebSocketConnection close() {
 		ctx.getChannel().close();
 		return this;
 	}
 
-	@Override
 	public Map<String, Object> data() {
 		return nettyHttpRequest.data();
 	}
 
-	@Override
 	public Object data(String key) {
 		return data().get(key);
 	}
 
-	@Override
 	public NettyWebSocketConnection data(String key, Object value) {
 		data().put(key, value);
 		return this;
 	}
 
-	@Override
 	public Set<String> dataKeys() {
 		return data().keySet();
 	}
 
-	@Override
 	public Executor handlerExecutor() {
 		return executor;
 	}
 
-	@Override
 	public void execute(Runnable command) {
 		handlerExecutor().execute(command);
 	}
 
-	@Override
 	public String version() {
 		return version;
 	}

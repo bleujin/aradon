@@ -18,7 +18,6 @@ public class InMemoryPasswords implements PasswordAuthenticator {
 		return this;
 	}
 
-	@Override
 	public void authenticate(HttpRequest request, String username, String password, ResultCallback callback, Executor handlerExecutor) {
 		String expectedPassword = usernameToPasswords.get(username);
 		if (expectedPassword != null && password.equals(expectedPassword)) {

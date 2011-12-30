@@ -32,7 +32,6 @@ public class BasicAuthenticationHandler implements HttpHandler {
 		this.authenticator = authenticator;
 	}
 
-	@Override
 	public void handleHttpRequest(final HttpRequest request, final HttpResponse response, final HttpControl control) throws Exception {
 		String authHeader = request.header("Authorization");
 		if (authHeader == null) {
@@ -45,13 +44,11 @@ public class BasicAuthenticationHandler implements HttpHandler {
 					final String username = pair[0];
 					final String password = pair[1];
 					PasswordAuthenticator.ResultCallback callback = new PasswordAuthenticator.ResultCallback() {
-						@Override
 						public void success() {
 							request.data(USERNAME, username);
 							control.nextHandler();
 						}
 
-						@Override
 						public void failure() {
 							needAuthentication(response);
 						}

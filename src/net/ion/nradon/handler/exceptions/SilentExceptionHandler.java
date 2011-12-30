@@ -8,7 +8,6 @@ package net.ion.nradon.handler.exceptions;
  */
 public class SilentExceptionHandler implements Thread.UncaughtExceptionHandler {
 
-	@Override
 	public void uncaughtException(Thread t, Throwable e) {
 		// Do nothing.
 	}

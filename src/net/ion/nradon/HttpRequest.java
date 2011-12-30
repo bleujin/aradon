@@ -1,10 +1,11 @@
 package net.ion.nradon;
 
-import java.net.HttpCookie;
 import java.net.SocketAddress;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.restlet.data.Cookie;
 
 /**
  * Retrieves information about inbound HTTP request.
@@ -49,7 +50,7 @@ public interface HttpRequest extends DataHolder {
 	/**
 	 * @return all inbound cookies
 	 */
-	List<HttpCookie> cookies();
+	List<Cookie> cookies();
 
 	/**
 	 * Get a cookie with a specific name
@@ -58,7 +59,7 @@ public interface HttpRequest extends DataHolder {
 	 *            cookie name
 	 * @return cookie with that name
 	 */
-	HttpCookie cookie(String name);
+	Cookie cookie(String name);
 
 	/**
 	 * Get query parameter value.
@@ -143,7 +144,6 @@ public interface HttpRequest extends DataHolder {
 	 */
 	byte[] bodyAsBytes();
 
-	@Override
 	HttpRequest data(String key, Object value); // Override DataHolder to provide more specific return type.
 
 	/**

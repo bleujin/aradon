@@ -19,7 +19,6 @@ public class ServerHeaderHandler implements HttpHandler {
 		this.value = value;
 	}
 
-	@Override
 	public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
 		response.header("Server", value);
 		control.nextHandler();

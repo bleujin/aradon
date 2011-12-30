@@ -65,7 +65,6 @@ public abstract class AbstractResourceHandler implements HttpHandler {
 		return this;
 	}
 
-	@Override
 	public void handleHttpRequest(final HttpRequest request, final HttpResponse response, final HttpControl control) throws Exception {
 		// Switch from web thead to IO thread, so we don't block web server when we access the filesystem.
 		ioThread.execute(createIOWorker(request, response, control));
@@ -74,7 +73,6 @@ public abstract class AbstractResourceHandler implements HttpHandler {
 	protected void serve(final String mimeType, final ByteBuffer contents, HttpControl control, final HttpResponse response, final HttpRequest request) {
 		// Switch back from IO thread to web thread.
 		control.execute(new Runnable() {
-			@Override
 			public void run() {
 				// TODO: Check bytes read match expected encoding of mime-type
 				response.header("Content-Type", mimeType);
@@ -157,7 +155,6 @@ public abstract class AbstractResourceHandler implements HttpHandler {
 		protected void notFound() {
 			// Switch back from IO thread to web thread.
 			control.execute(new Runnable() {
-				@Override
 				public void run() {
 					control.nextHandler();
 				}
@@ -167,14 +164,12 @@ public abstract class AbstractResourceHandler implements HttpHandler {
 		protected void error(final IOException exception) {
 			// Switch back from IO thread to web thread.
 			control.execute(new Runnable() {
-				@Override
 				public void run() {
 					response.error(exception);
 				}
 			});
 		}
 
-		@Override
 		public void run() {
 			path = withoutTrailingSlashOrQuery(path);
 

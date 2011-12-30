@@ -34,56 +34,46 @@ public class EventSourceConnectionWrapper implements EventSourceConnection {
 		}
 	}
 
-	@Override
 	public HttpRequest httpRequest() {
 		return connection.httpRequest();
 	}
 
-	@Override
 	public EventSourceConnectionWrapper send(EventSourceMessage message) {
 		connection.send(message);
 		return this;
 	}
 
-	@Override
 	public EventSourceConnectionWrapper send(String message) {
 		connection.send(message);
 		return this;
 	}
 
-	@Override
 	public EventSourceConnectionWrapper close() {
 		connection.close();
 		return this;
 	}
 
-	@Override
 	public Map<String, Object> data() {
 		return connection.data();
 	}
 
-	@Override
 	public Object data(String key) {
 		return connection.data(key);
 	}
 
-	@Override
 	public EventSourceConnectionWrapper data(String key, Object value) {
 		connection.data(key, value);
 		return this;
 	}
 
-	@Override
 	public Set<String> dataKeys() {
 		return connection.dataKeys();
 	}
 
-	@Override
 	public Executor handlerExecutor() {
 		return connection.handlerExecutor();
 	}
 
-	@Override
 	public void execute(Runnable command) {
 		connection.execute(command);
 	}

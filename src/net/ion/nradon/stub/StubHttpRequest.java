@@ -4,11 +4,15 @@ import net.ion.nradon.HttpRequest;
 import net.ion.nradon.InboundCookieParser;
 import net.ion.nradon.helpers.QueryParameters;
 
-import java.net.HttpCookie;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.net.URI;
 import java.util.*;
+import java.util.Map.Entry;
+
+import org.apache.commons.collections.DefaultMapEntry;
+import org.apache.commons.collections.keyvalue.AbstractMapEntry;
+import org.restlet.data.Cookie;
 
 /**
  * Implementation of HttpRequest that is easy to construct manually and populate. Useful for testing.
@@ -30,18 +34,15 @@ public class StubHttpRequest extends StubDataHolder implements HttpRequest {
 		this.uri = uri;
 	}
 
-	@Override
 	public String uri() {
 		return uri;
 	}
 
-	@Override
 	public StubHttpRequest uri(String uri) {
 		this.uri = uri;
 		return this;
 	}
 
-	@Override
 	public String header(String name) {
 		for (Map.Entry<String, String> header : headers) {
 			if (header.getKey().equals(name)) {
@@ -51,7 +52,6 @@ public class StubHttpRequest extends StubDataHolder implements HttpRequest {
 		return null;
 	}
 
-	@Override
 	public boolean hasHeader(String name) {
 		for (Map.Entry<String, String> header : headers) {
 			if (header.getKey().equals(name)) {
@@ -61,14 +61,12 @@ public class StubHttpRequest extends StubDataHolder implements HttpRequest {
 		return false;
 	}
 
-	@Override
-	public List<HttpCookie> cookies() {
+	public List<Cookie> cookies() {
 		return InboundCookieParser.parse(headers(COOKIE_HEADER));
 	}
 
-	@Override
-	public HttpCookie cookie(String name) {
-		for (HttpCookie cookie : cookies()) {
+	public Cookie cookie(String name) {
+		for (Cookie cookie : cookies()) {
 			if (cookie.getName().equals(name)) {
 				return cookie;
 			}
@@ -76,43 +74,35 @@ public class StubHttpRequest extends StubDataHolder implements HttpRequest {
 		return null;
 	}
 
-	@Override
 	public String queryParam(String key) {
 		return new QueryParameters(URI.create(uri()).getQuery()).first(key);
 	}
 
-	@Override
 	public List<String> queryParams(String key) {
 		return new QueryParameters(URI.create(uri()).getQuery()).all(key);
 	}
 
-	@Override
 	public Set<String> queryParamKeys() {
 		return new QueryParameters(URI.create(uri()).getQuery()).keys();
 	}
 
-	@Override
 	public String postParam(String key) {
 		return new QueryParameters(body()).first(key);
 	}
 
-	@Override
 	public List<String> postParams(String key) {
 		return new QueryParameters(body()).all(key);
 	}
 
-	@Override
 	public Set<String> postParamKeys() {
 		return new QueryParameters(body()).keys();
 	}
 
-	@Override
 	public String cookieValue(String name) {
-		HttpCookie cookie = cookie(name);
+		Cookie cookie = cookie(name);
 		return cookie == null ? null : cookie.getValue();
 	}
 
-	@Override
 	public List<String> headers(String name) {
 		List<String> result = new ArrayList<String>();
 		for (Map.Entry<String, String> header : headers) {
@@ -123,22 +113,18 @@ public class StubHttpRequest extends StubDataHolder implements HttpRequest {
 		return result;
 	}
 
-	@Override
 	public List<Map.Entry<String, String>> allHeaders() {
 		return headers;
 	}
 
-	@Override
 	public String method() {
 		return method;
 	}
 
-	@Override
 	public String body() {
 		return body;
 	}
 
-	@Override
 	public byte[] bodyAsBytes() {
 		return body.getBytes();
 	}
@@ -154,22 +140,19 @@ public class StubHttpRequest extends StubDataHolder implements HttpRequest {
 	}
 
 	public StubHttpRequest header(String name, String value) {
-		headers.add(new AbstractMap.SimpleEntry<String, String>(name, value));
+		headers.add(new DefaultMapEntry(name, value));
 		return this;
 	}
 
-	@Override
 	public StubHttpRequest data(String key, Object value) {
 		super.data(key, value);
 		return this;
 	}
 
-	@Override
 	public SocketAddress remoteAddress() {
 		return remoteAddress;
 	}
 
-	@Override
 	public Object id() {
 		return id;
 	}
@@ -179,7 +162,6 @@ public class StubHttpRequest extends StubDataHolder implements HttpRequest {
 		return this;
 	}
 
-	@Override
 	public long timestamp() {
 		return timestamp;
 	}

@@ -1,4 +1,4 @@
-package net.ion.nradon.sample.chatroom;
+package net.ion.nradon.flashchatroom;
 
 import net.ion.nradon.WebServer;
 import net.ion.nradon.handler.StaticFileHandler;
@@ -13,7 +13,7 @@ public class Main {
         WebServer webServer = createWebServer(9876)
                 .add(new LoggingHandler(new SimpleLogSink(Chatroom.USERNAME_KEY)))
                 .add("/chatsocket", new Chatroom())
-                .add(new StaticFileHandler("./test/net/ion/nradon/sample/chatroom/content"))
+                .add(new StaticFileHandler("./sample/net/ion/nradon/flashchatroom/content"))
                 .start();
 
         System.out.println("Chat room running on: " + webServer.getUri());

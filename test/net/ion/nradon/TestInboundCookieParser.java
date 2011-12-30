@@ -2,19 +2,17 @@ package net.ion.nradon;
 
 import static org.junit.Assert.assertEquals;
 
-import java.net.HttpCookie;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.ion.nradon.InboundCookieParser;
-
 import org.junit.Test;
+import org.restlet.data.Cookie;
 
 public class TestInboundCookieParser {
     @Test
     public void testParseEmpty() throws Exception {
         List<String> values = new ArrayList<String>();
-        assertEquals(new ArrayList<HttpCookie>(), InboundCookieParser.parse(values));
+        assertEquals(new ArrayList<Cookie>(), InboundCookieParser.parse(values));
     }
 
     @Test
@@ -23,9 +21,9 @@ public class TestInboundCookieParser {
         values.add("test=me");
         values.add("testing=\"now\"");
 
-        List<HttpCookie> expected = new ArrayList<HttpCookie>();
-        expected.add(new HttpCookie("test", "me"));
-        expected.add(new HttpCookie("testing", "now"));
+        List<Cookie> expected = new ArrayList<Cookie>();
+        expected.add(new Cookie("test", "me"));
+        expected.add(new Cookie("testing", "now"));
 
         assertEquals(expected, InboundCookieParser.parse(values));
     }

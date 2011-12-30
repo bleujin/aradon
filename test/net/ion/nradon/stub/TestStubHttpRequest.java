@@ -14,6 +14,7 @@ import java.util.Set;
 
 import net.ion.nradon.stub.StubHttpRequest;
 
+import org.apache.commons.collections.DefaultMapEntry;
 import org.junit.Test;
 
 public class TestStubHttpRequest {
@@ -40,7 +41,7 @@ public class TestStubHttpRequest {
 		assertEquals(true, target.hasHeader("Content-Length"));
 
 		List<Map.Entry<String, String>> expected = new ArrayList<Map.Entry<String, String>>();
-		expected.add(new AbstractMap.SimpleEntry<String, String>("Content-Length", "23"));
+		expected.add(new DefaultMapEntry("Content-Length", "23"));
 
 		assertEquals(expected, target.allHeaders());
 
@@ -48,7 +49,7 @@ public class TestStubHttpRequest {
 		assertEquals("23", target.header("Content-Length"));
 
 		target.header("charset", "utf8");
-		expected.add(new AbstractMap.SimpleEntry<String, String>("charset", "utf8"));
+		expected.add(new DefaultMapEntry("charset", "utf8"));
 		assertEquals(expected, target.allHeaders());
 	}
 

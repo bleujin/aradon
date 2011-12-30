@@ -15,13 +15,11 @@ class LoggingEventSourceHandler implements EventSourceHandler {
 		this.handler = handler;
 	}
 
-	@Override
 	public void onOpen(EventSourceConnection connection) throws Exception {
 		logSink.eventSourceConnectionOpen(connection);
 		handler.onOpen(loggingConnection);
 	}
 
-	@Override
 	public void onClose(EventSourceConnection connection) throws Exception {
 		logSink.eventSourceConnectionClose(connection);
 		logSink.httpEnd(connection.httpRequest());

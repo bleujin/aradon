@@ -23,7 +23,6 @@ public class LoggingHandler implements HttpHandler {
 		return logSink;
 	}
 
-	@Override
 	public void handleHttpRequest(final HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
 		logSink.httpStart(request);
 

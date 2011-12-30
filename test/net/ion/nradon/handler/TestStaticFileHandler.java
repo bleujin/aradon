@@ -211,7 +211,6 @@ public class TestStaticFileHandler {
         dir = new File(System.getProperty("java.io.tmpdir"), getClass().getName() + "-" + Math.random());
         assertTrue(dir.mkdirs());
         Executor immediateExecutor = new Executor() {
-            @Override
             public void execute(Runnable command) {
                 command.run();
             }

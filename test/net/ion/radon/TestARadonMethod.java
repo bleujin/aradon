@@ -1,8 +1,6 @@
 package net.ion.radon;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 import net.ion.framework.util.Debug;
 import net.ion.radon.core.RadonLogService;
 import net.ion.radon.core.SectionService;

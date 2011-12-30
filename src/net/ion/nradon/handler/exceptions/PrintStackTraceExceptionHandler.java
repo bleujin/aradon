@@ -20,7 +20,6 @@ public class PrintStackTraceExceptionHandler implements Thread.UncaughtException
 		this.out = out;
 	}
 
-	@Override
 	public void uncaughtException(Thread t, Throwable exception) {
 		exception.printStackTrace(out);
 	}
