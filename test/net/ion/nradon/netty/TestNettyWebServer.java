@@ -1,9 +1,8 @@
 package net.ion.nradon.netty;
 
-import net.ion.nradon.*;
-import net.ion.nradon.netty.NettyWebServer;
-
-import org.junit.Test;
+import static java.lang.Thread.sleep;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.OutputStream;
 import java.net.InetAddress;
@@ -12,9 +11,13 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import static java.lang.Thread.sleep;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import net.ion.nradon.HttpControl;
+import net.ion.nradon.HttpHandler;
+import net.ion.nradon.HttpRequest;
+import net.ion.nradon.HttpResponse;
+import net.ion.nradon.WebServer;
+
+import org.junit.Test;
 
 public class TestNettyWebServer {
     @Test

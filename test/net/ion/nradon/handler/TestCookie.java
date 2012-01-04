@@ -23,8 +23,8 @@ import net.ion.nradon.WebServer;
 import org.junit.After;
 import org.junit.Test;
 import org.restlet.data.Cookie;
-import org.restlet.engine.http.header.CookieReader;
-import org.restlet.engine.http.header.CookieWriter;
+import org.restlet.engine.header.CookieReader;
+import org.restlet.engine.header.CookieWriter;
 
 public class TestCookie {
 	private WebServer webServer = createWebServer(59504);

@@ -5,9 +5,9 @@ import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.Map;
 
-import org.apache.commons.collections.map.LRUMap;
-
 import net.ion.radon.core.Aradon;
+
+import org.apache.commons.collections.map.LRUMap;
 
 public class AradonClientFactory {
 

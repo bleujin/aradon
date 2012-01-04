@@ -1,12 +1,10 @@
 package net.ion.nradon.handler.aradon;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Date;
 
-import junit.framework.TestCase;
 import net.ion.framework.util.Debug;
-import net.ion.nradon.handler.aradon.JSONMessagePacket;
 
 import org.json.JSONObject;
 import org.junit.Test;

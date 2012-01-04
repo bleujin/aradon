@@ -1,8 +1,6 @@
 package net.ion.nradon.handler;
 
-import net.ion.nradon.HttpControl;
-import net.ion.nradon.HttpRequest;
-import net.ion.nradon.HttpResponse;
+import static java.util.concurrent.Executors.newFixedThreadPool;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -11,7 +9,9 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.concurrent.Executor;
 
-import static java.util.concurrent.Executors.newFixedThreadPool;
+import net.ion.nradon.HttpControl;
+import net.ion.nradon.HttpRequest;
+import net.ion.nradon.HttpResponse;
 
 // Maybe http://www.uofr.net/~greg/java/get-resource-listing.html
 public class EmbeddedResourceHandler extends AbstractResourceHandler {

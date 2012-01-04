@@ -1,6 +1,5 @@
 package net.ion.nradon;
 
-import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.Date;

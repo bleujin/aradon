@@ -1,6 +1,5 @@
 package net.ion.radon.core.server;
 
-import java.util.Map;
 import java.util.Map.Entry;
 
 import net.ion.radon.core.Aradon;
@@ -8,48 +7,41 @@ import net.ion.radon.core.config.ConnectorConfig;
 
 import org.restlet.Context;
 import org.restlet.Server;
-import org.restlet.data.Protocol;
-import org.restlet.engine.ServerHelper;
-import org.restlet.ext.jetty.HttpServerHelper;
-import org.restlet.ext.jetty.HttpsServerHelper;
-//import org.restlet.ext.netty.HttpServerHelper;
-//import org.restlet.ext.netty.HttpsServerHelper;
+import org.restlet.ext.netty.HttpServerHelper;
+import org.restlet.util.ServerList;
 
 public class AradonNettyHelper implements AradonServerHelper {
 
-	private final ServerHelper helper ;
-	private AradonNettyHelper(ServerHelper helper) {
-		this.helper = helper ;
-	}
-	
-	public final static AradonServerHelper create(Context context, ConnectorConfig cfig, Aradon aradon) {
-		Server server = new Server(context, cfig.getProtocol(), cfig.getPort(), aradon);
-		
-		ServerHelper serverHelper ;
-		if (cfig.getProtocol() == Protocol.HTTPS){
-			serverHelper = new HttpsServerHelper(server);
-		} else {
-			
-			serverHelper = new HttpServerHelper(server);
-		}
-		for (Entry<String, String> entry : cfig.getParams().entrySet()) {
-			serverHelper.getContext().getParameters().add(entry.getKey(), entry.getValue());
-		}
-		return new AradonNettyHelper(serverHelper) ;
+	private HttpServerHelper server;
+
+	private AradonNettyHelper(HttpServerHelper server) {
+		this.server = server;
 	}
 
-	public Server getReal() {
-		return helper.getHelped();
+	public final static AradonNettyHelper create(Context context, ConnectorConfig cfig, Aradon aradon) {
+//		ConnectorHelper<Server> helper = new HttpServerHelper(null);
+// 		ConnectorHelper<Server> helper = new HttpsServerHelper(null) ;
+//		Engine.getInstance().getRegisteredServers().add(0, helper);
+
+		Server server = new Server(context, cfig.getProtocol(), cfig.getPort(), aradon);
+		
+		for (Entry<String, String> entry : cfig.getParams().entrySet()) {
+			server.getContext().getParameters().add(entry.getKey(), entry.getValue());
+		}
+		
+		return new AradonNettyHelper(new HttpServerHelper(server));
 	}
 
 	public void start() throws Exception {
-		if (! helper.getHelped().isStarted()) helper.start() ;
+		server.start();
 	}
 
 	public void stop() throws Exception {
-		helper.getConnectorService().stop() ;
-		helper.stop() ;
+		server.stop();
 	}
 
+	public void addTo(ServerList servers) {
+		// servers.add(Protocol.HTTP, 0) ;
+	}
 
 }

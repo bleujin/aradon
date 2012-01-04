@@ -10,15 +10,14 @@ import net.sf.json.util.JSONUtils;
 
 public class TestJSON extends TestCase {
 
-	
 	public void testJSON() throws Exception {
 		Map<String, Object> dataModel = new HashMap<String, Object>();
-		dataModel.put("name", "bleujin") ;
-		dataModel.put("address", JSONObject.fromObject("{city:'seoul'}")) ;
-		
-		JSONObject j = JSONObject.fromObject(dataModel) ;
-		Debug.line(j.toString(), j.get("address").getClass()) ;
-		
-		Debug.debug(JSONUtils.mayBeJSON("{city:'seoul'}")) ; 
+		dataModel.put("name", "bleujin");
+		dataModel.put("address", JSONObject.fromObject("{city:'seoul'}"));
+
+		JSONObject j = JSONObject.fromObject(dataModel);
+		Debug.line(j.toString(), j.get("address").getClass());
+
+		Debug.debug(JSONUtils.mayBeJSON("{city:'seoul'}"));
 	}
 }

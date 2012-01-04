@@ -1,8 +1,5 @@
 package net.ion.radon.socketio.examples.client;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-
 import net.ion.radon.socketio.client.common.SocketIOConnection;
 import net.ion.radon.socketio.client.jre.SocketIOConnectionXHRBase;
 import net.ion.radon.socketio.common.DisconnectReason;
@@ -13,12 +10,12 @@ public class MyTestClient {
 		System.out.flush();
 	}
 
-//    * websocket - Web Sockets
-//    * flashsocket - Flash based Web Sockets
-//    * htmlfile - A persistent connection transport.
-//    * xhr-multipart - A persistent connection transport.
-//    * xhr-polling - A long polling transport.
-//    * jsonp-polling - A long polling transport. 
+	// * websocket - Web Sockets
+	// * flashsocket - Flash based Web Sockets
+	// * htmlfile - A persistent connection transport.
+	// * xhr-multipart - A persistent connection transport.
+	// * xhr-polling - A long polling transport.
+	// * jsonp-polling - A long polling transport.
 	public static void main(String[] args) throws Exception {
 		String host = "61.250.201.78";
 		int port = 8080;
@@ -54,7 +51,7 @@ public class MyTestClient {
 		// while ((line = in.readLine()) != null) {
 		// client.sendMessage(line);
 		// }
-		client.sendMessage(2, "message:[\"cli\",\"hello\"]}") ;
+		client.sendMessage(2, "message:[\"cli\",\"hello\"]}");
 
 		Thread t = new Thread() {
 			public void run() {

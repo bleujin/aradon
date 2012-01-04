@@ -1,11 +1,11 @@
 package net.ion.nradon.ranges;
 
-import net.ion.nradon.WebServer;
-import net.ion.nradon.handler.StaticFileHandler;
+import static net.ion.nradon.WebServers.createWebServer;
 
 import java.io.IOException;
 
-import static net.ion.nradon.WebServers.createWebServer;
+import net.ion.nradon.WebServer;
+import net.ion.nradon.handler.StaticFileHandler;
 
 /**
  * This example has a simple HTML page with an audio element

@@ -3,6 +3,7 @@ package net.ion.bleujin;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import junit.framework.TestCase;
 import net.ion.framework.message.MessageChannel;
 import net.ion.framework.util.Debug;
 import net.ion.framework.util.InfinityThread;
@@ -10,7 +11,6 @@ import net.ion.radon.client.AradonClient;
 import net.ion.radon.client.AradonClientFactory;
 import net.ion.radon.impl.let.HelloWorldLet;
 import net.ion.radon.util.AradonTester;
-import junit.framework.TestCase;
 
 public class TestSchedule extends TestCase{
 

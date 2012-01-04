@@ -21,9 +21,9 @@ import org.restlet.data.ClientInfo;
 import org.restlet.data.Cookie;
 import org.restlet.data.Form;
 import org.restlet.data.Method;
-import org.restlet.engine.http.header.ExpectationReader;
-import org.restlet.engine.http.header.HeaderConstants;
-import org.restlet.engine.http.header.PreferenceReader;
+import org.restlet.engine.header.ExpectationReader;
+import org.restlet.engine.header.HeaderConstants;
+import org.restlet.engine.header.PreferenceReader;
 import org.restlet.representation.InputRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.util.Series;
@@ -47,7 +47,7 @@ public class AradonUtil {
 			cookies.add(hc);
 		}
 
-		Form headers = ireq.getHeaders();
+		Series headers = ireq.getHeaders();
 		for (Entry<String, String> entry : hreq.allHeaders()) {
 			headers.add(entry.getKey(), entry.getValue());
 		}

@@ -1,9 +1,7 @@
 package net.ion.nradon.netty;
 
-import net.ion.nradon.WebServer;
-import net.ion.nradon.handler.StringHttpHandler;
-
-import org.junit.Test;
+import static net.ion.nradon.WebServers.createWebServer;
+import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,8 +14,10 @@ import java.util.Scanner;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import static net.ion.nradon.WebServers.createWebServer;
-import static org.junit.Assert.assertEquals;
+import net.ion.nradon.WebServer;
+import net.ion.nradon.handler.StringHttpHandler;
+
+import org.junit.Test;
 
 public class TestFlashPolicyFile {
 

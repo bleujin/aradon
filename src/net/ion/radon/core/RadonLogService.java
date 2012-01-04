@@ -7,7 +7,6 @@ import net.ion.framework.util.LimitedList;
 import net.ion.framework.util.ListUtil;
 
 import org.apache.commons.lang.ArrayUtils;
-import org.restlet.Response;
 import org.restlet.service.LogService;
 
 public class RadonLogService extends LogService {

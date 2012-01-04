@@ -1,8 +1,5 @@
 package net.ion.radon;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-
 import net.ion.radon.config.TestResourceExceptionHandler;
 import net.ion.radon.core.TestLogging;
 import net.ion.radon.core.TestPlugin;
@@ -12,8 +9,9 @@ import net.ion.radon.core.let.TestInboundLet;
 import net.ion.radon.core.let.TestPathInfo;
 import net.ion.radon.core.let.TestSection;
 import net.ion.radon.util.TestAradonTester;
-import junit.framework.Test;
-import junit.framework.TestSuite;
+
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
 
 @RunWith(Suite.class)

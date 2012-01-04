@@ -1,24 +1,22 @@
 package net.ion.radon.client;
 
-import net.ion.framework.util.Debug;
 import net.ion.framework.util.ListUtil;
-import net.ion.radon.core.let.InnerRequest;
-import net.ion.radon.core.let.InnerResponse;
 
 import org.restlet.Client;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.Protocol;
+import org.restlet.engine.connector.HttpClientHelper;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ResourceException;
 
 public class AradonHttpClient implements AradonClient{
 	private String host;
-	private Client client;
+	private HttpClientHelper client;
 
 	private AradonHttpClient(String host) {
 		this.host = host;
-		this.client = new Client(ListUtil.toList(Protocol.HTTP, Protocol.HTTPS));
+		this.client = new HttpClientHelper(new Client(ListUtil.toList(Protocol.HTTP)));
 	}
 
 	public final static AradonHttpClient create(String hostAddress) {
@@ -61,12 +59,13 @@ public class AradonHttpClient implements AradonClient{
 	}
 	
 	Response handle(Request request){
-		return client.handle(request);
+		return client.getHelped().handle(request) ;
+		// return client.handle(request);
 	}
 	
 	
 	Client getClient(){
-		return client ;
+		return client.getHelped() ;
 	}
 	
 	public String toString(){

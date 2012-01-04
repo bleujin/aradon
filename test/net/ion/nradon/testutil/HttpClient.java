@@ -1,15 +1,14 @@
 package net.ion.nradon.testutil;
 
-import net.ion.nradon.WebServer;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
-import java.nio.charset.Charset;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
+
+import net.ion.nradon.WebServer;
 
 public class HttpClient {
 

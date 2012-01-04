@@ -1,11 +1,11 @@
 package net.ion.nradon.wrapper;
 
-import net.ion.nradon.HttpRequest;
-import net.ion.nradon.WebSocketConnection;
-
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Executor;
+
+import net.ion.nradon.HttpRequest;
+import net.ion.nradon.WebSocketConnection;
 
 public class WebSocketConnectionWrapper implements WebSocketConnection {
 

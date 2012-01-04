@@ -1,25 +1,16 @@
 package net.ion.radon.core;
 
-import static org.junit.Assert.*;
-
-import java.util.List;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import net.ion.framework.util.Debug;
+import net.ion.radon.TestAradon;
+import net.ion.radon.core.path.URLPattern;
 
 import org.junit.Test;
 import org.restlet.Request;
 import org.restlet.Response;
-import org.restlet.data.MediaType;
 import org.restlet.data.Method;
-
-import junit.framework.TestCase;
-import net.ion.framework.db.IDBController;
-import net.ion.framework.db.Rows;
-import net.ion.framework.util.Debug;
-import net.ion.radon.TestAradon;
-import net.ion.radon.core.config.ConfigCreator;
-import net.ion.radon.core.config.XMLConfig;
-import net.ion.radon.core.path.URLPattern;
-import net.ion.radon.impl.section.RDBConnection;
-import net.sf.ezmorph.array.IntArrayMorpher;
 
 public class TestAradonInit extends TestAradon{
 	

@@ -1,5 +1,13 @@
 package net.ion.nradon.netty;
 
+import static org.jboss.netty.handler.codec.http.HttpHeaders.isKeepAlive;
+import static org.jboss.netty.handler.codec.http.HttpResponseStatus.OK;
+import static org.jboss.netty.handler.codec.http.HttpVersion.HTTP_1_1;
+
+import java.nio.channels.ClosedChannelException;
+import java.util.List;
+import java.util.concurrent.Executor;
+
 import net.ion.nradon.HttpControl;
 import net.ion.nradon.HttpHandler;
 import net.ion.radon.core.except.AradonRuntimeException;
@@ -10,15 +18,6 @@ import org.jboss.netty.channel.MessageEvent;
 import org.jboss.netty.channel.SimpleChannelUpstreamHandler;
 import org.jboss.netty.handler.codec.http.DefaultHttpResponse;
 import org.jboss.netty.handler.codec.http.HttpRequest;
-import org.restlet.ext.netty.internal.NettyServerCall;
-
-import java.nio.channels.ClosedChannelException;
-import java.util.List;
-import java.util.concurrent.Executor;
-
-import static org.jboss.netty.handler.codec.http.HttpHeaders.isKeepAlive;
-import static org.jboss.netty.handler.codec.http.HttpResponseStatus.OK;
-import static org.jboss.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 
 public class NettyHttpChannelHandler extends SimpleChannelUpstreamHandler {
 

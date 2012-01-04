@@ -1,7 +1,5 @@
 package net.ion.radon.client;
 
-import junit.framework.TestCase;
-
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 

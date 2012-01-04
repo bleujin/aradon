@@ -27,8 +27,8 @@ public class TestChainLet extends AbstractLet {
 		param.add("abcd", "mvlaue");
 		LetResponse response = let.post(param);
 
-//		Assert.assertEquals(1, response.getStdObject().getDatas().get(0).get("count")) ;
-		
+		// Assert.assertEquals(1, response.getStdObject().getDatas().get(0).get("count")) ;
+
 		return response.getRepresentation();
 	}
 
@@ -38,14 +38,14 @@ public class TestChainLet extends AbstractLet {
 		LetResponse hi = lookupLet("another", "/hello?abcd=1").get(createForm("hi"));
 		LetResponse hello = lookupLet("another", "/hello?abcd=2").get(createForm("hello"));
 
-		StdObject stoHi = hi.getStdObject() ;
-		StdObject stoHello = hello.getStdObject() ;
-		
-		List<Map<String, ?>> datas = ListUtil.newList() ;
-		datas.add(stoHi.getDatas().get(0)) ;
-		datas.add(stoHello.getDatas().get(0)) ;
-		
-		return toRepresentation(datas) ;
+		StdObject stoHi = hi.getStdObject();
+		StdObject stoHello = hello.getStdObject();
+
+		List<Map<String, ?>> datas = ListUtil.newList();
+		datas.add(stoHi.getDatas().get(0));
+		datas.add(stoHello.getDatas().get(0));
+
+		return toRepresentation(datas);
 	}
 
 	private Form createForm(String message) {

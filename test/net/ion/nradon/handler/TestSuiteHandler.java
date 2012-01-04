@@ -1,7 +1,6 @@
 package net.ion.nradon.handler;
 
 import junit.framework.TestCase;
-
 import net.ion.nradon.handler.authentication.TestInMemoryPasswords;
 
 import org.junit.runner.RunWith;

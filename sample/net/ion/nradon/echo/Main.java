@@ -1,12 +1,11 @@
 package net.ion.nradon.echo;
 
+import static net.ion.nradon.WebServers.createWebServer;
 import net.ion.nradon.WebServer;
 import net.ion.nradon.WebSocketConnection;
 import net.ion.nradon.WebSocketHandler;
 import net.ion.nradon.handler.HttpToWebSocketHandler;
 import net.ion.nradon.handler.exceptions.PrintStackTraceExceptionHandler;
-
-import static net.ion.nradon.WebServers.createWebServer;
 
 /**
  * Simple Echo server to be used with the Autobahn test suite.

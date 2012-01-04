@@ -1,8 +1,8 @@
 package net.ion.nradon;
 
-import net.ion.nradon.netty.contrib.EventSourceMessage;
-
 import java.util.concurrent.Executor;
+
+import net.ion.nradon.netty.contrib.EventSourceMessage;
 
 public interface EventSourceConnection extends Executor, DataHolder {
 	HttpRequest httpRequest();

@@ -1,5 +1,9 @@
 package net.ion.nradon.netty;
 
+import java.lang.Thread.UncaughtExceptionHandler;
+import java.nio.channels.ClosedChannelException;
+import java.util.concurrent.Executor;
+
 import net.ion.nradon.EventSourceHandler;
 import net.ion.radon.core.except.AradonRuntimeException;
 
@@ -11,10 +15,6 @@ import org.jboss.netty.channel.SimpleChannelUpstreamHandler;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponse;
 import org.jboss.netty.handler.codec.http.HttpResponseStatus;
-
-import java.lang.Thread.UncaughtExceptionHandler;
-import java.nio.channels.ClosedChannelException;
-import java.util.concurrent.Executor;
 
 public class NettyEventSourceChannelHandler extends SimpleChannelUpstreamHandler {
 	protected final Executor executor;

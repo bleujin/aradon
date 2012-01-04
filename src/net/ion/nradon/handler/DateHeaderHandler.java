@@ -1,13 +1,13 @@
 package net.ion.nradon.handler;
 
+import java.util.Date;
+
 import net.ion.nradon.HttpControl;
 import net.ion.nradon.HttpHandler;
 import net.ion.nradon.HttpRequest;
 import net.ion.nradon.HttpResponse;
 
 import org.jboss.netty.handler.codec.http.HttpHeaders;
-
-import java.util.Date;
 
 /**
  * Handler that sets the HTTP 'Server' response header.

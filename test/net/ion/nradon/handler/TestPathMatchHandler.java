@@ -1,19 +1,17 @@
 package net.ion.nradon.handler;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import net.ion.nradon.HttpControl;
 import net.ion.nradon.HttpHandler;
 import net.ion.nradon.HttpRequest;
 import net.ion.nradon.HttpResponse;
-import net.ion.nradon.handler.PathMatchHandler;
 import net.ion.nradon.stub.StubHttpControl;
 import net.ion.nradon.stub.StubHttpRequest;
 import net.ion.nradon.stub.StubHttpResponse;
 
 import org.junit.Test;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
 
 public class TestPathMatchHandler {
     @Test

@@ -1,17 +1,15 @@
 package net.ion.radon.client;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Test;
-
-import junit.framework.TestCase;
 import net.ion.framework.db.Rows;
-import net.ion.framework.util.Debug;
 import net.ion.radon.util.AradonTester;
+
+import org.junit.Test;
 
 public class TestSerialRequest {
 

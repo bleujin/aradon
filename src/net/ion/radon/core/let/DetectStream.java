@@ -11,7 +11,7 @@ import net.ion.radon.core.RadonAttributeKey;
 
 import org.restlet.Response;
 import org.restlet.data.CharacterSet;
-import org.restlet.engine.http.header.ContentType;
+import org.restlet.engine.header.ContentType;
 import org.restlet.util.Series;
 
 public class DetectStream {

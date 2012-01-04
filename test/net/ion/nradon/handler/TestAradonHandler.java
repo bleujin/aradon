@@ -35,7 +35,6 @@ public class TestAradonHandler {
 		webServer.stop().join();
 	}
 
-
 	@Test
 	public void testBinaryGet() throws Exception {
 		WebServer webServer = WebServers.createWebServer(8080);
@@ -55,11 +54,6 @@ public class TestAradonHandler {
 		webServer.stop().join();
 	}
 
-	
-	
-	
-	
-
 	@Test
 	public void clientInfo() throws Exception {
 		WebServer webServer = WebServers.createWebServer(8080);
@@ -68,15 +62,15 @@ public class TestAradonHandler {
 
 		ISerialRequest request = AradonClientFactory.create("http://61.250.201.157:8080").createSerialRequest("/client?name=bleujin", "bleujin", "redf");
 		User user = request.get(User.class);
-		
-		Debug.line(user) ;
-		
+
+		Debug.line(user);
+
 		Response response = Response.getCurrent();
 		Request req = response.getRequest();
-		Debug.line('r', req.getClientInfo().getPort(), req.getClientInfo().getAgent(), req.getClientInfo().getAgent(), req.getCacheDirectives() );
-		
+		Debug.line('r', req.getClientInfo().getPort(), req.getClientInfo().getAgent(), req.getClientInfo().getAgent(), req.getCacheDirectives());
+
 		// new InfinityThread().startNJoin() ;
 		webServer.stop().join();
 	}
-	
+
 }

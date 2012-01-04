@@ -9,8 +9,6 @@ import java.util.Map;
 import java.util.concurrent.Executor;
 
 import net.ion.nradon.netty.contrib.EventSourceMessage;
-import net.ion.nradon.stub.StubConnection;
-import net.ion.nradon.stub.StubHttpRequest;
 
 import org.junit.Test;
 

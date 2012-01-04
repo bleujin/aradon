@@ -5,13 +5,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import net.ion.framework.db.AradonDBManager;
 import net.ion.framework.db.IDBController;
-import net.ion.framework.db.RemoteManager;
 import net.ion.framework.db.Rows;
 import net.ion.framework.db.bean.ResultSetHandler;
-import net.ion.framework.util.Debug;
-import net.ion.radon.client.ISerialRequest;
 
 public class AradonUserCommand  extends UserCommand {
 

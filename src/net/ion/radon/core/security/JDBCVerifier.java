@@ -30,7 +30,7 @@ public class JDBCVerifier extends SecretVerifier {
 			String identifier = getIdentifier(request, response);
 			char secret[] = getSecret(request, response);
 			try {
-				if (verify(identifier, secret))
+				if (verify(identifier, secret) == 4)
 					request.getClientInfo().setUser(new User(identifier));
 				else
 					result = -1;
@@ -41,8 +41,8 @@ public class JDBCVerifier extends SecretVerifier {
 		return result;
 	}
 
-	public boolean verify(String identifier, char secret[]) {
-		return compare(secret, getLocalSecret(identifier));
+	public int verify(String identifier, char secret[]) {
+		return compare(secret, getLocalSecret(identifier)) ? 4 : -1;
 	}
 
 	public char[] getLocalSecret(String identifier){

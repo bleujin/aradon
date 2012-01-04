@@ -1,10 +1,8 @@
 package net.ion.nradon.eventsource;
 
-import net.ion.nradon.EventSourceConnection;
-import net.ion.nradon.EventSourceHandler;
-import net.ion.nradon.WebServer;
-import net.ion.nradon.handler.EmbeddedResourceHandler;
-import net.ion.nradon.netty.contrib.EventSourceMessage;
+import static java.lang.Thread.sleep;
+import static java.util.concurrent.Executors.newSingleThreadExecutor;
+import static net.ion.nradon.WebServers.createWebServer;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,9 +10,11 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 
-import static java.lang.Thread.sleep;
-import static java.util.concurrent.Executors.newSingleThreadExecutor;
-import static net.ion.nradon.WebServers.createWebServer;
+import net.ion.nradon.EventSourceConnection;
+import net.ion.nradon.EventSourceHandler;
+import net.ion.nradon.WebServer;
+import net.ion.nradon.handler.EmbeddedResourceHandler;
+import net.ion.nradon.netty.contrib.EventSourceMessage;
 
 public class Main {
     public static class Pusher {

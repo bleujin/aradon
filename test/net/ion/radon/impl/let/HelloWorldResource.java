@@ -1,9 +1,9 @@
 package net.ion.radon.impl.let;
 
+import net.ion.radon.core.let.AbstractServerResource;
+
 import org.restlet.resource.Get;
 import org.restlet.resource.Put;
-
-import net.ion.radon.core.let.AbstractServerResource;
 
 public class HelloWorldResource extends AbstractServerResource{
 

@@ -1,5 +1,7 @@
 package net.ion.nradon.wrapper;
 
+import java.util.concurrent.Executor;
+
 import net.ion.nradon.EventSourceConnection;
 import net.ion.nradon.EventSourceHandler;
 import net.ion.nradon.HttpControl;
@@ -7,8 +9,6 @@ import net.ion.nradon.HttpRequest;
 import net.ion.nradon.HttpResponse;
 import net.ion.nradon.WebSocketConnection;
 import net.ion.nradon.WebSocketHandler;
-
-import java.util.concurrent.Executor;
 
 public class HttpControlWrapper implements HttpControl {
 

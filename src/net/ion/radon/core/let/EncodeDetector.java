@@ -8,7 +8,6 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.ion.framework.util.Debug;
 import net.ion.framework.util.chardet.HtmlCharsetDetector;
 import net.ion.framework.util.chardet.nsDetector;
 import net.ion.framework.util.chardet.nsICharsetDetectionObserver;

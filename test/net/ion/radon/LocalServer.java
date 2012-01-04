@@ -5,7 +5,7 @@ import net.ion.radon.core.Aradon;
 import org.restlet.Server;
 import org.restlet.data.Protocol;
 import org.restlet.data.Reference;
-import org.restlet.engine.http.connector.HttpServerHelper;
+import org.restlet.engine.adapter.HttpServerHelper;
 
 public class LocalServer {
 

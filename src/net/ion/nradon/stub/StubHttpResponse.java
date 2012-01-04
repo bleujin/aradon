@@ -14,7 +14,6 @@ import java.util.Map;
 import net.ion.nradon.HttpResponse;
 import net.ion.nradon.helpers.DateHelper;
 
-import org.eclipse.jetty.http.HttpCookie;
 import org.restlet.data.Cookie;
 
 /**

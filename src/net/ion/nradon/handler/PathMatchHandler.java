@@ -1,13 +1,13 @@
 package net.ion.nradon.handler;
 
+import java.net.URI;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import net.ion.nradon.HttpControl;
 import net.ion.nradon.HttpHandler;
 import net.ion.nradon.HttpRequest;
 import net.ion.nradon.HttpResponse;
-
-import java.net.URI;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class PathMatchHandler implements HttpHandler {
 

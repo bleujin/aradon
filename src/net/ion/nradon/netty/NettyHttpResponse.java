@@ -21,7 +21,7 @@ import org.jboss.netty.handler.codec.http.HttpResponse;
 import org.jboss.netty.handler.codec.http.HttpResponseStatus;
 import org.jboss.netty.util.CharsetUtil;
 import org.restlet.data.Cookie;
-import org.restlet.engine.http.header.CookieWriter;
+import org.restlet.engine.header.CookieWriter;
 
 public class NettyHttpResponse implements net.ion.nradon.HttpResponse {
 

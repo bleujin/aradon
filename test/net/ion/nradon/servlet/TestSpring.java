@@ -2,20 +2,18 @@ package net.ion.nradon.servlet;
 
 import java.io.File;
 
+import net.ion.nradon.HttpHandler;
+import net.ion.nradon.WebServer;
+import net.ion.nradon.WebServers;
+
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 import org.eclipse.jetty.server.handler.DefaultHandler;
 import org.eclipse.jetty.server.handler.RequestLogHandler;
 import org.eclipse.jetty.server.nio.SelectChannelConnector;
 import org.eclipse.jetty.webapp.WebAppContext;
-import org.eclipse.jetty.xml.XmlConfiguration;
 import org.junit.Ignore;
 import org.junit.Test;
-
-import net.ion.framework.util.PathMaker;
-import net.ion.nradon.HttpHandler;
-import net.ion.nradon.WebServer;
-import net.ion.nradon.WebServers;
 
 public class TestSpring {
 

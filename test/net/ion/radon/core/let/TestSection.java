@@ -1,6 +1,6 @@
 package net.ion.radon.core.let;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import net.ion.framework.util.Debug;
 import net.ion.radon.TestAradon;
 import net.ion.radon.core.SectionService;

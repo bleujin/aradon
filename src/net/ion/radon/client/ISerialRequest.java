@@ -1,7 +1,5 @@
 package net.ion.radon.client;
 
-import java.util.List;
-
 import org.restlet.resource.ResourceException;
 
 public interface ISerialRequest {

@@ -1,12 +1,12 @@
 package net.ion.nradon.flashchatroom;
 
-import com.google.gson.Gson;
+import java.util.HashSet;
+import java.util.Set;
 
 import net.ion.nradon.WebSocketConnection;
 import net.ion.nradon.WebSocketHandler;
 
-import java.util.HashSet;
-import java.util.Set;
+import com.google.gson.Gson;
 
 public class Chatroom implements WebSocketHandler {
 

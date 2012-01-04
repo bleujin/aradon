@@ -12,7 +12,7 @@ import org.restlet.data.MediaType;
 import org.restlet.representation.Representation;
 import org.restlet.representation.StringRepresentation;
 
-public class ProxyLet extends AbstractLet{
+public class ProxyLet extends AbstractLet {
 
 	@Override
 	protected Representation myDelete() throws Exception {
@@ -22,9 +22,9 @@ public class ProxyLet extends AbstractLet{
 
 	@Override
 	protected Representation myGet() throws Exception {
-		File file = new File("imsi/proxy.htm") ;
-		
-		String body = IOUtils.toString(new FileReader(file)) ;
+		File file = new File("imsi/proxy.htm");
+
+		String body = IOUtils.toString(new FileReader(file));
 		return new StringRepresentation(body, MediaType.TEXT_HTML, Language.ALL, CharacterSet.UTF_8);
 	}
 

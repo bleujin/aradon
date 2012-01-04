@@ -1,8 +1,6 @@
 package net.ion.nradon.handler;
 
-import net.ion.nradon.HttpControl;
-import net.ion.nradon.HttpRequest;
-import net.ion.nradon.HttpResponse;
+import static java.util.concurrent.Executors.newFixedThreadPool;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,7 +8,9 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.concurrent.Executor;
 
-import static java.util.concurrent.Executors.newFixedThreadPool;
+import net.ion.nradon.HttpControl;
+import net.ion.nradon.HttpRequest;
+import net.ion.nradon.HttpResponse;
 
 public class StaticFileHandler extends AbstractResourceHandler {
 

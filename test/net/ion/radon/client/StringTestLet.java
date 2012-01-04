@@ -2,7 +2,6 @@ package net.ion.radon.client;
 
 import net.ion.radon.core.let.AbstractServerResource;
 
-import org.omg.CORBA.ServerRequest;
 import org.restlet.resource.Get;
 import org.restlet.resource.Post;
 

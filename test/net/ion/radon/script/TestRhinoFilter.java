@@ -1,24 +1,21 @@
 package net.ion.radon.script;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.File;
+
+import net.ion.radon.TestAradon;
+import net.ion.radon.core.SectionService;
+import net.ion.radon.core.config.XMLConfig;
+import net.ion.radon.core.script.ScriptFactory;
+import net.ion.radon.impl.let.HelloWorldLet;
+import net.ion.radon.impl.section.PathInfo;
 
 import org.junit.Test;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.Form;
 import org.restlet.data.Method;
-import org.restlet.data.Status;
-
-import net.ion.framework.util.Debug;
-import net.ion.radon.TestAradon;
-import net.ion.radon.core.SectionService;
-import net.ion.radon.core.config.XMLConfig;
-import net.ion.radon.core.let.InnerRequest;
-import net.ion.radon.core.script.ScriptFactory;
-import net.ion.radon.impl.let.HelloWorldLet;
-import net.ion.radon.impl.section.PathInfo;
 
 public class TestRhinoFilter extends TestAradon{
 

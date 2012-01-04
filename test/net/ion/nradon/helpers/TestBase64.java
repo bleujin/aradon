@@ -1,10 +1,8 @@
 package net.ion.nradon.helpers;
 
-import net.ion.nradon.helpers.Base64;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * This code originally came from the XStream http://xstream.codehaus.org project by Joe Walnes. Relicensed to Webbit.

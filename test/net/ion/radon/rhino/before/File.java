@@ -38,10 +38,21 @@ package net.ion.radon.rhino.before;
  *
  * ***** END LICENSE BLOCK ***** */
 
-import org.mozilla.javascript.*;
-import java.io.*;
-import java.util.List;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.List;
+
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.Function;
+import org.mozilla.javascript.Scriptable;
+import org.mozilla.javascript.ScriptableObject;
 
 /**
  * Define a simple JavaScript File object.

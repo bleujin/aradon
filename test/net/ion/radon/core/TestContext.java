@@ -1,20 +1,19 @@
 package net.ion.radon.core;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
-
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.io.FileUtils;
-import org.junit.Test;
 
 import net.ion.framework.util.InstanceCreationException;
 import net.ion.radon.client.AradonClientFactory;
 import net.ion.radon.core.config.XMLConfig;
 import net.ion.radon.core.let.ContextLet;
 import net.ion.radon.util.AradonTester;
-import junit.framework.TestCase;
+
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.io.FileUtils;
+import org.junit.Test;
 
 public class TestContext{
 

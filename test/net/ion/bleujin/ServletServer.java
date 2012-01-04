@@ -9,7 +9,6 @@ import org.restlet.routing.Router;
 
 public class ServletServer extends Application {
 
-
 	public static void main(String[] args) throws Exception {
 		Component component = new Component();
 		component.getClients().add(Protocol.FILE);
@@ -23,10 +22,6 @@ public class ServletServer extends Application {
 		Router router = new Router(getContext());
 		getConnectorService().getClientProtocols().add(Protocol.FILE);
 		// getConnectorService().getClientProtocols().add(Protocol.WAR);
-		
-
-
-		
 
 		Directory dir = new Directory(getContext(), "resource/war/");
 		router.attach("test", dir);

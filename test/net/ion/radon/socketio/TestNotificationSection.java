@@ -1,11 +1,10 @@
 package net.ion.radon.socketio;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import net.ion.framework.util.Debug;
 import net.ion.radon.InfinityThread;
 import net.ion.radon.TestAradon;
 import net.ion.radon.core.NotificationSection;
-import net.ion.radon.impl.section.PathInfo;
 import net.ion.radon.impl.section.ServletInfo;
 import net.ion.radon.socketio.examples.chat.ChatSocketServlet;
 import net.ion.radon.socketio.server.SocketIOServlet;

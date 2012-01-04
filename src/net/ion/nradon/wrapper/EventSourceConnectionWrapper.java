@@ -1,12 +1,12 @@
 package net.ion.nradon.wrapper;
 
-import net.ion.nradon.EventSourceConnection;
-import net.ion.nradon.HttpRequest;
-import net.ion.nradon.netty.contrib.EventSourceMessage;
-
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Executor;
+
+import net.ion.nradon.EventSourceConnection;
+import net.ion.nradon.HttpRequest;
+import net.ion.nradon.netty.contrib.EventSourceMessage;
 
 public class EventSourceConnectionWrapper implements EventSourceConnection {
 

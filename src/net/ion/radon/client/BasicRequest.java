@@ -12,7 +12,7 @@ import org.restlet.data.CharacterSet;
 import org.restlet.data.Form;
 import org.restlet.data.Method;
 import org.restlet.data.Parameter;
-import org.restlet.engine.http.header.CookieReader;
+import org.restlet.engine.header.CookieReader;
 import org.restlet.engine.util.CookieSeries;
 import org.restlet.representation.Representation;
 import org.restlet.security.User;

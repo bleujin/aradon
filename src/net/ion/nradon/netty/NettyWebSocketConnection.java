@@ -1,5 +1,9 @@
 package net.ion.nradon.netty;
 
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.Executor;
+
 import net.ion.nradon.WebSocketConnection;
 
 import org.jboss.netty.buffer.ChannelBuffers;
@@ -7,10 +11,6 @@ import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.handler.codec.http.websocket.DefaultWebSocketFrame;
 import org.jboss.netty.util.CharsetUtil;
-
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.Executor;
 
 public class NettyWebSocketConnection implements WebSocketConnection {
 

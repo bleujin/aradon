@@ -1,6 +1,6 @@
 package net.ion.radon.core;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
 import net.ion.framework.util.ListUtil;
 import net.ion.radon.core.config.XMLConfig;
 import net.ion.radon.core.let.GetLet;
@@ -12,7 +12,6 @@ import org.junit.Test;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.Method;
-import static org.junit.Assert.assertEquals;
 
 public class TestInitAradon {
 	

@@ -214,11 +214,11 @@ class MyThread extends Thread {
 
 	public void run() {
 		try {
-			Writer writer = new OutputStreamWriter(output) ;
+			Writer writer = new OutputStreamWriter(output);
 			for (int i = 0; i < 40; i++) {
 				writer.write(RandomUtil.nextRandomString(150));
 				writer.write("<br />");
-				writer.flush() ;
+				writer.flush();
 				Thread.sleep(100);
 			}
 		} catch (IOException e) {
@@ -227,7 +227,7 @@ class MyThread extends Thread {
 			e.printStackTrace();
 		}
 		try {
-			output.close() ;
+			output.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -235,7 +235,7 @@ class MyThread extends Thread {
 	}
 
 	public InputStream getInputStream() throws IOException {
-		PipedInputStream pi = new PipedInputStream(output) ;
+		PipedInputStream pi = new PipedInputStream(output);
 		return pi;
 	}
 

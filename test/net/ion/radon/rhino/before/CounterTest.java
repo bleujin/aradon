@@ -38,7 +38,9 @@ package net.ion.radon.rhino.before;
  *
  * ***** END LICENSE BLOCK ***** */
 
-import org.mozilla.javascript.*;
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.Scriptable;
+import org.mozilla.javascript.ScriptableObject;
 
 /**
  * An example illustrating how to create a JavaScript object and retrieve properties and call methods.

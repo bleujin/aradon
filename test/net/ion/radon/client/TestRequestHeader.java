@@ -1,12 +1,10 @@
 package net.ion.radon.client;
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
-
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
 import net.ion.radon.core.Aradon;
 import net.ion.radon.util.AradonTester;
+
+import org.junit.Test;
 
 public class TestRequestHeader {
 	

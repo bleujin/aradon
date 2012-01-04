@@ -1,14 +1,11 @@
 package net.ion.radon.core.let;
 
-import static org.junit.Assert.*;
-
-import org.junit.Ignore;
-import org.junit.Test;
-
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
 import net.ion.radon.client.AradonClientFactory;
 import net.ion.radon.client.IAradonRequest;
 import net.ion.radon.util.AradonTester;
+
+import org.junit.Test;
 
 public class TestResourceLet {
 

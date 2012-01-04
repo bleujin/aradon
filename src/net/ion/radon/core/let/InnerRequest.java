@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentMap;
 
 import net.ion.framework.util.ObjectUtil;
 import net.ion.framework.util.StringUtil;
@@ -84,7 +85,7 @@ public class InnerRequest extends Request {
 		return segs.get(0);
 	}
 
-	public Form getHeaders() {
+	public Series getHeaders() {
 		return getHeaders(this);
 	}
 
@@ -328,8 +329,8 @@ public class InnerRequest extends Request {
 		return ResultFormat.create(iformat, StringUtil.substringAfterLast(result, "."));
 	}
 
-	private static Form getHeaders(Request request) {
-		Form result = (Form) request.getAttributes().get(RadonAttributeKey.ATTRIBUTE_HEADERS);
+	private static Series getHeaders(Request request) {
+		Series result = (Series) request.getAttributes().get(RadonAttributeKey.ATTRIBUTE_HEADERS);
 		if (result == null) {
 			result = new Form();
 			request.getAttributes().put(RadonAttributeKey.ATTRIBUTE_HEADERS, result);
@@ -518,7 +519,7 @@ public class InnerRequest extends Request {
 		real.setWarnings(warnings);
 	}
 
-	public Map<String, Object> getAttributes() {
+	public ConcurrentMap<String, Object> getAttributes() {
 		return real.getAttributes();
 	}
 

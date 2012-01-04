@@ -1,29 +1,23 @@
 package net.ion.radon.script;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpException;
-import org.apache.commons.httpclient.HttpURL;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.io.IOUtils;
-import org.restlet.Request;
-import org.restlet.Response;
-import org.restlet.representation.InputRepresentation;
-import org.restlet.representation.Representation;
-import org.restlet.resource.ResourceException;
-
-import net.ion.framework.util.IOUtil;
 import net.ion.radon.client.AradonClient;
 import net.ion.radon.client.AradonClientFactory;
 import net.ion.radon.client.IAradonRequest;
 import net.ion.radon.core.IService;
 import net.ion.radon.core.filter.IFilterResult;
 import net.ion.radon.core.filter.IRadonFilter;
+
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.io.IOUtils;
+import org.restlet.Request;
+import org.restlet.Response;
+import org.restlet.representation.Representation;
 
 public class TestChartFilter extends IRadonFilter {
 

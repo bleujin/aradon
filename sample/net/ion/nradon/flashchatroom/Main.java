@@ -1,11 +1,10 @@
 package net.ion.nradon.flashchatroom;
 
+import static net.ion.nradon.WebServers.createWebServer;
 import net.ion.nradon.WebServer;
 import net.ion.nradon.handler.StaticFileHandler;
 import net.ion.nradon.handler.logging.LoggingHandler;
 import net.ion.nradon.handler.logging.SimpleLogSink;
-
-import static net.ion.nradon.WebServers.createWebServer;
 
 public class Main {
 

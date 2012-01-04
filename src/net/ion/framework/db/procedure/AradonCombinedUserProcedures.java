@@ -7,7 +7,6 @@ import java.util.Map;
 import net.ion.framework.db.AradonDBManager;
 import net.ion.framework.db.IDBController;
 import net.ion.framework.util.MapUtil;
-import net.ion.radon.client.IAradonRequest;
 import net.ion.radon.client.ISerialRequest;
 import net.ion.radon.impl.let.rdb.QueryResult;
 

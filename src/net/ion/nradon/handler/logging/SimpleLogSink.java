@@ -1,16 +1,16 @@
 package net.ion.nradon.handler.logging;
 
-import net.ion.framework.util.StringUtil;
-import net.ion.nradon.EventSourceConnection;
-import net.ion.nradon.HttpRequest;
-import net.ion.nradon.WebSocketConnection;
+import static net.ion.nradon.helpers.Hex.toHex;
 
 import java.io.Flushable;
 import java.io.IOException;
 import java.net.SocketAddress;
 import java.util.Date;
 
-import static net.ion.nradon.helpers.Hex.toHex;
+import net.ion.framework.util.StringUtil;
+import net.ion.nradon.EventSourceConnection;
+import net.ion.nradon.HttpRequest;
+import net.ion.nradon.WebSocketConnection;
 
 public class SimpleLogSink implements LogSink {
 

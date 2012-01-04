@@ -1,10 +1,10 @@
 package net.ion.nradon.stub;
 
-import net.ion.nradon.DataHolder;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
+import net.ion.nradon.DataHolder;
 
 public class StubDataHolder implements DataHolder {
 

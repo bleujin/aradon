@@ -1,14 +1,8 @@
 package net.ion.radon.client;
 
-import static org.junit.Assert.*;
-
-import java.net.URI;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-
-import net.ion.framework.util.Debug;
-
-import junit.framework.TestCase;
 
 public class TestAradonClientFactory {
 

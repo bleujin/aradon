@@ -1,8 +1,7 @@
 package net.ion.radon.client;
 
-import static org.junit.Assert.*;
-import junit.framework.TestCase;
-import net.ion.framework.util.Debug;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import net.ion.radon.core.filter.IRadonFilter;
 import net.ion.radon.core.security.ChallengeAuthenticator;
 import net.ion.radon.core.security.SimpleVerifier;

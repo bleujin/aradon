@@ -1,14 +1,11 @@
 package net.ion.radon.core.server;
 
-import java.util.Map;
+import net.ion.radon.core.Aradon;
+import net.ion.radon.core.config.ConnectorConfig;
+import net.ion.radon.core.config.ConnectorConfig.Engine;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.restlet.Context;
-
-import net.ion.radon.core.Aradon;
-import net.ion.radon.core.config.ConnectorConfig;
-import net.ion.radon.core.config.XMLConfig;
-import net.ion.radon.core.config.ConnectorConfig.Engine;
 
 public class ServerFactory {
 
@@ -16,9 +13,11 @@ public class ServerFactory {
 
 		AradonServerHelper result = null ;
 		if (cfig.getEngine() == Engine.Netty) {
-			result = AradonNettyHelper.create(context, cfig, aradon) ;
+			result = AradonJettyHelper.create(context, cfig, aradon) ;
+		} else if (cfig.getEngine() == Engine.Jetty) {
+			result = AradonJettyHelper.create(context, cfig, aradon) ;
 		} else {
-			result = AradonJettyHelper.create(context, cfig, aradon);
+			result = AradonSimpleHelper.create(context, cfig, aradon);
 		}
 		return result;
 

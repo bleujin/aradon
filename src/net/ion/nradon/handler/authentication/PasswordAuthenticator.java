@@ -1,8 +1,8 @@
 package net.ion.nradon.handler.authentication;
 
-import net.ion.nradon.HttpRequest;
-
 import java.util.concurrent.Executor;
+
+import net.ion.nradon.HttpRequest;
 
 /**
  * Provided to BasicAuthenticationHandler to verify the supplied username and password are valid.

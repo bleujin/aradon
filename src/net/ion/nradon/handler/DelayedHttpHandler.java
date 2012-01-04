@@ -1,13 +1,13 @@
 package net.ion.nradon.handler;
 
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.Executor;
+
 import net.ion.nradon.HttpControl;
 import net.ion.nradon.HttpHandler;
 import net.ion.nradon.HttpRequest;
 import net.ion.nradon.HttpResponse;
-
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.Executor;
 
 /**
  * Wraps a standard HttpHandler, and will introduce an artificial delay. Useful for testing how things will behave when they are slow.

@@ -1,11 +1,7 @@
 package net.ion.framework.db;
 
 import junit.framework.TestCase;
-import net.ion.framework.db.fake.BlankDBManager;
-import net.ion.framework.db.fake.FakeDBController;
-import net.ion.framework.db.manager.DBManager;
 import net.ion.framework.db.manager.OracleDBManager;
-import net.ion.framework.db.procedure.IUserProcedure;
 import net.ion.framework.db.procedure.Queryable;
 import net.ion.framework.db.procedure.SerializedQuery;
 import net.ion.framework.util.Debug;

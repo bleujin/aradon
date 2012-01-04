@@ -1,19 +1,17 @@
 package net.ion.nradon.handler;
 
-import net.ion.nradon.WebServer;
-import net.ion.nradon.handler.ServerHeaderHandler;
-import net.ion.nradon.handler.StringHttpHandler;
-
-import org.junit.Test;
-
-import java.io.IOException;
-import java.net.URLConnection;
-
 import static net.ion.nradon.WebServers.createWebServer;
 import static net.ion.nradon.testutil.HttpClient.contents;
 import static net.ion.nradon.testutil.HttpClient.httpGet;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+
+import java.io.IOException;
+import java.net.URLConnection;
+
+import net.ion.nradon.WebServer;
+
+import org.junit.Test;
 
 public class TestServerHeaderHandler {
 

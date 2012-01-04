@@ -5,7 +5,7 @@ import org.restlet.Context;
 import org.restlet.data.Protocol;
 import org.restlet.engine.ConnectorHelper;
 import org.restlet.engine.Engine;
-import org.restlet.engine.http.connector.HttpClientHelper;
+import org.restlet.engine.connector.HttpClientHelper;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 
@@ -14,13 +14,13 @@ public class NioClient {
 	public static void main(String[] args) throws Exception {
 		// TraceHandler.register();
 
+		Client client = new Client(new Context(), Protocol.HTTP);
 		ConnectorHelper<Client> helper;
-		helper = new HttpClientHelper(null);
+		helper = new HttpClientHelper(client);
 		// helper = new org.restlet.ext.httpclient.HttpClientHelper(null);
 		// helper = new org.restlet.ext.net.HttpClientHelper(null);
 		Engine.getInstance().getRegisteredClients().add(0, helper);
 
-		Client client = new Client(new Context(), Protocol.HTTP);
 		client.getContext().getParameters().add("tracing", "false");
 		client.getContext().getParameters().add("minThreads", "1");
 		client.getContext().getParameters().add("lowThreads", "30");
@@ -37,21 +37,21 @@ public class NioClient {
 		cr.setRetryOnError(false);
 		cr.setNext(client);
 		Representation r = null;
-//		ClientResource fr = new ClientResource("file://C/temp/report.txt");
+		// ClientResource fr = new ClientResource("file://C/temp/report.txt");
 
 		System.out.println("Calling resource: " + uri + " " + iterations + " times");
 		long start = System.currentTimeMillis();
 
 		for (int i = 0; i < iterations; i++) {
-//			r = cr.post("Sample content posted");
+			// r = cr.post("Sample content posted");
 
 			r = cr.get();
- 			r.exhaust();
-//			System.out.println(cr.get().getText());
-//
-//			System.out.println("Copying to the local file");
-//			fr.put(r);
-//			System.out.println("Copy done!");
+			r.exhaust();
+			// System.out.println(cr.get().getText());
+			//
+			// System.out.println("Copying to the local file");
+			// fr.put(r);
+			// System.out.println("Copy done!");
 		}
 
 		long total = (System.currentTimeMillis() - start);

@@ -1,15 +1,12 @@
 package net.ion.radon.config;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import net.ion.radon.util.AradonTester;
 
 import org.junit.Test;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.Method;
-
-import net.ion.framework.util.InfinityThread;
-import net.ion.radon.util.AradonTester;
-import junit.framework.TestCase;
 
 public class TestResourceExceptionHandler {
 	

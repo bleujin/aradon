@@ -23,7 +23,6 @@ import org.restlet.service.TaskService;
 import org.restlet.service.TunnelService;
 import org.restlet.util.ServiceList;
 
-
 public class BaseSection extends Restlet {
 
 	private static final ThreadLocal CURRENT = new ThreadLocal();

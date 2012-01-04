@@ -1,6 +1,6 @@
 package net.ion.radon.core.let;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import net.ion.framework.util.Debug;
 import net.ion.radon.TestAradon;
 
@@ -8,7 +8,6 @@ import org.junit.Test;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.Method;
-import org.restlet.resource.ResourceException;
 
 public class TestGeneral extends TestAradon {
 	

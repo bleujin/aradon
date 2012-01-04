@@ -1,11 +1,7 @@
 package net.ion.radon.core.server;
 
-import java.util.Map;
-
 import org.restlet.Server;
-import org.restlet.data.Protocol;
-
-import net.ion.radon.core.config.XMLConfig;
+import org.restlet.util.ServerList;
 
 public interface AradonServerHelper {
 
@@ -13,6 +9,6 @@ public interface AradonServerHelper {
 
 	void start()  throws Exception;
 
-	Server getReal();
+	void addTo(ServerList servers);
 
 }

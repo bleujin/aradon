@@ -11,7 +11,6 @@ import org.restlet.data.MediaType;
 import org.restlet.ext.json.JsonRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.representation.StringRepresentation;
-import org.restlet.resource.Post;
 
 public class MultipartLet extends DefaultLet{
 

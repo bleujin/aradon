@@ -1,10 +1,9 @@
 package net.ion.radon.core.config;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
-import junit.framework.TestCase;
 import net.ion.radon.core.IService;
 import net.ion.radon.core.PathService;
 import net.ion.radon.core.TreeContext;

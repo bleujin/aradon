@@ -1,16 +1,16 @@
 package net.ion.nradon.netty;
 
-import net.ion.nradon.EventSourceConnection;
-import net.ion.nradon.netty.contrib.EventSourceMessage;
-
-import org.jboss.netty.channel.ChannelHandlerContext;
-import org.jboss.netty.util.CharsetUtil;
+import static org.jboss.netty.buffer.ChannelBuffers.copiedBuffer;
 
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Executor;
 
-import static org.jboss.netty.buffer.ChannelBuffers.copiedBuffer;
+import net.ion.nradon.EventSourceConnection;
+import net.ion.nradon.netty.contrib.EventSourceMessage;
+
+import org.jboss.netty.channel.ChannelHandlerContext;
+import org.jboss.netty.util.CharsetUtil;
 
 public class NettyEventSourceConnection implements EventSourceConnection {
 	private final Executor executor;

@@ -1,5 +1,14 @@
 package net.ion.nradon.netty;
 
+import static net.ion.nradon.netty.HybiWebSocketFrameDecoder.State.CORRUPT;
+import static net.ion.nradon.netty.HybiWebSocketFrameDecoder.State.FRAME_START;
+import static net.ion.nradon.netty.HybiWebSocketFrameDecoder.State.MASKING_KEY;
+import static net.ion.nradon.netty.Opcodes.OPCODE_BINARY;
+import static net.ion.nradon.netty.Opcodes.OPCODE_CLOSE;
+import static net.ion.nradon.netty.Opcodes.OPCODE_CONT;
+import static net.ion.nradon.netty.Opcodes.OPCODE_PING;
+import static net.ion.nradon.netty.Opcodes.OPCODE_PONG;
+import static net.ion.nradon.netty.Opcodes.OPCODE_TEXT;
 import net.ion.nradon.helpers.UTF8Exception;
 import net.ion.nradon.helpers.UTF8Output;
 
@@ -11,9 +20,6 @@ import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.handler.codec.frame.CorruptedFrameException;
 import org.jboss.netty.handler.codec.frame.TooLongFrameException;
 import org.jboss.netty.handler.codec.replay.ReplayingDecoder;
-
-import static net.ion.nradon.netty.HybiWebSocketFrameDecoder.State.*;
-import static net.ion.nradon.netty.Opcodes.*;
 
 public class HybiWebSocketFrameDecoder extends ReplayingDecoder<HybiWebSocketFrameDecoder.State> {
 	private final UTF8Output utf8Output = new UTF8Output();

@@ -7,7 +7,6 @@ import net.ion.framework.db.IDBController;
 import net.ion.framework.db.manager.DBManager;
 import net.ion.framework.db.servant.ChannelServant;
 import net.ion.framework.db.servant.IExtraServant;
-import net.ion.framework.db.servant.ServantChain;
 import net.ion.framework.util.InstanceCreationException;
 import net.ion.radon.core.config.ConfigCreator;
 import net.ion.radon.core.config.XMLConfig;

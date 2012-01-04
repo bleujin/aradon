@@ -23,53 +23,53 @@ public class TestInnerScript extends TestCase {
 	}
 
 	public void testInsertScript() throws IOException, XPatherException {
-		
+
 		final FileInputStream fis = new FileInputStream("resource/socket/chat.html");
-		
+
 		HtmlCleaner cleaner = new HtmlCleaner();
 		CleanerProperties props = cleaner.getProperties();
 		TagNode node = cleaner.clean(fis, "utf-8");
 		final TagNode head = node.findElementByName("head", true);
-		TagNode appendScript = new TagNode("script") ;
-		appendScript.setAttribute("type", "text/Javascript") ;
-		appendScript.setAttribute("src", "/noti/socket.io.js") ;
-		
-		head.insertChild(0, appendScript) ;
-		
+		TagNode appendScript = new TagNode("script");
+		appendScript.setAttribute("type", "text/Javascript");
+		appendScript.setAttribute("src", "/noti/socket.io.js");
+
+		head.insertChild(0, appendScript);
+
 		final StringWriter writer = new StringWriter();
-		node.serialize(new SimpleHtmlSerializer(props), writer) ;
-		Debug.debug(writer) ;
-//
-//		assertEquals(node.evaluateXPath("//p[1]/*").length, 0);
-//		assertTrue("freestylo".equals(superstar.toString()));
-//		assertEquals(node.evaluateXPath("//p[2]/*").length, 1);
+		node.serialize(new SimpleHtmlSerializer(props), writer);
+		Debug.debug(writer);
+		//
+		// assertEquals(node.evaluateXPath("//p[1]/*").length, 0);
+		// assertTrue("freestylo".equals(superstar.toString()));
+		// assertEquals(node.evaluateXPath("//p[2]/*").length, 1);
 	}
 
-	
 	public void testReplaceScript() throws Exception {
 		InputStream is = this.getClass().getClassLoader().getResourceAsStream("net/ion/radon/socketio/socket.io.js");
-		StringWriter writer = new StringWriter() ;
-		
-		IOUtil.copy(is, writer, "UTF-8") ;
-		
+		StringWriter writer = new StringWriter();
+
+		IOUtil.copy(is, writer, "UTF-8");
+
 		final StringBuffer buffer = writer.getBuffer();
-	
-		Map<String, String> repMap = MapUtil.newMap() ;
-		repMap.put("@{SectionName}", "noti") ;
-		repMap.put("@{PathName}", "chat") ;
-		
+
+		Map<String, String> repMap = MapUtil.newMap();
+		repMap.put("@{SectionName}", "noti");
+		repMap.put("@{PathName}", "chat");
+
 		for (Entry<String, String> entry : repMap.entrySet()) {
-			int start = buffer.indexOf(entry.getKey()) ;
-			if (start < 0) continue ;
-			
-			buffer.replace(start, entry.getKey().length() + start, entry.getValue()) ;
+			int start = buffer.indexOf(entry.getKey());
+			if (start < 0)
+				continue;
+
+			buffer.replace(start, entry.getKey().length() + start, entry.getValue());
 		}
 
-		Debug.debug(buffer) ;
-		
-		is.close() ;
-		writer.close() ;
-		
+		Debug.debug(buffer);
+
+		is.close();
+		writer.close();
+
 	}
 
 }

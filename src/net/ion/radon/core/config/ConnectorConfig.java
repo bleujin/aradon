@@ -36,7 +36,7 @@ public class ConnectorConfig {
 	}
 
 	public enum Engine {
-		Jetty, Netty
+		Jetty, Netty, Unknown
 	}
 
 	public Protocol getProtocol() {
@@ -48,11 +48,13 @@ public class ConnectorConfig {
 	}
 
 	public Engine getEngine() {
-		String pro = config.getString("[@engine]", "jetty");
+		String pro = config.getString("[@engine]", "unknown");
 		if ("netty".equalsIgnoreCase(pro)) {
-			return Engine.Netty;
+			return Engine.Netty ;
+		} else if ("jetty".equalsIgnoreCase(pro)) {
+			return Engine.Jetty ;
 		}
-		return Engine.Jetty;
+		return Engine.Unknown;
 	}
 
 	public int getPort() {

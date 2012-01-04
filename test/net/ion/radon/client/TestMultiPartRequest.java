@@ -1,25 +1,12 @@
 package net.ion.radon.client;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.List;
 
-import junit.framework.TestCase;
 import net.ion.framework.util.Debug;
-import net.ion.framework.util.ListUtil;
 import net.ion.radon.util.AradonTester;
 
-import org.apache.commons.httpclient.methods.multipart.FilePart;
-import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
-import org.apache.commons.httpclient.methods.multipart.Part;
-import org.apache.commons.httpclient.methods.multipart.StringPart;
-import org.apache.commons.httpclient.params.HttpClientParams;
 import org.junit.Test;
-import org.restlet.data.MediaType;
 import org.restlet.data.Method;
-import org.restlet.representation.OutputRepresentation;
 import org.restlet.representation.Representation;
 
 /**

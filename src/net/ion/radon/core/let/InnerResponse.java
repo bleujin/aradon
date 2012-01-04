@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentMap;
 
 import net.ion.framework.rest.StdObject;
 import net.ion.framework.util.StringUtil;
@@ -21,7 +22,6 @@ import org.restlet.data.CacheDirective;
 import org.restlet.data.ChallengeRequest;
 import org.restlet.data.CookieSetting;
 import org.restlet.data.Dimension;
-import org.restlet.data.Form;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.data.RecipientInfo;
@@ -29,7 +29,8 @@ import org.restlet.data.Reference;
 import org.restlet.data.ServerInfo;
 import org.restlet.data.Status;
 import org.restlet.data.Warning;
-import org.restlet.engine.http.header.ContentType;
+import org.restlet.engine.header.ContentType;
+import org.restlet.engine.header.Header;
 import org.restlet.representation.Representation;
 import org.restlet.util.Series;
 
@@ -54,10 +55,10 @@ public class InnerResponse extends Response {
 		return innerRequest ;
 	}
 	
-	public Form getHeaders() {
-		Form headers = (Form) inner.getAttributes().get(RadonAttributeKey.ATTRIBUTE_HEADERS);
+	public Series<Header> getHeaders() {
+		Series<Header> headers = (Series<Header>) inner.getAttributes().get(RadonAttributeKey.ATTRIBUTE_HEADERS);
 		if (headers == null) {
-			headers = new Form();
+			headers = new Series(Header.class);
 			inner.getAttributes().put(RadonAttributeKey.ATTRIBUTE_HEADERS, headers);
 		}
 		return headers;
@@ -246,7 +247,7 @@ public class InnerResponse extends Response {
 		inner.setWarnings(warnings) ;
 	}
 	
-	public Map<String, Object> getAttributes(){
+	public ConcurrentMap<String, Object> getAttributes(){
 		return inner.getAttributes() ;
 	}
 	
@@ -304,7 +305,7 @@ public class InnerResponse extends Response {
 	}
 
 	public void setHeader(String name, String value) {
-		Form headers = getHeaders();
+		Series headers = getHeaders();
 		headers.add(name, value);
 	}
 

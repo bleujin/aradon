@@ -38,7 +38,11 @@ package net.ion.radon.rhino.before;
  *
  * ***** END LICENSE BLOCK ***** */
 
-import org.mozilla.javascript.*;
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.ContextFactory;
+import org.mozilla.javascript.Script;
+import org.mozilla.javascript.Scriptable;
+import org.mozilla.javascript.ScriptableObject;
 
 /**
  * Example of controlling the JavaScript with multiple scopes and threads.

@@ -1,5 +1,12 @@
 package net.ion.nradon.handler;
 
+import static net.ion.nradon.WebServers.createWebServer;
+import static net.ion.nradon.testutil.HttpClient.contents;
+import static net.ion.nradon.testutil.HttpClient.httpPost;
+import static org.junit.Assert.assertEquals;
+
+import java.io.IOException;
+
 import net.ion.nradon.HttpControl;
 import net.ion.nradon.HttpHandler;
 import net.ion.nradon.HttpRequest;
@@ -8,13 +15,6 @@ import net.ion.nradon.WebServer;
 
 import org.junit.After;
 import org.junit.Test;
-
-import java.io.IOException;
-
-import static net.ion.nradon.WebServers.createWebServer;
-import static net.ion.nradon.testutil.HttpClient.contents;
-import static net.ion.nradon.testutil.HttpClient.httpPost;
-import static org.junit.Assert.assertEquals;
 
 public class TestStaleConnection {
 

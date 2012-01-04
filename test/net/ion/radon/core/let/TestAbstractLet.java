@@ -1,13 +1,15 @@
 package net.ion.radon.core.let;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import net.ion.radon.TestAradon;
+import net.ion.radon.core.Aradon;
 import net.ion.radon.core.IService;
 import net.ion.radon.core.PathService;
 import net.ion.radon.core.SectionService;
 import net.ion.radon.core.config.XMLConfig;
 import net.ion.radon.impl.let.HelloWorldLet;
 import net.ion.radon.impl.section.PathInfo;
+import net.ion.radon.util.AradonTester;
 
 import org.junit.Test;
 import org.restlet.Request;
@@ -18,7 +20,7 @@ public class TestAbstractLet extends TestAradon {
 
 	@Test
 	public void testAbstractLet() throws Exception {
-		initAradon();
+		Aradon aradon = AradonTester.create().register("", "/hello", HelloWorldLet.class).getAradon() ;
 		
 		SectionService section = aradon.attach("test", XMLConfig.BLANK);
 		final PathInfo pathInfo = PathInfo.create("test", "/test", "", "", HelloWorldLet.class);
@@ -32,7 +34,7 @@ public class TestAbstractLet extends TestAradon {
 	
 	@Test
 	public void testParentService() throws Exception {
-		initAradon();
+		Aradon aradon = AradonTester.create().register("", "/hello", HelloWorldLet.class).getAradon() ;
 		
 		SectionService section = aradon.attach("test", XMLConfig.BLANK);
 		section.attach(PathInfo.create("test", "/test", "", "", HelloWorldLet.class));

@@ -19,16 +19,17 @@ import net.ion.radon.core.filter.IFilterResult;
 import org.json.JSONException;
 import org.restlet.Request;
 import org.restlet.Response;
-import org.restlet.data.Form;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.data.Status;
+import org.restlet.engine.header.Header;
 import org.restlet.representation.EmptyRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
 import org.restlet.routing.Filter;
+import org.restlet.util.Series;
 
 
 public abstract class AbstractLet extends ServerResource implements RadonAttributeKey {
@@ -190,7 +191,7 @@ public abstract class AbstractLet extends ServerResource implements RadonAttribu
 
 	protected void allowOtherHost() {
 
-		Form resHeader = getResponseHeader();
+		Series<Header> resHeader = getResponseHeader();
 		resHeader.add("Access-Control-Allow-Origin", "*");
 		// responseHeaders.add("Access-Control-Allow-Method", "*");
 		resHeader.add("Access-Control-Request-Method", "POST,GET,OPTIONS");
@@ -210,10 +211,10 @@ public abstract class AbstractLet extends ServerResource implements RadonAttribu
 		return EMPTY_REPRESENTATION;
 	}
 	
-	protected Form getResponseHeader() {
-		Form responseHeaders = (Form) getResponse().getAttributes().get(ATTRIBUTE_HEADERS);
+	protected Series<Header> getResponseHeader() {
+		Series<Header> responseHeaders = (Series<Header>) getResponse().getAttributes().get(ATTRIBUTE_HEADERS);
 		if (responseHeaders == null) {
-			responseHeaders = new Form();
+			responseHeaders = new Series(Header.class);
 			getResponse().getAttributes().put(ATTRIBUTE_HEADERS, responseHeaders);
 		}
 		return responseHeaders;

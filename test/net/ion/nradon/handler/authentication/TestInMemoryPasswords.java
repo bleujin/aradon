@@ -1,8 +1,6 @@
 package net.ion.nradon.handler.authentication;
 
 import static org.junit.Assert.assertEquals;
-
-import net.ion.nradon.handler.authentication.InMemoryPasswords;
 import net.ion.nradon.handler.authentication.PasswordAuthenticator.ResultCallback;
 
 import org.junit.Test;

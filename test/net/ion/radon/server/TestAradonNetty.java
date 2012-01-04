@@ -1,8 +1,6 @@
 package net.ion.radon.server;
 
-import static org.junit.Assert.*;
-import junit.framework.TestCase;
-import net.ion.framework.util.Debug;
+import static org.junit.Assert.assertEquals;
 import net.ion.radon.InfinityThread;
 import net.ion.radon.client.AradonClient;
 import net.ion.radon.client.AradonClientFactory;
@@ -12,12 +10,8 @@ import net.ion.radon.core.config.XMLConfig;
 import net.ion.radon.impl.let.HelloWorldLet;
 import net.ion.radon.util.AradonTester;
 
-import org.eclipse.jetty.xml.XmlConfiguration;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.data.MediaType;
-import org.restlet.engine.http.header.CookieReader;
-import org.restlet.engine.util.CookieSeries;
 import org.restlet.representation.Representation;
 
 public class TestAradonNetty {
@@ -38,7 +32,7 @@ public class TestAradonNetty {
 	
 	@Test
 	public void testHttps() throws Exception {
-		String configStr = "<connector-config engine='netty' port='9000' protocol='https'>" 
+		String configStr = "<connector-config port='9000' protocol='https'>" 
 			+ "<parameter name='keystorePath' description=''>./resource/keystore/keystore</parameter>\n" 
 			+ "<parameter name='keystorePassword' description=''>password</parameter>\n"
 		 	+ "<parameter name='keystoreType' description=''>JKS</parameter>\n"

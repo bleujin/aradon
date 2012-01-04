@@ -3,13 +3,8 @@ package net.ion.radon.socketio.examples.client;
 import java.io.IOException;
 import java.net.URI;
 
-import net.ion.framework.util.Debug;
-import net.ion.radon.socketio.examples.client.WebSocketListener.WebSocketDraft;
-
-import org.eclipse.jetty.websocket.WebSocketFactory;
-
-
 import junit.framework.TestCase;
+import net.ion.framework.util.Debug;
 
 public class TestClient extends TestCase {
 

@@ -1,9 +1,9 @@
 package net.ion.radon.client;
 
-import org.restlet.resource.Get;
-
 import net.ion.framework.util.Debug;
 import net.ion.radon.core.let.AbstractServerResource;
+
+import org.restlet.resource.Get;
 
 public class TestHeaderLet extends AbstractServerResource {
 	

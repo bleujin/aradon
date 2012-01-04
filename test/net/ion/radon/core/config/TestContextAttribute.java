@@ -1,6 +1,6 @@
 package net.ion.radon.core.config;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import net.ion.radon.TestAradon;
 import net.ion.radon.core.PathService;
 import net.ion.radon.core.SectionService;

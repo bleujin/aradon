@@ -4,7 +4,6 @@ import net.ion.radon.core.EnumClass.IZone;
 
 import org.restlet.representation.Representation;
 import org.restlet.representation.StringRepresentation;
-import org.restlet.resource.Get;
 
 public class ConfirmContextLet2  extends DefaultLet{
 

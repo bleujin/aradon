@@ -1,6 +1,6 @@
 package net.ion.radon.rhino.before;
 
-import org.mozilla.javascript.*;
+import org.mozilla.javascript.ScriptableObject;
 
 public class Counter extends ScriptableObject {
 	private static final long serialVersionUID = 438270592527335642L;

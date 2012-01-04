@@ -1,12 +1,12 @@
 package net.ion.nradon.handler;
 
 
+import net.ion.framework.util.Debug;
+import net.ion.radon.core.let.AbstractServerResource;
+
 import org.restlet.data.ClientInfo;
 import org.restlet.resource.Get;
 import org.restlet.security.User;
-
-import net.ion.framework.util.Debug;
-import net.ion.radon.core.let.AbstractServerResource;
 
 public class ClientTestLet extends AbstractServerResource {
 

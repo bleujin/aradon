@@ -76,14 +76,7 @@ public class WebSocketToAradon {
 		
 		new InfinityThread().startNJoin() ;
 	}
-
-	
-	
-	
 }
-
-
-
 
 class AradonWebSocket implements WebSocketHandler {
 

@@ -1,11 +1,8 @@
 package net.ion.radon.client;
 
-import java.util.List;
-
 import org.restlet.Response;
 import org.restlet.data.Form;
 import org.restlet.data.Method;
-import org.restlet.representation.OutputRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ResourceException;
 import org.restlet.security.User;

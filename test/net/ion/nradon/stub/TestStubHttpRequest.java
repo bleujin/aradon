@@ -4,15 +4,12 @@ import static org.junit.Assert.assertEquals;
 
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import net.ion.nradon.stub.StubHttpRequest;
 
 import org.apache.commons.collections.DefaultMapEntry;
 import org.junit.Test;

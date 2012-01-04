@@ -1,8 +1,19 @@
 package net.ion.nradon.handler;
 
+import static net.ion.nradon.WebServers.createWebServer;
+import static net.ion.nradon.testutil.HttpClient.contents;
+import static net.ion.nradon.testutil.HttpClient.httpGet;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.concurrent.Executor;
+
 import net.ion.nradon.HttpHandler;
 import net.ion.nradon.WebServer;
-import net.ion.nradon.handler.StaticFileHandler;
 import net.ion.nradon.stub.StubHttpControl;
 import net.ion.nradon.stub.StubHttpRequest;
 import net.ion.nradon.stub.StubHttpResponse;
@@ -10,18 +21,6 @@ import net.ion.nradon.stub.StubHttpResponse;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.concurrent.Executor;
-
-import static net.ion.nradon.WebServers.createWebServer;
-import static net.ion.nradon.testutil.HttpClient.contents;
-import static net.ion.nradon.testutil.HttpClient.httpGet;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 public class TestStaticFileHandler {
 

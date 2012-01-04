@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.Properties;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
 import javax.management.Attribute;
 import javax.management.AttributeList;
 import javax.management.AttributeNotFoundException;
@@ -27,10 +28,10 @@ public class PropertyManager implements DynamicMBean {
 	private final String propertyFileName;
 	private final Properties properties;
 
-	public PropertyManager() throws IOException{
-		this("./resource/ptest.prop") ;
+	public PropertyManager() throws IOException {
+		this("./resource/ptest.prop");
 	}
-	
+
 	public PropertyManager(String propertyFileName) throws IOException {
 		this.propertyFileName = propertyFileName;
 		properties = new Properties();
@@ -110,14 +111,14 @@ public class PropertyManager implements DynamicMBean {
 		Iterator<String> it = names.iterator();
 		for (int i = 0; i < attrs.length; i++) {
 			String name = it.next();
-			boolean isReadable = true ;
-			boolean isWritable = true ;
-			boolean isIs = false ;
-			attrs[i] = new MBeanAttributeInfo(name, "java.lang.String", "Property " + name, isReadable, isWritable, isIs); 
+			boolean isReadable = true;
+			boolean isWritable = true;
+			boolean isIs = false;
+			attrs[i] = new MBeanAttributeInfo(name, "java.lang.String", "Property " + name, isReadable, isWritable, isIs);
 		}
-		MBeanParameterInfo[] params = null ;
+		MBeanParameterInfo[] params = null;
 		MBeanOperationInfo[] opers = { new MBeanOperationInfo("reload", "Reload properties from file", params, "void", MBeanOperationInfo.ACTION) };
-		MBeanConstructorInfo[] cons = null ;
+		MBeanConstructorInfo[] cons = null;
 		return new MBeanInfo(this.getClass().getName(), "Property Manager MBean", attrs, cons, opers, null); // notifications
 	}
 

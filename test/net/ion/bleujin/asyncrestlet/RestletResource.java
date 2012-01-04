@@ -5,8 +5,8 @@ import org.restlet.resource.ServerResource;
 
 public class RestletResource extends ServerResource {
 
-    @Get
-    public String represent() {
-        return "hello from restlet\n";
-    }
+	@Get
+	public String represent() {
+		return "hello from restlet\n";
+	}
 }

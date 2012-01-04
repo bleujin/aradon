@@ -1,14 +1,9 @@
 package net.ion.radon.util;
 
-import static org.junit.Assert.*;
-import junit.framework.TestCase;
-import net.ion.framework.util.Debug;
-import net.ion.framework.util.InfinityThread;
-import net.ion.radon.core.let.AbstractServerResource;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.restlet.Response;
-import org.restlet.resource.Get;
 
 public class TestAradonTester {
 

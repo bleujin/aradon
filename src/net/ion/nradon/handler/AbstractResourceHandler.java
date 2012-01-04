@@ -1,10 +1,5 @@
 package net.ion.nradon.handler;
 
-import net.ion.nradon.HttpControl;
-import net.ion.nradon.HttpHandler;
-import net.ion.nradon.HttpRequest;
-import net.ion.nradon.HttpResponse;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -14,6 +9,11 @@ import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import net.ion.nradon.HttpControl;
+import net.ion.nradon.HttpHandler;
+import net.ion.nradon.HttpRequest;
+import net.ion.nradon.HttpResponse;
 
 public abstract class AbstractResourceHandler implements HttpHandler {
 	static {

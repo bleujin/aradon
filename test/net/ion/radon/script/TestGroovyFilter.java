@@ -1,6 +1,6 @@
 package net.ion.radon.script;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import groovy.lang.Binding;
 import groovy.lang.Script;
 import groovy.util.GroovyScriptEngine;
@@ -19,7 +19,6 @@ import net.ion.radon.core.SectionService;
 import net.ion.radon.core.config.XMLConfig;
 import net.ion.radon.core.filter.IFilterResult;
 import net.ion.radon.core.script.GroovyRunFilter;
-import net.ion.radon.core.script.GroovyLetFilter;
 import net.ion.radon.core.script.ScriptFactory;
 import net.ion.radon.impl.let.HelloWorldLet;
 import net.ion.radon.impl.section.PathInfo;
@@ -46,7 +45,8 @@ public class TestGroovyFilter extends TestAradon {
 			Response response = aradon.handle(request);
 			Debug.debug(response.getEntityAsText());
 
-			if (i > 0) assertEquals(true, System.currentTimeMillis() - start < 50);
+			if (i > 0)
+				assertEquals(true, System.currentTimeMillis() - start < 50);
 		}
 	}
 
@@ -94,37 +94,37 @@ public class TestGroovyFilter extends TestAradon {
 			IFilterResult result = (IFilterResult) script.run();
 			Debug.line(System.currentTimeMillis() - start);
 		}
-		
+
 		Debug.debug(response.getEntityAsText());
 	}
-	
+
 	@Test
 	public void chartFilter() throws Exception {
 		initAradon();
-		
+
 		final SectionService section = aradon.getChildService("another");
 		section.attach(PathInfo.create("chart", "/chart", HelloWorldLet.class));
 		section.getChildService("chart").addAfterFilter(ScriptFactory.createGroovyFilter(new File("./script-test/groovy/ChartFilter.groovy")));
 		// section.getChildService("chart").addAfterFilter(new TestChartFilter());
-		
+
 		Request request = new Request(Method.GET, "riap://component/another/chart");
 		Response response = aradon.handle(request);
-		
-		FileOutputStream os = new FileOutputStream( new File("./resource/imsi/chart.png"));
+
+		FileOutputStream os = new FileOutputStream(new File("./resource/imsi/chart.png"));
 		IOUtil.copyNClose(response.getEntity().getStream(), os);
-		
+
 	}
-	
+
 	@Test
 	public void aradonClient() throws Exception {
-		
-		AradonClient client = AradonClientFactory.create("http://chart.apis.google.com"); 
+
+		AradonClient client = AradonClientFactory.create("http://chart.apis.google.com");
 		IAradonRequest ir = client.createRequest("/chart?cht=p3&chs=500x250&chd=s:JMBJD&chl=Open+Source|J2EE|Web+Service|Ajax|Other");
-		Representation result =  ir.get();
-		
-		FileOutputStream os = new FileOutputStream( new File("./resource/imsi/chart.png"));
+		Representation result = ir.get();
+
+		FileOutputStream os = new FileOutputStream(new File("./resource/imsi/chart.png"));
 		IOUtil.copyNClose(result.getStream(), os);
-		
+
 	}
 
 }

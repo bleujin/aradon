@@ -3,7 +3,7 @@ package net.ion.radon.core.let;
 import org.restlet.representation.Representation;
 import org.restlet.representation.StringRepresentation;
 
-public class GetLet extends AbstractLet{
+public class GetLet extends AbstractLet {
 
 	@Override
 	public Representation myDelete() throws Exception {

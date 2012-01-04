@@ -1,7 +1,7 @@
 package net.ion.radon.core.let;
 
-import static org.junit.Assert.*;
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import net.ion.framework.util.Debug;
 import net.ion.radon.core.path.URLPattern;
 import net.ion.radon.impl.let.HelloWorldLet;

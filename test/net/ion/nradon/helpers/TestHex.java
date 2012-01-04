@@ -1,10 +1,8 @@
 package net.ion.nradon.helpers;
 
-import net.ion.nradon.helpers.Hex;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
 
 public class TestHex {
 	@Test

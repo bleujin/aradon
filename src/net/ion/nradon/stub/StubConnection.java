@@ -1,13 +1,13 @@
 package net.ion.nradon.stub;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.Executor;
+
 import net.ion.nradon.EventSourceConnection;
 import net.ion.nradon.HttpRequest;
 import net.ion.nradon.WebSocketConnection;
 import net.ion.nradon.netty.contrib.EventSourceMessage;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.concurrent.Executor;
 
 /**
  * Implementation of {@link EventSourceConnection} and {@link WebSocketConnection} that is easy to construct and makes it easy to inspect results. Useful for testing.

@@ -1,10 +1,10 @@
 package net.ion.nradon.handler.authentication;
 
-import net.ion.nradon.HttpRequest;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executor;
+
+import net.ion.nradon.HttpRequest;
 
 /**
  * Implementation of PasswordAuthenticator that verifies usernames and password from a prepopulated hashmap.

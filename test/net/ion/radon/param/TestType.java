@@ -5,7 +5,7 @@ import java.lang.reflect.Type;
 
 import junit.framework.TestCase;
 
-public class TestType extends TestCase{
+public class TestType extends TestCase {
 
 	public void testFirst() throws Exception {
 		Object object0 = new StringHome().getTypeParameterClass().newInstance();
@@ -14,7 +14,7 @@ public class TestType extends TestCase{
 		System.out.println(object0.getClass().getSimpleName());
 		System.out.println(object1.getClass().getSimpleName());
 		System.out.println(object2.getClass().getSimpleName());
-		
+
 		System.out.println(new Home<StringBuilder>().getClass().getSimpleName());
 	}
 
@@ -28,7 +28,6 @@ public class TestType extends TestCase{
 	}
 
 }
-
 
 class Home<E> {
 

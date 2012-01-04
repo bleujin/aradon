@@ -7,10 +7,6 @@ import java.io.Reader;
 import java.nio.charset.Charset;
 import java.util.Locale;
 
-import org.apache.commons.lang.CharSet;
-
-import net.ion.framework.util.Debug;
-
 public class DetectEncodingInputStream extends InputStream {
 	private InputStream is;
 	private int bufferLength;

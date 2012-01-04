@@ -1,13 +1,13 @@
 package net.ion.nradon.authentication;
 
-import net.ion.nradon.*;
-import net.ion.nradon.handler.StaticFileHandler;
-import net.ion.nradon.handler.authentication.BasicAuthenticationHandler;
-import net.ion.nradon.handler.authentication.InMemoryPasswords;
+import static net.ion.nradon.WebServers.createWebServer;
 
 import java.io.IOException;
 
-import static net.ion.nradon.WebServers.createWebServer;
+import net.ion.nradon.WebServer;
+import net.ion.nradon.handler.StaticFileHandler;
+import net.ion.nradon.handler.authentication.BasicAuthenticationHandler;
+import net.ion.nradon.handler.authentication.InMemoryPasswords;
 
 /**
  * This example demonstrates restricting access using HTTP BASIC authentication.

@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.Set;
 
 import net.ion.framework.util.ListUtil;
-import net.ion.framework.util.NumberUtil;
 import net.ion.framework.util.ObjectUtil;
 
 public// Thread Unsafe
@@ -64,10 +63,10 @@ class MultiValueMap implements Map, Serializable {
 	private Object implicitTypeValue(Object _value) {
 		if (_value == null) {
 			return ObjectUtil.NULL ;
-		} else if (NumberUtil.isNumber(_value.toString()) && String.valueOf(NumberUtil.toLong(_value.toString())).equals(_value.toString())) {
-			return NumberUtil.toLong(_value.toString());
-		} else if (NumberUtil.isNumber(_value.toString())) {
-			return NumberUtil.toDouble(_value.toString());
+//		} else if (NumberUtil.isNumber(_value.toString()) && String.valueOf(NumberUtil.toLong(_value.toString())).equals(_value.toString())) {
+//			return NumberUtil.toLong(_value.toString());
+//		} else if (NumberUtil.isNumber(_value.toString())) {
+//			return NumberUtil.toDouble(_value.toString());
 		} else {
 			return _value;
 		}

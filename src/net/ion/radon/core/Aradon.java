@@ -15,7 +15,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.logging.LogManager;
 
 import net.ion.framework.util.Debug;
@@ -37,9 +36,8 @@ import net.ion.radon.core.filter.IRadonFilter;
 import net.ion.radon.core.let.FilterUtil;
 import net.ion.radon.core.let.InnerRequest;
 import net.ion.radon.core.let.InnerResponse;
-import net.ion.radon.core.server.AradonJettyHelper;
-import net.ion.radon.core.server.ServerFactory;
 import net.ion.radon.core.server.AradonServerHelper;
+import net.ion.radon.core.server.ServerFactory;
 import net.ion.radon.impl.section.PluginConfig;
 
 import org.apache.commons.configuration.ConfigurationException;
@@ -49,11 +47,9 @@ import org.restlet.Application;
 import org.restlet.Component;
 import org.restlet.Request;
 import org.restlet.Response;
-import org.restlet.Server;
 import org.restlet.data.Protocol;
 import org.restlet.data.Reference;
 import org.restlet.data.Status;
-import org.restlet.ext.jetty.HttpServerHelper;
 import org.restlet.representation.ObjectRepresentation;
 import org.restlet.resource.ResourceException;
 import org.restlet.routing.Router;
@@ -101,7 +97,8 @@ public class Aradon extends Component implements IService{
 
 		CURRENT = this;
 		setLogService(new RadonLogService());
-		getServers().add(Protocol.RIAP);		
+		getServers().add(Protocol.RIAP);
+		getClients().add(Protocol.RIAP) ;
 		
 		
 	}
@@ -325,7 +322,7 @@ public class Aradon extends Component implements IService{
 		serverHelper = ServerFactory.create(getContext(), this, cfig);
 
 		serverHelper.start();
-		getServers().add(serverHelper.getReal()) ;
+		serverHelper.addTo(getServers()) ;
 
 		final Aradon aradon = this;
 		Runtime.getRuntime().addShutdownHook(new Thread() {
