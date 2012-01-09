@@ -65,8 +65,7 @@ public class AradonServer {
 		final AradonServer as = this;
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			public void run() {
-				if (!aradon.isStopped())
-					as.stop();
+				as.stop();
 			}
 		});
 
@@ -82,7 +81,7 @@ public class AradonServer {
 
 	public void stop() {
 		if (gshell != null) gshell.destroy() ;
-		if (aradon != null && (!aradon.isStarted())) {
+		if (aradon != null ) {
 			aradon.stop();
 		}
 	}

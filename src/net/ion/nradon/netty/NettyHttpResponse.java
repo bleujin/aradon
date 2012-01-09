@@ -1,8 +1,5 @@
 package net.ion.nradon.netty;
 
-import static org.jboss.netty.buffer.ChannelBuffers.copiedBuffer;
-import static org.jboss.netty.buffer.ChannelBuffers.wrappedBuffer;
-
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.ByteBuffer;
@@ -91,15 +88,15 @@ public class NettyHttpResponse implements net.ion.nradon.HttpResponse {
 	}
 
 	public NettyHttpResponse content(String content) {
-		return content(copiedBuffer(content, charset()));
+		return content(ChannelBuffers.copiedBuffer(content, charset()));
 	}
 
 	public NettyHttpResponse content(byte[] content) {
-		return content(copiedBuffer(content));
+		return content(ChannelBuffers.copiedBuffer(content));
 	}
 
 	public NettyHttpResponse content(ByteBuffer buffer) {
-		return content(wrappedBuffer(buffer));
+		return content(ChannelBuffers.wrappedBuffer(buffer));
 	}
 
 	
@@ -109,7 +106,7 @@ public class NettyHttpResponse implements net.ion.nradon.HttpResponse {
 	}
 
 	public NettyHttpResponse write(String content) {
-		write(copiedBuffer(content, CharsetUtil.UTF_8));
+		write(ChannelBuffers.copiedBuffer(content, CharsetUtil.UTF_8));
 		return this;
 	}
 
@@ -153,6 +150,8 @@ public class NettyHttpResponse implements net.ion.nradon.HttpResponse {
 	}
 
 	private ChannelFuture write(ChannelBuffer responseBuffer) {
+		
+		
 		response.setContent(responseBuffer);
 		return ctx.getChannel().write(response);
 	}

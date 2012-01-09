@@ -19,9 +19,9 @@ import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.ClientInfo;
 import org.restlet.data.Cookie;
-import org.restlet.data.Form;
 import org.restlet.data.Method;
 import org.restlet.engine.header.ExpectationReader;
+import org.restlet.engine.header.Header;
 import org.restlet.engine.header.HeaderConstants;
 import org.restlet.engine.header.PreferenceReader;
 import org.restlet.representation.InputRepresentation;
@@ -30,13 +30,12 @@ import org.restlet.util.Series;
 
 public class AradonUtil {
 
-
 	public final static Request toAradonRequest(HttpRequest hreq) {
 		Request request = new Request(Method.valueOf(hreq.method()), "http://" + hreq.header(HttpHeaders.HOST) + hreq.uri());
-		
-		request.setDate(GregorianCalendar.getInstance().getTime()) ;
+
+		request.setDate(GregorianCalendar.getInstance().getTime());
 		InnerRequest ireq = InnerRequest.create(request);
-		
+
 		ireq.setClientInfo(getClientInfo(hreq));
 
 		InputRepresentation re = new InputRepresentation(new ByteArrayInputStream(hreq.bodyAsBytes()));
@@ -58,8 +57,8 @@ public class AradonUtil {
 	private static ClientInfo getClientInfo(HttpRequest hreq) {
 		final ClientInfo result = new ClientInfo();
 
-		Headers headers = Headers.create(hreq.allHeaders()) ;
-		
+		Headers headers = Headers.create(hreq.allHeaders());
+
 		// Extract the header values
 		String acceptMediaType = headers.getValues(HeaderConstants.HEADER_ACCEPT);
 		String acceptCharset = headers.getValues(HeaderConstants.HEADER_ACCEPT_CHARSET);
@@ -97,27 +96,27 @@ public class AradonUtil {
 		// Set other properties
 		result.setAgent(headers.getValues(HeaderConstants.HEADER_USER_AGENT));
 		result.setFrom(headers.getValues(HeaderConstants.HEADER_FROM));
-		
-		SocketAddress _caddress =  hreq.remoteAddress() ;
-		if (_caddress instanceof InetSocketAddress){
-			InetSocketAddress caddress = (InetSocketAddress) _caddress ;
-			result.setAddress( caddress.getAddress().getHostAddress());
+
+		SocketAddress _caddress = hreq.remoteAddress();
+		if (_caddress instanceof InetSocketAddress) {
+			InetSocketAddress caddress = (InetSocketAddress) _caddress;
+			result.setAddress(caddress.getAddress().getHostAddress());
 			result.setPort(caddress.getPort());
 		}
-		
-//
-//		if (getHttpCall().getUserPrincipal() != null) {
-//			result.getPrincipals().add(getHttpCall().getUserPrincipal());
-//		}
+
+		//
+		// if (getHttpCall().getUserPrincipal() != null) {
+		// result.getPrincipals().add(getHttpCall().getUserPrincipal());
+		// }
 
 		return result;
 	}
-	
-	public static HttpResponse toHttpResponse(Response res, HttpResponse response) throws IOException {
 
-		Form headers = (Form) res.getAttributes().get(RadonAttributeKey.ATTRIBUTE_HEADERS);
+	public static HttpResponse toHttpResponse(Response res, final HttpResponse response) throws IOException {
+
+		Series<Header> headers = (Series<Header>) res.getAttributes().get(RadonAttributeKey.ATTRIBUTE_HEADERS);
 		if (headers == null)
-			headers = new Form();
+			headers = new Series(Header.class);
 		for (String name : headers.getNames()) {
 			response.header(name, headers.getValues(name));
 		}
@@ -130,8 +129,28 @@ public class AradonUtil {
 		if (representation == null) {
 			return response;
 		}
+
+//		ReadableByteChannel channel = representation.getChannel();
+
+//		if (channel instanceof FileChannel) {
+//			// WritableBufferedChannel wchannel = new WritableBuff
+//			
+//			ReadableListener input = new ReadableListener(representation) {
+//				
+//				@Override
+//				protected void onContent(ByteBuffer buffer) {
+//					Debug.line(buffer.limit(), buffer.remaining(), buffer.array()) ;
+//					response.content(buffer) ;
+//				}
+//			};
+//			
+//			input.onSelected() ;
+//			return response ;
+//		} 
+
 		ByteBuffer bytebuffer = ByteBuffer.wrap(IOUtil.toByteArray(representation.getStream()));
 		response.content(bytebuffer);
 		return response;
 	}
+	
 }

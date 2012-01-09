@@ -70,8 +70,11 @@ public class Aradon extends Component implements IService{
 	private AradonServerHelper serverHelper ;
 	
 	public final static String CONFIG_PORT = "aradon.config.port";
+	private boolean started = false ;
 
-	
+	public Aradon(){
+		super() ;
+	}
 	
 	void setSection(String sectionName, Application section) {
 		if (sections.containsKey(sectionName)) {
@@ -288,7 +291,9 @@ public class Aradon extends Component implements IService{
 		Debug.debug("End World.........");
 	}
 
+	@Override
 	public void stop() {
+		if (! started) return ;
 		try {
 			super.stop();
 			
@@ -300,6 +305,7 @@ public class Aradon extends Component implements IService{
 		} finally {
 			this.slayReleasable();
 			getLogger().warning("aradon server stoped");
+			this.started = false ;
 		}
 	}
 
@@ -318,7 +324,17 @@ public class Aradon extends Component implements IService{
 		startServer(ConnectorConfig.create(connConfig, port)) ;
 	}
 	
+	
+	@Override
+	public void start() throws Exception{
+		super.start() ;
+		onEventFire(AradonEvent.START, this) ;
+		this.started = true ;
+	}
+	
 	public void startServer(ConnectorConfig cfig) throws Exception{
+		if (! isStarted()) start() ;
+		
 		serverHelper = ServerFactory.create(getContext(), this, cfig);
 
 		serverHelper.start();
@@ -327,14 +343,13 @@ public class Aradon extends Component implements IService{
 		final Aradon aradon = this;
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			public void run() {
-				if (! aradon.isStopped()) aradon.slayReleasable();
+				aradon.stop();
 			}
 		});
 
 		getLogger().warning("aradon started : " + cfig.getPort());
 		
 		rootContext.putAttribute(CONFIG_PORT, cfig.getPort()) ;
-		onEventFire(AradonEvent.START, this) ;
 	}
 
 	private boolean alreadyUsePortNum(int port) {

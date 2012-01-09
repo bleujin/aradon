@@ -28,7 +28,7 @@ public class NradonClient {
 		Request req = AradonUtil.toAradonRequest(request);
 		
 		Response res = aradon.handle(req) ;
-		return AradonUtil.toHttpResponse(res, response);
+		return AradonUtil.toHttpResponse(res, response).end();
 	}
 
 	public Response handle(Request request) {
