@@ -6,6 +6,7 @@ import java.util.Date;
 
 import net.ion.nradon.HttpResponse;
 
+import org.restlet.Response;
 import org.restlet.data.Cookie;
 
 public class HttpResponseWrapper implements HttpResponse {
@@ -75,6 +76,11 @@ public class HttpResponseWrapper implements HttpResponse {
 	public HttpResponseWrapper write(String content) {
 		response.write(content);
 		return this;
+	}
+	
+	public HttpResponseWrapper write(Response res) {
+		response.write(res) ;
+		return this ;
 	}
 
 	public HttpResponseWrapper content(byte[] content) {

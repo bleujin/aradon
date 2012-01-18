@@ -32,6 +32,7 @@ import net.ion.radon.core.config.Releasable;
 import net.ion.radon.core.config.XMLConfig;
 import net.ion.radon.core.context.OnEventObject;
 import net.ion.radon.core.context.OnEventObject.AradonEvent;
+import net.ion.radon.core.except.AradonRuntimeException;
 import net.ion.radon.core.filter.IRadonFilter;
 import net.ion.radon.core.let.FilterUtil;
 import net.ion.radon.core.let.InnerRequest;
@@ -70,11 +71,8 @@ public class Aradon extends Component implements IService{
 	private AradonServerHelper serverHelper ;
 	
 	public final static String CONFIG_PORT = "aradon.config.port";
-	private boolean started = false ;
 
-	public Aradon(){
-		super() ;
-	}
+	
 	
 	void setSection(String sectionName, Application section) {
 		if (sections.containsKey(sectionName)) {
@@ -238,6 +236,8 @@ public class Aradon extends Component implements IService{
 	}
 
 	public void handle(Request request, Response response) {
+		if (! isStarted()) start() ;
+		
 
 		InnerRequest innerRequest = InnerRequest.create(request);
 		InnerResponse innerResponse = InnerResponse.create(response, innerRequest);
@@ -267,7 +267,6 @@ public class Aradon extends Component implements IService{
 			getLogger().warning(ex.getMessage());
 			throw new ResourceException(Status.SERVER_ERROR_INTERNAL, ex);
 		}
-		
 	}
 
 	public void addReleasable(IService service, Releasable releasable) {
@@ -291,6 +290,7 @@ public class Aradon extends Component implements IService{
 		Debug.debug("End World.........");
 	}
 
+	private boolean started = false ;
 	@Override
 	public void stop() {
 		if (! started) return ;
@@ -326,15 +326,18 @@ public class Aradon extends Component implements IService{
 	
 	
 	@Override
-	public void start() throws Exception{
-		super.start() ;
+	public void start(){
+		try {
+			super.start() ;
+		} catch (Exception e) {
+			throw new AradonRuntimeException(e) ;
+		}
 		onEventFire(AradonEvent.START, this) ;
 		this.started = true ;
 	}
 	
 	public void startServer(ConnectorConfig cfig) throws Exception{
 		if (! isStarted()) start() ;
-		
 		serverHelper = ServerFactory.create(getContext(), this, cfig);
 
 		serverHelper.start();
@@ -521,6 +524,8 @@ public class Aradon extends Component implements IService{
 	}
 
 	public <T> T handle(Request request, Class<? extends T> resultClass) {
+		if (! isStarted()) start() ;
+		
 		Response response = handle(request);
 		if (!response.getStatus().isSuccess())
 			throw new ResourceException(response.getStatus(), response.toString());

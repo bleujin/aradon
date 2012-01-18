@@ -19,7 +19,7 @@ public class TestAradonNetty {
 	@Test
 	public void useNetty() throws Exception {
 		AradonTester at = AradonTester.create().register("", "/hello", HelloWorldLet.class) ;
-		at.getAradon().startServer(ConnectorConfig.makeNettyHTTPConfig(9005)) ;
+		at.getAradon().startServer(ConnectorConfig.makeJettyHTTPConfig(9005)) ;
 		
 		AradonClient client = AradonClientFactory.create("http://localhost:9005");
 		

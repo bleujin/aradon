@@ -10,8 +10,6 @@ import org.restlet.data.Protocol;
 
 public class ConnectorConfig {
 
-	public static final ConnectorConfig NETTY_HTTP = makeNettyHTTPConfig(80);
-
 	private XMLConfig config ;
 	private int defaultPort ;
 
@@ -20,7 +18,7 @@ public class ConnectorConfig {
 		this.defaultPort = defaultPort;
 	}
 
-	public final static ConnectorConfig makeNettyHTTPConfig(int port) {
+	public final static ConnectorConfig makeJettyHTTPConfig(int port) {
 		try {
 			String config = "<connector-config engine=\"jetty\" />";
 			return new ConnectorConfig(XMLConfig.load(config), port);

@@ -4,6 +4,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.Date;
 
+import org.restlet.Response;
 import org.restlet.data.Cookie;
 
 /**
@@ -117,4 +118,6 @@ public interface HttpResponse {
 	 * Every response should have either {@link #end()} or {@link #error(Throwable)} called. No more operations should be performed on a response after these.
 	 */
 	HttpResponse end();
+
+	HttpResponse write(Response res);
 }

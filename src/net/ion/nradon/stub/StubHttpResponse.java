@@ -11,9 +11,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.ion.framework.util.IOUtil;
 import net.ion.nradon.HttpResponse;
 import net.ion.nradon.helpers.DateHelper;
 
+import org.restlet.Response;
 import org.restlet.data.Cookie;
 
 /**
@@ -100,6 +102,17 @@ public class StubHttpResponse implements HttpResponse {
 			throw new Error(e);
 		}
 		return this;
+	}
+	
+	public StubHttpResponse write(Response response) {
+		try {
+			IOUtil.copy(response.getEntity().getStream(), contents) ;
+		} catch (IOException e) {
+			throw new Error(e);
+		} finally{
+			response.release() ;
+		}
+		return this ;
 	}
 
 	public StubHttpResponse content(ByteBuffer buffer) {
