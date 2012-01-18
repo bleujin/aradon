@@ -16,6 +16,20 @@
 
 package org.testatoo.container;
 
+import static org.apache.commons.cli.OptionBuilder.withArgName;
+import static org.apache.commons.cli.OptionBuilder.withDescription;
+import static org.testatoo.container.ContainerConfiguration.DEFAULT_CONTEXT_PATH;
+import static org.testatoo.container.ContainerConfiguration.DEFAULT_PORT;
+import static org.testatoo.container.ContainerConfiguration.DEFAULT_WEBAPP_ROOT;
+import static org.testatoo.container.TestatooProperties.CONTAINER;
+import static org.testatoo.container.TestatooProperties.CONTEXT;
+import static org.testatoo.container.TestatooProperties.PORT;
+import static org.testatoo.container.TestatooProperties.SERVER_CLASSPATH;
+import static org.testatoo.container.TestatooProperties.WEBAPP_CLASSPATH;
+import static org.testatoo.container.TestatooProperties.WEBAPP_ROOT;
+
+import java.util.Arrays;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.GnuParser;
@@ -24,18 +38,6 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.eclipse.jetty.server.Server;
-import org.restlet.ext.jetty.HttpServerHelper;
-import org.restlet.ext.jetty.HttpsServerHelper;
-import org.restlet.ext.jetty.JettyServerHelper;
-
-import java.util.Arrays;
-
-import static org.apache.commons.cli.OptionBuilder.withArgName;
-import static org.apache.commons.cli.OptionBuilder.withDescription;
-import static org.testatoo.container.ContainerConfiguration.DEFAULT_CONTEXT_PATH;
-import static org.testatoo.container.ContainerConfiguration.DEFAULT_PORT;
-import static org.testatoo.container.ContainerConfiguration.DEFAULT_WEBAPP_ROOT;
-import static org.testatoo.container.TestatooProperties.*;
 
 /**
  * This class can be used to start a container. You can use this to check available options:

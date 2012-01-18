@@ -16,6 +16,11 @@
 
 package org.testatoo.container.impl;
 
+import static org.testatoo.container.util.ClassloaderUtils.tryEnhanceContextClassloaderWithClasspath;
+
+import java.io.File;
+import java.net.URL;
+
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.NCSARequestLog;
@@ -30,11 +35,6 @@ import org.eclipse.jetty.webapp.WebAppContext;
 import org.eclipse.jetty.xml.XmlConfiguration;
 import org.testatoo.container.ContainerConfiguration;
 import org.testatoo.container.ContainerSkeleton;
-
-import java.io.File;
-import java.net.URL;
-
-import static org.testatoo.container.util.ClassloaderUtils.tryEnhanceContextClassloaderWithClasspath;
 
 public final class JettyContainer extends ContainerSkeleton<Server> {
 

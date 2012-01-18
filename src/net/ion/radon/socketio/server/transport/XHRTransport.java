@@ -15,8 +15,8 @@ import net.ion.radon.socketio.server.SocketIOClosedException;
 import net.ion.radon.socketio.server.SocketIOFrame;
 import net.ion.radon.socketio.server.SocketIOInbound;
 import net.ion.radon.socketio.server.SocketIOSession;
-import net.ion.radon.socketio.server.Transport;
 import net.ion.radon.socketio.server.SocketIOSession.SessionTransportHandler;
+import net.ion.radon.socketio.server.Transport;
 
 import org.eclipse.jetty.continuation.Continuation;
 import org.eclipse.jetty.continuation.ContinuationListener;

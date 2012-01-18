@@ -14,8 +14,8 @@ import net.ion.radon.Options;
 import net.ion.radon.TestAradon;
 import net.ion.radon.core.Aradon;
 import net.ion.radon.core.config.ConnectorConfig;
-import net.ion.radon.core.config.XMLConfig;
 import net.ion.radon.core.config.ConnectorConfig.Engine;
+import net.ion.radon.core.config.XMLConfig;
 
 import org.junit.Test;
 import org.restlet.data.Protocol;

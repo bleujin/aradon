@@ -1,6 +1,5 @@
 package net.ion.radon.core.server;
 
-import org.restlet.Server;
 import org.restlet.util.ServerList;
 
 public interface AradonServerHelper {

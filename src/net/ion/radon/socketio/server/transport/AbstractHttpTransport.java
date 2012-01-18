@@ -29,8 +29,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.ion.radon.socketio.server.SocketIOSession;
-import net.ion.radon.socketio.server.Transport;
 import net.ion.radon.socketio.server.SocketIOSession.SessionTransportHandler;
+import net.ion.radon.socketio.server.Transport;
 
 public abstract class AbstractHttpTransport extends AbstractTransport {
 	/**

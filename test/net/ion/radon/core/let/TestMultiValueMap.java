@@ -8,8 +8,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import net.ion.framework.util.Debug;
 import net.ion.framework.util.ListUtil;
@@ -84,9 +84,9 @@ public class TestMultiValueMap {
 
 		MultipartEntity mpe = new MultipartEntity();
 		mpe.addParameter("to", "bleujin@i-on.net");
-		mpe.addParameter("subject", "ÇÑ±Û", CharacterSet.UTF_8);
-		mpe.addParameter("subject", "ÇÑ±Û2", CharacterSet.UTF_8);
-		mpe.addParameter("content", "¾È³çÇÏ¼¼¿ä", CharacterSet.UTF_8);
+		mpe.addParameter("subject", "ï¿½Ñ±ï¿½", CharacterSet.UTF_8);
+		mpe.addParameter("subject", "ï¿½Ñ±ï¿½2", CharacterSet.UTF_8);
+		mpe.addParameter("content", "ï¿½È³ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½", CharacterSet.UTF_8);
 		mpe.addParameter("attach1", new File("./build.xml"));
 		request.setEntity(mpe.makeRepresentation());
 
@@ -95,14 +95,14 @@ public class TestMultiValueMap {
 		Map params = ireq.getFormParameter();
 		for (Entry entry : (Set<Entry>) params.entrySet()) {
 			if ("subject".equals(entry.getKey())) {
-				assertEquals(ListUtil.toList("ÇÑ±Û", "ÇÑ±Û2"), entry.getValue());
+				assertEquals(ListUtil.toList("ï¿½Ñ±ï¿½", "ï¿½Ñ±ï¿½2"), entry.getValue());
 			}
 			// Debug.debug(entry.getKey(), entry.getValue(), entry.getValue().getClass()) ;
 		}
 
 		assertEquals("bleujin@i-on.net", params.get("to"));
 		assertEquals("build.xml", ((DiskFileItem) params.get("attach1")).getName());
-		assertEquals("ÇÑ±Û", params.get("subject"));
+		assertEquals("ï¿½Ñ±ï¿½", params.get("subject"));
 	}
 
 	@Test

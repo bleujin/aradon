@@ -16,6 +16,12 @@
 
 package org.testatoo.container;
 
+import static org.testatoo.container.TestatooProperties.CONTEXT;
+import static org.testatoo.container.TestatooProperties.PORT;
+import static org.testatoo.container.TestatooProperties.SERVER_CLASSPATH;
+import static org.testatoo.container.TestatooProperties.WEBAPP_CLASSPATH;
+import static org.testatoo.container.TestatooProperties.WEBAPP_ROOT;
+
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
@@ -25,8 +31,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-
-import static org.testatoo.container.TestatooProperties.*;
 
 public final class ContainerConfiguration {
 

@@ -5,8 +5,8 @@ import java.lang.reflect.Method;
 
 import net.ion.framework.util.InstanceCreationException;
 import net.ion.framework.util.StringUtil;
-import net.ion.radon.core.TreeContext;
 import net.ion.radon.core.EnumClass.Scope;
+import net.ion.radon.core.TreeContext;
 
 public class ReferencedObject {
 

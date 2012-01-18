@@ -9,6 +9,7 @@ import java.util.List;
 import net.ion.framework.db.Rows;
 import net.ion.radon.util.AradonTester;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class TestSerialRequest {
@@ -36,6 +37,7 @@ public class TestSerialRequest {
 		at.getAradon().stop() ;
 	}
 	
+	@Ignore
 	@Test
 	public void xtestPostSelect() throws Exception {
 		AradonTester at = AradonTester.create().register("", "/test", ParameterTestLet.class) ;

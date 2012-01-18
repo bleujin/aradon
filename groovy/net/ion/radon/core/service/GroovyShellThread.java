@@ -1,8 +1,6 @@
 package net.ion.radon.core.service;
 
 import groovy.lang.Binding;
-import groovy.lang.GroovyShell;
-import groovy.ui.InteractiveShell;
 
 import java.io.FilterOutputStream;
 import java.io.IOException;
@@ -12,9 +10,7 @@ import java.io.PrintStream;
 import java.net.Socket;
 
 import jline.Terminal;
-
 import net.ion.framework.util.Debug;
-import net.ion.framework.util.IOUtil;
 
 import org.codehaus.groovy.tools.shell.Groovysh;
 import org.codehaus.groovy.tools.shell.IO;

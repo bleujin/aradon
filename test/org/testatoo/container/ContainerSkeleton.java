@@ -16,9 +16,7 @@
 
 package org.testatoo.container;
 
-import javax.net.ServerSocketFactory;
-
-import org.eclipse.jetty.server.Server;
+import static java.lang.String.format;
 
 import java.io.File;
 import java.net.ServerSocket;
@@ -26,7 +24,9 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static java.lang.String.format;
+import javax.net.ServerSocketFactory;
+
+import org.eclipse.jetty.server.Server;
 
 public abstract class ContainerSkeleton<T> implements Container {
 

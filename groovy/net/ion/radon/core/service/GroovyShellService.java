@@ -77,7 +77,7 @@ public class GroovyShellService extends GroovyService {
     public void destroy() {
         logger.info("closing serverSocket: " + serverSocket);
         try {
-            serverSocket.close();
+        	if (serverSocket != null) serverSocket.close();
             for (GroovyShellThread nextThread : threads)  {
                 logger.info("closing nextThread: " + nextThread);
                 nextThread.getSocket().close();

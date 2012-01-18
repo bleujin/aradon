@@ -1,6 +1,5 @@
 package net.ion.radon.core.service;
 
-import groovy.lang.GroovyShell;
 import jline.ConsoleRunner;
 import junit.framework.TestCase;
 
