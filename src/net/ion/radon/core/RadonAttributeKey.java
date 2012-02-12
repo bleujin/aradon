@@ -2,7 +2,6 @@ package net.ion.radon.core;
 
 import net.ion.radon.core.EnumClass.IZone;
 import net.ion.radon.impl.section.PathInfo;
-import net.ion.radon.socketio.server.SocketIOServlet;
 
 import org.restlet.Context;
 import org.restlet.data.Form;
@@ -12,7 +11,6 @@ public interface RadonAttributeKey {
 	public final static String REQUEST_CONTEXT = Context.class.getCanonicalName();
 	public final static String PATH_CONTEXT = IZone.class.getCanonicalName() + "/path";
 	public final static String IZONE_ATTRIBUTE_KEY = IZone.class.getCanonicalName();
-	public final static String PATH_SERVLET_NAME = SocketIOServlet.class.getCanonicalName() ; 
 
 	public static final String PATH_ATTRIBUTE = PathInfo.class.getCanonicalName();
 	public static final String SECTION_PAHT_CONTEXTS = SectionService.class.getCanonicalName();

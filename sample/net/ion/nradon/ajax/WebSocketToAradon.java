@@ -40,7 +40,7 @@ public class WebSocketToAradon {
 		
 		webServer
 			.add("/a/.*/.*", new HelloWebSockets())
-			.add("/test", new AradonHandler(aradon))
+			.add("/test", AradonHandler.create(aradon))
 			.add(new StaticFileHandler("./resource/web")).start();
 		
 		System.out.println("Server running at " + webServer.getUri());
@@ -67,7 +67,7 @@ public class WebSocketToAradon {
 		
 		webServer
 			.add("/aradon", new AradonWebSocket(aradon))
-			.add("/test", new AradonHandler(aradon))
+			.add("/test", AradonHandler.create(aradon))
 			.add(new StaticFileHandler("./resource/web")).start();
 		
 		System.out.println("Server running at " + webServer.getUri());
@@ -99,13 +99,13 @@ class AradonWebSocket implements WebSocketHandler {
 		String uri = msgPacket.getString("path", "/");
 		Method method = Method.valueOf(msgPacket.getString("method", "GET")) ;
 		Form form = new Form() ;
-		Map<String, Object> params = msgPacket.inner("params").toMap() ;
-		for(Entry<String, Object> entry : params.entrySet()){
+		Map<String, ? extends Object> params = msgPacket.inner("params").toMap() ;
+		for(Entry<String, ? extends Object> entry : params.entrySet()){
 			form.add(entry.getKey(), ObjectUtil.toString(entry.getValue())) ;
 		}
 		Form headerForm = new Form() ;
-		Map<String, Object> headers = msgPacket.inner("headers").toMap() ;
-		for(Entry<String, Object> entry : headers.entrySet()){
+		Map<String, ? extends Object> headers = msgPacket.inner("headers").toMap() ;
+		for(Entry<String, ? extends Object> entry : headers.entrySet()){
 			headerForm.add(entry.getKey(), ObjectUtil.toString(entry.getValue())) ;
 		}
 		

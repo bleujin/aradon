@@ -24,8 +24,6 @@
 	<property name="embedLibDir" value="./aradon/embed" />
 	<property name="extendLibDir" value="./aradon/extend" />
 	<property name="binDir" value="../bin" />
-	<property name="icssDir" value="../../ICSS5" />
-	<property name="icsDir" value="../../ICS5_R2" />
 	
 	<target name="get_framework">
 		<property name="framework" value="IFramework/publish/iframework_2.1.jar" />
@@ -112,20 +110,18 @@
         <fatjar.build output="${embedLibDir}/rest_fat.jar">
             <fatjar.manifest/>
 			<!-- 2.0.9 -->
-        	<fatjar.jarsource file="${basedir}\rest\org.restlet.jar" relpath=""/> 
-        	<fatjar.jarsource file="${basedir}\rest\org.restlet.ext.servlet.jar" relpath=""/> 
-        	<fatjar.jarsource file="${basedir}\rest\org.restlet.ext.jetty.jar" relpath=""/> 
-        	<fatjar.jarsource file="${basedir}\rest\org.restlet.ext.netty.jar" relpath=""/> 
         	<fatjar.jarsource file="${basedir}\rest\org.restlet.ext.crypto.jar" relpath=""/> 
         	<fatjar.jarsource file="${basedir}\rest\org.restlet.ext.fileupload.jar" relpath=""/> 
-        	<fatjar.jarsource file="${basedir}\rest\org.restlet.ext.json.jar" relpath=""/> 
-        	<!--fatjar.jarsource file="${basedir}\rest\org.restlet.ext.sip.jar" relpath=""/ --> 
-        	
-        	<!--fatjar.jarsource file="${basedir}\rest\org.restlet.ext.net.jar" relpath=""/--> 
-        	<!--fatjar.jarsource file="${basedir}\rest\org.restlet.ext.velocity.jar" relpath=""/--> 
-        	<!--fatjar.jarsource file="${basedir}\rest\org.restlet.ext.freemarker.jar" relpath=""/-->
-        	<!--fatjar.jarsource file="${basedir}\rest\org.restlet.ext.ssl.jar" relpath=""/-->
-        	
+        	<!--fatjar.jarsource file="${basedir}\rest\org.restlet.ext.json.jar" relpath=""/--> 
+        	<fatjar.jarsource file="${basedir}\rest\org.restlet.ext.servlet.jar" relpath=""/> 
+        	<!--fatjar.jarsource file="${basedir}\rest\org.restlet.ext.sip.jar" relpath=""/--> 
+        	<fatjar.jarsource file="${basedir}\rest\org.restlet.ext.net.jar" relpath=""/> 
+        	<!--fatjar.jarsource file="${basedir}\rest\org.restlet.ext.velocity.jar" relpath=""/ --> 
+        	<!--fatjar.jarsource file="${basedir}\rest\org.restlet.ext.freemarker.jar" relpath=""/ -->
+        	<fatjar.jarsource file="${basedir}\rest\org.restlet.jar" relpath=""/> 
+            <fatjar.jarsource file="${basedir}\rest\org.restlet.ext.ssl.jar" relpath=""/>
+        	<fatjar.jarsource file="${basedir}\rest\org.restlet.ext.jetty.jar" relpath=""/> 
+        	<fatjar.jarsource file="${basedir}\rest\org.restlet.ext.netty.jar" relpath=""/> 
         	<!-- fatjar.jarsource file="${basedir}\rest\standalone_fat.jar" relpath=""/ -->
         	
 
@@ -134,34 +130,66 @@
 
     <target name="jetty_fat">
     	
-        <fatjar.build output="${embedLibDir}/jetty_fat.jar">
+        <fatjar.build output="${embedLibDir}/jetty_fat_745.jar">
             <fatjar.manifest/>
             <!-- fatjar.jarsource file="${basedir}\jetty\servlet-api.jar" relpath=""/ --> 
 
-        	<fatjar.jarsource file="${basedir}\jetty\jetty-ajp-7.1.6.v20100715.jar" relpath=""/> 
-        	<fatjar.jarsource file="${basedir}\jetty\jetty-annotations-7.1.6.v20100715.jar" relpath=""/> 
-        	<fatjar.jarsource file="${basedir}\jetty\jetty-client-7.1.6.v20100715.jar" relpath=""/> 
-        	<fatjar.jarsource file="${basedir}\jetty\jetty-continuation-7.1.6.v20100715.jar" relpath=""/> 
-        	<fatjar.jarsource file="${basedir}\jetty\jetty-deploy-7.1.6.v20100715.jar" relpath=""/> 
+        	<fatjar.jarsource file="${basedir}\jetty745\jetty-ajp-7.4.5.v20110725.jar" relpath=""/> 
+        	<fatjar.jarsource file="${basedir}\jetty745\jetty-annotations-7.4.5.v20110725.jar" relpath=""/> 
+        	<fatjar.jarsource file="${basedir}\jetty745\jetty-client-7.4.5.v20110725.jar" relpath=""/> 
+        	<fatjar.jarsource file="${basedir}\jetty745\jetty-continuation-7.4.5.v20110725.jar" relpath=""/> 
+        	<fatjar.jarsource file="${basedir}\jetty745\jetty-deploy-7.4.5.v20110725.jar" relpath=""/> 
 
-        	<fatjar.jarsource file="${basedir}\jetty\jetty-http-7.1.6.v20100715.jar" relpath=""/> 
-           	<fatjar.jarsource file="${basedir}\jetty\jetty-io-7.1.6.v20100715.jar" relpath=""/> 
-        	<fatjar.jarsource file="${basedir}\jetty\jetty-jmx-7.1.6.v20100715.jar" relpath=""/> 
-           	<fatjar.jarsource file="${basedir}\jetty\jetty-jndi-7.1.6.v20100715.jar" relpath=""/> 
-           	<fatjar.jarsource file="${basedir}\jetty\jetty-plus-7.1.6.v20100715.jar" relpath=""/> 
+        	<fatjar.jarsource file="${basedir}\jetty745\jetty-http-7.4.5.v20110725.jar" relpath=""/> 
+           	<fatjar.jarsource file="${basedir}\jetty745\jetty-io-7.4.5.v20110725.jar" relpath=""/> 
+        	<fatjar.jarsource file="${basedir}\jetty745\jetty-jmx-7.4.5.v20110725.jar" relpath=""/> 
+           	<fatjar.jarsource file="${basedir}\jetty745\jetty-jndi-7.4.5.v20110725.jar" relpath=""/> 
+           	<fatjar.jarsource file="${basedir}\jetty745\jetty-plus-7.4.5.v20110725.jar" relpath=""/> 
 
-        	<fatjar.jarsource file="${basedir}\jetty\jetty-policy-7.1.6.v20100715.jar" relpath=""/> 
-           	<fatjar.jarsource file="${basedir}\jetty\jetty-rewrite-7.1.6.v20100715.jar" relpath=""/> 
-        	<fatjar.jarsource file="${basedir}\jetty\jetty-security-7.1.6.v20100715.jar" relpath=""/> 
-           	<fatjar.jarsource file="${basedir}\jetty\jetty-server-7.1.6.v20100715.jar" relpath=""/> 
-           	<fatjar.jarsource file="${basedir}\jetty\jetty-servlet-7.1.6.v20100715.jar" relpath=""/>
+        	<fatjar.jarsource file="${basedir}\jetty745\jetty-policy-7.4.5.v20110725.jar" relpath=""/> 
+           	<fatjar.jarsource file="${basedir}\jetty745\jetty-rewrite-7.4.5.v20110725.jar" relpath=""/> 
+        	<fatjar.jarsource file="${basedir}\jetty745\jetty-security-7.4.5.v20110725.jar" relpath=""/> 
+           	<fatjar.jarsource file="${basedir}\jetty745\jetty-server-7.4.5.v20110725.jar" relpath=""/> 
+           	<fatjar.jarsource file="${basedir}\jetty745\jetty-servlet-7.4.5.v20110725.jar" relpath=""/>
         	
-           	<fatjar.jarsource file="${basedir}\jetty\jetty-util-7.1.6.v20100715.jar" relpath=""/>
-           	<fatjar.jarsource file="${basedir}\jetty\jetty-webapp-7.1.6.v20100715.jar" relpath=""/>
-           	<fatjar.jarsource file="${basedir}\jetty\jetty-websocket-7.1.6.v20100715.jar" relpath=""/>
-            <fatjar.jarsource file="${basedir}\jetty\jetty-xml-7.1.6.v20100715.jar" relpath=""/>
+           	<fatjar.jarsource file="${basedir}\jetty745\jetty-util-7.4.5.v20110725.jar" relpath=""/>
+           	<fatjar.jarsource file="${basedir}\jetty745\jetty-webapp-7.4.5.v20110725.jar" relpath=""/>
+           	<fatjar.jarsource file="${basedir}\jetty745\jetty-websocket-7.4.5.v20110725.jar" relpath=""/>
+            <fatjar.jarsource file="${basedir}\jetty745\jetty-xml-7.4.5.v20110725.jar" relpath=""/>
         </fatjar.build>
     </target>
+	
+	<target name="jetty_fat_760">
+	    	
+	        <fatjar.build output="${embedLibDir}/jetty_fat_760.jar">
+	            <fatjar.manifest/>
+	            <!-- fatjar.jarsource file="${basedir}\jetty\servlet-api.jar" relpath=""/ --> 
 
+	        	<fatjar.jarsource file="${basedir}\jetty760\jetty-ajp-7.6.0.v20120127.jar" relpath=""/> 
+	        	<fatjar.jarsource file="${basedir}\jetty760\jetty-annotations-7.6.0.v20120127.jar" relpath=""/> 
+	        	<fatjar.jarsource file="${basedir}\jetty760\jetty-client-7.6.0.v20120127.jar" relpath=""/> 
+	        	<fatjar.jarsource file="${basedir}\jetty760\jetty-continuation-7.6.0.v20120127.jar" relpath=""/> 
+	        	<fatjar.jarsource file="${basedir}\jetty760\jetty-deploy-7.6.0.v20120127.jar" relpath=""/> 
+
+	        	<fatjar.jarsource file="${basedir}\jetty760\jetty-http-7.6.0.v20120127.jar" relpath=""/> 
+	           	<fatjar.jarsource file="${basedir}\jetty760\jetty-io-7.6.0.v20120127.jar" relpath=""/> 
+	        	<fatjar.jarsource file="${basedir}\jetty760\jetty-jmx-7.6.0.v20120127.jar" relpath=""/> 
+	           	<fatjar.jarsource file="${basedir}\jetty760\jetty-jndi-7.6.0.v20120127.jar" relpath=""/> 
+	           	<fatjar.jarsource file="${basedir}\jetty760\jetty-plus-7.6.0.v20120127.jar" relpath=""/> 
+
+	        	<fatjar.jarsource file="${basedir}\jetty760\jetty-policy-7.6.0.v20120127.jar" relpath=""/> 
+	           	<fatjar.jarsource file="${basedir}\jetty760\jetty-rewrite-7.6.0.v20120127.jar" relpath=""/> 
+	        	<fatjar.jarsource file="${basedir}\jetty760\jetty-security-7.6.0.v20120127.jar" relpath=""/> 
+	           	<fatjar.jarsource file="${basedir}\jetty760\jetty-server-7.6.0.v20120127.jar" relpath=""/> 
+	           	<fatjar.jarsource file="${basedir}\jetty760\jetty-servlet-7.6.0.v20120127.jar" relpath=""/>
+	        	
+	           	<fatjar.jarsource file="${basedir}\jetty760\jetty-servlets-7.6.0.v20120127.jar" relpath=""/>
+	           	<fatjar.jarsource file="${basedir}\jetty760\jetty-util-7.6.0.v20120127.jar" relpath=""/>
+	           	<fatjar.jarsource file="${basedir}\jetty760\jetty-webapp-7.6.0.v20120127.jar" relpath=""/>
+	           	<fatjar.jarsource file="${basedir}\jetty760\jetty-websocket-7.6.0.v20120127.jar" relpath=""/>
+	            <fatjar.jarsource file="${basedir}\jetty760\jetty-xml-7.6.0.v20120127.jar" relpath=""/>
+	        </fatjar.build>
+	    </target>
+		
 
 </project>

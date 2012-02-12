@@ -1,162 +1,120 @@
 package net.ion.radon.param;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.ion.framework.parse.gson.JsonElement;
+import net.ion.framework.parse.gson.JsonNull;
+import net.ion.framework.parse.gson.JsonObject;
+import net.ion.framework.parse.gson.JsonParser;
+import net.ion.framework.parse.gson.JsonUtil;
+import net.ion.framework.parse.gson.NotFoundJsonElement;
+import net.ion.framework.util.ArrayUtil;
+import net.ion.framework.util.ObjectUtil;
 import net.ion.framework.util.StringUtil;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.ArrayUtils;
 
+import com.sun.corba.se.impl.io.ValueUtility;
+
 public class MyParameter {
 	
-	private JSONObject json ;
-	private MyParameter(JSONObject json) {
+	private JsonObject json ;
+	private MyParameter(JsonObject json) {
 		this.json = json ;
 	}
 
 	public static MyParameter create(Object param) {
-		if (param instanceof JSONObject) {
-			return new MyParameter((JSONObject)param) ;
+		if (param instanceof JsonObject) {
+			return new MyParameter((JsonObject)param) ;
 		} else if (param instanceof String) {
-			return create((String)param) ;
+			return new MyParameter(JsonUtil.arrangeKey(JsonParser.fromString((String)param).getAsJsonObject())) ;
 		} else if (param instanceof Map) {
-			return create((Map<String, Object>)param) ;
+			return new MyParameter(JsonParser.fromMap((Map)param)) ;
+		} else {
+			return new MyParameter(JsonParser.fromObject(param).getAsJsonObject());
 		}
-		return create(JSONObject.fromObject(param));
-	}
-
-	public final static MyParameter create(String parameter) {
-		if (StringUtil.isBlank(parameter)) {
-			return new MyParameter(new JSONObject()) ;
-		}
-		
-		final JSONObject json = JSONObject.fromObject(parameter);
-		// Map<String, Object> paramMap = new CaseInsensitiveHashMap<String, Object>() ;
-		// recursive(null, paramMap, json) ;
-		return new MyParameter(json) ;
-	}
-
-	public static MyParameter create(Map<String, Object> params) {
-		StringBuilder sb = new StringBuilder() ;
-		sb.append("{") ;
-		
-		for (Entry<String, Object> entry : params.entrySet()) {
-			
-			sb.append(entry.getKey()).append(":") ;
-			sb.append(getValueExpression(entry.getValue())) ;
-			sb.append(",") ;
-		}
-		if (params.entrySet().size() > 0) sb.setLength(sb.length() -1) ;
-		sb.append("}") ;
-		return create(sb.toString()) ;
-	}
-
-	private static Object getValueExpression(Object value) {
-		if (value instanceof String) {
-			String stringValue = ((String)value).trim();
-			if ( stringValue.startsWith("{") && stringValue.endsWith("}")){
-				return stringValue ;
-			} else if ( stringValue.startsWith("[") && stringValue.endsWith("]")){
-				return stringValue ;
-			} else {
-				return "\"" + stringValue + "\"" ;
-			}
-		}
-
-		return value;
 	}
 
 	
 	public boolean isContains(String path){
-		return getParam(path) != null;
+		return JsonUtil.hasElement(json, path);
 	}
 	
-	public boolean isArray(String key){
-		return (json.get(key) instanceof JSONArray) || (json.get(key) instanceof JSONObject);
+	public boolean isArray(String path){
+		return JsonUtil.findElement(json, path).isJsonArray() ;
 	}
 
 	public Object getParam(String path) {
-		MyParameterKey pkey = getParameterKey(path) ;
-		
-		return pkey.get(json) ;
+		return JsonUtil.findSimpleObject(json, path) ;
 	}
 
-
 	public String getParamAsString(String path) {
-		return StringUtil.toString(getParam(path)) ;
+		return ObjectUtil.toString(getParam(path)) ;
 	}
 
 	
 	public Map<String, Object> getMap() {
-		return getParameterKey("").getAsMap(json) ;
+		return json.toMap();
 	}
 	
 	public Map<String, Object> getMap(String path) {
-		return getParameterKey(path).getAsMap(json) ;
+		return JsonUtil.findElement(json, path).getAsJsonObject().toMap() ;
 	}
 	
 	public MyParameter childParameter(String path) {
-		return new MyParameter(getParameterKey(path).getAsJSON(json)) ;
+		JsonElement found = JsonUtil.findElement(json, path);
+		if (found == null) return new MyParameter(new JsonObject()) ;
+		return new MyParameter(found.getAsJsonObject()) ;
 	}
 
-	private MyParameterKey getParameterKey(String path) {
-		return MyParameterKey.create(path);
-	}
 
 	public Object[] getParams(String path) {
-		Object obj = getParameterKey(path).get(json);
-		if (obj == null) {
-			return new Object[0] ;
-		} else if (obj instanceof List){
-			return ((List)obj).toArray(new Object[0]) ;
-		} else if (obj instanceof Map){
-			return ((Map)obj).values().toArray(new Object[0]) ;
-		} else {
-			return new Object[]{obj} ;
-		}
+		JsonElement found = JsonUtil.findElement(json, path) ;
+		if (found == null || found == JsonNull.INSTANCE) return new Object[0] ;
+		if (found.isJsonArray()) return found.getAsJsonArray().toObjectArray() ;
+		if (found.isJsonObject()) found.getAsJsonObject().toMap().values().toArray(new Object[0]) ;
+		if (found.isJsonPrimitive()) return new Object[]{JsonUtil.toSimpleObject(found)} ;
+		return new Object[0] ;
 	}
 
-	public Object toBean(Class clz) {
-		final Object bean = JSONObject.toBean(this.json, clz);
-		return bean ;
+	public <T> T toBean(Class<T> clz) {
+		return json.getAsObject(clz) ;
 	}
 
 	public void addParam(String path, Object value) {
 		accumulate(this.json, path, value) ;
 	}
 
-	private void accumulate(JSONObject that, String path, Object value) {
+	private void accumulate(JsonObject that, String path, Object value) {
 		String[] names = StringUtil.split(path, "./") ;
 		String firstPath = names[0];
 		if (names.length == 1){
 			that.accumulate(firstPath, value) ;
 		} else {
-			if (that.containsKey(firstPath)){
+			if (that.has(firstPath)){
 				String subPath = StringUtil.join(ArrayUtils.subarray(names, 1, names.length), '.') ;
-				accumulate(that.getJSONObject(firstPath), subPath, value) ;
+				accumulate(that.asJsonObject(firstPath), subPath, value) ;
 			} else {
-				JSONObject newChild = new JSONObject();
+				JsonObject newChild = new JsonObject();
 				that.accumulate(firstPath, newChild) ;
 				String subPath = StringUtil.join(ArrayUtils.subarray(names, 1, names.length), '.') ;
-				accumulate(that.getJSONObject(firstPath), subPath, value) ;
+				accumulate(that.asJsonObject(firstPath), subPath, value) ;
 			}
 		}
 	}
 
 	public int size() {
-		return json.size();
+		return json.childSize();
 	}
 	
 	public String toString(){
-		return (json== null) ? null : json.toString() ;
+		return json.toString() ;
 	}
 
-	
-	public JSONObject getJSON(){
-		return json ;
+	public boolean has(String path) {
+		return JsonUtil.hasElement(json, path) ;
 	}
+
 
 }

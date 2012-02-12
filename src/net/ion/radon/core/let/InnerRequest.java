@@ -6,18 +6,18 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentMap;
 
 import net.ion.framework.util.ObjectUtil;
 import net.ion.framework.util.StringUtil;
-import net.ion.radon.core.EnumClass.IFormat;
 import net.ion.radon.core.IService;
 import net.ion.radon.core.PageBean;
 import net.ion.radon.core.PathService;
 import net.ion.radon.core.RadonAttributeKey;
 import net.ion.radon.core.TreeContext;
+import net.ion.radon.core.EnumClass.IFormat;
 import net.ion.radon.impl.section.BasePathInfo;
 import net.ion.radon.param.MyParameter;
 
@@ -254,7 +254,8 @@ public class InnerRequest extends Request {
 		for (Entry<String, Object> entry : params.entrySet()) {
 			myparam.addParam(entry.getKey(), entry.getValue());
 		}
-
+		if (! myparam.has(RadonAttributeKey.ARADON_PAGE))  return PageBean.TEN ;
+		
 		final PageBean result = (PageBean) myparam.childParameter(RadonAttributeKey.ARADON_PAGE).toBean(PageBean.class);
 		return (result == null) ? PageBean.TEN : result;
 	}
@@ -598,6 +599,7 @@ public class InnerRequest extends Request {
 	}
 
 	public PathService getPathService(IService service) {
+		
 		return service.getAradon().getChildService(sectionName).getPathService(getPathReference());
 	}
 

@@ -46,8 +46,8 @@ public class SectionFactory {
 		} else {
 			if ("section".equalsIgnoreCase(sectionType)) {
 				return createSection(aradon, sectionName, sconfig);
-			} else if ("notification".equalsIgnoreCase(sectionType)) {
-				return createNotification(aradon, sectionName, sconfig);
+//			} else if ("notification".equalsIgnoreCase(sectionType)) {
+//				return createNotification(aradon, sectionName, sconfig);
 			} else {
 				throw new IllegalArgumentException("unknown section type : " + sectionType);
 			}
@@ -104,23 +104,23 @@ public class SectionFactory {
 		return section;
 	}
 
-	static NotificationSection createNotification(Aradon aradon, String sectionName, XMLConfig config) throws InstanceCreationException, ConfigurationException {
-		TreeContext sectionContext = aradon.getServiceContext().createChildContext();
-		String host = config.getAttributeValue("host");
-		int port = config.getInt("[@port]", 8090);
-		final NotificationSection section = new NotificationSection(aradon, sectionName, sectionContext, host, port);
-
-		Map<BasePathInfo, XMLConfig> pathServices = SectionFactory.makePaths(section, sectionContext, config);
-
-		for (Entry<BasePathInfo, XMLConfig> entry : pathServices.entrySet()) {
-			TreeContext pathContext = sectionContext.createChildContext();
-			final PathService pservice = PathService.create(section, pathContext, entry.getKey());
-			FilterUtil.setFilter(pservice, entry.getValue());
-			AttributeUtil.load(pservice, entry.getValue());
-
-			section.attach(entry.getKey(), pservice);
-		}
-
-		return section;
-	}
+//	static NotificationSection createNotification(Aradon aradon, String sectionName, XMLConfig config) throws InstanceCreationException, ConfigurationException {
+//		TreeContext sectionContext = aradon.getServiceContext().createChildContext();
+//		String host = config.getAttributeValue("host");
+//		int port = config.getInt("[@port]", 8090);
+//		final NotificationSection section = new NotificationSection(aradon, sectionName, sectionContext, host, port);
+//
+//		Map<BasePathInfo, XMLConfig> pathServices = SectionFactory.makePaths(section, sectionContext, config);
+//
+//		for (Entry<BasePathInfo, XMLConfig> entry : pathServices.entrySet()) {
+//			TreeContext pathContext = sectionContext.createChildContext();
+//			final PathService pservice = PathService.create(section, pathContext, entry.getKey());
+//			FilterUtil.setFilter(pservice, entry.getValue());
+//			AttributeUtil.load(pservice, entry.getValue());
+//
+//			section.attach(entry.getKey(), pservice);
+//		}
+//
+//		return section;
+//	}
 }

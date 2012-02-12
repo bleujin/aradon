@@ -7,6 +7,7 @@ import net.ion.framework.db.Page;
 
 public class PageBean implements Serializable{
 
+	private static final long serialVersionUID = 1185739585588000730L;
 	public final static PageBean TEN = new PageBean(Page.TEN) ;
 	public static final PageBean ALL = new PageBean(Page.ALL) ;
 	private Page page;

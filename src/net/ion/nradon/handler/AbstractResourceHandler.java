@@ -11,11 +11,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import net.ion.nradon.HttpControl;
-import net.ion.nradon.HttpHandler;
 import net.ion.nradon.HttpRequest;
 import net.ion.nradon.HttpResponse;
 
-public abstract class AbstractResourceHandler implements HttpHandler {
+public abstract class AbstractResourceHandler extends AbstractHttpHandler {
 	static {
 		// This is not an exhaustive list, just the most common types. Call registerMimeType() to add more.
 		Map<String, String> mimeTypes = new HashMap<String, String>();
@@ -141,7 +140,7 @@ public abstract class AbstractResourceHandler implements HttpHandler {
 	protected abstract class IOWorker implements Runnable {
 
 		protected String path;
-		private final HttpRequest request;
+		protected final HttpRequest request;
 		protected final HttpResponse response;
 		protected final HttpControl control;
 

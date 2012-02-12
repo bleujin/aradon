@@ -9,14 +9,13 @@ import net.ion.framework.rest.IMapListRepresentationHandler;
 import net.ion.framework.rest.IRequest;
 import net.ion.framework.rest.IResponse;
 import net.ion.framework.util.ListUtil;
-import net.ion.radon.core.EnumClass.IFormat;
 import net.ion.radon.core.PathService;
 import net.ion.radon.core.RadonAttributeKey;
 import net.ion.radon.core.SectionService;
 import net.ion.radon.core.TreeContext;
+import net.ion.radon.core.EnumClass.IFormat;
 import net.ion.radon.core.filter.IFilterResult;
 
-import org.json.JSONException;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.MediaType;
@@ -31,11 +30,10 @@ import org.restlet.resource.ServerResource;
 import org.restlet.routing.Filter;
 import org.restlet.util.Series;
 
-
 public abstract class AbstractLet extends ServerResource implements RadonAttributeKey {
 	public final static Representation EMPTY_REPRESENTATION = new EmptyRepresentation();
 	public final static List<Map<String, ? extends Object>> EMPTY_DATAS = ListUtil.EMPTY_LIST;
-	
+
 	private Set<Method> disAllow_Method;
 
 	public AbstractLet() {
@@ -54,7 +52,6 @@ public abstract class AbstractLet extends ServerResource implements RadonAttribu
 		setNegotiated(false);
 	}
 
-
 	public final Representation doHandle() {
 		initRequest();
 		// String str = getRequest().getEntityAsText() ;
@@ -63,14 +60,14 @@ public abstract class AbstractLet extends ServerResource implements RadonAttribu
 		TreeContext rcontext = getContext();
 		Request request = getRequest();
 		Response response = getResponse();
-		
-		PathService pservice = getPathService() ;
-		
+
+		PathService pservice = getPathService();
+
 		IFilterResult preResult = FilterUtil.handlePreFilter(pservice, request, response);
 		if (preResult.getResult() == Filter.STOP) {
 			response.setStatus(preResult.getCause().getStatus());
 			return preResult.getReplaceRepresentation();
-//			return EMPTY_REPRESENTATION;
+			// return EMPTY_REPRESENTATION;
 		}
 
 		try {
@@ -92,7 +89,7 @@ public abstract class AbstractLet extends ServerResource implements RadonAttribu
 	}
 
 	protected PathService getPathService() {
-		return getInnerRequest().getPathService(getMySectionService().getAradon()) ;
+		return getInnerRequest().getPathService(getMySectionService().getAradon());
 	}
 
 	protected Representation doNormalHandle() throws Exception {
@@ -179,15 +176,13 @@ public abstract class AbstractLet extends ServerResource implements RadonAttribu
 		return result;
 	}
 
-	
-	public InnerRequest getInnerRequest(){
-		return (InnerRequest) super.getRequest() ;
-	}
-	
-	public InnerResponse getInnerResponse(){
-		return (InnerResponse) super.getResponse() ;
+	public InnerRequest getInnerRequest() {
+		return (InnerRequest) super.getRequest();
 	}
 
+	public InnerResponse getInnerResponse() {
+		return (InnerResponse) super.getResponse();
+	}
 
 	protected void allowOtherHost() {
 
@@ -198,7 +193,7 @@ public abstract class AbstractLet extends ServerResource implements RadonAttribu
 		resHeader.add("XDomainRequestAllowed", "1");
 		resHeader.add("Access-Control-Allow-Credentials", "1");
 		resHeader.add("Access-Control-Max-Age", "1728000");
-		
+
 		resHeader.add("Access-Control-Allow-Headers", "X-ARADONUNER");
 
 		// for (Entry<String, Object> attr : getResponse().getAttributes().entrySet()) {
@@ -206,11 +201,11 @@ public abstract class AbstractLet extends ServerResource implements RadonAttribu
 		// }
 		// Debug.line(result) ;
 	}
-	
+
 	protected Representation myOptions() throws Exception {
 		return EMPTY_REPRESENTATION;
 	}
-	
+
 	protected Series<Header> getResponseHeader() {
 		Series<Header> responseHeaders = (Series<Header>) getResponse().getAttributes().get(ATTRIBUTE_HEADERS);
 		if (responseHeaders == null) {
@@ -219,7 +214,7 @@ public abstract class AbstractLet extends ServerResource implements RadonAttribu
 		}
 		return responseHeaders;
 	}
-	
+
 	protected boolean isDisAllowMethod(Method method) {
 		return disAllow_Method.contains(method);
 	}
@@ -232,18 +227,12 @@ public abstract class AbstractLet extends ServerResource implements RadonAttribu
 		// getFormParameter();
 	}
 
-
 	protected Representation toRepresentation(List<Map<String, ?>> data) throws ResourceException {
 		return toRepresentation(IRequest.EMPTY_REQUEST, data, IResponse.EMPTY_RESPONSE);
 	}
 
-
 	protected Representation toRepresentation(IRequest request, List<Map<String, ?>> datas, IResponse response) throws ResourceException {
-		try {
-			return MapListRepresentationHandler.create(newMapListFormatHandler(), request, datas, response, getContext()).toRepresentation();
-		} catch (JSONException e) {
-			throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
-		}
+		return MapListRepresentationHandler.create(newMapListFormatHandler(), request, datas, response, getContext()).toRepresentation();
 	}
 
 	protected IMapListRepresentationHandler newMapListFormatHandler() {
@@ -284,5 +273,3 @@ public abstract class AbstractLet extends ServerResource implements RadonAttribu
 		return (SectionService) getApplication();
 	}
 }
-
-

@@ -5,13 +5,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.ion.framework.parse.gson.JsonObject;
+import net.ion.framework.parse.gson.JsonParser;
 import net.ion.radon.core.let.DefaultLet;
 import net.ion.radon.core.let.LetResponse;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.restlet.ext.json.JsonRepresentation;
+import org.restlet.data.MediaType;
 import org.restlet.representation.Representation;
+import org.restlet.representation.StringRepresentation;
 
 public class AradonRequest {
 
@@ -45,7 +46,7 @@ public class AradonRequest {
 		}
 	}
 	
-	public Representation handle(DefaultLet radonLet) throws IOException, JSONException {
+	public Representation handle(DefaultLet radonLet) throws IOException{
 		for (Entry<String, SingleRequest> entry : srs.entrySet()) {
 			String name = entry.getKey()  ;
 			if (result.containsKey(name)){
@@ -56,15 +57,15 @@ public class AradonRequest {
 			result.put(name, repr) ;
 		}
 		
-		JSONObject letResults = new JSONObject() ;
+		JsonObject letResults = new JsonObject() ;
 		for (Entry<String, LetResponse> entry : result.entrySet()) {
-			letResults.put(entry.getKey(), new JSONObject(entry.getValue().getRepresentation().getText())) ;
+			letResults.add(entry.getKey(), JsonParser.fromString(entry.getValue().getRepresentation().getText())) ;
 		}
 		
-		JSONObject results = new JSONObject() ;
-		results.put("results", letResults) ;
+		JsonObject results = new JsonObject() ;
+		results.add("results", letResults) ;
 		
-		return new JsonRepresentation(results) ;
+		return new StringRepresentation(results.toString(), MediaType.APPLICATION_JSON) ;
 		// return new StringRepresentation(result.toString());
 	}
 

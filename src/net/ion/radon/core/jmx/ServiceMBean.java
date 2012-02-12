@@ -16,10 +16,11 @@ import javax.management.MBeanOperationInfo;
 import javax.management.MBeanParameterInfo;
 import javax.management.ReflectionException;
 
+import net.ion.framework.parse.gson.JsonArray;
+import net.ion.framework.parse.gson.JsonParser;
 import net.ion.framework.util.ObjectUtil;
 import net.ion.radon.core.IService;
 import net.ion.radon.core.filter.IRadonFilter;
-import net.sf.json.JSONArray;
 
 public class ServiceMBean implements DynamicMBean {
 
@@ -81,8 +82,8 @@ public class ServiceMBean implements DynamicMBean {
 		String clzName = ObjectUtil.toString(params[0]) ;
 		String paramJSON = ObjectUtil.toString(params[1], "[]") ;
 		
-		JSONArray jso = JSONArray.fromObject(paramJSON) ;
-		Object[] clzParam = jso.toArray(new Object[0]) ;
+		JsonArray jso = JsonParser.fromString(paramJSON).getAsJsonArray() ;
+		Object[] clzParam = jso.toObjectArray() ;
 		
 		Class clz = Class.forName(clzName) ;
 		Constructor<IRadonFilter>[] cons = clz.getDeclaredConstructors();

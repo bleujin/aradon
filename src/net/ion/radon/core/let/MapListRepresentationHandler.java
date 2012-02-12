@@ -9,7 +9,6 @@ import net.ion.framework.rest.IResponse;
 import net.ion.framework.rest.StdObject;
 import net.ion.radon.core.TreeContext;
 
-import org.json.JSONException;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ResourceException;
 
@@ -37,7 +36,7 @@ public class MapListRepresentationHandler {
 		context.putAttribute(StdObject.class.getCanonicalName(), stdObject) ;
 	}
 
-	public Representation toRepresentation() throws ResourceException, JSONException {
+	public Representation toRepresentation() throws ResourceException {
 		return handler.toRepresentation(request, datas, response);
 	}
 

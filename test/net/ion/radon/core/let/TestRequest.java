@@ -7,6 +7,8 @@ import java.io.File;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 
+import net.ion.framework.parse.gson.JsonObject;
+import net.ion.framework.parse.gson.JsonParser;
 import net.ion.framework.util.Debug;
 import net.ion.radon.client.MultipartEntity;
 import net.ion.radon.core.Aradon;
@@ -14,7 +16,6 @@ import net.ion.radon.core.PathService;
 import net.ion.radon.core.RadonAttributeKey;
 import net.ion.radon.impl.section.BasePathInfo;
 import net.ion.radon.util.AradonTester;
-import net.sf.json.JSONObject;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -156,12 +157,12 @@ public class TestRequest {
 		request.setEntity(entity.makeRepresentation());
 		Response response = aradon.handle(request);
 
-		JSONObject jso = JSONObject.fromObject(response.getEntityAsText());
+		JsonObject jso = JsonParser.fromString(response.getEntityAsText()).getAsJsonObject();
 
-		assertEquals("bleujin@i-on.net", jso.getString("to"));
-		assertEquals("한글", jso.getString("subject"));
-		assertEquals("안녕하세요.", jso.getString("content"));
-		assertEquals(true, jso.getString("attach1").length() > 10);
+		assertEquals("bleujin@i-on.net", jso.asString("to"));
+		assertEquals("한글", jso.asString("subject"));
+		assertEquals("안녕하세요.", jso.asString("content"));
+		assertEquals(true, jso.asString("attach1").length() > 10);
 	}
 
 }

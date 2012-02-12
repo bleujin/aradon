@@ -1,7 +1,10 @@
 package net.ion.radon.param.request;
 
+import java.util.Map;
+
+import net.ion.framework.parse.gson.JsonElement;
+import net.ion.framework.parse.gson.JsonObject;
 import net.ion.radon.param.MyParameter;
-import net.sf.json.JSONObject;
 
 public class RequestParser {
 
@@ -28,7 +31,7 @@ public class RequestParser {
 		AradonRequest arequest = AradonRequest.create() ; 
 
 		for (int i=0 ; i < reqs.length ; i++) {
-			arequest.append(SingleRequest.create((JSONObject)reqs[i])) ;
+			arequest.append(SingleRequest.create((Map)reqs[i])) ;
 		}
 		return arequest ;
 	}

@@ -3,10 +3,9 @@ package net.ion.nradon.chatroom;
 import java.util.HashSet;
 import java.util.Set;
 
+import net.ion.framework.parse.gson.Gson;
 import net.ion.nradon.WebSocketConnection;
 import net.ion.nradon.WebSocketHandler;
-
-import com.google.gson.Gson;
 
 public class Chatroom implements WebSocketHandler {
 

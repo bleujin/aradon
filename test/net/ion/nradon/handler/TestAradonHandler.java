@@ -27,7 +27,7 @@ public class TestAradonHandler {
 		WebServer webServer = WebServers.createWebServer(8080);
 		Aradon aradon = AradonTester.create().register("", "/test", HelloWorldLet.class).getAradon();
 
-		webServer.add(new AradonHandler(aradon)).start();
+		webServer.add(AradonHandler.create(aradon)).start();
 
 		IAradonRequest request = AradonClientFactory.create(aradon).createRequest("/test");
 		Response response = request.handle(Method.GET);
@@ -40,7 +40,7 @@ public class TestAradonHandler {
 		WebServer webServer = WebServers.createWebServer(8080);
 		Aradon aradon = AradonTester.create().register("", "/param", ParameterTestLet.class).getAradon();
 
-		webServer.add(new AradonHandler(aradon)).start();
+		webServer.add(AradonHandler.create(aradon)).start();
 
 		IAradonRequest request = AradonClientFactory.create(aradon).createRequest("/param");
 
@@ -58,7 +58,7 @@ public class TestAradonHandler {
 	public void clientInfo() throws Exception {
 		WebServer webServer = WebServers.createWebServer(8080);
 		Aradon aradon = AradonTester.create().register("", "/client", ClientTestLet.class).getAradon();
-		webServer.add(new AradonHandler(aradon)).start();
+		webServer.add(AradonHandler.create(aradon)).start();
 
 		ISerialRequest request = AradonClientFactory.create("http://61.250.201.157:8080").createSerialRequest("/client?name=bleujin", "bleujin", "redf");
 		User user = request.get(User.class);

@@ -51,6 +51,7 @@ import org.restlet.Response;
 import org.restlet.data.Protocol;
 import org.restlet.data.Reference;
 import org.restlet.data.Status;
+import org.restlet.engine.Engine;
 import org.restlet.representation.ObjectRepresentation;
 import org.restlet.resource.ResourceException;
 import org.restlet.routing.Router;
@@ -72,8 +73,6 @@ public class Aradon extends Component implements IService{
 	
 	public final static String CONFIG_PORT = "aradon.config.port";
 
-	
-	
 	void setSection(String sectionName, Application section) {
 		if (sections.containsKey(sectionName)) {
 			Debug.warn("SECTION[" + sectionName + "] already exists. Ignored....======================");
@@ -238,7 +237,6 @@ public class Aradon extends Component implements IService{
 	public void handle(Request request, Response response) {
 		if (! isStarted()) start() ;
 		
-
 		InnerRequest innerRequest = InnerRequest.create(request);
 		InnerResponse innerResponse = InnerResponse.create(response, innerRequest);
 
@@ -332,6 +330,7 @@ public class Aradon extends Component implements IService{
 		} catch (Exception e) {
 			throw new AradonRuntimeException(e) ;
 		}
+		
 		onEventFire(AradonEvent.START, this) ;
 		this.started = true ;
 	}
@@ -560,6 +559,10 @@ public class Aradon extends Component implements IService{
 
 	public boolean containsSection(String sectionName) {
 		return sections.containsKey(sectionName);
+	}
+
+	public Engine getEngine() {
+		return Engine.getInstance() ;
 	}
 }
 

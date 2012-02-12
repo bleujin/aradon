@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
+import net.ion.framework.parse.gson.JsonObject;
 import net.ion.framework.util.CaseInsensitiveHashMap;
 import net.ion.framework.util.StringUtil;
-import net.sf.json.JSONObject;
 
 public class MyParameterKey {
 
@@ -70,24 +69,18 @@ public class MyParameterKey {
 		return isFirst;
 	}
 
-	public Object get(JSONObject json) {
+	public Object get(JsonObject json) {
 		if (StringUtil.isBlank(keyName)) return json ;
 
-		
-		
 		Object result = null ;
 		if (json == null) {
 			return null ;
 		} else if (isRequireArray()) {
 			String oname = StringUtil.substringBefore(getName(), "[") ;
 			int index = Integer.parseInt(StringUtil.substringBetween(getName(), "[", "]")) ;
-			result = json.getJSONArray(oname).get(index) ;
+			result = json.asJsonArray(oname).get(index) ;
 		} else {
 			result = json.get(getName()) ;
-			
-//			for (Object entry : json.entrySet()) {
-//				Debug.debug(entry, entry.getClass(), entry instanceof Map.Entry) ;
-//			}
 			
 			if (result == null) {
 				return json.get(flatPath()) ;	
@@ -97,22 +90,20 @@ public class MyParameterKey {
 		if (isLast()) {
 			return result;
 		} else {
-			return getNext().get((JSONObject)result);
+			return getNext().get((JsonObject)result);
 		}
 	}
 
-	public JSONObject getAsJSON(JSONObject json) {
-		final JSONObject result = (JSONObject) get(json);
-
-		return result;
+	public JsonObject getAsJSON(JsonObject json) {
+		return (JsonObject) get(json);
 	}
 
-	public Map<String, Object> getAsMap(JSONObject json) {
-		JSONObject jobj = getAsJSON(json);
-		Set<Entry<String, Object>> entrySet = jobj.entrySet();
+	public Map<String, Object> getAsMap(JsonObject json) {
+		JsonObject jobj = getAsJSON(json);
+		Map<String, ? extends Object> map = jobj.toMap();
 
 		Map<String, Object> result = new CaseInsensitiveHashMap<Object>();
-		for (Entry<String, Object> entry : entrySet) {
+		for (Entry<String, ? extends Object> entry : map.entrySet()) {
 			result.put(entry.getKey(), entry.getValue());
 		}
 		return result;

@@ -18,7 +18,7 @@ public class TestAradonBehavior extends TestCase {
 		Aradon aradon = AradonTester.create()
 			.register("", "/test", HelloWorldLet.class).getAradon();
 		
-		webServer.add(new AradonHandler(aradon)).start();
+		webServer.add(AradonHandler.create(aradon)).start();
 
 		IAradonRequest request = AradonClientFactory.create(aradon).createRequest("/test");
 		Response response = request.handle(Method.GET);
@@ -30,7 +30,7 @@ public class TestAradonBehavior extends TestCase {
 		Aradon aradon = AradonTester.create()
 			.register("", "/param", ParameterTestLet.class).getAradon();
 		
-		webServer.add(new AradonHandler(aradon)).start();
+		webServer.add(AradonHandler.create(aradon)).start();
 
 		IAradonRequest request = AradonClientFactory.create(aradon).createRequest("/param");
 		

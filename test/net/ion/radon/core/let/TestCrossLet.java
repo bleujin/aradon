@@ -22,13 +22,11 @@ public class TestCrossLet extends AbstractLet{
 
 	@Override
 	protected Representation myPost(Representation entity) throws Exception {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	protected Representation myPut(Representation entity) throws Exception {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

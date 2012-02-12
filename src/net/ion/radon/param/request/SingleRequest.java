@@ -6,13 +6,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.ion.framework.parse.gson.JsonElement;
+import net.ion.framework.parse.gson.JsonObject;
 import net.ion.framework.util.StringUtil;
 import net.ion.radon.core.SectionService;
 import net.ion.radon.core.let.DefaultLet;
 import net.ion.radon.core.let.InboundLet;
 import net.ion.radon.core.let.LetResponse;
 import net.ion.radon.param.MyParameter;
-import net.sf.json.JSONObject;
 
 import org.restlet.data.Form;
 import org.restlet.data.Method;
@@ -24,7 +25,7 @@ public class SingleRequest {
 		this.myparam = param ;
 	}
 
-	static SingleRequest create(JSONObject json) {
+	static SingleRequest create(Map json) {
 		return new SingleRequest(MyParameter.create(json));
 	}
 	
@@ -42,8 +43,8 @@ public class SingleRequest {
 
 	List<RequestParam> getParams() {
 		List<RequestParam> result = new ArrayList<RequestParam>() ;
-		Map<String, Object> params = myparam.getMap("param") ;
-		for (Entry<String, Object> entry: params.entrySet()) {
+		Map<String, ? extends Object> params = myparam.getMap("param") ;
+		for (Entry<String, ? extends Object> entry: params.entrySet()) {
 			result.add(RequestParam.create(entry.getKey(), entry.getValue())) ;
 		}
 		return result ;

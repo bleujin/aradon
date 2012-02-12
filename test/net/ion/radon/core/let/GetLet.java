@@ -7,7 +7,6 @@ public class GetLet extends AbstractLet {
 
 	@Override
 	public Representation myDelete() throws Exception {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -23,7 +22,6 @@ public class GetLet extends AbstractLet {
 
 	@Override
 	public Representation myPut(Representation entity) throws Exception {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

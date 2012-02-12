@@ -1,13 +1,14 @@
 package net.ion.radon.impl.let;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import net.ion.framework.parse.gson.JsonArray;
+import net.ion.framework.parse.gson.JsonObject;
+import net.ion.framework.parse.gson.JsonParser;
+
 import org.restlet.Client;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.Method;
 import org.restlet.data.Protocol;
-import org.restlet.ext.json.JsonRepresentation;
 
 /**
  * Searching the web with Yahoo!'s web service using JSON.
@@ -22,13 +23,13 @@ public class YahooSearch {
         String term = "database";
         String uri = BASE_URI + "?appid=restbook&output=json&query=" + term;
         Response response = new Client(Protocol.HTTP).handle(new Request(Method.GET, uri));
-        JSONObject json = new JsonRepresentation(response.getEntity()).getJsonObject() ;
+        JsonObject json = JsonParser.fromString(response.getEntityAsText()).getAsJsonObject() ;
 
         // Navigate within the JSON document to display the titles
-        JSONObject resultSet = json.getJSONObject("ResultSet");
-        JSONArray results = resultSet.getJSONArray("Result");
-        for (int i = 0; i < results.length(); i++) {
-            System.out.println(results.getJSONObject(i).getString("Title"));
+        JsonObject resultSet = json.asJsonObject("ResultSet") ;
+        JsonArray results = resultSet.asJsonArray("Result");
+        for (int i = 0; i < results.size(); i++) {
+            System.out.println(results.asJsonObject(i).asString("Title"));
         }
     }
 }
