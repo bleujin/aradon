@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import net.ion.framework.util.Debug;
-import net.ion.radon.TestAradon;
 import net.ion.radon.core.path.URLPattern;
 
 import org.junit.Test;
@@ -12,12 +11,12 @@ import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.Method;
 
-public class TestAradonInit extends TestAradon{
+public class TestAradonInit extends TestBaseAradon{
 	
 
 	@Test
 	public void testLoadAttribute() throws Exception {
-		initAradon() ;
+		Aradon aradon = testAradon() ;
 		
 		assertEquals("bleujin@i-on.net", aradon.getServiceContext().getAttributeObject("let.contact.email")) ;
 		assertEquals("/help/doc", aradon.getServiceContext().getAttributeObject("let.contact.help.doc")) ;
@@ -26,7 +25,7 @@ public class TestAradonInit extends TestAradon{
 	
 	@Test
 	public void testLoadGroovyScriptFilter() throws Exception {
-		initAradon() ;
+		Aradon aradon = testAradon() ;
 		
 		Request request = new Request(Method.GET, "riap://component/another/hello") ;
 		Response response = aradon.handle(request) ;

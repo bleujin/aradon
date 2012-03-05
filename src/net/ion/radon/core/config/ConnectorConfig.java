@@ -29,6 +29,18 @@ public class ConnectorConfig {
 		}
 	}
 
+	public final static ConnectorConfig makeNettyHTTPConfig(int port) {
+		try {
+			String config = "<connector-config engine=\"netty\" />";
+			return new ConnectorConfig(XMLConfig.load(config), port);
+		} catch (ConfigurationException e) {
+			throw new IllegalStateException(e.getMessage());
+		} catch (IOException e) {
+			throw new IllegalStateException(e.getMessage());
+		}
+	}
+
+
 	public static final ConnectorConfig create(XMLConfig connConfig, int defaultPort) {
 		return new ConnectorConfig(connConfig, defaultPort);
 	}

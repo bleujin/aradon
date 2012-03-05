@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import net.ion.framework.db.Page;
+import net.ion.framework.parse.gson.JsonObject;
 
 public class PageBean implements Serializable{
 
@@ -26,6 +27,16 @@ public class PageBean implements Serializable{
 	public final static PageBean create(int listNum, int pageNo) {
 		return new PageBean(Page.create(listNum, pageNo)) ; 
 	}
+	
+	public static PageBean create(JsonObject json) {
+		PageBean newBean = new PageBean() ;
+		if (json.asInt("pageNo") > 0) newBean.setPageNo(json.asInt("pageNo")) ;
+		if (json.asInt("listNum") > 0) newBean.setListNum(json.asInt("listNum")) ;
+		if (json.asInt("screenCount") > 0) newBean.setScreenCount(json.asInt("screenCount")) ;
+		
+		return newBean ;
+	}
+
 
 	public void setListNum(int listNum) {
 		page = Page.create(listNum, page.getPageNo(), page.getScreenCount());
@@ -94,6 +105,7 @@ public class PageBean implements Serializable{
 	public Page toPage(){
 		return page ;
 	}
+
 	
 //	public int getSkipPageCount() {
 //		return ((getPageNo()-1) % getListNum()) * getListNum();

@@ -1,9 +1,10 @@
 package net.ion.radon.core.config;
 
 import static org.junit.Assert.assertEquals;
-import net.ion.radon.TestAradon;
+import net.ion.radon.core.Aradon;
 import net.ion.radon.core.PathService;
 import net.ion.radon.core.SectionService;
+import net.ion.radon.core.TestBaseAradon;
 import net.ion.radon.core.TreeContext;
 import net.ion.radon.core.let.InnerRequest;
 import net.ion.radon.core.let.InnerResponse;
@@ -15,21 +16,20 @@ import org.restlet.Response;
 import org.restlet.data.Method;
 import org.restlet.data.Protocol;
 
-public class TestContextAttribute extends TestAradon {
+public class TestContextAttribute extends TestBaseAradon {
 
 	@Test
 	public void testAradonContext() throws Exception {
-		initAradon() ;
+		Aradon aradon =  testAradon() ;
 		
 		TreeContext context = aradon.getServiceContext() ;
-		
 		Object value = context.getAttributeObject("let.contact.email") ;
 		assertEquals("bleujin@i-on.net", value) ;
 	}
 	
 	@Test
 	public void testSectionContext() throws Exception {
-		initAradon() ;
+		Aradon aradon = testAradon() ;
 		
 		SectionService section = aradon.getChildService("");
 		TreeContext scontext = section.getServiceContext();
@@ -42,10 +42,9 @@ public class TestContextAttribute extends TestAradon {
 
 	@Test
 	public void testRootContext() throws Exception {
-		initAradon() ;
+		Aradon aradon =  testAradon() ;
 		
-		Request request = new Request(Method.GET, "riap://component/") ;
-		Response response = aradon.handle(request) ;
+		Response response = super.handle(aradon, "/", Method.GET) ;
 		assertEquals(200, response.getStatus().getCode()) ;
 		
 		InnerRequest ireq = ((InnerResponse)Response.getCurrent()).getInnerRequest() ;
@@ -55,17 +54,16 @@ public class TestContextAttribute extends TestAradon {
 	
 	@Test
 	public void testRootContext2() throws Exception {
-		initAradon() ;
+		Aradon aradon =  testAradon() ;
 		
-		Request request = new Request(Method.GET, "riap://component/hello") ;
-		Response response = aradon.handle(request) ;
+		Response response = super.handle(aradon, "/hello", Method.GET) ;
 		
 		InnerRequest ireq = ((InnerResponse)Response.getCurrent()).getInnerRequest() ;
 		assertEquals("hello", ireq.getPathInfo(aradon).getName()) ;
 	}
 	
 	@Test
-	public void testHttpClient() throws Exception {
+	public void createHttpClient() throws Exception {
 		Client c = new Client(Protocol.HTTP) ;
 	}
 	

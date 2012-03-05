@@ -13,15 +13,12 @@ import net.ion.framework.parse.gson.JsonParser;
 
 import org.restlet.data.CharacterSet;
 import org.restlet.data.MediaType;
-import org.restlet.representation.Representation;
-import org.restlet.representation.StringRepresentation;
 import org.restlet.representation.WriterRepresentation;
 
 public class JsonObjectRepresentation extends WriterRepresentation {
 
 	private boolean indenting;
 	private JsonElement jsonElement = JsonNull.INSTANCE;
-	private Representation jsonRepresentation;
 
 	public JsonObjectRepresentation(JsonElement jsonElement) {
 		super(MediaType.APPLICATION_JSON);
@@ -36,15 +33,8 @@ public class JsonObjectRepresentation extends WriterRepresentation {
 		this(JsonParser.fromObject(bean));
 	}
 
-	public JsonObjectRepresentation(Representation jsonRepresentation) {
-		super((jsonRepresentation == null) ? null : jsonRepresentation.getMediaType());
-		this.jsonRepresentation = jsonRepresentation;
-	}
-
 	public JsonObjectRepresentation(String jsonString) {
-		super(MediaType.APPLICATION_JSON);
-		setCharacterSet(CharacterSet.UTF_8);
-		this.jsonRepresentation = new StringRepresentation(jsonString);
+		this(JsonParser.fromString(jsonString)) ;
 	}
 
 	public JsonArray getJsonArray() {
@@ -65,9 +55,6 @@ public class JsonObjectRepresentation extends WriterRepresentation {
 
 	@Override
 	public long getSize() {
-		if (this.jsonRepresentation != null) {
-			return this.jsonRepresentation.getSize();
-		}
 		return super.getSize();
 	}
 

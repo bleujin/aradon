@@ -18,29 +18,7 @@
 			<afterfilter class="net.ion.radon.impl.filter.SayHello">
 			</afterfilter>
 		</path>
-		
-		<path name="favicon.ico">
-			<context>
-				<attribute id="base.dir">./resource/favicon.ico</attribute>
-			</context>
-			<urls>/favicon.ico</urls>
-			<handler class="net.ion.radon.impl.let.DirLet" scope="request" />
-		</path>
 	</section>
-	
-	
-	
-	<notification name="noti" host="61.250.201.78" port="9050">
-		<context>
-			<attribute id="socket.base.dir">./resource/socket/</attribute>
-		</context>
-		<path name="chat">
-			<urls>/chat.html</urls>
-			<handler class="net.ion.radon.socketio.examples.chat.ChatSocketServlet"/>
-		</path>
-	</notification>
-
-
 
 	<prefilter class="net.ion.radon.impl.filter.SayHello">
 	</prefilter>
@@ -53,15 +31,15 @@
 		<attribute id="let.contact.help.doc">/help/doc</attribute>
 	</context>
 		
-	<plugin includepath="plugin/;lib/;">
+	<plugin includepath="plugin/;">
 		
 	</plugin>
 	
 	
-	<server-config>
+	<server-config id="mercury">
 		<!-- System.setProperty("java.util.logging.config.file", "./resource/config/myLogging.properties") ; -->
 		<log-config-file>./resource/config/log4j.properties</log-config-file>
-		<connector-config>
+		<connector-config port="9000">
 			<parameter name="minThreads" description="Minimum threads waiting to service requests." >5</parameter> 
 			<parameter name="maxThreads" description="Maximum threads that will service requests." >255</parameter> 
 			<parameter name="threadMaxIdleTimeMs" description="Minimum threads waiting to service requests.">60000</parameter> 
@@ -93,6 +71,6 @@
 		</connector-config>
 		
 		
-		<manage-port auto-start="false">4567</manage-port>
+		<manage-port auto-start="true">4567</manage-port>
 	</server-config>
 </root>

@@ -34,12 +34,6 @@
 			<handler class="net.ion.radon.impl.let.HelloWorldLet" />
 		</path>
 		
-		<path name="chain">
-			<urls>/chain</urls>
-			<description> required : to, from, subject, content</description>
-			<handler class="net.ion.radon.impl.let.TestChainLet" />
-		</path>
-	
 		<path name="hello">
 			<urls>/hello, /hello/{greeting}</urls>
 			<description>Default</description>
@@ -87,7 +81,7 @@
 		<attribute id="let.contact.help.doc">/help/doc</attribute>
 	</context>
 		
-	<server-config>
+	<server-config id="jupiter">
 		<log-config-file>./resource/config/log4j.properties</log-config-file>
 		<connector-config>
 			<parameter name="minThreads" description="Minimum threads waiting to service requests." >1</parameter> 

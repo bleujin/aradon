@@ -73,6 +73,11 @@ public class AradonSerialRequest implements ISerialRequest {
 		Request request = makeRequest(Method.DELETE, null);
 		return aradon.handle(request, resultClass);
 	}
+	
+	public <T, V> V handle(Method method, T arg, Class<? extends V> resultClass) {
+		Request request = makeRequest(method, arg);
+		return aradon.handle(request, resultClass);
+	}
 
 	public <T, V> V put(T arg, Class<? extends V> resultClass) {
 		Request request = makeRequest(Method.PUT, arg);

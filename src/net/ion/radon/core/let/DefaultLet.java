@@ -8,6 +8,7 @@ import org.restlet.data.Method;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 
+@Deprecated
 public abstract class DefaultLet extends AbstractLet {
 
 	private Set<Method> disAllow_Method;

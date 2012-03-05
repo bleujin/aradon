@@ -1,0 +1,107 @@
+<?xml version="1.0"  encoding="UTF-8"?>
+
+<root version="0.1">
+	<plugin>
+		<id>net.bleujin.jminix</id>
+		<version>0.1</version>
+		<name>JMX Mini Plugin</name>
+		<description></description>
+		<provider>
+			<homepage>http://www.i-on.net</homepage>
+			<developer>bleujin</developer>
+			<email>bleujin@i-on.net</email>
+		</provider>
+		<license>LGPL</license>
+	</plugin>
+
+	<context>
+		<configured-object id="org.jminix.console.radon.RegisterBean" scope="application">
+ 			<class-name>org.jminix.console.radon.RegisterBean</class-name>
+ 		</configured-object>
+	</context>
+
+	<section name="plugin.jminix">
+		<prefilter class="net.ion.radon.core.security.ChallengeAuthenticator">
+			<configured-object>
+				<class-name>net.ion.radon.core.security.ChallengeAuthenticator</class-name>
+				<constructor>
+					<constructor-param>
+						<description>realm id</description>
+						<type>java.lang.String</type>
+						<value>My Realm</value>
+					</constructor-param>
+					<constructor-param>
+						<description>userid</description>
+						<type>java.lang.String</type>
+						<value>bleujin</value>
+					</constructor-param>
+					<constructor-param>
+						<description>pwd</description>
+						<type>java.lang.String</type>
+						<value>redf1</value>
+					</constructor-param>
+				</constructor>
+			</configured-object>
+		</prefilter>
+	
+		<context>
+		</context>
+
+		<path name="index.html">
+			<urls>/</urls>
+			<handler class="org.jminix.console.resource.IndexHtmlLet" scope="request" />
+		</path>
+		<path name="js" >
+			<urls matchmode="STARTWITH">/js/</urls>
+			<handler class="org.jminix.console.resource.DirLet" scope="request" />
+		</path>
+	
+		<path name="servers">
+			<urls>/servers/</urls>
+			<handler class="org.jminix.console.resource.ServersResource" scope="request" />
+		</path>
+		<path name="server">
+			<urls>/servers/{server}/</urls>
+			<handler class="org.jminix.console.resource.ServerResource" scope="request" />
+		</path>
+		<path name="domains">
+			<urls>/servers/{server}/domains/</urls>
+			<handler class="org.jminix.console.resource.DomainsResource" scope="request" />
+		</path>
+		<path name="domain">
+			<urls>/servers/{server}/domains/{domain}/</urls>
+			<handler class="org.jminix.console.resource.DomainResource" scope="request" />
+		</path>
+		<path name="mbeans">
+			<urls>/servers/{server}/domains/{domain}/mbeans/</urls>
+			<handler class="org.jminix.console.resource.MBeansResource" scope="request" />
+		</path>
+		<path name="mbean">
+			<urls>/servers/{server}/domains/{domain}/mbeans/{mbean}/</urls>
+			<handler class="org.jminix.console.resource.MBeanResource" scope="request" />
+		</path>
+		<path name="attributes">
+			<urls>/servers/{server}/domains/{domain}/mbeans/{mbean}/attributes/</urls>
+			<handler class="org.jminix.console.resource.AttributesResource" scope="request" />
+		</path>
+		<path name="attribute">
+			<urls>/servers/{server}/domains/{domain}/mbeans/{mbean}/attributes/{attribute}/</urls>
+			<handler class="org.jminix.console.resource.AttributeResource" scope="request" />
+		</path>
+		<path name="attribute_query">
+			<urls>/servers/{server}/domains/{domain}/mbeans/{mbean}/attributes/{attribute}/{query}</urls>
+			<handler class="org.jminix.console.resource.AttributeResource" scope="request" />
+		</path>
+		<path name="operations">
+			<urls>/servers/{server}/domains/{domain}/mbeans/{mbean}/operations/</urls>
+			<handler class="org.jminix.console.resource.OperationsResource" scope="request" />
+		</path>
+		<path name="operation">
+			<urls>/servers/{server}/domains/{domain}/mbeans/{mbean}/operations/{operation}</urls>
+			<handler class="org.jminix.console.resource.OperationResource" scope="request" />
+		</path>
+
+
+	</section>
+	
+</root>

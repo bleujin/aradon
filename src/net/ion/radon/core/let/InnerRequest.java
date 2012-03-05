@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentMap;
 
+import net.ion.framework.parse.gson.JsonObject;
 import net.ion.framework.util.ObjectUtil;
 import net.ion.framework.util.StringUtil;
 import net.ion.radon.core.IService;
@@ -197,12 +198,13 @@ public class InnerRequest extends Request {
 	}
 
 	public String[] getParameterValues(String key) {
-		Object value = getFormParameter().get(key);
-		if (value instanceof Collection) {
-			return (String[]) ((Collection) value).toArray(new String[0]);
-		} else {
-			return new String[] { ObjectUtil.toString(value) };
-		}
+		List value = getFormParameter().getAsList(key) ;
+		return (value == null) ? new String[0] :(String[]) value.toArray(new String[0]) ;
+//		if (value instanceof List) {
+//			return (String[]) ((Collection) value).toArray(new String[0]);
+//		} else {
+//			return new String[] { ObjectUtil.toString(value) };
+//		}
 	}
 
 	public String getParameter(String key, String defaultString) {
@@ -256,8 +258,8 @@ public class InnerRequest extends Request {
 		}
 		if (! myparam.has(RadonAttributeKey.ARADON_PAGE))  return PageBean.TEN ;
 		
-		final PageBean result = (PageBean) myparam.childParameter(RadonAttributeKey.ARADON_PAGE).toBean(PageBean.class);
-		return (result == null) ? PageBean.TEN : result;
+		JsonObject paramJson = myparam.childParameter(RadonAttributeKey.ARADON_PAGE).getJson();
+		return PageBean.create(paramJson) ;
 	}
 
 	private static Map<String, Object> makeFormParam(Request request) {

@@ -1,5 +1,6 @@
 package net.ion.radon.client;
 
+import org.restlet.data.Method;
 import org.restlet.resource.ResourceException;
 
 public interface ISerialRequest {
@@ -10,4 +11,5 @@ public interface ISerialRequest {
 	public <V> V delete(Class<? extends V> clz)  ;
 	public ISerialRequest addHeader(String string, String string2);
 
+	public <T, V> V handle(Method method, T arg, Class<? extends V> resultClass) ;
 }

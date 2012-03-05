@@ -61,12 +61,6 @@
 			<handler class="net.ion.radon.impl.let.HelloWorldLet" />
 		</path>
 		
-		<path name="chain">
-			<urls>/chain</urls>
-			<description> required : to, from, subject, content</description>
-			<handler class="net.ion.radon.impl.let.TestChainLet" />
-		</path>
-	
 		<path name="hello">
 			<urls>/hello, /hello/{greeting}</urls>
 			<description>Default</description>

@@ -9,6 +9,7 @@ import net.ion.framework.rest.IMapListRepresentationHandler;
 import net.ion.framework.rest.IRequest;
 import net.ion.framework.rest.IResponse;
 import net.ion.framework.util.ListUtil;
+import net.ion.framework.util.StringUtil;
 import net.ion.radon.core.PathService;
 import net.ion.radon.core.RadonAttributeKey;
 import net.ion.radon.core.SectionService;
@@ -30,6 +31,7 @@ import org.restlet.resource.ServerResource;
 import org.restlet.routing.Filter;
 import org.restlet.util.Series;
 
+@Deprecated
 public abstract class AbstractLet extends ServerResource implements RadonAttributeKey {
 	public final static Representation EMPTY_REPRESENTATION = new EmptyRepresentation();
 	public final static List<Map<String, ? extends Object>> EMPTY_DATAS = ListUtil.EMPTY_LIST;
@@ -260,12 +262,13 @@ public abstract class AbstractLet extends ServerResource implements RadonAttribu
 	// return properties;
 	// };
 
-	protected InboundLet lookupLet(String sectionName, String path) {
-		return InboundLet.create(getInnerRequest(), getMySectionService().getOtherSection(sectionName), path);
-	}
+//	protected InboundLet lookupLet(String sectionName, String path) {
+//		return InboundLet.create(getInnerRequest(), getMySectionService().getOtherSection(sectionName), path);
+//	}
 
 	protected boolean isExplorer() {
 		String agent = getRequest().getClientInfo().getAgent();
+		if (StringUtil.isBlank(agent)) return false ;
 		return agent.indexOf("MSIE") > -1;
 	}
 

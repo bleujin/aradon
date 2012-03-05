@@ -19,7 +19,11 @@ public class ChallengeAuthenticator extends Authenticator {
 	private volatile Verifier verifier;
 
 	public ChallengeAuthenticator(String realm) {
-		this(ChallengeScheme.HTTP_BASIC, realm, new SimpleVerifier());
+		this(ChallengeScheme.HTTP_BASIC, realm, new SimpleVerifier("bleujin", "redf"));
+	}
+
+	public ChallengeAuthenticator(String realm, String id, String pwd) {
+		this(ChallengeScheme.HTTP_BASIC, realm, new SimpleVerifier(id, pwd));
 	}
 
 	public ChallengeAuthenticator(String realm, Verifier verifier) {

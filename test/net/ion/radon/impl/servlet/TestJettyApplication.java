@@ -1,13 +1,15 @@
 package net.ion.radon.impl.servlet;
 
-import net.ion.radon.TestAradon;
+import net.ion.radon.core.Aradon;
+import net.ion.radon.core.TestAradon;
+import net.ion.radon.core.TestBaseAradon;
 
 import org.restlet.Request;
 
-public class TestJettyApplication extends TestAradon {
+public class TestJettyApplication extends TestBaseAradon {
 
 	public void testMakeRequest() throws Exception {
-		initAradon();
+		Aradon aradon = testAradon();
 
 		Request r = null;
 	}

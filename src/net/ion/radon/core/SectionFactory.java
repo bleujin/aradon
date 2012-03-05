@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 
 import net.ion.framework.util.InstanceCreationException;
 import net.ion.framework.util.StringUtil;
+import net.ion.radon.core.EnumClass.IMatchMode;
 import net.ion.radon.core.config.XMLConfig;
 import net.ion.radon.core.let.FilterUtil;
 import net.ion.radon.impl.section.BasePathInfo;
@@ -71,7 +72,7 @@ public class SectionFactory {
 
 				final Class handlerClass = Class.forName(handlerClassName);
 
-				BasePathInfo pinfo = PathInfo.create(name, StringUtil.join(urls, ","), matchMode, description, handlerClass);
+				BasePathInfo pinfo = PathInfo.create(name, StringUtil.join(urls, ","), IMatchMode.fromString(matchMode), description, handlerClass);
 				result.put(pinfo, pconfig);
 			}
 
@@ -82,13 +83,8 @@ public class SectionFactory {
 	}
 
 	static RouterSection createSection(Aradon aradon, String sectionName, XMLConfig config) throws InstanceCreationException, ConfigurationException {
-		return createSection(aradon, sectionName, config, PluginConfig.EMPTY);
-	}
-
-	static RouterSection createSection(Aradon aradon, String sectionName, XMLConfig config, PluginConfig pconfig) throws InstanceCreationException, ConfigurationException {
-
 		TreeContext sectionContext = aradon.getServiceContext().createChildContext();
-		final RouterSection section = new RouterSection(aradon, sectionName, sectionContext, pconfig);
+		final RouterSection section = new RouterSection(aradon, sectionName, sectionContext);
 
 		Map<BasePathInfo, XMLConfig> pathServices = SectionFactory.makePaths(section, sectionContext, config);
 

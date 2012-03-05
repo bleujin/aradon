@@ -2,6 +2,10 @@ package net.ion.radon.util;
 
 import static org.junit.Assert.assertEquals;
 
+import net.ion.radon.core.Aradon;
+import net.ion.radon.core.PathService;
+import net.ion.radon.core.EnumClass.IMatchMode;
+
 import org.junit.Test;
 import org.restlet.Response;
 
@@ -26,7 +30,7 @@ public class TestAradonTester {
 	 * */
 	@Test
 	public void testMatchMode() throws Exception {
-		AradonTester at = AradonTester.create().register("s1", "/shutdown/{name}/", "STARTWITH", MyTestLet.class) ;
+		AradonTester at = AradonTester.create().register("s1", "/shutdown/{name}/", IMatchMode.STARTWITH, MyTestLet.class) ;
 		Response response = at.get("/s1/shutdown/jinik/test") ;
 		assertEquals("Hello jinik", response.getEntityAsText()) ;
 	}
@@ -36,6 +40,15 @@ public class TestAradonTester {
 		AradonTester at = AradonTester.create().register("", "/{name}", MyTestLet.class) ;
 		Response response = at.get("/bleujin") ;
 		assertEquals("Hello bleujin", response.getEntityAsText()) ;
+	}
+	
+	@Test
+	public void testPathName() throws Exception {
+		Aradon aradon = AradonTester.create().register("", "/{name}", "letname", IMatchMode.EQUALS, MyTestLet.class).getAradon() ;
+		
+		PathService ps = aradon.getChildService("").getChildService("letname") ;
+		assertEquals(true, ps != null) ;
+		
 	}
 }
 

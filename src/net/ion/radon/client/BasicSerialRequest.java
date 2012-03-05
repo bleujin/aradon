@@ -5,13 +5,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 
+import net.ion.framework.parse.gson.JsonParser;
 import net.ion.radon.core.RadonAttributeKey;
+import net.ion.radon.core.representation.JsonObjectRepresentation;
 
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.ChallengeResponse;
 import org.restlet.data.ChallengeScheme;
 import org.restlet.data.Form;
+import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
@@ -55,6 +58,11 @@ public class BasicSerialRequest implements ISerialRequest{
 		return createResource(Method.POST, arg, clz);
 	}
 
+	public <T, V> V handle(Method method, T arg, Class<? extends V> clz) {
+		return createResource(method, arg, clz);
+	}
+
+	
 	public <V> V delete(Class<? extends V> clz) {
 		return createResource(Method.DELETE, null, clz);
 	}
@@ -74,7 +82,12 @@ public class BasicSerialRequest implements ISerialRequest{
 			if (! response.getStatus().isSuccess()){
 				throw new ResourceException(response.getStatus()) ;
 			}
-			InputStream input = response.getEntity().getStream();
+			Representation entity = response.getEntity();
+			if (entity.getMediaType().equals(MediaType.APPLICATION_JSON)){
+				return JsonParser.fromString(entity.getText()).getAsJsonObject().getAsObject(resultClass) ;
+			}
+			
+			InputStream input = entity.getStream();
 			if (input == null) return null ;
 			Object obj = new ObjectInputStream(input).readObject() ;
 			return resultClass.cast(obj) ;

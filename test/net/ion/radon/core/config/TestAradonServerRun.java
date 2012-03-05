@@ -1,7 +1,7 @@
 package net.ion.radon.core.config;
 
-import net.ion.radon.AradonServer;
 import net.ion.radon.Options;
+import net.ion.radon.core.AradonServer;
 
 import org.junit.Test;
 
@@ -14,7 +14,7 @@ public class TestAradonServerRun {
 		as.start() ;
 		
 		synchronized (this) {
-			wait(600) ;
+			wait(300) ;
 		}
 		
 		as.stop() ;

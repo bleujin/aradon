@@ -4,8 +4,10 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 
-import net.ion.radon.TestAradon;
+import net.ion.radon.core.Aradon;
 import net.ion.radon.core.SectionService;
+import net.ion.radon.core.TestAradon;
+import net.ion.radon.core.TestBaseAradon;
 import net.ion.radon.core.config.XMLConfig;
 import net.ion.radon.core.script.ScriptFactory;
 import net.ion.radon.impl.let.HelloWorldLet;
@@ -17,13 +19,13 @@ import org.restlet.Response;
 import org.restlet.data.Form;
 import org.restlet.data.Method;
 
-public class TestRhinoFilter extends TestAradon{
+public class TestRhinoFilter extends TestBaseAradon{
 
 	@Test
 	public void scriptRun() throws Exception {
-		initAradon();
+		Aradon aradon = testAradon();
 		SectionService section = aradon.attach("test", XMLConfig.BLANK);
-		section.attach(PathInfo.create("test", "/test", "", "", HelloWorldLet.class));
+		section.attach(PathInfo.create("test", "/test", HelloWorldLet.class));
 
 		section.addAfterFilter(ScriptFactory.createRhinoFilter(new File("./script-test/rhino/ChartFilter.js")));
 		Request request = new Request(Method.GET, "riap://component/test/test?aradon.result.format=xml");
@@ -35,17 +37,16 @@ public class TestRhinoFilter extends TestAradon{
 	
 	@Test
 	public void checkParam() throws Exception {
-		initAradon();
+		Aradon aradon = testAradon();
 		SectionService section = aradon.attach("test", XMLConfig.BLANK);
-		section.attach(PathInfo.create("test", "/test", "", "", HelloWorldLet.class));
+		section.attach(PathInfo.create("test", "/test", HelloWorldLet.class));
 
 		section.addAfterFilter(ScriptFactory.createRhinoFilter(new File("./script-test/rhino/CheckParam.js")));
-		assertEquals(501, sendRequest("not_allowed").getStatus().getCode());
-		assertEquals(200, sendRequest("allowed").getStatus().getCode());
+		assertEquals(501, sendRequest(aradon, "not_allowed").getStatus().getCode());
+		assertEquals(200, sendRequest(aradon, "allowed").getStatus().getCode());
 	}
-
 	
-	private Response sendRequest(String value) {
+	private Response sendRequest(Aradon aradon, String value) {
 		Request request = new Request(Method.GET, "riap://component/test/test");
 		Form form = new Form() ;
 		form.add("key", value) ;

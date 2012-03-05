@@ -24,6 +24,7 @@ public class JDBCVerifier extends SecretVerifier {
 
 	public int verify(Request request, Response response) {
 		int result = Verifier.RESULT_VALID;
+
 		if (request.getChallengeResponse() == null) {
 			result = 0;
 		} else {

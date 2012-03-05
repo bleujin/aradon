@@ -14,12 +14,12 @@ public interface IAradonRequest {
 	public Representation put() throws ResourceException  ;
 	public Representation delete() throws ResourceException  ;
 	public Representation post() throws ResourceException  ;
+	public Representation multipart(Method method, Representation entity) ;
+	
 	public IAradonRequest addParameter(String name, String value) ;
 	public IAradonRequest addHeader(String string, String string2);
 	public Form getForm() ;
 	public User getUser();
-	
-	public Representation multipart(Method method, Representation entity) ;
 	
 	public String getFullPath() ;
 	public String getHost() ;

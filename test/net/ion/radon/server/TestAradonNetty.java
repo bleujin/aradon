@@ -1,7 +1,8 @@
 package net.ion.radon.server;
 
 import static org.junit.Assert.assertEquals;
-import net.ion.radon.InfinityThread;
+import net.ion.framework.util.Debug;
+import net.ion.framework.util.InfinityThread;
 import net.ion.radon.client.AradonClient;
 import net.ion.radon.client.AradonClientFactory;
 import net.ion.radon.client.IAradonRequest;
@@ -11,25 +12,42 @@ import net.ion.radon.impl.let.HelloWorldLet;
 import net.ion.radon.util.AradonTester;
 
 import org.junit.Test;
-import org.restlet.data.MediaType;
-import org.restlet.representation.Representation;
+import org.restlet.Response;
+import org.restlet.data.Method;
 
 public class TestAradonNetty {
 	
 	@Test
-	public void useNetty() throws Exception {
+	public void useJetty() throws Exception {
 		AradonTester at = AradonTester.create().register("", "/hello", HelloWorldLet.class) ;
 		at.getAradon().startServer(ConnectorConfig.makeJettyHTTPConfig(9005)) ;
 		
 		AradonClient client = AradonClientFactory.create("http://localhost:9005");
 		
 		IAradonRequest request = client.createRequest("/hello");
-		Representation representation = request.get();
-		assertEquals(MediaType.APPLICATION_XML, representation.getMediaType()) ;
+		Response res = request.handle(Method.GET) ;
+		assertEquals(200, res.getStatus().getCode()) ;
+		Debug.line(res.getEntityAsText()) ;
+		at.getAradon().stop() ;
+		// new InfinityThread().startNJoin() ;
+	}
+
+	@Test
+	public void useNetty() throws Exception {
+		AradonTester at = AradonTester.create().register("", "/hello", HelloWorldLet.class) ;
+		at.getAradon().startServer(ConnectorConfig.makeNettyHTTPConfig(9005)) ;
+		
+		AradonClient client = AradonClientFactory.create("http://localhost:9005");
+		
+		IAradonRequest request = client.createRequest("/hello");
+		Response res = request.handle(Method.GET) ;
+		assertEquals(200, res.getStatus().getCode()) ;
+		Debug.line(res.getEntityAsText()) ;
 		at.getAradon().stop() ;
 		// new InfinityThread().startNJoin() ;
 	}
 	
+
 	@Test
 	public void testHttps() throws Exception {
 		String configStr = "<connector-config port='9000' protocol='https'>" 

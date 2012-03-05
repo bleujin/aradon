@@ -80,8 +80,6 @@
 		<path name="template">
 			<urls>/template</urls>
 			<handler class="net.ion.bleujin.HelloWorldLet2" scope="request" />
-
-
 		</path>
 		
 		<path name="external_hello">
@@ -143,9 +141,6 @@
 				<attribute id="template.param.name">template</attribute>
 			</context>			
 			<handler class="net.ion.radon.impl.let.template.SimpleVelocityLet" />
-
-
-
 		</path>
 
 		<path name="velocity_string">

@@ -2,8 +2,9 @@ package net.ion.radon.core.let;
 
 import static org.junit.Assert.assertEquals;
 import net.ion.framework.util.Debug;
-import net.ion.radon.TestAradon;
+import net.ion.radon.core.Aradon;
 import net.ion.radon.core.SectionService;
+import net.ion.radon.core.TestBaseAradon;
 import net.ion.radon.core.config.XMLConfig;
 import net.ion.radon.impl.let.HelloWorldLet;
 import net.ion.radon.impl.section.PathInfo;
@@ -13,11 +14,11 @@ import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.Method;
 
-public class TestSection extends TestAradon{
+public class TestSection extends TestBaseAradon{
 
 	@Test
 	public void testSettionName() throws Exception {
-		initAradon() ;
+		Aradon aradon = testAradon() ;
 		
 		SectionService section = aradon.getChildService("another") ;
 		Debug.debug(section.toString() );
@@ -25,7 +26,7 @@ public class TestSection extends TestAradon{
 	
 	@Test
 	public void testRestart() throws Exception {
-		initAradon() ;
+		Aradon aradon = testAradon() ;
 		SectionService section = aradon.attach("test", XMLConfig.BLANK) ;
 		section.attach(PathInfo.HELLO) ;
 		
@@ -42,47 +43,14 @@ public class TestSection extends TestAradon{
 	
 	@Test
 	public void testGetPathName() throws Exception {
-		initAradon() ;
+		Aradon aradon = testAradon() ;
+
 		SectionService section = aradon.attach("test", XMLConfig.BLANK) ;
-		section.attach(PathInfo.create("hello", "/test, /test/{next}", "", "", HelloWorldLet.class)) ;
+		section.attach(PathInfo.create("hello", "/test, /test/{next}", HelloWorldLet.class)) ;
 
 		Request req = new Request(Method.GET, "riap://component/test/test");
 		Response res = aradon.handle(req) ;
-		
-		
 	}
 	
-	@Test
-	public void testCrossCallSection0() throws Exception {
-		initAradon() ;
-		SectionService section1 = aradon.attach("test1", XMLConfig.BLANK) ;
-		SectionService section2 = aradon.attach("test2", XMLConfig.BLANK) ;
-		section2.attach(PathInfo.create("hello", "/hello", "", "", HelloWorldLet.class)) ;
-		section1.attach(PathInfo.create("cross", "/cross", "", "", TestCrossLet.class)) ;
-		
-		Request request = new Request(Method.GET, "riap://component/test2/hello") ;
-		Response response = aradon.handle(request) ;
-		assertEquals(200, response.getStatus().getCode()) ;
-		Debug.debug(response.getEntityAsText()) ;
-	}
-	
-	@Test
-	public void testCrossCallSection() throws Exception {
-		initAradon() ;
-		SectionService section1 = aradon.attach("test1", XMLConfig.BLANK) ;
-		SectionService section2 = aradon.attach("test2", XMLConfig.BLANK) ;
-		section2.attach(PathInfo.create("hello", "/hello", "", "", HelloWorldLet.class)) ;
-		section1.attach(PathInfo.create("cross", "/cross", "", "", TestCrossLet.class)) ;
-		
-//		Request request = new Request(Method.GET, "riap://component/test2/hello") ;
-//		Response response = aradon.handle(request) ;
-//		assertEquals(200, response.getStatus().getCode()) ;
-//		Debug.debug(response.getEntityAsText()) ;
-		
-		Request request = new Request(Method.GET, "riap://component/test1/cross") ;
-		Response response = aradon.handle(request) ;
-		assertEquals(200, response.getStatus().getCode()) ;
-		Debug.debug(response.getEntityAsText()) ;
-	}
 	
 }

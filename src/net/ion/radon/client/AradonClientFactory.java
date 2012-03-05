@@ -14,18 +14,34 @@ public class AradonClientFactory {
 	private static Map<Object, AradonClient> clientMap = Collections.synchronizedMap(new LRUMap(20)) ;
 	
 	public static synchronized AradonClient create(String hostAddress) {
-			String key = makeKey(hostAddress) ;
-			
-			if ( ! clientMap.containsKey(key)){
-				clientMap.put(key, AradonHttpClient.create(hostAddress)) ;
-			} 
-			return clientMap.get(key) ;
+			return create(hostAddress, false) ;
 	}
 
-	private static String makeKey(String hostAddress) {
+	public static synchronized AradonClient create(String hostAddress, boolean reliable) {
+		String key = makeKey(hostAddress, reliable) ;
+		
+		if ( ! clientMap.containsKey(key)){
+			AradonHttpClient newClient = AradonHttpClient.create(hostAddress);
+			if (reliable) newClient.setReliable() ;
+			clientMap.put(key, newClient) ;
+		} 
+		return clientMap.get(key) ;
+	}
+
+	
+	public static synchronized AradonClient create(Aradon aradon) {
+		Object key = makeKey(aradon) ;
+		
+		if ( ! clientMap.containsKey(key)){
+			clientMap.put(key, AradonInnerClient.create(aradon)) ;
+		} 
+		return clientMap.get(key) ;
+	}
+	
+	private static String makeKey(String hostAddress, boolean reliable) {
 		try {
 			URI uri = new URI(hostAddress) ;
-			String key = uri.getScheme() + "://" + uri.getHost() + ":" + ((uri.getPort() <= 0) ? 80 : uri.getPort());
+			String key = uri.getScheme() + "://" + uri.getHost() + ":" + ((uri.getPort() <= 0) ? 80 : uri.getPort()) + "/" + reliable;
 			return key;
 		} catch (URISyntaxException e) {
 			throw new IllegalArgumentException(e) ;
@@ -36,13 +52,5 @@ public class AradonClientFactory {
 		return aradon ;
 	}
 	
-	public static AradonClient create(Aradon aradon) {
-		Object key = makeKey(aradon) ;
-		
-		if ( ! clientMap.containsKey(key)){
-			clientMap.put(key, AradonInnerClient.create(aradon)) ;
-		} 
-		return clientMap.get(key) ;
-	}
 
 }

@@ -27,7 +27,6 @@ public abstract class SectionService extends Application  implements IService {
 	}
 
 	public abstract void attach(BasePathInfo pathInfo)  ;
-	public abstract PluginConfig getPluginConfig()  ;
 
 	
 	public String getName() {

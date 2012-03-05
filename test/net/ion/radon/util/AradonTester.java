@@ -4,6 +4,7 @@ import net.ion.framework.util.InfinityThread;
 import net.ion.framework.util.ObjectId;
 import net.ion.radon.core.Aradon;
 import net.ion.radon.core.SectionService;
+import net.ion.radon.core.EnumClass.IMatchMode;
 import net.ion.radon.core.config.XMLConfig;
 import net.ion.radon.impl.section.PathInfo;
 
@@ -23,26 +24,35 @@ public class AradonTester {
 	public final static AradonTester create() throws Exception {
 		Aradon aradon = new Aradon();
 		aradon.init(XMLConfig.BLANK);
-		aradon.start();
+//		aradon.start();
 
 		return new AradonTester(aradon);
 	}
 
 	public AradonTester register(String sectionName, String urls, Class<? extends ServerResource> handlerClz) throws Exception {
-		register(sectionName, urls, "", "", handlerClz);
+		register(sectionName, urls, IMatchMode.EQUALS, "", handlerClz);
 		return this;
 	}
 
-	public AradonTester register(String sectionName, String urls, String matchMode, Class<? extends ServerResource> handlerClz) throws Exception {
+	public AradonTester register(String sectionName, String urls, IMatchMode matchMode, Class<? extends ServerResource> handlerClz) throws Exception {
 		register(sectionName, urls, matchMode, "", handlerClz);
 		return this;
 	}
 
-	public AradonTester register(String sectionName, String urls, String matchMode, String description, Class<? extends ServerResource> handlerClz) throws Exception {
+	public AradonTester register(String sectionName, String urls, String name, IMatchMode matchMode, Class<? extends ServerResource> handlerClz) throws Exception {
+		SectionService ss = aradon.containsSection(sectionName) ? aradon.getChildService(sectionName) : aradon.attach(sectionName, XMLConfig.BLANK);
+		ss.attach(PathInfo.create(name, urls, matchMode, "", handlerClz));
+		return this;
+	}
+
+	
+	@Deprecated
+	public AradonTester register(String sectionName, String urls, IMatchMode matchMode, String description, Class<? extends ServerResource> handlerClz) throws Exception {
 		SectionService ss = aradon.containsSection(sectionName) ? aradon.getChildService(sectionName) : aradon.attach(sectionName, XMLConfig.BLANK);
 		ss.attach(PathInfo.create(new ObjectId().toString(), urls, matchMode, description, handlerClz));
 		return this;
 	}
+
 
 	public Response get(String path) {
 		return aradon.handle(new Request(Method.GET, "riap://component" + path));
@@ -64,7 +74,7 @@ public class AradonTester {
 		return aradon.handle(request);
 	}
 
-	public Aradon getAradon() {
+	public Aradon getAradon() throws Exception {
 		return aradon;
 	}
 

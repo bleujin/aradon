@@ -1,14 +1,14 @@
 package net.ion.radon.core;
 
-import static net.ion.radon.core.RadonAttributeKey.REQUEST_CONTEXT;
+import static net.ion.radon.core.RadonAttributeKey.*;
 
 import java.util.Collection;
 import java.util.Collections;
 
 import net.ion.framework.util.StringUtil;
+import net.ion.radon.core.classloading.PathFinder;
 import net.ion.radon.core.let.InnerRequest;
 import net.ion.radon.impl.section.BasePathInfo;
-import net.ion.radon.impl.section.PluginConfig;
 
 import org.restlet.Request;
 import org.restlet.Response;
@@ -22,19 +22,19 @@ public class RouterSection extends SectionService{
 
 	private final Aradon aradon;
 	private final String sectionName ;
-	private final PluginConfig pconfig;
 	private TreeContext context;
 	private Router router  ;
 	//private Map<String, PathService> pathServices = Collections.EMPTY_MAP;
 
-	RouterSection(Aradon aradon, String sectionName, TreeContext scontext, PluginConfig pconfig) {
+	private final PathFinder finder ;
+	RouterSection(Aradon aradon, String sectionName, TreeContext scontext) {
 		super(sectionName, scontext);
 		this.aradon = aradon ;
 		this.sectionName = sectionName ;
 		
 		this.context =  scontext;
 		this.router =  new Router(scontext) ;
-		this.pconfig = pconfig ;
+		this.finder = new PathFinder(scontext) ;
 	}
 
 
@@ -65,6 +65,7 @@ public class RouterSection extends SectionService{
 				if (pservice.getPathInfo().isMatchURL( pathReference)) {
 					TreeContext requestContext =  pservice.createChildContext() ;
 					request.getAttributes().put(REQUEST_CONTEXT, requestContext);
+					request.getAttributes().put(PATH_SERVICE_KEY, pservice);
 					
 					super.handle(request, response) ;
 					return;
@@ -95,7 +96,8 @@ public class RouterSection extends SectionService{
 		
 		for (String urlPattern : pathInfo.getUrls()) {
 			final String path = StringUtil.isBlank(sectionName) ? urlPattern.substring(1) : urlPattern;
-			router.attach(path, pathInfo.getHandlerClass(), pathInfo.getMatchMode().toRouterMode()) ;
+			// router.attach(path, pathInfo.getHandlerClass(), pathInfo.getMatchMode().toRouterMode()) ;
+			router.attach(path, finder, pathInfo.getMatchMode().toRouterMode()) ;
 		}
 	}
 	
@@ -138,10 +140,6 @@ public class RouterSection extends SectionService{
 
 	public PathService getPathService(Reference pathReference) {
 		return getChildService(getPathName(pathReference)) ;
-	}
-
-	public PluginConfig getPluginConfig() {
-		return pconfig ;
 	}
 
 }

@@ -19,6 +19,7 @@ public class AradonJettyHelper implements AradonServerHelper {
 
 	private AradonJettyHelper(JettyServerHelper server) {
 		this.server = server;
+		
 	}
 
 	public final static AradonJettyHelper create(Context context, ConnectorConfig cfig, Aradon aradon) {
@@ -31,16 +32,20 @@ public class AradonJettyHelper implements AradonServerHelper {
 		for (Entry<String, String> entry : cfig.getParams().entrySet()) {
 			server.getContext().getParameters().add(entry.getKey(), entry.getValue());
 		}
-		
-		return (cfig.getProtocol() == Protocol.HTTP)  ?  new AradonJettyHelper(new HttpServerHelper(server)) : new AradonJettyHelper(new HttpsServerHelper(server));
+		if (cfig.getProtocol() == Protocol.HTTP){
+			return new AradonJettyHelper(new HttpServerHelper(server)) ;
+		} else {
+			return new AradonJettyHelper(new HttpsServerHelper(server)); 
+		}
 	}
 
 	public void start() throws Exception {
-		server.start();
+		server.getHelped().start() ;
 	}
 
 	public void stop() throws Exception {
-		server.stop();
+		server.getHelped().stop() ;
+		// server.stop();
 	}
 
 	public void addTo(ServerList servers) {

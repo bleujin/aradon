@@ -7,8 +7,9 @@ import java.util.List;
 import junit.framework.Assert;
 import net.ion.framework.util.ListUtil;
 import net.ion.framework.util.RandomUtil;
-import net.ion.radon.TestAradon;
 import net.ion.radon.core.Aradon;
+import net.ion.radon.core.TestAradon;
+import net.ion.radon.core.TestBaseAradon;
 import net.ion.radon.core.let.InnerRequest;
 import net.ion.radon.core.let.InnerResponse;
 
@@ -17,21 +18,24 @@ import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.Method;
 
-public class TestMultiThread extends TestAradon {
+public class TestMultiThread extends TestBaseAradon {
 
-	static int LOOP = 10000;
+	static int LOOP = 50;
 
 	@Test
 	public void testStartAradon() throws Exception {
+		Aradon aradon = testAradon() ;
+
 		Request request = new Request(Method.GET, "riap://component/");
-		Response response = handle(request);
+		Response response = aradon.handle(request);
 
 		assertEquals(200, response.getStatus().getCode());
 	}
 
 	@Test
 	public void testSingleThreadGet() throws Exception {
-		initAradon();
+		Aradon aradon = testAradon() ;
+		
 		Client c = new Client("thread1", "riap://component/hello", aradon);
 		c.start();
 
@@ -40,7 +44,7 @@ public class TestMultiThread extends TestAradon {
 
 	@Test
 	public void testMuitiThreadGet() throws Exception {
-		initAradon();
+		Aradon aradon = testAradon() ;
 
 		Client[] clients = new Client[20];
 		for (int i = 0; i < clients.length; i++) {

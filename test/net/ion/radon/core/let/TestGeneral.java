@@ -1,82 +1,44 @@
 package net.ion.radon.core.let;
 
 import static org.junit.Assert.assertEquals;
-import net.ion.framework.util.Debug;
-import net.ion.radon.TestAradon;
+import net.ion.radon.core.Aradon;
+import net.ion.radon.core.TestBaseAradon;
+import net.ion.radon.impl.let.HelloWorldLet;
+import net.ion.radon.util.AradonTester;
 
+import org.junit.Before;
 import org.junit.Test;
-import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.Method;
 
-public class TestGeneral extends TestAradon {
+public class TestGeneral extends TestBaseAradon {
 	
-	final String configPath = "resource/config/dev-config.xml";
+	private Aradon aradon ;
+	@Before
+	public void setUp() throws Exception {
+		this.aradon = AradonTester.create()
+			.register("another", "/hello", HelloWorldLet.class)
+			.getAradon() ;
+	}
 	
 	@Test
 	public void testBeforeHandle() throws Exception {
-		Request request = new Request(Method.GET, "riap://component/another/hello?param=abcd") ;
-		
-		Response response = handle(configPath, request) ;
+		Response response = handle(aradon, "/another/hello?param=abcd", Method.GET) ;
 		assertEquals(200, response.getStatus().getCode()) ;
 	}
 	
 	@Test
 	public void testSectionFilter() throws Exception {
-		Request request = new Request(Method.GET, "riap://component/another/hello") ;
-		
-		aradon.init(configPath) ;
-		aradon.start() ;
-		
-		Response response = new Response(request) ;
-		aradon.handle(request, response) ;
-		
+		Response response = handle(aradon, "/another/hello", Method.GET) ;
 		assertEquals(200, response.getStatus().getCode()) ;
-		assertEquals(true, request == response.getRequest()) ;
 	}
 
 	@Test
 	public void testNotFound() throws Exception {
-		Request request = new Request(Method.GET, "riap://component/another/no_path") ;
-		
-		Response response = handle(configPath, request) ;
+		Response response = handle(aradon, "/another/no_path", Method.GET) ;
 		assertEquals(404, response.getStatus().getCode()) ;
 	}
 	
-	@Test
-	public void testChain() throws Exception {
-		Request request = new Request(Method.GET, "riap://component/another/chain") ;
-		Response response = handle(configPath, request) ;
-		assertEquals(200, response.getStatus().getCode()) ;
-		Debug.debug(response.getEntityAsText()) ;
-	}
 	
-	@Test
-	public void testSameResponse() throws Exception {
-		Request request = new Request(Method.GET, "riap://component/another/hello") ;
-		
-		aradon.init(configPath) ;
-		aradon.start() ;
-		
-		Response response = new Response(request) ;
-		aradon.handle(request, response) ;
-		
-		assertEquals(200, response.getStatus().getCode()) ;
-		assertEquals(true, request == response.getRequest()) ;
-	}
-
-	@Test
-	public void testSameRequest() throws Exception {
-		Request request = new Request(Method.GET, "riap://component/another/hello") ;
-		
-		aradon.init(configPath) ;
-		aradon.start() ;
-		
-		Response response = aradon.handle(request) ;
-		
-		assertEquals(200, response.getStatus().getCode()) ;
-		assertEquals(true, request == response.getRequest()) ;
-	}
-
 	
 }

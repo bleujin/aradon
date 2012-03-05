@@ -5,35 +5,41 @@ import static org.junit.Assert.assertTrue;
 import net.ion.framework.rest.StdObject;
 import net.ion.framework.util.Debug;
 import net.ion.framework.util.ListUtil;
-import net.ion.radon.TestAradon;
 import net.ion.radon.client.AradonClient;
 import net.ion.radon.client.AradonClientFactory;
 import net.ion.radon.client.ISerialRequest;
+import net.ion.radon.core.Aradon;
+import net.ion.radon.core.TestAradon;
+import net.ion.radon.core.TestBaseAradon;
 import net.ion.radon.impl.section.PathInfo;
 import net.ion.radon.param.TestBean;
+import net.ion.radon.util.AradonTester;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.Request;
 import org.restlet.data.Method;
 import org.restlet.representation.ObjectRepresentation;
 
-public class TestObjectLet extends TestAradon{
+public class TestObjectLet extends TestBaseAradon{
 
 	@Test
 	public void testgRIAPGet() throws Exception {
-		initAradon() ;
-		aradon.getChildService("another").attach(PathInfo.create("object", "/object", ObjectLet.class)) ;
-		Request request = new Request(Method.GET, "riap://component/another/object") ;
+		Aradon aradon = AradonTester.create().register("", "/test", ObjectLet.class).getAradon() ;
+
+		AradonClient ac = AradonClientFactory.create(aradon) ;
+		ISerialRequest request = ac.createSerialRequest("/test") ;
+		TestBean param = new TestBean();
+		param.setColor(ListUtil.toList("Red", "Blue")) ;
+		TestBean tb = request.post(param, TestBean.class) ;
 		
-		
-		TestBean tb = aradon.handle(request, TestBean.class) ;
 		assertEquals("Red", tb.getColor().get(0)) ;
 	}
 	
 
 	@Test
 	public void testObjectGet() throws Exception {
-		initAradon() ;
+		Aradon aradon = testAradon() ;
 		
 		AradonClient ac = AradonClientFactory.create(aradon) ;
 		ISerialRequest ar = ac.createSerialRequest("/?aradon.result.format=object");
@@ -44,7 +50,7 @@ public class TestObjectLet extends TestAradon{
 	
 	@Test
 	public void testObjectPut() throws Exception {
-		initAradon() ;
+		Aradon aradon = testAradon() ;
 		
 		aradon.getChildService("another").attach(PathInfo.create("object", "/object", ObjectLet.class)) ;
 
@@ -59,20 +65,19 @@ public class TestObjectLet extends TestAradon{
 		Debug.debug(tb) ;
 	}
 	
-	@Test
+	
+	@Ignore
 	public void testAnnotation() throws Exception {
-		initAradon() ;
+		Aradon aradon = AradonTester.create().register("", "/test", ObjectLet.class).getAradon() ;
 
-		aradon.getChildService("another").attach(PathInfo.create("object", "/object", ObjectLet.class)) ;
-
-		Request request = new Request(Method.SEARCH, "riap://component/another/object") ;
+		AradonClient ac = AradonClientFactory.create(aradon) ;
+		ISerialRequest request = ac.createSerialRequest("/test") ;
+		TestBean param = new TestBean();
+		param.setColor(ListUtil.toList("Red", "Blue")) ;
+		TestBean tb = request.handle(Method.SEARCH, param, TestBean.class) ;
 		
-		final TestBean testBean = new TestBean();
-		testBean.setColor(ListUtil.create("Red")) ;
-		request.setEntity(new ObjectRepresentation(testBean)) ;
+		assertEquals("SEARCH", tb.getQuery()) ;
 		
-		TestBean result = aradon.handle(request, TestBean.class) ;
-		assertEquals("SEARCH", result.getQuery()) ;
 	}
 
 }

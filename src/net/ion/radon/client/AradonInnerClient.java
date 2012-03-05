@@ -36,7 +36,6 @@ public class AradonInnerClient implements AradonClient{
 
 	public void stop() throws Exception {
 	}
-
-
+	
 
 }

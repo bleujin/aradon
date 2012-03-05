@@ -1,6 +1,7 @@
 package net.ion.radon.core;
 
 import junit.framework.TestCase;
+import junit.framework.TestSuite;
 import net.ion.radon.core.let.TestLet;
 import net.ion.radon.core.let.TestParameter;
 import net.ion.radon.core.let.TestRequest;
@@ -14,6 +15,5 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({TestInitAradon.class, TestLet.class, TestResourceLet.class, TestRequest.class, TestResponse.class, TestParameter.class, TestContext.class, TestServerResource.class})
 public class TestSuiteCore extends TestCase {
-
 
 }

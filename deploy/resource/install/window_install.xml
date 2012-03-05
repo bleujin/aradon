@@ -1,0 +1,86 @@
+<project name="builder_for_aradon" default="hello" basedir=".">
+	<property name="module.name" value="install_mongo" />
+	<property name="module.dir" value="./" />
+	<property name="current.dir" value="./" />
+	
+	<property file="resource/install/${os.name}.properties"/> <!-- Linux 환경 -->
+	<property file="resource/install/default.properties"/> <!-- window 환경 -->
+	
+	<tstamp>
+		<format property="DSTAMP" pattern="yyyy-MM-dd" />
+		<format property="TSTAMP" pattern="HH:mm" />
+	</tstamp>
+
+	<target name="hello">
+		<echo message="${module.name}, Build started at : ${DSTAMP}-${TSTAMP}" />
+	</target>
+
+	<!-- http://dasida.tistory.com/1055716 -->
+	<!-- output="${current.dir}/resource/install/output.txt"  -->
+	<target name="usage">
+		<echo message="AradonServer BuildFile" />
+		<echo message="Usage:" />
+		<echo message="ant start_server" />
+		<echo message="ant stop_server" />
+		<echo message="Info:" />
+		<echo message="java.home = ${java.home}" />
+		<echo message="ARADON_HOME = ./" />
+	</target>
+	
+	<target name="start_server" depends="usage">
+		<path id="all.classpath">
+			<fileset dir="${current.dir}/lib">
+				<include name="ant.jar"/>
+				<include name="apache_extend_fat.jar"/>
+				<include name="iframework_2.3.jar"/>
+				<include name="jci_fat.jar"/>
+				<include name="jetty_fat_745.jar"/>
+				<include name="rest_fat.jar"/>
+				<include name="servlet-api.jar"/>
+			</fileset>
+			<fileset dir="${current.dir}/plugin/" includes="**/*.jar" />
+			<fileset dir="${current.dir}">
+				<include name="aradon_0.7.jar" />
+			</fileset>
+		</path>
+
+		<java classname="net.ion.radon.ServerRunner"  fork="false" spawn="false"> 
+			<arg value="-config:./resource/config/aradon-config.xml" />
+			<arg value="-action:restart" />
+			<classpath refid="all.classpath" />
+			<jvmarg line="-Xms256m -Xmx256m -server" />
+			<sysproperty key="java.util.logging.config.file" value="./resource/config/log4j.properties" />
+			<sysproperty key="ARADON_HOME" value="${ARADON_HOME}" />
+			<sysproperty key="java.io.tmpdir" value="./resource/temp" />			
+		</java>
+	</target>
+	
+	<target name="stop_server">
+		<path id="all.classpath">
+			<fileset dir="${current.dir}/lib" >
+				<include name="ant.jar"/>
+				<include name="apache_extend_fat.jar"/>
+				<include name="iframework_2.3.jar"/>
+				<include name="jci_fat.jar"/>
+				<include name="jetty_fat_745.jar"/>
+				<include name="rest_fat.jar"/>
+				<include name="servlet-api.jar"/>
+			</fileset>
+			<fileset dir="${current.dir}">
+				<include name="aradon_0.7.jar" />
+			</fileset>
+		</path>
+
+		<java classname="net.ion.radon.ServerRunner"  fork="false" spawn="false"> 
+			<arg value="-config:./resource/config/aradon-config.xml" />
+			<arg value="-action:stop" />
+			<classpath refid="all.classpath" />
+			<jvmarg line="-Xms64m -Xmx64m -server" />
+			<sysproperty key="java.util.logging.config.file" value="./resource/config/log4j.properties" />
+			<sysproperty key="ARADON_HOME" value="${ARADON_HOME}" />
+			<sysproperty key="java.io.tmpdir" value="./resource/temp" />			
+		</java>
+	</target>
+
+
+</project>

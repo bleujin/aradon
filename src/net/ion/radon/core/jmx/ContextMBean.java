@@ -40,7 +40,7 @@ public class ContextMBean implements DynamicMBean {
 			return tcontext.getLogger();
 		} else if ("parentContext".equals(aname)) {
 			return tcontext.getParentContext();
-		} else if ("attributes".equals(aname)) {
+		} else if ("attribute".equals(aname)) {
 			return tcontext.getAttributes().toString();
 		}
 		return null;
@@ -51,7 +51,7 @@ public class ContextMBean implements DynamicMBean {
 
 		result.add(new Attribute("zone", tcontext.getZone()));
 		result.add(new Attribute("logger", tcontext.getLogger()));
-		result.add(new Attribute("attributes", tcontext.getAttributes().toString()));
+		result.add(new Attribute("attribute", tcontext.getAttributes().toString()));
 		result.add(new Attribute("parentContext", tcontext.getParentContext()));
 		return result;
 	}
@@ -87,7 +87,7 @@ public class ContextMBean implements DynamicMBean {
 
 		result.add(new Attribute("zone", tcontext.getZone()));
 		result.add(new Attribute("logger", tcontext.getLogger()));
-		result.add(new Attribute("attributes", tcontext.getAttributes().toString()));
+		result.add(new Attribute("attribute", tcontext.getAttributes().toString()));
 		result.add(new Attribute("parentContext", tcontext.getParentContext()));
 		return result;
 	}
@@ -99,7 +99,7 @@ public class ContextMBean implements DynamicMBean {
 
 	private MBeanAttributeInfo[] makeAttributeInfo() {
 		MBeanAttributeInfo[] result = new MBeanAttributeInfo[] { new MBeanAttributeInfo("zone", "java.lang.String", "zone", true, false, false), new MBeanAttributeInfo("logger", "java.lang.String", "logger", true, false, false),
-				new MBeanAttributeInfo("attributes", "java.lang.String", "attributes", true, false, false), new MBeanAttributeInfo("parentContext", "java.lang.String", "parentContext", true, false, false) };
+				new MBeanAttributeInfo("attribute", "java.lang.String", "attribute", true, false, false), new MBeanAttributeInfo("parentContext", "java.lang.String", "parentContext", true, false, false) };
 		return result;
 	}
 

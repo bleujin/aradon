@@ -16,6 +16,7 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.HierarchicalConfiguration;
 import org.apache.commons.configuration.XMLConfiguration;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.SystemUtils;
 
 public class XMLConfig {
 
@@ -30,12 +31,19 @@ public class XMLConfig {
 	public static XMLConfig create(File file) throws ConfigurationException {
 		return create(new XMLConfiguration(file));
 	}
-	
-	public static XMLConfig load(String configString) throws IOException, ConfigurationException{
-		File tfile = File.createTempFile("aradon", "config");
-		FileUtils.writeStringToFile(tfile, configString);
 
-		return XMLConfig.create(tfile);
+	public static XMLConfig load(String configString) throws IOException, ConfigurationException {
+
+		File tempDir = SystemUtils.getJavaIoTmpDir();
+		if (tempDir.canRead() && tempDir.canWrite()) {
+
+			File tfile = File.createTempFile("aradon", "config");
+			FileUtils.writeStringToFile(tfile, configString);
+
+			return XMLConfig.create(tfile);
+		} else {
+			throw new IllegalStateException("javaIoTmpDir:" + tempDir.getAbsolutePath() + " can't rw") ;
+		}
 	}
 
 	private static XMLConfig create(HierarchicalConfiguration hconfig) {

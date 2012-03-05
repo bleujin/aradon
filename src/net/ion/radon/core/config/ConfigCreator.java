@@ -136,15 +136,7 @@ public class ConfigCreator {
 	}
 
 	public static Object getObjectInstance(Class<?> clazz, String value) throws InstanceCreationException {
-		// value.... 
-		
-		if (Aradon.DIR_LOCAL.get() != null){
-			String repValue = StringUtil.replace(value, "${BASEPATH}", Aradon.DIR_LOCAL.get().getDir().getPath());
-			return InstanceCreator.getObjectInstance(clazz, repValue) ;
-		} else {
-			return InstanceCreator.getObjectInstance(clazz, value) ;
-		}
-		
+		return InstanceCreator.getObjectInstance(clazz, value) ;
 	}
 	
 	public static Object getObjectInstance(String className, String value) throws ClassNotFoundException, InstanceCreationException {

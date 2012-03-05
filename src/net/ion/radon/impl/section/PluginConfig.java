@@ -9,21 +9,13 @@ import org.apache.commons.configuration.ConfigurationException;
 
 public class PluginConfig {
 	
-	public static final PluginConfig EMPTY = new PluginConfig("", XMLConfig.BLANK);
+	public static final PluginConfig EMPTY = new PluginConfig(XMLConfig.BLANK);
 	
-	private String fileName;
-	private String name;
-	private String version;
-	private String description;
-	private String license;
+	private XMLConfig config ;
 	private PluginProvider provider;
 	
-	private PluginConfig(String fileName,  XMLConfig config) {
-		this.version = config.getString("version");
-		this.name = config.getString("name");
-		this.description = config.getString("description");
-		this.license = config.getString("license");
-		
+	private PluginConfig(XMLConfig config) {
+		this.config = config ;
 		try {
 			this.provider = new PluginProvider(config.firstChild("provider"));
 		} catch (ConfigurationException e) {
@@ -31,25 +23,29 @@ public class PluginConfig {
 		}
 	}
 	
-	public final static PluginConfig create(String fileName, XMLConfig config) throws ConfigurationException{
+	public final static PluginConfig create(XMLConfig config) throws ConfigurationException{
 		XMLConfig pconfig = config.firstChild("plugin") ;
-		return new PluginConfig(fileName, ObjectUtil.coalesce(pconfig, XMLConfig.BLANK));
+		return new PluginConfig(ObjectUtil.coalesce(pconfig, XMLConfig.BLANK));
 	}
 
+	public String getId(){
+		return config.getString("id") ;
+	}
+	
 	public String getName() {
-		return name;
+		return config.getString("name");
 	}
 	
 	public String getVersion() {
-		return version;
+		return config.getString("version");
 	}
 
 	public String getDescription() {
-		return description;
+		return config.getString("description");
 	}
 
 	public String getLicense() {
-		return license;
+		return config.getString("license");
 	}
 
 	public String getProviderHomePage() {

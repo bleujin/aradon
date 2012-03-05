@@ -1,0 +1,51 @@
+2011. 9. 5 오후 5:40:18 java.util.jar.Attributes read
+경고: Duplicate name in Manifest: Specification-Title.
+Ensure that the manifest does not have duplicate entries, and
+that blank lines separate individual sections in both your
+manifest and in the META-INF/MANIFEST.MF entry in the jar file.
+2011. 9. 5 오후 5:40:18 java.util.jar.Attributes read
+경고: Duplicate name in Manifest: Specification-Version.
+Ensure that the manifest does not have duplicate entries, and
+that blank lines separate individual sections in both your
+manifest and in the META-INF/MANIFEST.MF entry in the jar file.
+2011. 9. 5 오후 5:40:18 java.util.jar.Attributes read
+경고: Duplicate name in Manifest: Specification-Vendor.
+Ensure that the manifest does not have duplicate entries, and
+that blank lines separate individual sections in both your
+manifest and in the META-INF/MANIFEST.MF entry in the jar file.
+2011. 9. 5 오후 5:40:18 java.util.jar.Attributes read
+경고: Duplicate name in Manifest: Specification-Title.
+Ensure that the manifest does not have duplicate entries, and
+that blank lines separate individual sections in both your
+manifest and in the META-INF/MANIFEST.MF entry in the jar file.
+2011. 9. 5 오후 5:40:18 java.util.jar.Attributes read
+경고: Duplicate name in Manifest: Specification-Version.
+Ensure that the manifest does not have duplicate entries, and
+that blank lines separate individual sections in both your
+manifest and in the META-INF/MANIFEST.MF entry in the jar file.
+2011. 9. 5 오후 5:40:18 java.util.jar.Attributes read
+경고: Duplicate name in Manifest: Specification-Vendor.
+Ensure that the manifest does not have duplicate entries, and
+that blank lines separate individual sections in both your
+manifest and in the META-INF/MANIFEST.MF entry in the jar file.
+log4j:WARN No appenders could be found for logger (org.apache.commons.configuration.ConfigurationUtils).
+log4j:WARN Please initialize the log4j system properly.
+[Warn, plugin not exists] by net.ion.radon.core.ClassAppender:appendPath[20110905-174019]
+[Warn, lib not exists] by net.ion.radon.core.ClassAppender:appendPath[20110905-174019]
+[    Application[aradon], let.contact.email : bleujin@i-on.net] by net.ion.radon.core.config.AttributeUtil:setStringAttribute[20110905-174019]
+[    Application[aradon], let.contact.help.doc : /help/doc] by net.ion.radon.core.config.AttributeUtil:setStringAttribute[20110905-174019]
+[           Path[favicon.ico], base.dir : ./resource/favicon.ico] by net.ion.radon.core.config.AttributeUtil:setStringAttribute[20110905-174019]
+[SECTION :  loaded] by net.ion.radon.core.Aradon:setSection[20110905-174019]
+[        Section[session], net.ion.aradon.websocket.IClientWrapper : id:net.ion.aradon.websocket.IClientWrapper, scope:Application, class:net.ion.aradon.websocket.ClientWrapper] by net.ion.radon.core.config.AttributeUtil:setObjectAttribute[20110905-174019]
+[        Section[session], net.ion.radon.repository.RepositoryCentral : id:net.ion.radon.repository.RepositoryCentral, scope:Application, class:net.ion.radon.repository.RepositoryCentral] by net.ion.radon.core.config.AttributeUtil:setObjectAttribute[20110905-174019]
+[        Section[connection], net.ion.framework.db.IDBController init] by net.ion.radon.core.config.AttributeUtil:setConnectionAttribute[20110905-174019]
+init Channel : Thread-2(class net.ion.framework.db.servant.StdOutServant)
+init Channel : Thread-3(class net.ion.framework.db.servant.StdOutServant)
+toonOracle DBController Change Servant[net.ion.framework.db.servant.ServantChannel@513cf0]
+[[set Owner, net.ion.framework.db.manager.OracleCacheDBManager@c4fe76]] by net.ion.framework.db.manager.DBManager:initPool[20110905-174019]
+[[Init Pool , net.ion.framework.db.manager.OracleCacheDBManager, owner:Anonymous controller, false]] by net.ion.framework.db.manager.DBManager:initPool[20110905-174019]
+[SECTION : session loaded] by net.ion.radon.core.Aradon:setSection[20110905-174019]
+[ROOT loaded] by net.ion.radon.core.Aradon:initConfig[20110905-174019]
+jetty-7.x.y-SNAPSHOT
+Started SelectChannelConnector@0.0.0.0:8080
+aradon server started : 8080

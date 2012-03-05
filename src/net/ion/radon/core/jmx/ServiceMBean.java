@@ -36,8 +36,8 @@ public class ServiceMBean implements DynamicMBean {
 	public Object getAttribute(String aname) throws AttributeNotFoundException, MBeanException, ReflectionException {
 		if ("name".equals(aname)) {
 			return service.getName();
-		} else if ("namePath".equals(aname)) {
-			return service.getNamePath();
+//		} else if ("namePath".equals(aname)) {
+//			return service.getNamePath();
 		} else if ("parentName".equals(aname)) {
 			return service.getParent().getName();
 		} else if ("class".equals(aname)) {
@@ -53,7 +53,7 @@ public class ServiceMBean implements DynamicMBean {
 
 		result.add(new Attribute("name", service.getName()));
 		result.add(new Attribute("parentName", service.getParent().getName()));
-		result.add(new Attribute("namePath", service.getNamePath()));
+//		result.add(new Attribute("namePath", service.getNamePath()));
 		result.add(new Attribute("class", service.getClass()));
 		result.add(new Attribute("context", service.getServiceContext().getAttributes().toString()));
 		return result;
@@ -107,7 +107,7 @@ public class ServiceMBean implements DynamicMBean {
 
 		list.add(new Attribute("name", service.getName()));
 		list.add(new Attribute("parentName", service.getParent().getName()));
-		list.add(new Attribute("namePath", service.getNamePath()));
+//		list.add(new Attribute("namePath", service.getNamePath()));
 		list.add(new Attribute("class", service.getClass()));
 		list.add(new Attribute("context", service.getServiceContext().getAttributes().toString()));
 		
@@ -125,7 +125,7 @@ public class ServiceMBean implements DynamicMBean {
 		MBeanAttributeInfo[] result = new MBeanAttributeInfo[]{
 			new MBeanAttributeInfo("name", "java.lang.String", "Name", true, false, false), 
 			new MBeanAttributeInfo("parentName", "java.lang.String", "parentName", true, false, false), 
-			new MBeanAttributeInfo("namePath", "java.lang.String", "NamePath", true, false, false), 
+//			new MBeanAttributeInfo("namePath", "java.lang.String", "NamePath", true, false, false), 
 			new MBeanAttributeInfo("class", "java.lang.String", "class", true, false, false), 
 			new MBeanAttributeInfo("context", "java.lang.String", "context", true, false, false)
 		} ;

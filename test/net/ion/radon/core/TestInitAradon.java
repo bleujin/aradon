@@ -12,11 +12,15 @@ import org.junit.Test;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.Method;
+import org.restlet.engine.Engine;
 
 public class TestInitAradon {
 	
 	@Test
 	public void initAradon() throws Exception {
+		Engine.getInstance() ;
+
+		
 		Aradon aradon = new Aradon() ;
 		aradon.init(XMLConfig.BLANK) ;
 		
@@ -42,7 +46,7 @@ public class TestInitAradon {
 	
 	@Test
 	public void startNStop() throws Exception {
-		for (int i : ListUtil.rangeNum(5)) {
+		for (int i : ListUtil.rangeNum(1, 3)) {
 			AradonTester at = AradonTester.create().register("", "/hello", HelloWorldLet.class) ;
 			at.startServer(9111) ;
 			

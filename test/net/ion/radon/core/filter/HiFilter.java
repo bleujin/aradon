@@ -32,14 +32,14 @@ public class HiFilter extends IRadonFilter{
 	
 	@Override
 	public IFilterResult afterHandle(IService iservice, Request request, Response response) {
-		Debug.line("Hi AFTER!............", num, iservice.getServiceContext().getZone()) ;
-		result.add(this.num) ;
+//		Debug.line("Hi AFTER!............", num, iservice.getServiceContext().getZone()) ;
+//		result.add(this.num) ;
 		return expectResult;
 	}
 
 	@Override
 	public IFilterResult preHandle(IService iservice, Request request, Response response) {
-		Debug.line("Hi PRE!............", num, iservice.getServiceContext().getZone()) ;
+		Debug.line("Hi PRE!............", num, iservice, iservice.getServiceContext().getZone()) ;
 		result.add(this.num) ;
 		return expectResult;
 	}

@@ -10,14 +10,18 @@ import java.io.FileOutputStream;
 
 import net.ion.framework.util.Debug;
 import net.ion.framework.util.IOUtil;
-import net.ion.radon.TestAradon;
 import net.ion.radon.client.AradonClient;
 import net.ion.radon.client.AradonClientFactory;
 import net.ion.radon.client.IAradonRequest;
+import net.ion.radon.core.Aradon;
 import net.ion.radon.core.PathService;
 import net.ion.radon.core.SectionService;
+import net.ion.radon.core.TestAradon;
+import net.ion.radon.core.TestBaseAradon;
 import net.ion.radon.core.config.XMLConfig;
 import net.ion.radon.core.filter.IFilterResult;
+import net.ion.radon.core.let.InnerRequest;
+import net.ion.radon.core.let.InnerResponse;
 import net.ion.radon.core.script.GroovyRunFilter;
 import net.ion.radon.core.script.ScriptFactory;
 import net.ion.radon.impl.let.HelloWorldLet;
@@ -29,13 +33,13 @@ import org.restlet.Response;
 import org.restlet.data.Method;
 import org.restlet.representation.Representation;
 
-public class TestGroovyFilter extends TestAradon {
+public class TestGroovyFilter extends TestBaseAradon {
 
 	@Test
 	public void objectRun() throws Exception {
-		initAradon();
+		Aradon aradon = testAradon();
 		SectionService section = aradon.attach("test", XMLConfig.BLANK);
-		section.attach(PathInfo.create("test", "/test", "", "", HelloWorldLet.class));
+		section.attach(PathInfo.create("test", "/test", HelloWorldLet.class));
 
 		section.addAfterFilter(GroovyRunFilter.create(new File("./script-test/groovy/ObjectFilter.groovy")));
 
@@ -52,9 +56,9 @@ public class TestGroovyFilter extends TestAradon {
 
 	@Test
 	public void scriptRun() throws Exception {
-		initAradon();
+		Aradon aradon = testAradon();
 		SectionService section = aradon.attach("test", XMLConfig.BLANK);
-		section.attach(PathInfo.create("test", "/test", "", "", HelloWorldLet.class));
+		section.attach(PathInfo.create("test", "/test", HelloWorldLet.class));
 
 		section.addAfterFilter(ScriptFactory.createGroovyFilter(new File("./script-test/groovy/ScriptFilter.groovy")));
 
@@ -71,14 +75,15 @@ public class TestGroovyFilter extends TestAradon {
 
 	@Test
 	public void runSpeed() throws Exception {
-		initAradon();
+		Aradon aradon = testAradon();
 		SectionService section = aradon.attach("test", XMLConfig.BLANK);
-		section.attach(PathInfo.create("test", "/test", "", "", HelloWorldLet.class));
+		section.attach(PathInfo.create("test", "/test", HelloWorldLet.class));
 
 		Request request = new Request(Method.GET, "riap://component/test/test");
 		Response response = aradon.handle(request);
 
-		PathService iservice = getInnerRequest().getPathService(aradon);
+		InnerRequest req = ((InnerResponse)Response.getCurrent()).getInnerRequest() ;
+		PathService iservice = req.getPathService(aradon);
 
 		GroovyScriptEngine gse = new GroovyScriptEngine(new String[] { "./script-test/groovy" }, this.getClass().getClassLoader());
 		for (int i = 0; i < 5; i++) {
@@ -87,7 +92,7 @@ public class TestGroovyFilter extends TestAradon {
 
 			Binding binding = new Binding();
 			binding.setProperty("service", iservice);
-			binding.setProperty("request", getInnerRequest());
+			binding.setProperty("request", req);
 			binding.setProperty("response", response);
 			script.setBinding(binding);
 
@@ -100,7 +105,7 @@ public class TestGroovyFilter extends TestAradon {
 
 	@Test
 	public void chartFilter() throws Exception {
-		initAradon();
+		Aradon aradon = testAradon();
 
 		final SectionService section = aradon.getChildService("another");
 		section.attach(PathInfo.create("chart", "/chart", HelloWorldLet.class));

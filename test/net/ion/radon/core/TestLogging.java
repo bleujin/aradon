@@ -11,17 +11,16 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import net.ion.framework.util.Debug;
-import net.ion.radon.TestAradon;
 
 import org.junit.Test;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.Method;
 
-public class TestLogging extends TestAradon {
+public class TestLogging extends TestBaseAradon {
 
 	public void xtestViewRecentLog() throws Exception {
-		initAradon();
+		Aradon aradon = testAradon() ;
 		Logger log = aradon.getLogger();
 		Debug.line(log.getClass(), log.getResourceBundle(), log.getResourceBundleName());
 

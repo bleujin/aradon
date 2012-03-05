@@ -14,22 +14,22 @@ public class PathInfo extends BasePathInfo{
 	private String description;
 	private Class<? extends ServerResource> handlerClass;
 
-	public final static PathInfo HELLO = PathInfo.create("test", "/test", "", "", HelloWorldLet.class) ;
+	public final static PathInfo HELLO = PathInfo.create("test", "/test", IMatchMode.EQUALS, "", HelloWorldLet.class) ;
 	
-	private PathInfo(String name, String urls, String matchMode, String description, Class<? extends ServerResource> handlerClass) {
+	private PathInfo(String name, String urls, IMatchMode matchMode, String description, Class<? extends ServerResource> handlerClass) {
 		this.name = name;
 		this.urls = StringUtil.split(urls, ", \t\n");
-		this.mmode =  IMatchMode.fromString(matchMode) ;
+		this.mmode =  matchMode ;
 		this.description = description;
 		this.handlerClass = handlerClass;
 	}
 
-	public static PathInfo create(String name, String urls, String matchMode, String description, Class<? extends ServerResource> handlerClass) {
+	public static PathInfo create(String name, String urls, IMatchMode matchMode, String description, Class<? extends ServerResource> handlerClass) {
 		return new PathInfo(name, urls, matchMode, description, handlerClass);
 	}
 
 	public static PathInfo create(String name, String urls, Class<? extends ServerResource> handlerClass) {
-		return create(name, urls, "", "", handlerClass);
+		return create(name, urls, IMatchMode.EQUALS, "", handlerClass);
 	}
 
 	

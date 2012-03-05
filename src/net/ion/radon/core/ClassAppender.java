@@ -15,7 +15,6 @@ import java.util.Set;
 
 import net.ion.framework.util.Debug;
 import net.ion.framework.util.ListUtil;
-import net.ion.radon.AradonServer;
 
 import org.apache.commons.configuration.ConfigurationException;
 
@@ -23,14 +22,14 @@ public class ClassAppender {
 
 	private Set<URL> targets = new HashSet<URL>();
 
-	ClassAppender() {
+	private ClassAppender() {
 	}
 	
-	public final static ClassAppender create(){
+	final static ClassAppender create(){
 		return new ClassAppender();
 	}
 	 
-	public void invokeURL() throws ConfigurationException {
+	void invokeURL() throws ConfigurationException {
 		try {
 			Method addURL = URLClassLoader.class.getDeclaredMethod("addURL", new Class[] { URL.class });
 			addURL.setAccessible(true);// you're telling the JVM to override the default visibility
@@ -51,7 +50,7 @@ public class ClassAppender {
 		}
 	}
 
-	public void appendPath(String[] paths) throws MalformedURLException {
+	void appendPath(String[] paths) throws MalformedURLException {
 		for (String path : paths) {
 			final File file = new File(path);
 			if (!file.exists()) {
@@ -80,13 +79,13 @@ public class ClassAppender {
 			}
 		});
 		jarFileList.addAll(Arrays.asList(jarFiles)) ;
-		File[] dirs = file.listFiles(AradonServer.DIR_FILTER);
+		File[] dirs = file.listFiles(AradonConfig.DIR_FILTER);
 		for (File dir : dirs) {
 			findJarFiles(dir, jarFileList) ;
 		}
 	}
 
-	public void appendJar(String[] jars) throws MalformedURLException {
+	void appendJar(String[] jars) throws MalformedURLException {
 		for (String jarpath : jars) {
 			File file = new File(jarpath);
 			if (!file.exists()) {
@@ -94,10 +93,11 @@ public class ClassAppender {
 				continue;
 			}
 			targets.add(new URL("jar:file:" + file.getAbsolutePath() + "!/"));
+			Debug.line("load:" + new URL("jar:file:" + file.getAbsolutePath() + "!/")) ;
 		}
 	}
 	
-	public void appendJar(File[] jars) throws MalformedURLException {
+	void appendJar(File[] jars) throws MalformedURLException {
 		for (File file : jars) {
 			targets.add(new URL("jar:file:" + file.getAbsolutePath() + "!/"));
 		}
