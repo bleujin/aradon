@@ -1,1 +1,0 @@
-java -cp lib/aradon/embed/iframework_2.1.jar;lib/aradon/embed/apache_extend_fat.jar;lib/aradon/embed/core_fat.jar;lib/aradon/embed/jci_fat.jar;lib/aradon/embed/jetty_fat.jar;lib/aradon/embed/rest_fat.jar;bin/ net.ion.radon.core.cli.AradonMain
