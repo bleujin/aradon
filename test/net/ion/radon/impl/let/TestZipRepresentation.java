@@ -10,6 +10,7 @@ import java.util.zip.ZipFile;
 import junit.framework.TestCase;
 import net.ion.framework.util.Debug;
 
+import org.apache.http.impl.cookie.DateUtils;
 import org.restlet.Client;
 import org.restlet.data.MediaType;
 import org.restlet.data.Protocol;
@@ -49,7 +50,7 @@ public class TestZipRepresentation extends TestCase{
 		String date = "Fri, 19 Nov 2010 07:57:44 GMT" ;
 		DateFormat df = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
 		
-		Date d = org.apache.commons.httpclient.util.DateUtil.parseDate(date) ;
+		Date d = DateUtils.parseDate(date) ;
 		Debug.debug(d) ;
 		
 		

@@ -11,10 +11,11 @@ import net.ion.radon.core.IService;
 import net.ion.radon.core.filter.IFilterResult;
 import net.ion.radon.core.filter.IRadonFilter;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpException;
-import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpException;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.representation.Representation;
@@ -34,10 +35,10 @@ public class TestChartFilter extends IRadonFilter {
 //		try {
 //			response.setEntity(new InputRepresentation(getByteInputStream("http://chart.apis.google.com/chart?cht=p3&chs=500x250&chd=s:JMBJZ&chl=Open+Source|J2EE|Web+Service|Ajax|Other"))) ;
 //		} catch (HttpException e) {
-//			// TODO Auto-generated catch block
+//			
 //			e.printStackTrace();
 //		} catch (IOException e) {
-//			// TODO Auto-generated catch block
+//			
 //			e.printStackTrace();
 //		}
 		
@@ -52,21 +53,18 @@ public class TestChartFilter extends IRadonFilter {
 	
 	private InputStream getByteInputStream(String httpURL) throws HttpException, IOException {
 
-		HttpClient httpclient = new HttpClient();
-		GetMethod httpget = new GetMethod(httpURL);
+		DefaultHttpClient httpclient = new DefaultHttpClient();
 		try {
-
-			httpclient.executeMethod(httpget);
-
-			InputStream input = httpget.getResponseBodyAsStream();
+			HttpGet httpget = new HttpGet(httpURL);
+			HttpResponse response = httpclient.execute(httpget);
+			InputStream input = response.getEntity().getContent() ;
 			InputStream result = new ByteArrayInputStream(IOUtils.toByteArray(input));
 			input.close();
 			return result;
-
 		} catch (Exception ex) {
 			throw new HttpException(ex.getMessage(), ex);
 		} finally {
-			httpget.releaseConnection();
+			httpclient.getConnectionManager().shutdown() ;
 		}
 	}
 }

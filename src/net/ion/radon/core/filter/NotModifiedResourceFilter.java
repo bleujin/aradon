@@ -9,7 +9,8 @@ import net.ion.radon.core.IService;
 import net.ion.radon.core.RadonAttributeKey;
 import net.ion.radon.core.let.AbstractLet;
 
-import org.apache.commons.httpclient.util.DateParseException;
+import org.apache.http.impl.cookie.DateParseException;
+import org.apache.http.impl.cookie.DateUtils;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.CacheDirective;
@@ -34,7 +35,7 @@ public class NotModifiedResourceFilter extends IRadonFilter{
 		String newTagValue = String.valueOf(hashValue);
 		if (StringUtil.isNotBlank(tagValue) && StringUtil.isNotBlank(modified)) {
 			try {
-				Date lastModDate = org.apache.commons.httpclient.util.DateUtil.parseDate(modified);
+				Date lastModDate = DateUtils.parseDate(modified);
 				Date resultModDate = result.getModificationDate();
 
 				if (resultModDate != null && lastModDate.compareTo(resultModDate) <= 0 && tagValue.equals(newTagValue)) {

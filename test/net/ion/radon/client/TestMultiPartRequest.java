@@ -26,7 +26,7 @@ public class TestMultiPartRequest {
 		at.getAradon().startServer(9999) ;
 		
 		AradonClient ac = AradonClientFactory.create("http://127.0.0.1:9999") ;
-		MultipartEntity rf = new MultipartEntity() ;
+		HttpMultipartEntity rf = new HttpMultipartEntity() ;
 		rf.addParameter("name", "bleujin") ;
 		rf.addParameter("uploadfile", new File("./build.xml")) ;
 		

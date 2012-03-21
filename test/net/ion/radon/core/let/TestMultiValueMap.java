@@ -13,7 +13,7 @@ import java.util.Set;
 
 import net.ion.framework.util.Debug;
 import net.ion.framework.util.ListUtil;
-import net.ion.radon.client.MultipartEntity;
+import net.ion.radon.client.HttpMultipartEntity;
 
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.junit.Test;
@@ -82,7 +82,7 @@ public class TestMultiValueMap {
 
 		Request request = new Request(Method.POST, "/");
 
-		MultipartEntity mpe = new MultipartEntity();
+		HttpMultipartEntity mpe = new HttpMultipartEntity();
 		mpe.addParameter("to", "bleujin@i-on.net");
 		mpe.addParameter("subject", "�ѱ�", CharacterSet.UTF_8);
 		mpe.addParameter("subject", "�ѱ�2", CharacterSet.UTF_8);

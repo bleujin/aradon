@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app>
+	<display-name>Example</display-name>
+
+	<!-- Declare the existence of a servlet. -->
+	<servlet>
+		<servlet-name>HelloServlet</servlet-name>
+		<servlet-class>net.ion.nradon.servlet.HelloServlet</servlet-class>
+	</servlet>
+
+	<!-- Map URLs to that servlet. -->
+	<servlet-mapping>
+		<servlet-name>HelloServlet</servlet-name>
+		<url-pattern>/servlet</url-pattern>
+	</servlet-mapping>
+</web-app>

@@ -12,8 +12,8 @@ import net.ion.radon.core.Aradon;
 import net.ion.radon.core.IService;
 import net.ion.radon.core.RadonAttributeKey;
 
-import org.apache.commons.httpclient.util.DateParseException;
-import org.apache.commons.httpclient.util.DateUtil;
+import org.apache.http.impl.cookie.DateParseException;
+import org.apache.http.impl.cookie.DateUtils;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.Uniform;
@@ -333,11 +333,27 @@ public class InnerResponse extends Response {
 	public static long getLastModified(String value) {
 		try {
 			if (StringUtil.isBlank(value)) return -1L ;
-		    Date date = DateUtil.parseDate(value);
+		    Date date = DateUtils.parseDate(value);
 		    return date.getTime();
 		} catch (DateParseException e) {
-		    return -1L ;
+			return -1L ;
 		}
+	}
+
+	public void sendError(int status) {
+		setStatus(Status.valueOf(status)) ;
+	}
+
+	public void addHeader(String key, String value) {
+		getHeaders().add(key, value) ;
+	}
+
+	public void setStatus(int status) {
+		setStatus(Status.valueOf(status)) ;
+	}
+
+	public void sendError(int status, String requestURI) {
+		setStatus(status) ;
 	}
 
     

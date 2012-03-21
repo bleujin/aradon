@@ -10,7 +10,7 @@ import java.util.Arrays;
 import net.ion.framework.parse.gson.JsonObject;
 import net.ion.framework.parse.gson.JsonParser;
 import net.ion.framework.util.Debug;
-import net.ion.radon.client.MultipartEntity;
+import net.ion.radon.client.HttpMultipartEntity;
 import net.ion.radon.core.Aradon;
 import net.ion.radon.core.PathService;
 import net.ion.radon.core.RadonAttributeKey;
@@ -148,10 +148,10 @@ public class TestRequest {
 
 		Request request = new Request(Method.POST, "riap://component/multipart");
 
-		MultipartEntity entity = new MultipartEntity();
+		HttpMultipartEntity entity = new HttpMultipartEntity();
 		entity.addParameter("to", "bleujin@i-on.net");
-		entity.addParameter("subject", "ÇÑ±Û", Charset.forName("UTF-8"));
-		entity.addParameter("content", "¾È³çÇÏ¼¼¿ä.", Charset.forName("UTF-8"));
+		entity.addParameter("subject", "ï¿½Ñ±ï¿½", Charset.forName("UTF-8"));
+		entity.addParameter("content", "ï¿½È³ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½.", Charset.forName("UTF-8"));
 		entity.addParameter("attach1", new File("./build.xml"));
 
 		request.setEntity(entity.makeRepresentation());
@@ -160,8 +160,8 @@ public class TestRequest {
 		JsonObject jso = JsonParser.fromString(response.getEntityAsText()).getAsJsonObject();
 
 		assertEquals("bleujin@i-on.net", jso.asString("to"));
-		assertEquals("ÇÑ±Û", jso.asString("subject"));
-		assertEquals("¾È³çÇÏ¼¼¿ä.", jso.asString("content"));
+		assertEquals("ï¿½Ñ±ï¿½", jso.asString("subject"));
+		assertEquals("ï¿½È³ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½.", jso.asString("content"));
 		assertEquals(true, jso.asString("attach1").length() > 10);
 	}
 

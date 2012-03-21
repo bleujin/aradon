@@ -1,10 +1,12 @@
-2012. 3. 5 ì˜¤í›„ 11:15:08 org.restlet.engine.connector.ServerConnectionHelper start
-ì •ë³´: Starting the internal [HTTP/1.1] server on port 9000
-2012. 3. 5 ì˜¤í›„ 11:15:08 net.ion.radon.core.Aradon stop
-ê²½ê³ : aradon server stoped
-2012. 3. 5 ì˜¤í›„ 11:15:08 net.ion.radon.core.Aradon startServer
-ê²½ê³ : aradon started : 9000
-2012. 3. 5 ì˜¤í›„ 11:15:08 net.ion.radon.core.AradonConfig launchShell
-ê²½ê³ : aradon manage shell not loaded
-2012. 3. 5 ì˜¤í›„ 11:15:08 org.restlet.engine.log.LogFilter afterHandle
-ì •ë³´: 2012-03-05	23:15:08	-	-	-	-1	GET	/abcdefg/test2	-	404	442	0	0	-	-	-
+2012. 3. 21 ¿ÀÈÄ 3:11:12 org.restlet.engine.connector.ServerConnectionHelper start
+Á¤º¸: Starting the internal [HTTP/1.1] server on port 9000
+2012. 3. 21 ¿ÀÈÄ 3:11:13 net.ion.radon.core.Aradon stop
+°æ°í: aradon server stoped
+2012. 3. 21 ¿ÀÈÄ 3:11:13 net.ion.radon.core.Aradon stop
+°æ°í: aradon server stoped
+2012. 3. 21 ¿ÀÈÄ 3:11:13 net.ion.radon.core.Aradon startServer
+°æ°í: aradon started : 9000
+2012. 3. 21 ¿ÀÈÄ 3:11:13 net.ion.radon.core.AradonConfig launchShell
+°æ°í: aradon manage shell not loaded
+2012. 3. 21 ¿ÀÈÄ 3:11:13 org.restlet.engine.log.LogFilter afterHandle
+Á¤º¸: 2012-03-21	15:11:13	-	-	-	-1	GET	/abcdefg/test2	-	404	442	0	0	-	-	-

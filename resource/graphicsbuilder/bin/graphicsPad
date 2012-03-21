@@ -1,7 +1,0 @@
-#!/bin/sh
-
-GROOVY_APP_NAME=GraphicsPad
-DIRNAME=`dirname "$0"`
-. "$DIRNAME/startGroovy"
-
-startGroovy groovy.swing.j2d.app.GraphicsPad "$@"

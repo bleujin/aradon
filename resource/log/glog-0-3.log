@@ -1,2 +1,18 @@
-2012. 3. 5 ì˜¤í›„ 11:15:07 net.ion.radon.core.Aradon stop
-ê²½ê³ : aradon server stoped
+2012. 3. 21 ¿ÀÈÄ 3:11:10 org.restlet.ext.net.HttpClientHelper start
+Á¤º¸: Starting the HTTP client
+2012. 3. 21 ¿ÀÈÄ 3:11:10 org.restlet.ext.net.HttpClientHelper start
+Á¤º¸: Starting the HTTP client
+2012. 3. 21 ¿ÀÈÄ 3:11:11 org.restlet.engine.connector.ServerConnectionHelper start
+Á¤º¸: Starting the internal [HTTP/1.1] server on port 9050
+2012. 3. 21 ¿ÀÈÄ 3:11:11 net.ion.radon.core.Aradon startServer
+°æ°í: aradon started : 9050
+2012. 3. 21 ¿ÀÈÄ 3:11:11 net.ion.radon.core.AradonConfig launchShell
+°æ°í: aradon manage shell port :4567
+2012. 3. 21 ¿ÀÈÄ 3:11:11 org.restlet.ext.net.HttpClientHelper stop
+Á¤º¸: Stopping the HTTP client
+2012. 3. 21 ¿ÀÈÄ 3:11:11 org.restlet.ext.net.HttpClientHelper stop
+Á¤º¸: Stopping the HTTP client
+2012. 3. 21 ¿ÀÈÄ 3:11:11 org.restlet.engine.connector.ServerConnectionHelper stop
+Á¤º¸: Stopping the internal [HTTP/1.1] server
+2012. 3. 21 ¿ÀÈÄ 3:11:11 net.ion.radon.core.Aradon stop
+°æ°í: aradon server stoped
