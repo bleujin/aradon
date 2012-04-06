@@ -87,10 +87,11 @@ public class RouterSection extends SectionService{
 
 
 	public void attach(BasePathInfo pathInfo) {
-		attach(pathInfo, PathService.create(this, context.createChildContext(), pathInfo));
+		attach(PathService.create(this, context.createChildContext(), pathInfo));
 	}
 	
-	void attach(BasePathInfo pathInfo, PathService pservice) {
+	public void attach(PathService pservice) {
+		BasePathInfo pathInfo = pservice.getPathInfo() ;
 		if (pathServices.containsKey(pathInfo.getName())) throw new IllegalArgumentException("already exist path name :" + pathInfo.toString()) ;
 		pathServices.put(pathInfo.getName(), pservice);
 		

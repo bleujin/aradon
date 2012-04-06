@@ -5,14 +5,16 @@ import static org.junit.Assert.assertEquals;
 import net.ion.radon.core.Aradon;
 import net.ion.radon.core.PathService;
 import net.ion.radon.core.EnumClass.IMatchMode;
+import net.ion.radon.core.let.AbstractServerResource;
 
 import org.junit.Test;
 import org.restlet.Response;
+import org.restlet.resource.Get;
 
 public class TestAradonTester {
 
 	@Test
-	public void testRegister() throws Exception {
+	public void register() throws Exception {
 		AradonTester at = AradonTester.create().register("s1", "/shutdown/{name}", MyTestLet.class) ;
 		
 		assertEquals(1, at.getAradon().getChildren().size()) ; 
@@ -25,30 +27,48 @@ public class TestAradonTester {
 		
 	}
 	
-	/**
-	 * 2011.10.05 jinik add
-	 * */
 	@Test
-	public void testMatchMode() throws Exception {
+	public void matchMode() throws Exception {
 		AradonTester at = AradonTester.create().register("s1", "/shutdown/{name}/", IMatchMode.STARTWITH, MyTestLet.class) ;
 		Response response = at.get("/s1/shutdown/jinik/test") ;
 		assertEquals("Hello jinik", response.getEntityAsText()) ;
 	}
 	
 	@Test
-	public void testHello() throws Exception {
+	public void hello() throws Exception {
 		AradonTester at = AradonTester.create().register("", "/{name}", MyTestLet.class) ;
 		Response response = at.get("/bleujin") ;
 		assertEquals("Hello bleujin", response.getEntityAsText()) ;
 	}
 	
 	@Test
-	public void testPathName() throws Exception {
+	public void pathName() throws Exception {
 		Aradon aradon = AradonTester.create().register("", "/{name}", "letname", IMatchMode.EQUALS, MyTestLet.class).getAradon() ;
 		
 		PathService ps = aradon.getChildService("").getChildService("letname") ;
 		assertEquals(true, ps != null) ;
+	}
+	
+	@Test
+	public void mergeSection() throws Exception {
+		Aradon aradon = AradonTester.create().mergeSection("test")
+			.addLet("/c1/{hame}", "mylet", MyTestLet.class)
+			.addLet("/c2", "hello", MyTestLet.class).getAradon() ;
+		
+		
 		
 	}
+	
+	
+}
+
+
+class MyTestLet extends AbstractServerResource {
+	
+	@Get
+	public String hello(){
+		return "Hello " + getInnerRequest().getAttribute("name") ;
+	}
+	
 }
 

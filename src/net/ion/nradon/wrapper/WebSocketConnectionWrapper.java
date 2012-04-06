@@ -85,5 +85,8 @@ public class WebSocketConnectionWrapper implements WebSocketConnection {
 	public void execute(Runnable command) {
 		connection.execute(command);
 	}
+	public String getString(String key) {
+		return connection.getString(key);
+	}
 
 }

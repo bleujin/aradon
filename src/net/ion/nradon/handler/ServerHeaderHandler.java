@@ -1,14 +1,13 @@
 package net.ion.nradon.handler;
 
 import net.ion.nradon.HttpControl;
-import net.ion.nradon.HttpHandler;
 import net.ion.nradon.HttpRequest;
 import net.ion.nradon.HttpResponse;
 
 /**
  * Handler that sets the HTTP 'Server' response header.
  */
-public class ServerHeaderHandler implements HttpHandler {
+public class ServerHeaderHandler extends AbstractHttpHandler {
 
 	private final String value;
 

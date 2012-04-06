@@ -15,8 +15,8 @@ public class ExecuteTimeFilter extends IRadonFilter{
 	@Override
 	public IFilterResult afterHandle(IService iservice, Request request, Response response) {
 		
-		Long startTime = getInnerRequest().getAttributes().containsKey(CACHE_NAME) ? 
-						getInnerRequest().getAttribute(CACHE_NAME, Long.class) : 0 ;
+		Long startTime = getInnerRequest(request).getAttributes().containsKey(CACHE_NAME) ? 
+						getInnerRequest(request).getAttribute(CACHE_NAME, Long.class) : 0 ;
 		
 		long exectime = System.currentTimeMillis() - startTime;
 		
@@ -33,7 +33,7 @@ public class ExecuteTimeFilter extends IRadonFilter{
 	
 	@Override
 	public IFilterResult preHandle(IService iservice, Request request, Response response) {
-		getInnerRequest().putAttribute(CACHE_NAME, System.currentTimeMillis() );
+		getInnerRequest(request).putAttribute(CACHE_NAME, System.currentTimeMillis() );
 
 		return IFilterResult.CONTINUE_RESULT;
 	}

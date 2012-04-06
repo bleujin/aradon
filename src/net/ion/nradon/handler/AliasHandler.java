@@ -1,11 +1,10 @@
 package net.ion.nradon.handler;
 
 import net.ion.nradon.HttpControl;
-import net.ion.nradon.HttpHandler;
 import net.ion.nradon.HttpRequest;
 import net.ion.nradon.HttpResponse;
 
-public class AliasHandler implements HttpHandler {
+public class AliasHandler extends AbstractHttpHandler {
 	private final String uri;
 
 	public AliasHandler(String uri) {

@@ -11,7 +11,6 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import net.ion.nradon.HttpControl;
-import net.ion.nradon.HttpHandler;
 import net.ion.nradon.HttpRequest;
 import net.ion.nradon.HttpResponse;
 import net.ion.nradon.WebServer;
@@ -30,7 +29,7 @@ public class TestPost {
 
     @Test
     public void exposesBodyInRequest() throws IOException, InterruptedException {
-        webServer.add(new HttpHandler() {
+        webServer.add(new AbstractHttpHandler() {
             public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
                 response.content("Body = {" + request.body() + "}").end();
             }
@@ -41,7 +40,7 @@ public class TestPost {
 
     @Test
     public void exposesPostBodyAsParameters() throws IOException, InterruptedException {
-        webServer.add(new HttpHandler() {
+        webServer.add(new AbstractHttpHandler() {
             public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
                 response.content("a=" + request.postParam("a") + ", b=" + request.postParam("b")).end();
             }
@@ -53,7 +52,7 @@ public class TestPost {
 
     @Test
     public void exposesPostParamKeys() throws IOException, InterruptedException {
-        webServer.add(new HttpHandler() {
+        webServer.add(new AbstractHttpHandler() {
             public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
                 ArrayList<String> keysList = new ArrayList<String>(request.postParamKeys());
                 Collections.sort(keysList);
@@ -67,7 +66,7 @@ public class TestPost {
 
     @Test
     public void exposesPostBodyAsBytes() throws IOException {
-        webServer.add(new HttpHandler() {
+        webServer.add(new AbstractHttpHandler() {
             public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
                 response.content(Arrays.toString(request.bodyAsBytes())).end();
             }

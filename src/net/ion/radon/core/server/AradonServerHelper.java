@@ -8,6 +8,4 @@ public interface AradonServerHelper {
 
 	void start()  throws Exception;
 
-	void addTo(ServerList servers);
-
 }

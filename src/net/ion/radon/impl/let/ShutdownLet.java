@@ -18,7 +18,7 @@ public class ShutdownLet extends AbstractServerResource {
 
 	@Delete
 	public String suicide(){
-		long timeoutMili = Math.max(getInnerRequest().getParameterAsInteger("timeout"), 1) * 1000L ;
+		long timeoutMili = Math.min(getInnerRequest().getParameterAsInteger("timeout"), 1000L) ;
 		
 		final Aradon self = getAradon() ;
 		new Timer().schedule(new TimerTask() {

@@ -15,7 +15,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses( { TestAllNaradon.class, TestSuiteCore.class, TestSuiteLet.class, TestSuiteClient.class, TestSuiteCommon.class, TestSuiteFilter.class, TestSuiteServerRunner.class, TestSuiteAdvance.class, TestAllNaradon.class })
+@Suite.SuiteClasses( { TestSuiteCore.class, TestSuiteLet.class, TestSuiteClient.class, TestSuiteCommon.class, TestSuiteFilter.class, TestSuiteServerRunner.class, TestSuiteAdvance.class, TestAllNaradon.class })
 public class TestAllAradon {
 
 	@org.junit.Test

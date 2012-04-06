@@ -1,9 +1,14 @@
 package net.ion.radon.client;
 
+import java.io.IOException;
+import java.util.List;
+
+
 import org.restlet.Response;
 import org.restlet.data.Form;
 import org.restlet.data.Method;
 import org.restlet.representation.Representation;
+import org.restlet.representation.StringRepresentation;
 import org.restlet.resource.ResourceException;
 import org.restlet.security.User;
 
@@ -24,4 +29,8 @@ public interface IAradonRequest {
 	public String getFullPath() ;
 	public String getHost() ;
 	public String getPath() ;
+	// public void handle(Method method, Representation re);
+	
+//	public <T> T handle(Method method, Object plainObject, Class<T> rtnClz) throws ResourceException;
+//	public <T> List<T> handles(Method get, Object object, Class<T> clz) throws ResourceException;
 }

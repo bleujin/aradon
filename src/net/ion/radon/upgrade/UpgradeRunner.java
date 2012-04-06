@@ -18,23 +18,22 @@ import net.ion.framework.util.Debug;
 import net.ion.framework.util.IOUtil;
 import net.ion.framework.util.MapUtil;
 import net.ion.framework.util.PathMaker;
-import net.ion.radon.core.TreeContext;
 
 public class UpgradeRunner {
 
 	private static String PREFIX = "upgrade_";
 
-	private TreeContext context;
+	private InstallContext context;
 	private File configDir;
 
 	private Map<String, List<ICommand>> stage = MapUtil.newMap();
 
-	private UpgradeRunner(TreeContext context, File configDir) {
+	private UpgradeRunner(InstallContext context, File configDir) {
 		this.context = context;
 		this.configDir = configDir;
 	}
 
-	public static UpgradeRunner create(TreeContext context, File configDir) {
+	public static UpgradeRunner create(InstallContext context, File configDir) {
 		return new UpgradeRunner(context, configDir);
 	}
 

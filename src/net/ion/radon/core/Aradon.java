@@ -9,14 +9,17 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.Map.Entry;
 
 import net.ion.framework.util.Debug;
+import net.ion.framework.util.IOUtil;
 import net.ion.framework.util.InstanceCreationException;
 import net.ion.framework.util.ListUtil;
 import net.ion.framework.util.MapUtil;
 import net.ion.framework.util.ObjectUtil;
 import net.ion.radon.core.EnumClass.FilterLocation;
-import net.ion.radon.core.classloading.PathFinder;
+import net.ion.radon.core.EnumClass.PlugInApply;
 import net.ion.radon.core.config.AradonConstant;
 import net.ion.radon.core.config.ConnectorConfig;
 import net.ion.radon.core.config.Releasable;
@@ -27,7 +30,6 @@ import net.ion.radon.core.except.AradonRuntimeException;
 import net.ion.radon.core.filter.IRadonFilter;
 import net.ion.radon.core.let.InnerRequest;
 import net.ion.radon.core.let.InnerResponse;
-import net.ion.radon.core.representation.JsonObjectRepresentation;
 import net.ion.radon.core.server.AradonServerHelper;
 import net.ion.radon.core.server.ServerFactory;
 
@@ -36,16 +38,15 @@ import org.restlet.Application;
 import org.restlet.Component;
 import org.restlet.Request;
 import org.restlet.Response;
+import org.restlet.Server;
 import org.restlet.data.Protocol;
+import org.restlet.data.Reference;
 import org.restlet.data.Status;
 import org.restlet.engine.Engine;
-import org.restlet.representation.ObjectRepresentation;
-import org.restlet.representation.Representation;
 import org.restlet.resource.ResourceException;
 import org.restlet.routing.Router;
 import org.restlet.service.ConverterService;
 import org.restlet.service.MetadataService;
-import org.restlet.service.Service;
 
 public class Aradon extends Component implements IService, AradonConstant {
 
@@ -53,9 +54,8 @@ public class Aradon extends Component implements IService, AradonConstant {
 	private List<WrapperReleaseObject> releasables;
 	private TreeContext rootContext;
 
-	private AradonServerHelper serverHelper;
 	private AradonConfig aconfig;
-
+	private AradonServerHelper serverHelper;
 	public Aradon() {
 		super();
 		this.releasables = ListUtil.newList();
@@ -74,9 +74,6 @@ public class Aradon extends Component implements IService, AradonConstant {
 		this.aconfig = AradonConfig.create(config).init(this, rootContext);
 
 		setLogService(new RadonLogService());
-
-		getServers().add(Protocol.RIAP);
-		getClients().add(Protocol.RIAP);
 	}
 
 	public Response handle(Request request) {
@@ -84,12 +81,26 @@ public class Aradon extends Component implements IService, AradonConstant {
 		handle(request, response);
 		return response;
 	}
+	
+	private String getSectionName(Request request) {
+		Reference resourceRef = request.getResourceRef() ;
+		List<String> segs = resourceRef.getSegments() ;
+		if(segs.size() <= 1) {
+			return "" ;
+		}
+		String firstSeg = segs.get(0);
+		return sections.containsKey(firstSeg) ? firstSeg : "" ;
+	}
+
 
 	public void handle(Request request, Response response) {
 		if (!isStarted())
 			start();
 
-		InnerRequest innerRequest = InnerRequest.create(request);
+		InnerRequest innerRequest = InnerRequest.create(getSectionName(request), request);
+		
+		// new URI(request.getResourceRef().toString()).toString()
+		
 		InnerResponse innerResponse = InnerResponse.create(response, innerRequest);
 		// innerResponse.setRequest(innerRequest) ;
 
@@ -124,7 +135,7 @@ public class Aradon extends Component implements IService, AradonConstant {
 	}
 
 	private void slayReleasable() {
-		if (started)
+		if (isStarted())
 			return;
 		Debug.debug("Bye....... Aradon");
 		for (WrapperReleaseObject releasable : releasables) {
@@ -139,38 +150,25 @@ public class Aradon extends Component implements IService, AradonConstant {
 				ignore.printStackTrace();
 			}
 		}
-		this.started = false;
 		Debug.debug("End World.........");
 	}
 
-	private void setSection(String sectionName, Application section) {
-		if (sections.containsKey(sectionName)) {
-			Debug.warn("SECTION[" + sectionName + "] already exists. Ignored....======================");
-		} else {
-			Debug.info("SECTION : " + sectionName + " loaded");
-			sections.put(sectionName, (SectionService) section);
-		}
-	}
-
-	private transient boolean started = false;
-
 	@Override
 	public void stop() {
-		if (!started)
-			return;
+		if (isStopped()) return ;
 		try {
-			super.stop();
+			super.stop() ;
 			getConfig().stopShell();
 			onEventFire(AradonEvent.STOP, this);
-			if (serverHelper != null)
-				serverHelper.stop();
+ 			getServices().stop() ;
+//			getServices().clear() ;
+			if (serverHelper != null) serverHelper.stop() ;
 		} catch (Exception ignore) {
 			ignore.printStackTrace();
 			getLogger().warning(ignore.getMessage());
 		} finally {
 			this.slayReleasable();
 			getLogger().warning("aradon server stoped");
-			this.started = false;
 		}
 	}
 
@@ -180,9 +178,11 @@ public class Aradon extends Component implements IService, AradonConstant {
 
 	@Override
 	public void start() {
-		if (this.started)
-			return;
+		if (isStarted()) {
+			return ;
+		}
 		try {
+			getServers().add(new Server(Protocol.RIAP)) ;
 			super.start();
 			getConfig().loadPlugIn(this);
 		} catch (Exception e) {
@@ -190,7 +190,6 @@ public class Aradon extends Component implements IService, AradonConstant {
 		}
 
 		onEventFire(AradonEvent.START, this);
-		this.started = true;
 	}
 
 	public void startServer(int port) throws Exception {
@@ -198,18 +197,16 @@ public class Aradon extends Component implements IService, AradonConstant {
 			Debug.warn(port + " port is occupied");
 			throw new IllegalArgumentException(port + " port is occupied");
 		}
-
 		startServer(aconfig.getConnectorConfig(port));
 		getConfig().launchShell(this);
 	}
 
-	public void startServer(ConnectorConfig cfig) throws Exception {
-		if (!isStarted())
-			start();
-		serverHelper = ServerFactory.create(getContext(), this, cfig);
+	public synchronized void startServer(ConnectorConfig cfig) throws Exception {
+		this.serverHelper = ServerFactory.create(getContext(), this, cfig) ;
+		serverHelper.start() ;
+//		loadServerHelper(cfig) ;
 
-		serverHelper.start();
-		serverHelper.addTo(getServers());
+		start() ;
 
 		final Aradon aradon = this;
 		Runtime.getRuntime().addShutdownHook(new Thread() {
@@ -253,12 +250,7 @@ public class Aradon extends Component implements IService, AradonConstant {
 			e.getStackTrace();
 			return false;
 		} finally {
-			if (s != null)
-				try {
-					s.close();
-				} catch (IOException ignore) {
-					ignore.printStackTrace();
-				}
+			IOUtil.closeQuietly(s) ;
 		}
 	}
 
@@ -322,11 +314,52 @@ public class Aradon extends Component implements IService, AradonConstant {
 		return section;
 	}
 
-	public void attach(SectionService section) {
-		getDefaultHost().attach("/" + section.getName(), section, Router.MODE_BEST_MATCH);
-		getInternalRouter().attach("/" + section.getName(), section, Router.MODE_BEST_MATCH);
-		setSection(section.getName(), section);
+	public void attach(SectionService newSection, PlugInApply apply) {
+		
+		String newName = newSection.getName();
+		if (! sections.containsKey(newName)) {
+			Debug.info("SECTION : " + newName + " loaded");
+			getDefaultHost().attach("/" + newName, newSection, Router.MODE_BEST_MATCH);
+			getInternalRouter().attach("/" + newName, newSection, Router.MODE_BEST_MATCH);
+			sections.put(newName, (SectionService) newSection);
+		} else {
+			if (apply == PlugInApply.IGNORE){
+				Debug.warn("SECTION[" + newName + "] already exists. Ignored....======================");
+			} else if (apply == PlugInApply.OVERWRITE){
+				SectionService existSection = sections.get(newName) ;
+				onEventFire(AradonEvent.STOP, existSection) ;
+				
+				getDefaultHost().detach(existSection) ;
+				getInternalRouter().detach(existSection) ;
+				
+				getDefaultHost().attach("/" + newName, newSection, Router.MODE_BEST_MATCH);
+				getInternalRouter().attach("/" + newName, newSection, Router.MODE_BEST_MATCH);
+				sections.put(newName, (SectionService) newSection);
+				
+				Debug.line('%', newSection) ;
+				
+			} else if (apply == PlugInApply.MERGE) {
+				SectionService existSection = sections.get(newName) ;
+				for (IRadonFilter prefilter : newSection.getPreFilters()) {
+					existSection.addPreFilter(prefilter) ;
+				}  
+				for (IRadonFilter afterFilter : newSection.getAfterFilters()) {
+					existSection.addAfterFilter(afterFilter) ;
+				}  
+				for (Entry entry : (Set<Entry>)(newSection.getServiceContext().getAttributes().entrySet())) {
+					existSection.getServiceContext().getAttributes().put(entry.getKey(), entry.getValue()) ;
+				}
+				for(PathService pservice : newSection.getChildren()) {
+					existSection.attach(pservice) ;
+				}
+			}
+		}
+		
+		
+	}
 
+	public void attach(SectionService section) {
+		attach(section, PlugInApply.IGNORE) ;
 	}
 
 	public void detach(String sectionName) {
@@ -369,29 +402,6 @@ public class Aradon extends Component implements IService, AradonConstant {
 		return getRadonLogService().recentLog(this, count);
 	}
 
-	public <T> T handle(Request request, Class<? extends T> resultClass) {
-		if (!isStarted())
-			start();
-
-		Response response = handle(request);
-		if (!response.getStatus().isSuccess())
-			throw new ResourceException(response.getStatus(), response.toString());
-
-		try {
-			Representation entity = response.getEntity();
-			if (entity == null) {
-				return null; // or Unable to find a converter for this object
-			} else if (entity instanceof JsonObjectRepresentation) {
-				return ((JsonObjectRepresentation) entity).getJsonObject().getAsObject(resultClass);
-			} else {
-				Object resultObj = ((ObjectRepresentation) entity).getObject();
-				return resultClass.cast(resultObj);
-			}
-		} catch (IOException e) {
-			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, e.getMessage());
-		}
-	}
-
 	public ConverterService getConverterService() {
 		ConverterService result = rootContext.getAttributeObject(ConverterService.class.getCanonicalName(), ConverterService.class);
 		if (result == null) {
@@ -419,6 +429,7 @@ public class Aradon extends Component implements IService, AradonConstant {
 	public Engine getEngine() {
 		return Engine.getInstance();
 	}
+
 
 }
 

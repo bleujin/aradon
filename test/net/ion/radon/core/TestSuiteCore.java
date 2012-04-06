@@ -13,7 +13,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({TestInitAradon.class, TestLet.class, TestResourceLet.class, TestRequest.class, TestResponse.class, TestParameter.class, TestContext.class, TestServerResource.class})
+@Suite.SuiteClasses({TestInitAradon.class, TestSectionAttach.class, TestLet.class, TestResourceLet.class, TestRequest.class, TestResponse.class, TestParameter.class, TestContext.class, TestServerResource.class})
 public class TestSuiteCore extends TestCase {
 
 }

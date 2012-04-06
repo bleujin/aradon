@@ -94,7 +94,7 @@ public class SectionFactory {
 			FilterUtil.setFilter(pservice, entry.getValue());
 			AttributeUtil.load(pservice, entry.getValue());
 
-			section.attach(entry.getKey(), pservice);
+			section.attach(pservice);
 		}
 
 		return section;

@@ -9,7 +9,7 @@ import net.ion.nradon.HttpHandler;
 import net.ion.nradon.HttpRequest;
 import net.ion.nradon.HttpResponse;
 
-public class PathMatchHandler implements HttpHandler {
+public class PathMatchHandler extends AbstractHttpHandler {
 
 	private final Pattern pathPattern;
 	private final HttpHandler httpHandler;

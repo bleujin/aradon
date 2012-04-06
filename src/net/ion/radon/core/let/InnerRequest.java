@@ -1,6 +1,7 @@
 package net.ion.radon.core.let;
 
-import java.util.Collection;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -11,6 +12,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentMap;
 
 import net.ion.framework.parse.gson.JsonObject;
+import net.ion.framework.util.Debug;
 import net.ion.framework.util.ObjectUtil;
 import net.ion.framework.util.StringUtil;
 import net.ion.radon.core.IService;
@@ -31,10 +33,12 @@ import org.restlet.Response;
 import org.restlet.Uniform;
 import org.restlet.data.CacheDirective;
 import org.restlet.data.ChallengeResponse;
+import org.restlet.data.CharacterSet;
 import org.restlet.data.ClientInfo;
 import org.restlet.data.Conditions;
 import org.restlet.data.Cookie;
 import org.restlet.data.Form;
+import org.restlet.data.Language;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.data.Parameter;
@@ -46,6 +50,7 @@ import org.restlet.data.Status;
 import org.restlet.data.Warning;
 import org.restlet.ext.fileupload.RestletFileUpload;
 import org.restlet.representation.Representation;
+import org.restlet.representation.StringRepresentation;
 import org.restlet.resource.ResourceException;
 import org.restlet.util.Series;
 
@@ -270,6 +275,8 @@ public class InnerRequest extends Request {
 		}
 
 		Representation entity = request.getEntity();
+		if (entity == null) return params ;
+		
 		if (hasEntityBody(entity) && isMultipartRequest(entity)) {
 			try {
 				DiskFileItemFactory factory = new DiskFileItemFactory();
@@ -301,7 +308,24 @@ public class InnerRequest extends Request {
 				params.putParameter(name, form.getValuesArray(name));
 			}
 		} else { // not form parameter
-			// Debug.debug("NOT FORM PARAM", entity, entity == null, (entity != null) ? entity.getSize() : 0) ;
+			Representation den =  request.getEntity() ;
+			if (den.getMediaType() != null && den.getMediaType().toString().startsWith("text")){
+				try {
+					InnerRequest ir = (InnerRequest) request ;
+					String str = den.getText() ;
+					Debug.line(request.getClass(),  getHeaders(request)) ;
+					Debug.line(str) ;
+					if (ir.getMethod().equals(Method.LOCK)){
+						ir.getHeaders().add("Timeout", "Second-1") ;
+					}
+					
+					request.setEntity(new StringRepresentation(str, den.getMediaType(), Language.ALL, CharacterSet.UTF_8)) ; 
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				// Debug.debug("NOT FORM PARAM", request.getMethod(), entity, entity == null, (entity != null) ? entity.getSize() : 0) ;
+			}
+			
 		}
 
 		return params;
@@ -607,6 +631,14 @@ public class InnerRequest extends Request {
 
 	public String getSectionName(){
 		return sectionName ;
+	}
+
+	public InputStream getInputStream() throws IOException {
+		return getEntity().getStream();
+	}
+
+	public String getRequestURI() {
+		return getResourceRef().getRelativeRef().toString() ;
 	}
 
 

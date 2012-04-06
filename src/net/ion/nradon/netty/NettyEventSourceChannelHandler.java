@@ -41,7 +41,6 @@ public class NettyEventSourceChannelHandler extends SimpleChannelUpstreamHandler
 		try {
 			handler.onOpen(this.eventSourceConnection);
 		} catch (Exception e) {
-			// TODO
 			e.printStackTrace();
 		}
 	}

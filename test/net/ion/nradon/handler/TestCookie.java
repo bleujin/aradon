@@ -15,7 +15,6 @@ import java.util.Map;
 
 import net.ion.framework.util.ListUtil;
 import net.ion.nradon.HttpControl;
-import net.ion.nradon.HttpHandler;
 import net.ion.nradon.HttpRequest;
 import net.ion.nradon.HttpResponse;
 import net.ion.nradon.WebServer;
@@ -36,7 +35,7 @@ public class TestCookie {
 
 	@Test
 	public void setsOneOutboundCookie() throws IOException, InterruptedException {
-		webServer.add(new HttpHandler() {
+		webServer.add(new AbstractHttpHandler() {
 			public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
 				response.cookie(new Cookie("a", "b")).end();
 			}
@@ -50,7 +49,7 @@ public class TestCookie {
 
 	@Test
 	public void setsTwoOutboundCookies() throws IOException, InterruptedException {
-		webServer.add(new HttpHandler() {
+		webServer.add(new AbstractHttpHandler() {
 			public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
 				response.cookie(new Cookie("a", "b")).cookie(new Cookie("c", "d")).end();
 			}
@@ -66,7 +65,7 @@ public class TestCookie {
 
 	@Test
 	public void parsesOneInboundCookie() throws IOException, InterruptedException {
-		webServer.add(new HttpHandler() {
+		webServer.add(new AbstractHttpHandler() {
 			public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
 				String body = "Your cookie value: " + request.cookieValue("someName");
 				response.header("Content-Length", body.length()).content(body).end();
@@ -79,7 +78,7 @@ public class TestCookie {
 
 	@Test
 	public void parsesThreeInboundCookiesInTwoHeaders() throws IOException, InterruptedException {
-		webServer.add(new HttpHandler() {
+		webServer.add(new AbstractHttpHandler() {
 			public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
 				String body = "Your cookies:";
 				List<Cookie> cookies = sort(request.cookies());
@@ -97,7 +96,7 @@ public class TestCookie {
 
 	@Test
 	public void behavesWellWhenThereAreNoInboundCookies() throws IOException {
-		webServer.add(new HttpHandler() {
+		webServer.add(new AbstractHttpHandler() {
 			public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
 				String body = "Cookie count:" + request.cookies().size();
 				response.header("Content-Length", body.length()).content(body).end();

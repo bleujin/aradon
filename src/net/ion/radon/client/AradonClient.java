@@ -8,7 +8,10 @@ public interface AradonClient {
 
 	public ISerialRequest createSerialRequest(String path) ;
 	public ISerialRequest createSerialRequest(String path, String id, String pwd) ;
-	
+
+	public IJsonRequest createJsonRequest(String path);
+	public IJsonRequest createJsonRequest(String path, String id, String pwd) ;
+
 
 	public void stop() throws Exception  ;
 	

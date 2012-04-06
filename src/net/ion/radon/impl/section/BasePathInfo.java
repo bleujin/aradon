@@ -5,10 +5,11 @@ import net.ion.radon.core.EnumClass.IMatchMode;
 import net.ion.radon.core.path.URLPattern;
 
 import org.restlet.data.Reference;
+import org.restlet.resource.ServerResource;
 
 public abstract class BasePathInfo {
 	
-	public abstract Class getHandlerClass() ;
+	public abstract Class<? extends ServerResource> getHandlerClass() ;
 	
 	public abstract String[] getUrls() ;
 

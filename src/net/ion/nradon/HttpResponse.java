@@ -81,6 +81,10 @@ public interface HttpResponse {
 	 */
 	HttpResponse content(String content);
 
+	
+	
+	public HttpResponse write(Response response) ;
+	
 	/**
 	 * Writes immediately to the client without closing the connection. (The {@link #content(String)} method caches content until {@link #end()} is called()
 	 * <p/>
@@ -118,6 +122,4 @@ public interface HttpResponse {
 	 * Every response should have either {@link #end()} or {@link #error(Throwable)} called. No more operations should be performed on a response after these.
 	 */
 	HttpResponse end();
-
-	HttpResponse write(Response res);
 }

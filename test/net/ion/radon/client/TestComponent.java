@@ -20,6 +20,8 @@ import org.restlet.security.MapVerifier;
  * 
  */
 public class TestComponent extends Component {
+
+	
 	public static void main(String[] args) throws Exception {
 		// Create the component that listens to the 8182 port.
 		Component component = new TestComponent();

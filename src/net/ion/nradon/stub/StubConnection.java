@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Executor;
 
+import net.ion.framework.util.ObjectUtil;
 import net.ion.nradon.EventSourceConnection;
 import net.ion.nradon.HttpRequest;
 import net.ion.nradon.WebSocketConnection;
@@ -100,4 +101,9 @@ public class StubConnection extends StubDataHolder implements EventSourceConnect
 	public void execute(Runnable command) {
 		command.run();
 	}
+
+	public String getString(String key) {
+		return ObjectUtil.toString(data(key));
+	}
+
 }

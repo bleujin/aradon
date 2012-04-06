@@ -83,10 +83,6 @@ public class BasicSerialRequest implements ISerialRequest{
 				throw new ResourceException(response.getStatus()) ;
 			}
 			Representation entity = response.getEntity();
-			if (entity.getMediaType().equals(MediaType.APPLICATION_JSON)){
-				return JsonParser.fromString(entity.getText()).getAsJsonObject().getAsObject(resultClass) ;
-			}
-			
 			InputStream input = entity.getStream();
 			if (input == null) return null ;
 			Object obj = new ObjectInputStream(input).readObject() ;

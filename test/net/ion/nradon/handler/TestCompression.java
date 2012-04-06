@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 
 import net.ion.nradon.HttpControl;
-import net.ion.nradon.HttpHandler;
 import net.ion.nradon.HttpRequest;
 import net.ion.nradon.HttpResponse;
 import net.ion.nradon.WebServer;
@@ -32,7 +31,7 @@ public class TestCompression {
 
 	@Test
 	public void compressedPostIsUncompressedProperly() throws IOException {
-		webServer.add(new HttpHandler() {
+		webServer.add(new AbstractHttpHandler() {
 			public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
 				response.content(request.body()).end();
 			}
@@ -43,7 +42,7 @@ public class TestCompression {
 
 	@Test
 	public void compressedResponseIsSentProperly() throws IOException {
-		webServer.add(new HttpHandler() {
+		webServer.add(new AbstractHttpHandler() {
 			public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
 				response.content(content).end();
 			}

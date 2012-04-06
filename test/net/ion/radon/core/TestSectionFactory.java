@@ -44,7 +44,10 @@ class MySection extends SectionService {
 
 	@Override
 	public void attach(BasePathInfo pathInfo) {
+	}
 
+	@Override
+	public void attach(PathService pservice) {
 	}
 
 	public Aradon getAradon() {

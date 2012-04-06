@@ -8,17 +8,17 @@ import net.ion.radon.core.config.ConnectorConfig;
 import org.restlet.Context;
 import org.restlet.Server;
 import org.restlet.data.Protocol;
-import org.restlet.ext.jetty.HttpServerHelper;
-import org.restlet.ext.jetty.HttpsServerHelper;
-import org.restlet.ext.jetty.JettyServerHelper;
-import org.restlet.util.ServerList;
+import org.restlet.engine.Engine;
+import org.restlet.engine.local.RiapServerHelper;
+
+import net.ion.radon.core.server.jetty.JettyServerHelper;
 
 public class AradonJettyHelper implements AradonServerHelper {
 
-	private JettyServerHelper server;
+	private JettyServerHelper helper;
 
 	private AradonJettyHelper(JettyServerHelper server) {
-		this.server = server;
+		this.helper = server;
 		
 	}
 
@@ -26,30 +26,27 @@ public class AradonJettyHelper implements AradonServerHelper {
 //		ConnectorHelper<Server> helper = new HttpServerHelper(null);
 // 		ConnectorHelper<Server> helper = new HttpsServerHelper(null) ;
 //		Engine.getInstance().getRegisteredServers().add(0, helper);
-
+		Engine.getInstance().getRegisteredServers().clear() ;
+		Engine.getInstance().getRegisteredServers().add(new RiapServerHelper(null)) ;
+		
 		Server server = new Server(context, cfig.getProtocol(), cfig.getPort(), aradon);
 		
 		for (Entry<String, String> entry : cfig.getParams().entrySet()) {
 			server.getContext().getParameters().add(entry.getKey(), entry.getValue());
 		}
 		if (cfig.getProtocol() == Protocol.HTTP){
-			return new AradonJettyHelper(new HttpServerHelper(server)) ;
+			return new AradonJettyHelper(new  net.ion.radon.core.server.jetty.HttpServerHelper(server)) ;
 		} else {
-			return new AradonJettyHelper(new HttpsServerHelper(server)); 
+			return new AradonJettyHelper(new  net.ion.radon.core.server.jetty.HttpsServerHelper(server)); 
 		}
 	}
 
 	public void start() throws Exception {
-		server.getHelped().start() ;
+		helper.start() ;
 	}
 
 	public void stop() throws Exception {
-		server.getHelped().stop() ;
-		// server.stop();
-	}
-
-	public void addTo(ServerList servers) {
-		// servers.add(Protocol.HTTP, 0) ;
+		helper.stop() ;
 	}
 
 }

@@ -2,6 +2,7 @@ package net.ion.nradon.stub;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
@@ -106,7 +107,9 @@ public class StubHttpResponse implements HttpResponse {
 	
 	public StubHttpResponse write(Response response) {
 		try {
-			IOUtil.copy(response.getEntity().getStream(), contents) ;
+			InputStream input = response.getEntity().getStream();
+			IOUtil.copy(input, contents) ;
+			input.close() ;
 		} catch (IOException e) {
 			throw new Error(e);
 		} finally{

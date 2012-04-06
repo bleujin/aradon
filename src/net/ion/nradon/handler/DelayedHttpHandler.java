@@ -12,7 +12,7 @@ import net.ion.nradon.HttpResponse;
 /**
  * Wraps a standard HttpHandler, and will introduce an artificial delay. Useful for testing how things will behave when they are slow.
  */
-public class DelayedHttpHandler implements HttpHandler {
+public class DelayedHttpHandler extends AbstractHttpHandler {
 
 	private final Executor executor;
 	private Timer timer;

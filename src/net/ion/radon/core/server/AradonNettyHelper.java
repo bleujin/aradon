@@ -4,44 +4,47 @@ import java.util.Map.Entry;
 
 import net.ion.radon.core.Aradon;
 import net.ion.radon.core.config.ConnectorConfig;
+import net.ion.radon.core.server.netty.NettyServerHelper;
 
 import org.restlet.Context;
 import org.restlet.Server;
-import org.restlet.ext.netty.HttpServerHelper;
-import org.restlet.util.ServerList;
+import org.restlet.data.Protocol;
+import org.restlet.engine.Engine;
+import org.restlet.engine.local.RiapServerHelper;
 
 public class AradonNettyHelper implements AradonServerHelper {
 
-	private HttpServerHelper server;
+	private NettyServerHelper helper;
 
-	private AradonNettyHelper(HttpServerHelper server) {
-		this.server = server;
+	private AradonNettyHelper(NettyServerHelper server) {
+		this.helper = server;
 	}
 
 	public final static AradonNettyHelper create(Context context, ConnectorConfig cfig, Aradon aradon) {
 //		ConnectorHelper<Server> helper = new HttpServerHelper(null);
 // 		ConnectorHelper<Server> helper = new HttpsServerHelper(null) ;
 //		Engine.getInstance().getRegisteredServers().add(0, helper);
-
+		Engine.getInstance().getRegisteredServers().clear() ;
+		Engine.getInstance().getRegisteredServers().add(new RiapServerHelper(null)) ;
+		
 		Server server = new Server(context, cfig.getProtocol(), cfig.getPort(), aradon);
 		
 		for (Entry<String, String> entry : cfig.getParams().entrySet()) {
 			server.getContext().getParameters().add(entry.getKey(), entry.getValue());
 		}
-		
-		return new AradonNettyHelper(new HttpServerHelper(server));
+		if (cfig.getProtocol() == Protocol.HTTP){
+			return new AradonNettyHelper(new  net.ion.radon.core.server.netty.HttpServerHelper(server)) ;
+		} else {
+			return new AradonNettyHelper(new  net.ion.radon.core.server.netty.HttpsServerHelper(server)); 
+		}
 	}
 
 	public void start() throws Exception {
-		server.start();
+		helper.start() ;
 	}
 
 	public void stop() throws Exception {
-		server.stop();
-	}
-
-	public void addTo(ServerList servers) {
-		// servers.add(Protocol.HTTP, 0) ;
+		helper.stop() ;
 	}
 
 }

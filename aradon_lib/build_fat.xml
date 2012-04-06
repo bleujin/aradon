@@ -24,6 +24,8 @@
 	<property name="embedLibDir" value="./aradon/embed" />
 	<property name="extendLibDir" value="./aradon/extend" />
 	<property name="binDir" value="../bin" />
+	<property name="icssDir" value="../../ICSS5" />
+	<property name="icsDir" value="../../ICS5_R2" />
 	
 	<target name="get_framework">
 		<property name="framework" value="IFramework/publish/iframework_2.1.jar" />
@@ -93,23 +95,27 @@
         	<fatjar.jarsource file="${basedir}\apache_extend\commons-beanutils-1.8.0.jar" relpath=""/> 
         	<fatjar.jarsource file="${basedir}\apache_extend\commons-collections-3.2.jar" relpath=""/> 
         	<fatjar.jarsource file="${basedir}\apache_extend\commons-configuration-1.6.jar" relpath=""/> 
-        	<fatjar.jarsource file="${basedir}\apache_extend\commons-lang-2.4.jar" relpath=""/> 
+        	<fatjar.jarsource file="${basedir}\apache_extend\commons.lang_2.5.jar" relpath=""/> 
         	<fatjar.jarsource file="${basedir}\apache_extend\commons-fileupload-1.2.1.jar" relpath=""/> 
-        	<fatjar.jarsource file="${basedir}\apache_extend\commons-httpclient-4.0.jar" relpath=""/> 
-        	<fatjar.jarsource file="${basedir}\apache_extend\commons-io-1.4.jar" relpath=""/> 
+        	<fatjar.jarsource file="${basedir}\apache_extend\commons-io-2.1.jar" relpath=""/> 
             <fatjar.jarsource file="${basedir}\apache_extend\commons.lang_2.5.jar" relpath=""/> 
             <fatjar.jarsource file="${basedir}\apache_extend\commons-logging-1.1.jar" relpath=""/> 
         	<fatjar.jarsource file="${basedir}\apache_extend\ecs-1.4.2.jar" relpath=""/> 
         	<fatjar.jarsource file="${basedir}\apache_extend\ezmorph-1.0.5.jar" relpath=""/> 
         	<fatjar.jarsource file="${basedir}\apache_extend\log4j-1.2.16.jar" relpath=""/> 
+        	<fatjar.jarsource file="${basedir}\apache_extend\commons-codec-1.4.jar" relpath=""/> 
+        	<fatjar.jarsource file="${basedir}\apache_extend\httpclient-4.1.3.jar" relpath=""/> 
+            <fatjar.jarsource file="${basedir}\apache_extend\httpmime-4.1.3.jar" relpath=""/> 
+            <fatjar.jarsource file="${basedir}\apache_extend\httpcore-4.1.4.jar" relpath=""/> 
         </fatjar.build>
     </target>
 
 
     <target name="rest_fat">
-        <fatjar.build output="${embedLibDir}/rest_fat.jar">
+        <fatjar.build output="${embedLibDir}/rest_fat.jar" >
             <fatjar.manifest/>
 			<!-- 2.0.9 -->
+        	
         	<fatjar.jarsource file="${basedir}\rest\org.restlet.ext.crypto.jar" relpath=""/> 
         	<fatjar.jarsource file="${basedir}\rest\org.restlet.ext.fileupload.jar" relpath=""/> 
         	<!--fatjar.jarsource file="${basedir}\rest\org.restlet.ext.json.jar" relpath=""/--> 
@@ -119,9 +125,9 @@
         	<!--fatjar.jarsource file="${basedir}\rest\org.restlet.ext.velocity.jar" relpath=""/ --> 
         	<!--fatjar.jarsource file="${basedir}\rest\org.restlet.ext.freemarker.jar" relpath=""/ -->
         	<fatjar.jarsource file="${basedir}\rest\org.restlet.jar" relpath=""/> 
-            <fatjar.jarsource file="${basedir}\rest\org.restlet.ext.ssl.jar" relpath=""/>
-        	<fatjar.jarsource file="${basedir}\rest\org.restlet.ext.jetty.jar" relpath=""/> 
-        	<fatjar.jarsource file="${basedir}\rest\org.restlet.ext.netty.jar" relpath=""/> 
+            <fatjar.jarsource file="${basedir}\rest\org.restlet.ext.ssl.mod.jar" relpath=""/>
+        	<!-- fatjar.jarsource file="${basedir}\rest\org.restlet.ext.jetty.jar" relpath=""/ --> 
+        	<!-- fatjar.jarsource file="${basedir}\rest\org.restlet.ext.netty.jar" relpath=""/ --> 
         	<!-- fatjar.jarsource file="${basedir}\rest\standalone_fat.jar" relpath=""/ -->
         	
 

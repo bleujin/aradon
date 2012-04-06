@@ -3,11 +3,10 @@ package net.ion.nradon.handler;
 import java.nio.charset.Charset;
 
 import net.ion.nradon.HttpControl;
-import net.ion.nradon.HttpHandler;
 import net.ion.nradon.HttpRequest;
 import net.ion.nradon.HttpResponse;
 
-public class StringHttpHandler implements HttpHandler {
+public class StringHttpHandler extends AbstractHttpHandler {
 
 	private final String contentType;
 	private final String body;

@@ -3,6 +3,7 @@ package net.ion.radon.server;
 import static org.junit.Assert.assertEquals;
 import net.ion.framework.util.Debug;
 import net.ion.framework.util.InfinityThread;
+import net.ion.framework.util.ListUtil;
 import net.ion.radon.client.AradonClient;
 import net.ion.radon.client.AradonClientFactory;
 import net.ion.radon.client.IAradonRequest;
@@ -35,14 +36,16 @@ public class TestAradonNetty {
 	@Test
 	public void useNetty() throws Exception {
 		AradonTester at = AradonTester.create().register("", "/hello", HelloWorldLet.class) ;
-		at.getAradon().startServer(ConnectorConfig.makeNettyHTTPConfig(9005)) ;
+		at.getAradon().startServer(ConnectorConfig.makeSimpleHTTPConfig(9005)) ;
 		
 		AradonClient client = AradonClientFactory.create("http://localhost:9005");
 		
-		IAradonRequest request = client.createRequest("/hello");
-		Response res = request.handle(Method.GET) ;
-		assertEquals(200, res.getStatus().getCode()) ;
-		Debug.line(res.getEntityAsText()) ;
+		for (int i : ListUtil.rangeNum(1)) {
+			IAradonRequest request = client.createRequest("/hello");
+			Response res = request.handle(Method.GET) ;
+			assertEquals(200, res.getStatus().getCode()) ;
+			// res.release() ;
+		}
 		at.getAradon().stop() ;
 		// new InfinityThread().startNJoin() ;
 	}

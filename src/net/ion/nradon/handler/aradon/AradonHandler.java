@@ -19,6 +19,7 @@ public class AradonHandler implements HttpHandler {
 	}
 
 	public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
+		
 		client.handle(request, response);
 	}
 

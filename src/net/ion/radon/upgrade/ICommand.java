@@ -2,20 +2,19 @@ package net.ion.radon.upgrade;
 
 import net.ion.framework.parse.html.HTag;
 import net.ion.framework.util.StringUtil;
-import net.ion.radon.core.TreeContext;
 
 public abstract class ICommand {
 
-	private TreeContext context ;
+	private InstallContext context ;
 	private HTag config ;
 	public abstract void run() throws Exception;
 
-	public void init(TreeContext context, HTag config){
+	public void init(InstallContext context, HTag config){
 		this.context = context ;
 		this.config = config ;
 	}
 	
-	protected TreeContext getContext(){
+	protected InstallContext getContext(){
 		return context ;
 	}
 	

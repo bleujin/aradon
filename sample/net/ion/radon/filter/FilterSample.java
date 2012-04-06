@@ -6,7 +6,6 @@ import junit.framework.TestCase;
 import net.ion.framework.parse.gson.JsonObject;
 import net.ion.framework.parse.gson.JsonParser;
 import net.ion.framework.parse.gson.JsonUtil;
-import net.ion.framework.util.InfinityThread;
 import net.ion.radon.client.AradonClient;
 import net.ion.radon.client.AradonClientFactory;
 import net.ion.radon.client.IAradonRequest;
@@ -102,11 +101,11 @@ class ParamToBeanFilter extends IRadonFilter {
 	
 	@Override
 	public IFilterResult preHandle(IService service, Request request, Response response) {
-		Map<String, Object> params = getInnerRequest().getGeneralParameter() ;
+		Map<String, Object> params = getInnerRequest(request).getGeneralParameter() ;
 		
 		try {
 			Object beanObj = MyParameter.create(params).toBean(Class.forName(className)) ;
-			getInnerRequest().getContext().putAttribute(this.beanName, beanObj) ;
+			getInnerRequest(request).getContext().putAttribute(this.beanName, beanObj) ;
 		} catch (ClassNotFoundException e) {
 			return IFilterResult.stopResult(new ResourceException(Status.SERVER_ERROR_NOT_IMPLEMENTED, e.getMessage())) ;
 		}

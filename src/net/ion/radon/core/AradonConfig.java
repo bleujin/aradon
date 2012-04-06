@@ -22,6 +22,7 @@ import net.ion.framework.util.PathMaker;
 import net.ion.framework.util.StringUtil;
 import net.ion.framework.util.ZipUtil;
 import net.ion.radon.core.EnumClass.IZone;
+import net.ion.radon.core.EnumClass.PlugInApply;
 import net.ion.radon.core.config.AradonConstant;
 import net.ion.radon.core.config.ConnectorConfig;
 import net.ion.radon.core.config.XMLConfig;
@@ -325,7 +326,7 @@ public class AradonConfig {
 
 			List<XMLConfig> sections = pconfig.children("section");
 			for (XMLConfig sconfig : sections) {
-				aradon.attach(SectionFactory.createSection(aradon, sconfig.getAttributeValue("name"), sconfig));
+				aradon.attach(SectionFactory.createSection(aradon, sconfig.getAttributeValue("name"), sconfig), PlugInApply.create(pconfig.getString("plugin[@apply]")));
 			}
 			aradon.getConfig().addPlugInInfo(xmlConfigFile, pconfig);
 			// return this.rootContext;

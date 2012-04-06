@@ -8,7 +8,6 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 
 import net.ion.nradon.HttpControl;
-import net.ion.nradon.HttpHandler;
 import net.ion.nradon.HttpRequest;
 import net.ion.nradon.HttpResponse;
 import net.ion.nradon.WebServer;
@@ -27,7 +26,7 @@ public class TestStaleConnection {
 
 	@Test
 	public void closesConnectionAfterTimeoutIfClientKeepsConnectioOpen() throws IOException, InterruptedException {
-		webServer.staleConnectionTimeout(100).add(new HttpHandler() {
+		webServer.staleConnectionTimeout(100).add(new AbstractHttpHandler() {
 			public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
 				response.content("Body = {" + request.body() + "}");
 				response.header("Content-Length", (String) null); // This makes the client hang until the server closes the connection.

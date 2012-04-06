@@ -3,13 +3,14 @@ package net.ion.nradon;
 import java.net.SocketAddress;
 import java.net.URI;
 import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import net.ion.nradon.netty.NettyWebServer;
 
 public class WebServers {
 
 	public static WebServer createWebServer(int port) {
-		return new NettyWebServer(port);
+		return new NettyWebServer(Executors.newCachedThreadPool(), port);
 	}
 
 	public static WebServer createWebServer(Executor executor, int port) {

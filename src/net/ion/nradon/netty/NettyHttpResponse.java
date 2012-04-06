@@ -3,12 +3,20 @@ package net.ion.nradon.netty;
 import static org.jboss.netty.buffer.ChannelBuffers.copiedBuffer;
 import static org.jboss.netty.buffer.ChannelBuffers.wrappedBuffer;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.ByteBuffer;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.util.Date;
 
+import net.ion.framework.util.IOUtil;
+import net.ion.framework.util.StringUtil;
 import net.ion.nradon.helpers.DateHelper;
 import net.ion.radon.core.RadonAttributeKey;
 import net.ion.radon.core.except.AradonRuntimeException;
@@ -20,16 +28,15 @@ import org.jboss.netty.channel.ChannelFutureListener;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.handler.codec.http.HttpResponse;
 import org.jboss.netty.handler.codec.http.HttpResponseStatus;
-import org.jboss.netty.handler.stream.ChunkedStream;
 import org.jboss.netty.util.CharsetUtil;
 import org.restlet.Response;
 import org.restlet.data.Cookie;
-import org.restlet.engine.ConnectorHelper;
+import org.restlet.data.CookieSetting;
 import org.restlet.engine.header.CookieWriter;
 import org.restlet.engine.header.Header;
 import org.restlet.engine.header.HeaderConstants;
+import org.restlet.representation.FileRepresentation;
 import org.restlet.representation.Representation;
-import org.restlet.service.ConnectorService;
 import org.restlet.util.Series;
 
 public class NettyHttpResponse implements net.ion.nradon.HttpResponse {
@@ -111,63 +118,152 @@ public class NettyHttpResponse implements net.ion.nradon.HttpResponse {
 		return content(wrappedBuffer(buffer));
 	}
 
-	public NettyHttpResponse write(Response aradonResponse) {
+	public NettyHttpResponse write(Response ares) {
+		// if (!aradonResponse.getStatus().isSuccess()) throw new ResourceException(aradonResponse.getStatus()) ;
 
-		Representation entity = aradonResponse.getEntity(); // Get the connector service to callback
-		ConnectorService connectorService = ConnectorHelper.getConnectorService();
-
-		if (connectorService != null) {
-			connectorService.beforeSend(entity);
+		Representation entity = ares.getEntity(); // Get the connector service to callback
+		if (ares.getStatus().isSuccess() && entity instanceof FileRepresentation) {
+			FileRepresentation fentity = (FileRepresentation) entity ;
+			if (fentity.getSize() < 1024 * 512){
+				return writeFileEntity(ares, fentity) ;
+			} else {
+				return writeBigFile(ares, fentity);
+			}
+		} else {
+			return writeEntity(ares, entity);
 		}
+	}
+
+	private NettyHttpResponse writeFileEntity(Response ares, FileRepresentation fentity) {
+		try {
+			setFileHeader(ares, fentity) ;
+			
+			File file = fentity.getFile();
+			FileChannel fc = fentity.getChannel();
+
+			MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, file.length());
+			content(bb);
+		} catch (IOException ex) {
+			ioExceptionHandler.uncaughtException(Thread.currentThread(), AradonRuntimeException.fromException(ex, ctx.getChannel())) ;
+			error(ex);
+		} finally {
+			end();
+		}
+		return this;
+	}
+	
+	private void setFileHeader(Response ares, FileRepresentation fentity){
+		setHeader(ares);
+		// TODO: Shouldn't have to do this, but without it we sometimes seem to get two Content-Length headers in the response.
+		header("Content-Length", (String) null);
+		header("Content-Length", fentity.getSize());
+		header("Content-Type", fentity.getMediaType().getName());
+	}
+
+	private NettyHttpResponse writeBigFile(Response ares, FileRepresentation fentity) {
 
 		try {
-			// Copy general, response and entity headers
-			Series<Header> headers = (Series<Header>) aradonResponse.getAttributes().get(RadonAttributeKey.ATTRIBUTE_HEADERS);
-			for (Header header : headers) {
-				response.addHeader(header.getName(), header.getValue());
-			}
-			// TODO: Shouldn't have to do this, but without it we sometimes seem to get two Content-Length headers in the response.
-			header("Content-Length", (String) null);
-			header("Content-Length", entity.getSize());
-			header("Content-Type", entity.getMediaType().getName()) ;
-			status(aradonResponse.getStatus().getCode()) ;
-			
+			setFileHeader(ares, fentity) ;
 
-			if (shouldResponseBeChunked(entity)) { // Check if 'Transfer-Encoding' header should be set
-				response.addHeader(HeaderConstants.HEADER_TRANSFER_ENCODING, "chunked");
-			}
+			ChannelFuture writeFuture = write(responseBuffer);
 
-			// Write the response
-			ChannelFuture future = null;
+			final long fileLength = fentity.getSize();
+			final FileInputStream fis = fentity.getStream();
+			writeFuture.addListener(new ChannelFutureListener() {
+				private final ChannelBuffer buffer = ChannelBuffers.buffer(4096);
+				private long offset = 0;
 
-			if (entity != null) {
-					response.setContent(null);
-					future = ctx.getChannel().write(response);
-					ctx.getChannel().write(new ChunkedStream(entity.getStream()));
-//					responseBuffer.writeBytes(entity.getStream(), (int) entity.getAvailableSize());
-//					response.setContent(responseBuffer);
-//					future = ctx.getChannel().write(response);
-			}
+				public void operationComplete(ChannelFuture future) throws Exception {
+					if (!future.isSuccess()) {
+						future.getCause().printStackTrace();
+						future.getChannel().close();
+						fis.close();
+						return;
+					}
 
-			if (!isKeepAlive) { // Close the connection after the write operation is done.
-				future.addListener(ChannelFutureListener.CLOSE);
-			}
+					// System.out.println("SENDING: " + offset + " / " + fileLength);
+					buffer.clear();
+					buffer.writeBytes(fis, (int) Math.min(fileLength - offset, buffer.writableBytes()));
+					offset += buffer.writerIndex();
+					ChannelFuture chunkWriteFuture = future.getChannel().write(buffer);
+					if (offset < fileLength) { // Send the next chunk
+						chunkWriteFuture.addListener(this);
+					} else {
+						// Wrote the last chunk - close the connection if the write is done.
+						// System.out.println("DONE: " + fileLength);
+						chunkWriteFuture.addListener(ChannelFutureListener.CLOSE);
+						fis.close();
+					}
+				}
+			});
+
 		} catch (Exception ex) {
 			exceptionHandler.uncaughtException(Thread.currentThread(), AradonRuntimeException.fromException(ex, ctx.getChannel()));
-		} finally {
-			if (entity != null) {
-				entity.release();
-			}
-
-			if (connectorService != null) {
-				connectorService.afterSend(entity);
-			}
 		}
 		return this;
 	}
 
-	private boolean shouldResponseBeChunked(Representation rep) {
-		return (rep != null) && (rep.getSize() == Representation.UNKNOWN_SIZE);
+	private NettyHttpResponse writeEntity(Response ares, Representation entity) {
+		InputStream in = null;
+		try {
+			setHeader(ares);
+
+			if (!ares.getStatus().isSuccess()) {
+				if (ares.getStatus().getCode() == 401) {
+					header("WWW-Authenticate", "Basic realm=\"secure\"");
+				}
+				if (ares.getEntity() == null || ares.getEntity().getStream() == null)
+					return end();
+				InputStream istream = ares.getEntity().getStream();
+				try {
+					return content(IOUtil.toByteArray(istream)).end();
+				} finally {
+					IOUtil.closeQuietly(istream);
+				}
+			}
+
+			// TODO: Shouldn't have to do this, but without it we sometimes seem to get two Content-Length headers in the response.
+			header("Content-Length", (String) null);
+			header("Content-Length", entity.getSize());
+			header("Content-Type", entity.getMediaType().getName());
+
+			in = entity.getStream();
+			// byte[] data = IOUtil.toByteArray(in) ;
+			// content(data) ;
+
+			byte[] data = new byte[1024 * 16];
+			int nRead = 0;
+			while ((nRead = in.read(data, 0, data.length)) != -1) {
+				content(ChannelBuffers.copiedBuffer(data, 0, nRead));
+			}
+
+		} catch (Throwable ex) {
+			error(ex);
+		} finally {
+			IOUtil.closeQuietly(in);
+			end();
+		}
+		return this;
+	}
+
+	private void setHeader(Response ares) {
+		Series<Header> headers = (Series<Header>) ares.getAttributes().get(RadonAttributeKey.ATTRIBUTE_HEADERS);
+		if (headers != null) {
+			for (Header header : headers) {
+				header(header.getName(), header.getValue());
+			}
+		}
+
+		Series<CookieSetting> cookies = ares.getCookieSettings();
+		for (CookieSetting c : cookies) {
+			cookie(new Cookie(c.getVersion(), c.getName(), c.getValue(), c.getPath(), c.getDomain()));
+		}
+
+		status(ares.getStatus().getCode());
+		if (ares.getLocationRef() != null) {
+			header(HeaderConstants.HEADER_LOCATION, ares.getLocationRef().toString());
+		}
+
 	}
 
 	private NettyHttpResponse content(ChannelBuffer content) {
@@ -208,8 +304,9 @@ public class NettyHttpResponse implements net.ion.nradon.HttpResponse {
 	private void flushResponse() {
 		try {
 			// TODO: Shouldn't have to do this, but without it we sometimes seem to get two Content-Length headers in the response.
-			header("Content-Length", (String) null);
-			header("Content-Length", responseBuffer.readableBytes());
+			if (StringUtil.isEmpty(response.getHeader(HeaderConstants.HEADER_CONTENT_LENGTH))) {
+				header(HeaderConstants.HEADER_CONTENT_LENGTH, responseBuffer.readableBytes());
+			}
 			ChannelFuture future = write(responseBuffer);
 			if (!isKeepAlive) {
 				future.addListener(ChannelFutureListener.CLOSE);

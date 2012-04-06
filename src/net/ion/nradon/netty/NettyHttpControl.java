@@ -42,7 +42,7 @@ public class NettyHttpControl implements HttpControl {
 		defaultResponse = nettyHttpResponse;
 		this.ioExceptionHandler = ioExceptionHandler;
 		defaultControl = this;
-		this.exceptionHandler = exceptionHandler;
+		this.exceptionHandler = exceptionHandler ;
 	}
 
 	public void nextHandler() {

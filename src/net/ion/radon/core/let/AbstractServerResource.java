@@ -40,6 +40,10 @@ public class AbstractServerResource extends BaseServerResource {
 	public InnerRequest getInnerRequest() {
 		return (InnerRequest) super.getRequest();
 	}
+	
+	public InnerResponse getInnerResponse(){
+		return (InnerResponse) super.getResponse();
+	}
 
 	protected Representation toRepresentation(List<Map<String, ?>> data) throws ResourceException {
 		return toRepresentation(IRequest.EMPTY_REQUEST, data, IResponse.EMPTY_RESPONSE);

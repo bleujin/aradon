@@ -17,7 +17,7 @@ import net.ion.radon.core.AradonServer;
 import net.ion.radon.core.config.AradonConstant;
 import net.ion.radon.core.config.ConnectorConfig;
 import net.ion.radon.core.config.XMLConfig;
-import net.ion.radon.core.config.ConnectorConfig.Engine;
+import net.ion.radon.core.config.ConnectorConfig.EngineType;
 
 import org.junit.Test;
 import org.restlet.data.Protocol;
@@ -54,7 +54,7 @@ public class TestAradonServer extends TestBaseAradon {
 		XMLConfig config = XMLConfig.load(configStr);
 		ConnectorConfig cc = ConnectorConfig.create(config, 456);
 		assertEquals(Protocol.HTTPS, cc.getProtocol());
-		assertEquals(Engine.Netty, cc.getEngine());
+		assertEquals(EngineType.Simple, cc.getEngine());
 		assertEquals(8183, cc.getPort());
 		assertEquals("kkk", cc.getKeyPassword());
 		assertEquals("nodara", cc.getKeyStorePassword());

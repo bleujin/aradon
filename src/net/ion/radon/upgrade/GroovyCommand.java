@@ -14,7 +14,7 @@ public class GroovyCommand extends ICommand{
 	@Override
 	public void run() throws Exception {
 		String codebase = getConfig().getAttributeValue("codebase") ;
-		TreeContext context = getContext() ;
+		InstallContext context = getContext() ;
 		
 		GroovyClassLoader loader = ScriptFactory.groovyLoader(); 
 		if (StringUtil.isNotBlank(codebase)) loader.addClasspath(codebase) ;

@@ -6,6 +6,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import net.ion.framework.util.Debug;
 import net.ion.framework.util.ListUtil;
 
 import org.restlet.Client;
@@ -50,6 +51,15 @@ public class AradonHttpClient implements AradonClient {
 		return BasicSerialRequest.create(this, path, id, pwd);
 	}
 
+	public IJsonRequest createJsonRequest(String path) {
+		return BasicJsonRequest.create(this, path, "anony", "");
+	}
+
+	public IJsonRequest createJsonRequest(String path, String id, String pwd) {
+		return BasicJsonRequest.create(this, path, id, pwd);
+	}
+
+	
 	public void stop() throws Exception {
 		client.stop();
 	}
@@ -69,7 +79,8 @@ public class AradonHttpClient implements AradonClient {
 	}
 
 	Response handle(Request request) {
-		return client.getHelped().handle(request);
+		Response response = client.getHelped().handle(request);
+		return response;
 		// Response response = new Response(request) ;
 		// client.handle(request, response) ;
 		// return response ;

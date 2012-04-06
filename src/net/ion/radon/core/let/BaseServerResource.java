@@ -47,6 +47,32 @@ public abstract class BaseServerResource extends ServerResource {
 
 		return result;
 	}
+	
+	protected Representation doHandle() throws ResourceException {
+		Representation result = null;
+		Method method = getMethod();
+		if (method == null)
+			setStatus(Status.CLIENT_ERROR_BAD_REQUEST, "No method specified");
+		else if (method.equals(Method.PUT))
+			result = put(getRequestEntity());
+		else if (isExisting()) {
+			if (method.equals(Method.GET))
+				result = get();
+			else if (method.equals(Method.POST))
+				result = post(getRequestEntity());
+			else if (method.equals(Method.DELETE))
+				result = delete();
+			else if (method.equals(Method.HEAD))
+				result = head();
+			else if (method.equals(Method.OPTIONS))
+				result = options();
+			else
+				result = doHandle(method, getQuery(), getRequestEntity());
+		} else {
+			doError(Status.CLIENT_ERROR_NOT_FOUND);
+		}
+		return result;
+	}
 
 	private Representation doHandle(AnnotationInfo annotationInfo, Variant variant) throws ResourceException {
 		Representation result = null;
@@ -56,7 +82,7 @@ public abstract class BaseServerResource extends ServerResource {
 		Object resultObject = null;
 		try {
 			java.lang.reflect.Method mtd = annotationInfo.getJavaMethod();
-			mtd.setAccessible(true) ;
+			mtd.setAccessible(true);
 			if (parameterTypes.length > 0) {
 				List<Object> parameters = new ArrayList<Object>();
 				Object parameter = null;
@@ -104,8 +130,6 @@ public abstract class BaseServerResource extends ServerResource {
 		return result;
 	}
 
-
-
 	protected Representation get() throws ResourceException {
 		Representation result = null;
 		AnnotationInfo annotationInfo = getAnnotation(Method.GET);
@@ -131,7 +155,6 @@ public abstract class BaseServerResource extends ServerResource {
 		return result;
 	}
 
-
 	private AnnotationInfo getAnnotation(Method method) {
 		return getAnnotation(method, getQuery(), null);
 	}
@@ -155,7 +178,6 @@ public abstract class BaseServerResource extends ServerResource {
 	protected Representation head(Variant variant) throws ResourceException {
 		return get(variant);
 	}
-
 
 	protected Representation options() throws ResourceException {
 		Representation result = null;
@@ -198,7 +220,6 @@ public abstract class BaseServerResource extends ServerResource {
 		if (getAnnotation(method) != null) {
 			// We know the method is supported, let's check the entity.
 			AnnotationInfo annotationInfo = ObjectUtil.coalesce(getAnnotation(method, query, entity), getAnnotation(method));
-			
 
 			if (annotationInfo != null) {
 				result = doHandle(annotationInfo, null);
@@ -212,7 +233,6 @@ public abstract class BaseServerResource extends ServerResource {
 		return result;
 	}
 
-
 	protected Representation post(Representation entity, Variant variant) throws ResourceException {
 		Representation result = null;
 
@@ -224,7 +244,6 @@ public abstract class BaseServerResource extends ServerResource {
 
 		return result;
 	}
-
 
 	protected Representation put(Representation entity) throws ResourceException {
 		return doHandle(Method.PUT, getQuery(), entity);

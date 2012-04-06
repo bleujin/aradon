@@ -3,6 +3,11 @@ package net.ion.nradon;
 import java.util.concurrent.Executor;
 
 public interface WebSocketConnection extends Executor, DataHolder {
+	
+	public final static String VAR_USERID = "$userid";
+	public final static String VAR_USERNAME = "$username";
+	public final static String VAR_USERSESSION = "$session";
+	
 	HttpRequest httpRequest();
 
 	/**
@@ -39,4 +44,6 @@ public interface WebSocketConnection extends Executor, DataHolder {
 	Executor handlerExecutor();
 
 	String version();
+
+	String getString(String key);
 }

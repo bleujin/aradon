@@ -110,6 +110,20 @@ public class EnumClass {
 	}
 	
 	
+	public enum PlugInApply {
+		IGNORE, OVERWRITE, MERGE;
+		
+		public static PlugInApply create(String key){
+			for (PlugInApply apply : PlugInApply.values()){
+				if (apply.toString().equalsIgnoreCase(key)){
+					return apply ;
+				}
+			}
+			return IGNORE ;
+		}
+	}
+	
+	
 	public enum FilterLocation {
 		PRE, AFTER ;
 		

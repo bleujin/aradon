@@ -1,18 +1,25 @@
 package net.ion.radon.client;
 
+import java.io.IOException;
+
 import net.ion.framework.util.StringUtil;
 import net.ion.radon.core.Aradon;
 import net.ion.radon.core.RadonAttributeKey;
+import net.ion.radon.core.representation.JsonObjectRepresentation;
 
 import org.restlet.Request;
+import org.restlet.Response;
 import org.restlet.data.ChallengeResponse;
 import org.restlet.data.ChallengeScheme;
 import org.restlet.data.CharacterSet;
 import org.restlet.data.Form;
 import org.restlet.data.Method;
+import org.restlet.data.Status;
+import org.restlet.representation.ObjectRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.ClientResource;
+import org.restlet.resource.ResourceException;
 import org.restlet.resource.UniformResource;
 import org.restlet.security.User;
 import org.restlet.service.ConverterService;
@@ -61,27 +68,45 @@ public class AradonSerialRequest implements ISerialRequest {
 
 	public <V> V get(Class<? extends V> resultClass) {
 		Request request = makeRequest(Method.GET, null);
-		return aradon.handle(request, resultClass);
+		return handle(request, resultClass);
 	}
 
 	public <T, V> V post(T arg, Class<? extends V> resultClass) {
 		Request request = makeRequest(Method.POST, arg);
-		return aradon.handle(request, resultClass);
+		return handle(request, resultClass);
 	}
 
 	public <V> V delete(Class<? extends V> resultClass) {
 		Request request = makeRequest(Method.DELETE, null);
-		return aradon.handle(request, resultClass);
+		return handle(request, resultClass);
 	}
-	
+
+	private <V> V handle(Request request, Class<? extends V> resultClass) {
+		Response response = aradon.handle(request) ;
+		if (!response.getStatus().isSuccess())
+			throw new ResourceException(response.getStatus(), response.toString());
+
+		try {
+			Representation entity = response.getEntity();
+			if (entity == null) {
+				return null; // or Unable to find a converter for this object
+			} else {
+				Object resultObj = ((ObjectRepresentation) entity).getObject();
+				return resultClass.cast(resultObj);
+			}
+		} catch (IOException e) {
+			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, e.getMessage());
+		}
+	}
+
 	public <T, V> V handle(Method method, T arg, Class<? extends V> resultClass) {
 		Request request = makeRequest(method, arg);
-		return aradon.handle(request, resultClass);
+		return handle(request, resultClass);
 	}
 
 	public <T, V> V put(T arg, Class<? extends V> resultClass) {
 		Request request = makeRequest(Method.PUT, arg);
-		return aradon.handle(request, resultClass);
+		return handle(request, resultClass);
 	}
 
 	public AradonSerialRequest addHeader(String name, String value) {

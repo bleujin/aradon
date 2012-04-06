@@ -46,11 +46,11 @@ public class JsonObjectConverter extends ConverterHelper {
 
 		if ((source instanceof JsonElement) || (source instanceof JsonString)) {
 			if (target == null) {
-				result = 0.5F;
+				result = 0.3F;
 			} else if (MediaType.APPLICATION_JSON.isCompatible(target.getMediaType())) {
-				result = 1.0F;
+				result = 0.4F;
 			} else {
-				result = 0.5F;
+				result = 0.4F;
 			}
 		}
 
@@ -61,15 +61,15 @@ public class JsonObjectConverter extends ConverterHelper {
 	public <T> float score(Representation source, Class<T> target, Resource resource) {
 		if (target != null) {
 			if (JsonObjectRepresentation.class.isAssignableFrom(target)) {
-				return 1.0F;
+				return 0.4F;
 			} else if (JsonElement.class.isAssignableFrom(target)) {
 				if (MediaType.APPLICATION_JSON.isCompatible(source.getMediaType())) {
-					return 1.0F;
+					return 0.4F;
 				} else {
-					return 0.5F;
+					return 0.3F;
 				}
 			} else if (JsonString.class.isAssignableFrom(target)) {
-				return 0.5F ;
+				return 0.3F ;
 			}
 		}
 
@@ -98,7 +98,7 @@ public class JsonObjectConverter extends ConverterHelper {
 	@Override
 	public <T> void updatePreferences(List<Preference<MediaType>> preferences, Class<T> entity) {
 		if (JsonElement.class.isAssignableFrom(entity) || JsonString.class.isAssignableFrom(entity)) {
-			updatePreferences(preferences, MediaType.APPLICATION_JSON, 1.0F);
+			updatePreferences(preferences, MediaType.APPLICATION_JSON, 0.3F);
 		}
 	}
 

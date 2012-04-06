@@ -27,6 +27,7 @@ public abstract class SectionService extends Application  implements IService {
 	}
 
 	public abstract void attach(BasePathInfo pathInfo)  ;
+	public abstract void attach(PathService pservice)  ;
 
 	
 	public String getName() {

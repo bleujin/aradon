@@ -8,7 +8,6 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.net.URI;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
@@ -16,6 +15,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import net.ion.framework.util.ListUtil;
 import net.ion.nradon.EventSourceHandler;
 import net.ion.nradon.HttpHandler;
 import net.ion.nradon.WebServer;
@@ -25,6 +25,7 @@ import net.ion.nradon.handler.HttpToEventSourceHandler;
 import net.ion.nradon.handler.HttpToWebSocketHandler;
 import net.ion.nradon.handler.PathMatchHandler;
 import net.ion.nradon.handler.ServerHeaderHandler;
+import net.ion.nradon.handler.event.ServerEvent.EventType;
 import net.ion.nradon.handler.exceptions.PrintStackTraceExceptionHandler;
 import net.ion.nradon.handler.exceptions.SilentExceptionHandler;
 
@@ -38,14 +39,15 @@ import org.jboss.netty.handler.codec.http.HttpContentCompressor;
 import org.jboss.netty.handler.codec.http.HttpContentDecompressor;
 import org.jboss.netty.handler.codec.http.HttpRequestDecoder;
 import org.jboss.netty.handler.codec.http.HttpResponseEncoder;
+import org.jboss.netty.handler.stream.ChunkedWriteHandler;
 
 public class NettyWebServer implements WebServer {
 	private static final long DEFAULT_STALE_CONNECTION_TIMEOUT = 5000;
 
 	private final SocketAddress socketAddress;
 	private final URI publicUri;
-	private final List<HttpHandler> handlers = new ArrayList<HttpHandler>();
-	private final List<ExecutorService> executorServices = new ArrayList<ExecutorService>();
+	private final List<HttpHandler> handlers = ListUtil.newList();
+	private final List<ExecutorService> executorServices = ListUtil.newList();
 	private final Executor executor;
 
 	private ServerBootstrap bootstrap;
@@ -93,7 +95,7 @@ public class NettyWebServer implements WebServer {
 	}
 
 	protected void setupDefaultHandlers() {
-		add(new ServerHeaderHandler("Webbit"));
+		add(new ServerHeaderHandler("Aradon"));
 		add(new DateHeaderHandler());
 	}
 
@@ -116,6 +118,7 @@ public class NettyWebServer implements WebServer {
 		staleConnectionTimeout = millis;
 		return this;
 	}
+	
 
 	public NettyWebServer add(HttpHandler handler) {
 		handlers.add(handler);
@@ -154,6 +157,7 @@ public class NettyWebServer implements WebServer {
 				pipeline.addLast("flashpolicydecoder", new FlashPolicyFileDecoder(getPort()));
 				pipeline.addLast("decoder", new HttpRequestDecoder(maxInitialLineLength, maxHeaderSize, maxChunkSize));
 				pipeline.addLast("aggregator", new HttpChunkAggregator(maxContentLength));
+				pipeline.addLast("chunker", new ChunkedWriteHandler()) ;
 				pipeline.addLast("decompressor", new HttpContentDecompressor());
 				pipeline.addLast("encoder", new HttpResponseEncoder());
 				pipeline.addLast("compressor", new HttpContentCompressor());
@@ -179,6 +183,11 @@ public class NettyWebServer implements WebServer {
 		executorServices.add(workerExecutor);
 		bootstrap.setFactory(new NioServerSocketChannelFactory(bossExecutor, workerExecutor, 1));
 		channel = bootstrap.bind(socketAddress);
+		
+		for (HttpHandler handler : handlers ) {
+			handler.onEvent(EventType.START, this) ;
+		}
+		
 		return this;
 	}
 
@@ -187,6 +196,11 @@ public class NettyWebServer implements WebServer {
 	}
 
 	public synchronized NettyWebServer stop() throws IOException {
+		
+		for (HttpHandler handler : handlers ) {
+			handler.onEvent(EventType.STOP, this) ;
+		}
+		
 		if (channel != null) {
 			channel.close();
 		}

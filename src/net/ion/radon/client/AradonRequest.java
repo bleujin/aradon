@@ -1,5 +1,9 @@
 package net.ion.radon.client;
 
+import java.io.IOException;
+import java.util.List;
+
+import net.ion.framework.parse.gson.JsonParser;
 import net.ion.framework.util.StringUtil;
 import net.ion.radon.core.Aradon;
 import net.ion.radon.core.RadonAttributeKey;
@@ -11,11 +15,13 @@ import org.restlet.data.ChallengeResponse;
 import org.restlet.data.ChallengeScheme;
 import org.restlet.data.CharacterSet;
 import org.restlet.data.Form;
+import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.data.Parameter;
 import org.restlet.engine.header.CookieReader;
 import org.restlet.engine.util.CookieSeries;
 import org.restlet.representation.Representation;
+import org.restlet.representation.StringRepresentation;
 import org.restlet.resource.ResourceException;
 import org.restlet.security.User;
 
@@ -146,6 +152,37 @@ public class AradonRequest implements IAradonRequest{
 	public String getPath() {
 		return path;
 	}
+	
+	public <T> T handle(Method method, Object plainObject, Class<T> rtnClz) throws ResourceException {
+		try {
+			Request request = makeRequest(method);
+			request.setEntity(new StringRepresentation(JsonParser.fromObject(plainObject).toString()));
+			Representation repr = aradon.handle(request).getEntity() ;
+			if (repr.getMediaType().equals(MediaType.APPLICATION_JSON)) {
+				String str = repr.getText();
+				if (StringUtil.isBlank(str)) return null ;
+				return JsonParser.fromString(str).getAsJsonObject().getAsObject(rtnClz) ;
+			}
+			return null;
+		} catch (IOException ex) {
+			throw new ResourceException(ex) ;
+		}
+	}
 
+	public <T> List<T> handles(Method method, Object plainObject, Class<T> rtnClz) throws ResourceException {
+		try {
+			Request request = makeRequest(method);
+			request.setEntity(new StringRepresentation(JsonParser.fromObject(plainObject).toString()));
+			Representation repr = aradon.handle(request).getEntity();
+			if (repr.getMediaType().equals(MediaType.APPLICATION_JSON)) {
+				String str = repr.getText();
+				if (StringUtil.isBlank(str)) return null ;
+				return JsonParser.fromString(str).getAsJsonArray().asList(rtnClz) ;
+			}
+			return null;
+		} catch (IOException ex) {
+			throw new ResourceException(ex) ;
+		}
+	}
 
 }

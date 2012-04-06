@@ -7,13 +7,16 @@ import java.util.List;
 import net.ion.framework.configuration.ConfigurationException;
 import net.ion.framework.parse.html.HTag;
 import net.ion.framework.util.ListUtil;
-import net.ion.radon.core.TreeContext;
 
 import org.apache.commons.beanutils.MethodUtils;
 
 public class CommandFactory {
 
-	public static List<ICommand> parse(TreeContext context, HTag root) throws ConfigurationException {
+	public static List<ICommand> parse(HTag root) throws ConfigurationException {
+		return parse(InstallContext.EMPTY, root) ;
+	}
+
+	public static List<ICommand> parse(InstallContext context, HTag root) throws ConfigurationException {
 		try {
 			List<ICommand> result = ListUtil.newList();
 			for (HTag tag : root.getChildren("command")) {
@@ -35,7 +38,7 @@ public class CommandFactory {
 		}
 	}
 
-	static ICommand parseCommand(TreeContext context, HTag tag) throws ClassNotFoundException, InstantiationException, IllegalAccessException,
+	static ICommand parseCommand(InstallContext context, HTag tag) throws ClassNotFoundException, InstantiationException, IllegalAccessException,
 			NoSuchMethodException, InvocationTargetException {
 
 		String clzName = tag.getAttributeValue("clz");

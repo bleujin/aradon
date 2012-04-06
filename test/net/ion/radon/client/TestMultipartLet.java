@@ -36,13 +36,11 @@ public class TestMultipartLet extends AbstractLet {
 
 	@Override
 	protected Representation myPut(Representation entity) throws Exception {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	protected Representation myDelete() throws Exception {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -68,7 +66,6 @@ public class TestMultipartLet extends AbstractLet {
 
 	@Override
 	protected Representation myGet() throws Exception {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

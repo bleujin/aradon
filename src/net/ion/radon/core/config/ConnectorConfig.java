@@ -19,8 +19,12 @@ public class ConnectorConfig {
 	}
 
 	public final static ConnectorConfig makeJettyHTTPConfig(int port) {
+		return makeHttpConfig(port, "jetty") ;
+	}
+
+	private final static ConnectorConfig makeHttpConfig(int port, String enginetype){
 		try {
-			String config = "<connector-config engine=\"jetty\" />";
+			String config = "<connector-config engine=\"" + enginetype + "\" />";
 			return new ConnectorConfig(XMLConfig.load(config), port);
 		} catch (ConfigurationException e) {
 			throw new IllegalStateException(e.getMessage());
@@ -29,15 +33,16 @@ public class ConnectorConfig {
 		}
 	}
 
+	public final static ConnectorConfig makeDefaultHTTPConfig(int port) {
+		return makeHttpConfig(port, "none") ;
+	}
+
+	public final static ConnectorConfig makeSimpleHTTPConfig(int port) {
+		return makeHttpConfig(port, "simple") ;
+	}
+
 	public final static ConnectorConfig makeNettyHTTPConfig(int port) {
-		try {
-			String config = "<connector-config engine=\"netty\" />";
-			return new ConnectorConfig(XMLConfig.load(config), port);
-		} catch (ConfigurationException e) {
-			throw new IllegalStateException(e.getMessage());
-		} catch (IOException e) {
-			throw new IllegalStateException(e.getMessage());
-		}
+		return makeHttpConfig(port, "netty") ;
 	}
 
 
@@ -45,8 +50,8 @@ public class ConnectorConfig {
 		return new ConnectorConfig(connConfig, defaultPort);
 	}
 
-	public enum Engine {
-		Jetty, Netty, Unknown
+	public enum EngineType {
+		Jetty, Netty, Simple, Unknown
 	}
 
 	public Protocol getProtocol() {
@@ -57,14 +62,16 @@ public class ConnectorConfig {
 		return Protocol.HTTP;
 	}
 
-	public Engine getEngine() {
+	public EngineType getEngine() {
 		String pro = config.getString("[@engine]", "unknown");
-		if ("netty".equalsIgnoreCase(pro)) {
-			return Engine.Netty ;
+		if ("simple".equalsIgnoreCase(pro)) {
+			return EngineType.Simple ;
 		} else if ("jetty".equalsIgnoreCase(pro)) {
-			return Engine.Jetty ;
+			return EngineType.Jetty ;
+		} else if ("netty".equalsIgnoreCase(pro)) {
+			return EngineType.Netty ;
 		}
-		return Engine.Unknown;
+		return EngineType.Unknown;
 	}
 
 	public int getPort() {

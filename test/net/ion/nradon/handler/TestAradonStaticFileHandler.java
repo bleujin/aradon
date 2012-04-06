@@ -9,6 +9,8 @@ import net.ion.radon.client.AradonClient;
 import net.ion.radon.client.AradonClientFactory;
 
 import org.junit.Test;
+import org.restlet.Response;
+import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 
 public class TestAradonStaticFileHandler {

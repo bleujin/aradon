@@ -1,9 +1,9 @@
 package net.ion.nradon.handler.authentication;
 
 import net.ion.nradon.HttpControl;
-import net.ion.nradon.HttpHandler;
 import net.ion.nradon.HttpRequest;
 import net.ion.nradon.HttpResponse;
+import net.ion.nradon.handler.AbstractHttpHandler;
 import net.ion.nradon.helpers.Base64;
 
 /**
@@ -14,7 +14,7 @@ import net.ion.nradon.helpers.Base64;
  * @see PasswordAuthenticator
  * @see InMemoryPasswords
  */
-public class BasicAuthenticationHandler implements HttpHandler {
+public class BasicAuthenticationHandler extends AbstractHttpHandler {
 
 	public static final String USERNAME = "user";
 

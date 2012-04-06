@@ -30,6 +30,15 @@ public class AradonInnerClient implements AradonClient{
 		return AradonSerialRequest.create(aradon, path, id, pwd);
 	}
 	
+	public IJsonRequest createJsonRequest(String path) {
+		return AradonJsonRequest.create(aradon, path, "anony", "");
+	}
+
+	public IJsonRequest createJsonRequest(String path, String id, String pwd) {
+		return AradonJsonRequest.create(aradon, path, id, pwd);
+	}
+	
+	
 	public String getHostAddress() {
 		return "riap://component";
 	}

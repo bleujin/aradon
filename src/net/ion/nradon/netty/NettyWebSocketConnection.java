@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Executor;
 
+import net.ion.framework.util.ObjectUtil;
 import net.ion.nradon.WebSocketConnection;
 
 import org.jboss.netty.buffer.ChannelBuffers;
@@ -96,5 +97,9 @@ public class NettyWebSocketConnection implements WebSocketConnection {
 
 	Channel getChannel() {
 		return ctx.getChannel();
+	}
+
+	public String getString(String key) {
+		return ObjectUtil.toString(data(key));
 	}
 }

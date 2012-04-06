@@ -3,15 +3,15 @@ package net.ion.nradon.handler.logging;
 import net.ion.nradon.EventSourceConnection;
 import net.ion.nradon.EventSourceHandler;
 import net.ion.nradon.HttpControl;
-import net.ion.nradon.HttpHandler;
 import net.ion.nradon.HttpRequest;
 import net.ion.nradon.HttpResponse;
 import net.ion.nradon.WebSocketConnection;
 import net.ion.nradon.WebSocketHandler;
+import net.ion.nradon.handler.AbstractHttpHandler;
 import net.ion.nradon.wrapper.HttpControlWrapper;
 import net.ion.nradon.wrapper.HttpResponseWrapper;
 
-public class LoggingHandler implements HttpHandler {
+public class LoggingHandler extends AbstractHttpHandler {
 
 	private final LogSink logSink;
 

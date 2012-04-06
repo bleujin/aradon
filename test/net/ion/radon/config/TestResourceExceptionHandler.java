@@ -19,9 +19,8 @@ public class TestResourceExceptionHandler {
 		Response res = at.handle(request) ;
 		
 		assertEquals(404, res.getStatus().getCode()) ;
+		at.getAradon().stop() ;
 	}
-	
-	
 	
 	
 

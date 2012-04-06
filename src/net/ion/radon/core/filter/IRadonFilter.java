@@ -43,8 +43,8 @@ public abstract class IRadonFilter {
 	public abstract IFilterResult preHandle(IService iservice, Request request, Response response) ;
 
 	
-	public InnerRequest getInnerRequest(){
-		return ((InnerResponse)Response.getCurrent()).getInnerRequest() ;
+	public InnerRequest getInnerRequest(Request req){
+		return (InnerRequest) req ;
 	}
 	
 	public IFilterResult afterHandle(Representation result, IService iservice, Request request, Response response) {
