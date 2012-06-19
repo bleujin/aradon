@@ -3,6 +3,8 @@ package net.ion.nradon.client.websocket;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.util.HashMap;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import net.ion.nradon.netty.codec.http.websocketx.BinaryWebSocketFrame;
@@ -25,28 +27,28 @@ import org.jboss.netty.channel.socket.nio.NioClientSocketChannelFactory;
 import org.jboss.netty.handler.codec.http.HttpRequestEncoder;
 import org.jboss.netty.handler.codec.http.HttpResponseDecoder;
 
+import com.sun.org.apache.bcel.internal.generic.IREM;
+
 public class WebSocketClient {
 
 	// http://bloodguy.tistory.com/entry/HTML5-WebSocket-%EC%84%9C%EB%B2%84%EC%9D%98-handshake
 	
 	private ClientBootstrap bootstrap ;
 	private Channel ch ;
-	private IResponseMessageHandler responseHandler = IResponseMessageHandler.DEBUG ;
-
-	private WebSocketClient(IResponseMessageHandler responseHandler) {
-		this.responseHandler = responseHandler ;
+	private IResponseMessageHandler handler ;
+	private WebSocketClient(IResponseMessageHandler handler) {
+		this.handler = handler ;
 	}
 	
 	public final static WebSocketClient create(){
-		return create(IResponseMessageHandler.DEBUG) ;
+		return new WebSocketClient(IResponseMessageHandler.DEBUG);
+	}
+	public final static WebSocketClient create(IResponseMessageHandler handler){
+		return new WebSocketClient(handler);
 	}
 	
-	public final static WebSocketClient create(IResponseMessageHandler serverHandler){
-		return new WebSocketClient(serverHandler) ;
-	}
-
 	public void connect(URI uri) throws Exception {
-		bootstrap = new ClientBootstrap(new NioClientSocketChannelFactory(Executors.newSingleThreadExecutor(), Executors.newSingleThreadExecutor()));
+		bootstrap = new ClientBootstrap(new NioClientSocketChannelFactory(Executors.newSingleThreadExecutor(), Executors.newCachedThreadPool()));
 
 		String protocol = uri.getScheme();
 		if (!protocol.equals("ws")) {
@@ -54,12 +56,13 @@ public class WebSocketClient {
 		}
 
 		HashMap<String, String> customHeaders = new HashMap<String, String>();
-		customHeaders.put("MyHeader", "X-AradonWSClient");
+		customHeaders.put("ClientName", "X-AradonWSClient");
 
 		// Connect with V13 (RFC 6455 aka HyBi-17). You can change it to V08 or V00.
 		// If you change it to V00, ping is not supported and remember to change HttpResponseDecoder to WebSocketHttpResponseDecoder in the pipeline.
 		final WebSocketClientHandshaker handshaker = new WebSocketClientHandshakerFactory().newHandshaker(uri, WebSocketVersion.V13, null, false, customHeaders);
-		final WebSocketClientHandler clientHandler = WebSocketClientHandler.create(handshaker, responseHandler);
+		BlockingHandler blockingHandler = new BlockingHandler(this, handler);
+		final WebSocketClientHandler clientHandler = WebSocketClientHandler.create(handshaker, blockingHandler);
 		
 		bootstrap.setPipelineFactory(new ChannelPipelineFactory() {
 			public ChannelPipeline getPipeline() throws Exception {
@@ -107,24 +110,59 @@ public class WebSocketClient {
 			if (ch != null) {
 				ch.close();
 			}
+//			new Thread(new Runnable(){
+//				public void run() {
+//					bootstrap.releaseExternalResources();
+//				}
+//			}).start() ;
 			bootstrap.releaseExternalResources();
 		}
 	}
 
+	private CountDownLatch latch = new CountDownLatch(1) ;
 	private void waitUntilConnected() throws InterruptedException {
-		int tryCount = 0 ;
-		while(! isConnected()){
-			Thread.sleep(100) ;
-			if (tryCount++ > 10) throw new InterruptedException("cant connect to server") ; 
-		}
+		latch.await() ;
 	}
 
-	private boolean isConnected(){
-		return responseHandler.isConnected() ;
+	void releaseWhenOpened() {
+		latch.countDown() ;
 	}
 	
-	public IResponseMessageHandler getResponseHandler(){
-		return responseHandler ;
+}
+
+class BlockingHandler implements IResponseMessageHandler{
+
+	private WebSocketClient client ;
+	private IResponseMessageHandler handler ;
+	public BlockingHandler(WebSocketClient client, IResponseMessageHandler handler) {
+		this.client = client ;
+		this.handler = handler ;
+	}
+
+	public void onBinMessage(BinaryWebSocketFrame bframe) {
+		handler.onBinMessage(bframe) ;
+	}
+
+	public void onClosed() {
+		handler.onClosed() ;
+// 			client.disconnect() ;
+	}
+
+	public void onDisconnected() {
+		handler.onDisconnected() ;
+	}
+
+	public void onMessage(TextWebSocketFrame tframe) {
+		handler.onMessage(tframe) ;
+	}
+
+	public void onOpen() {
+		handler.onOpen() ;
+		client.releaseWhenOpened() ;
+	}
+
+	public void onPong() {
+		handler.onPong() ;
 	}
 	
 }

@@ -82,7 +82,7 @@ public class SectionFactory {
 		}
 	}
 
-	static RouterSection createSection(Aradon aradon, String sectionName, XMLConfig config) throws InstanceCreationException, ConfigurationException {
+	public static RouterSection createSection(Aradon aradon, String sectionName, XMLConfig config) throws InstanceCreationException, ConfigurationException {
 		TreeContext sectionContext = aradon.getServiceContext().createChildContext();
 		final RouterSection section = new RouterSection(aradon, sectionName, sectionContext);
 

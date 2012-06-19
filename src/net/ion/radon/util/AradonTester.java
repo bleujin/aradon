@@ -20,6 +20,9 @@ public class AradonTester {
 	private AradonTester(Aradon aradon) {
 		this.aradon = aradon;
 	}
+	public final static AradonTester load(Aradon aradon) throws Exception {
+		return new AradonTester(aradon) ;
+	}
 
 	public final static AradonTester create() throws Exception {
 		Aradon aradon = new Aradon();

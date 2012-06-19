@@ -1,11 +1,7 @@
 package net.ion.bulletin;
 
-import groovy.lang.Binding;
-import net.ion.framework.util.Debug;
-import net.ion.radon.core.filter.IFilterResult;
-
-import org.restlet.Request 
-import org.restlet.data.Method;
+import groovy.util.GroovyTestCase;
+import org.restlet.Request; 
 
 class TestHello extends GroovyTestCase {
 

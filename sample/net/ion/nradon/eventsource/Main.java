@@ -13,7 +13,7 @@ import java.util.concurrent.ExecutorService;
 import net.ion.nradon.EventSourceConnection;
 import net.ion.nradon.EventSourceHandler;
 import net.ion.nradon.WebServer;
-import net.ion.nradon.handler.EmbeddedResourceHandler;
+import net.ion.nradon.handler.StaticFileHandler;
 import net.ion.nradon.netty.contrib.EventSourceMessage;
 
 public class Main {
@@ -21,15 +21,15 @@ public class Main {
         private List<EventSourceConnection> connections = new ArrayList<EventSourceConnection>();
         private int count = 1;
 
-        public void addConnection(EventSourceConnection connection) {
-            connection.data("id", count++);
-            connections.add(connection);
-            broadcast("Client " + connection.data("id") + " joined");
+        public void addConnection(EventSourceConnection conn) {
+            conn.data("id", count++);
+            connections.add(conn);
+            broadcast("Client " + conn.data("id") + " joined");
         }
 
-        public void removeConnection(EventSourceConnection connection) {
-            connections.remove(connection);
-            broadcast("Client " + connection.data("id") + " left");
+        public void removeConnection(EventSourceConnection conn) {
+            connections.remove(conn);
+            broadcast("Client " + conn.data("id") + " left");
         }
 
         public void pushPeriodicallyOn(ExecutorService webThread) throws InterruptedException, ExecutionException {
@@ -56,15 +56,15 @@ public class Main {
 
         WebServer webServer = createWebServer(webThread, 9876)
                 .add("/events/my", new EventSourceHandler() {
-                    public void onOpen(EventSourceConnection connection) throws Exception {
-                        pusher.addConnection(connection);
+                    public void onOpen(EventSourceConnection conn) throws Exception {
+                        pusher.addConnection(conn);
                     }
 
-                    public void onClose(EventSourceConnection connection) throws Exception {
-                        pusher.removeConnection(connection);
+                    public void onClose(EventSourceConnection conn) throws Exception {
+                        pusher.removeConnection(conn);
                     }
                 })
-                .add(new EmbeddedResourceHandler("./sample/net/ion/nradon/eventsource/content"))
+                .add(new StaticFileHandler("./sample/net/ion/nradon/eventsource/content/"))
                 .start();
 
         System.out.println("EventSource demo running on: " + webServer.getUri());

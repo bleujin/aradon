@@ -12,8 +12,8 @@ import java.util.Set;
 import net.ion.framework.util.ListUtil;
 import net.ion.framework.util.ObjectUtil;
 
-public// Thread Unsafe
-class MultiValueMap implements Map, Serializable {
+//Thread Unsafe
+public class MultiValueMap implements Map, Serializable {
 
 	private HashMap inner = new HashMap<String, Object>();
 

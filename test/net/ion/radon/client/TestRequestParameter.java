@@ -66,6 +66,19 @@ public class TestRequestParameter {
 	}
 
 	@Test
+	public void setFormCaseSensitive() throws Exception { // HTTP parameters are officially case sensitive. 
+		AradonTester at = AradonTester.create().register("", "/hello", HelloWorldLet2.class);
+		Aradon aradon = at.getAradon();
+
+		IAradonRequest req = AradonClientFactory.create(aradon).createRequest("/hello");
+		req.addParameter("Name", "bleujin");
+
+		assertEquals("Hello World2 GET null", req.get().getText());
+		at.getAradon().stop();
+	}
+
+
+	@Test
 	public void setForm2() throws Exception {
 		AradonTester at = AradonTester.create().register("", "/hello", HelloWorldLet2.class);
 		Aradon aradon = at.getAradon();

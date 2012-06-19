@@ -6,8 +6,8 @@ import net.ion.nradon.HttpRequest;
 import net.ion.nradon.HttpResponse;
 import net.ion.nradon.WebServer;
 import net.ion.nradon.WebSocketHandler;
-import net.ion.nradon.handler.event.ServerEvent.EventType;
 import net.ion.nradon.handler.event.ServerEventHandler;
+import net.ion.nradon.handler.event.ServerEvent.EventType;
 
 public class HttpToWebSocketHandler implements HttpHandler {
 	private final WebSocketHandler handler;
@@ -19,7 +19,7 @@ public class HttpToWebSocketHandler implements HttpHandler {
 	public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
 		control.upgradeToWebSocketConnection(handler);
 	}
-	
+
 	public void onEvent(EventType etype, WebServer webserver) {
 		if (handler instanceof ServerEventHandler){
 			((ServerEventHandler)handler).onEvent(etype, webserver) ;

@@ -9,6 +9,8 @@ import net.ion.framework.util.Debug;
 import net.ion.framework.util.FileUtil;
 import net.ion.framework.util.InstanceCreationException;
 import net.ion.framework.util.ListUtil;
+import net.ion.framework.util.NumberUtil;
+import net.ion.framework.util.ObjectUtil;
 import net.ion.framework.util.PathMaker;
 import net.ion.framework.util.StringUtil;
 import net.ion.framework.util.ZipUtil;
@@ -34,7 +36,7 @@ public class AradonServer {
 	public Aradon start() throws Exception {
 
 		// Now, let's start the component! Note that the HTTP server connector is also automatically started.
-		aradon.startServer(getPort());
+		aradon.startServer(settedPort());
 
 		final AradonServer as = this;
 		Runtime.getRuntime().addShutdownHook(new Thread() {
@@ -43,7 +45,7 @@ public class AradonServer {
 			}
 		});
 
-		Debug.warn("AradonServer started : " + getPort());
+		Debug.warn("AradonServer started : ");
 		return aradon;
 	}
 
@@ -53,8 +55,12 @@ public class AradonServer {
 		}
 	}
 
+	private int settedPort(){
+		return options.getInt("port", 0);
+	}
+	
 	public int getPort(){
-		return options.getInt("port", 9000);
+		return NumberUtil.toIntWithMark(aradon.getServiceContext().getAttributeObject(AradonConstant.CONFIG_PORT), 9000) ;
 	}
 	
 	private Aradon newAradon() throws ConfigurationException, InstanceCreationException {

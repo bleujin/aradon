@@ -1,16 +1,25 @@
 package net.ion.radon.representation;
 
+import java.io.IOException;
+
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.restlet.Response;
+import org.restlet.data.Method;
+import org.restlet.representation.Representation;
+import org.restlet.representation.StringRepresentation;
 import org.restlet.resource.Get;
 import org.restlet.resource.Post;
 
+import net.ion.framework.parse.gson.JsonParser;
+import net.ion.framework.parse.gson.JsonSyntaxException;
 import net.ion.framework.parse.gson.annotations.SerializedName;
 import net.ion.framework.util.Debug;
 import net.ion.radon.client.AradonClient;
 import net.ion.radon.client.AradonClientFactory;
 import net.ion.radon.core.Aradon;
+import net.ion.radon.core.EnumClass.ILocation;
 import net.ion.radon.core.let.AbstractServerResource;
+import net.ion.radon.core.representation.BeanToJsonFilter;
 import net.ion.radon.core.representation.PlainObjectConverter;
 import net.ion.radon.util.AradonTester;
 import junit.framework.TestCase;
@@ -28,36 +37,34 @@ public class SampleConverter extends TestCase{
 	}
 	
 	public void testWhenRegistered() throws Exception {
-		Aradon aradon = AradonTester.create().register("", "/view", MyLet.class).getAradon() ;
+		Aradon aradon = AradonTester.create().mergeSection("")
+			.addLet("/view", "mylet", MyLet.class)
+			.addFilter(ILocation.AFTER, BeanToJsonFilter.create())
+			.getAradon() ;
+		
 		aradon.getEngine().getRegisteredConverters().add(new PlainObjectConverter()) ;
 		aradon.startServer(9000) ;
 	
 		AradonClient ac = AradonClientFactory.create("http://localhost:9000") ;
-		User user = ac.createSerialRequest("/view").get(User.class) ;
+		User user = ac.createJsonRequest("/view").get(User.class) ;
 		
 		assertEquals("bleujin", user.name) ;
 		assertEquals(20, user.age) ;
 		assertEquals("seoul", user.address.getCity()) ;
 		aradon.stop() ;
-
-		ac = AradonClientFactory.create(aradon) ;
-		user = ac.createSerialRequest("/view").get(User.class) ;
-		
-		assertEquals("bleujin", user.name) ;
-		assertEquals(20, user.age) ;
-		assertEquals("seoul", user.address.getCity()) ;
-		aradon.stop() ;
-
 	}
 	
 	public void testPost() throws Exception {
-		Aradon aradon = AradonTester.create().register("", "/view", MyLet.class).getAradon() ;
+		Aradon aradon = AradonTester.create().mergeSection("")
+			.addLet("/view", "mylet", MyLet.class)
+			.addFilter(ILocation.AFTER, BeanToJsonFilter.create())
+			.getAradon() ;
 		aradon.getEngine().getRegisteredConverters().add(new PlainObjectConverter()) ;
 		aradon.startServer(9050) ;
 	
 		AradonClient ac = AradonClientFactory.create("http://localhost:9050") ;
 		User newUser = new User("bleujin", 20) ;
-		User user = ac.createSerialRequest("/view").post(newUser, User.class) ;
+		User user = ac.createJsonRequest("/view").handle(Method.POST, newUser, User.class) ;
 		
 		assertEquals(21, user.age) ;
 		assertEquals(20, newUser.age) ;
@@ -74,7 +81,8 @@ class MyLet extends AbstractServerResource {
 	}
 	
 	@Post
-	public User addAge(User user){
+	public User addAge(Representation entity) throws JsonSyntaxException, IOException{
+		User user = JsonParser.fromString(entity.getText()).getAsJsonObject().getAsObject(User.class);
 		user.age = user.age + 1 ;
 		return user ;
 	}

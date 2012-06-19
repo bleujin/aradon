@@ -10,7 +10,6 @@ import java.io.PrintStream;
 import java.net.Socket;
 
 import jline.Terminal;
-import net.ion.framework.util.Debug;
 
 import org.codehaus.groovy.tools.shell.Groovysh;
 import org.codehaus.groovy.tools.shell.IO;
@@ -43,7 +42,6 @@ public class GroovyShellThread extends Thread {
 			io = new IO(in, wrap(out), wrap(out));
 
 			final Terminal terminal = Terminal.getTerminal();
-			Debug.debug(terminal.isEchoEnabled()) ;
 			terminal.disableEcho() ;
 			terminal.initializeTerminal() ;
 			

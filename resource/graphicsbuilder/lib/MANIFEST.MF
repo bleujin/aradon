@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Created-By: Fat Jar Eclipse Plug-In
+Class-Path: lib/ 
+

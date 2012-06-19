@@ -16,7 +16,6 @@ public class AsyncLet extends AbstractLet {
 
 	@Override
 	protected Representation myDelete() throws Exception {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -47,13 +46,11 @@ public class AsyncLet extends AbstractLet {
 
 	@Override
 	protected Representation myPost(Representation entity) throws Exception {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	protected Representation myPut(Representation entity) throws Exception {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

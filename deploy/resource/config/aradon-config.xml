@@ -17,6 +17,7 @@
 
 	</section>
 
+
 	<context>
 		<attribute id="let.contact.email">bleujin@i-on.net</attribute>
 		<attribute id="let.contact.help.doc">/help/doc</attribute>
@@ -30,7 +31,7 @@
 	<server-config id="mercury">
 		<!-- System.setProperty("java.util.logging.config.file", "./resource/config/myLogging.properties") ; -->
 		<log-config-file>./resource/config/log4j.properties</log-config-file>
-		<connector-config port="9000" engine="jetty">
+		<connector-config port="9000">
 			<parameter name="minThreads" description="Minimum threads waiting to service requests." >100</parameter> 
 			<parameter name="maxThreads" description="Maximum threads that will service requests." >255</parameter> 
 			<parameter name="threadMaxIdleTimeMs" description="Minimum threads waiting to service requests.">60000</parameter> 

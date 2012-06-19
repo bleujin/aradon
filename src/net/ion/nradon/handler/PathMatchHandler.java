@@ -8,6 +8,8 @@ import net.ion.nradon.HttpControl;
 import net.ion.nradon.HttpHandler;
 import net.ion.nradon.HttpRequest;
 import net.ion.nradon.HttpResponse;
+import net.ion.nradon.WebServer;
+import net.ion.nradon.handler.event.ServerEvent.EventType;
 
 public class PathMatchHandler extends AbstractHttpHandler {
 
@@ -31,5 +33,9 @@ public class PathMatchHandler extends AbstractHttpHandler {
 		} else {
 			control.nextHandler();
 		}
+	}
+	
+	public void onEvent(EventType etype, WebServer webserver) {
+		httpHandler.onEvent(etype, webserver) ;
 	}
 }

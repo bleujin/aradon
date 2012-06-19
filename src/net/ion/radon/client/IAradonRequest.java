@@ -2,6 +2,7 @@ package net.ion.radon.client;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.Future;
 
 
 import org.restlet.Response;
@@ -15,6 +16,8 @@ import org.restlet.security.User;
 public interface IAradonRequest {
 
 	public Response handle(Method method) ;
+	public <T> Future<T> handle(Method get, AsyncHttpHandler<T> asyncHandler);
+	
 	public Representation get() throws ResourceException  ;
 	public Representation put() throws ResourceException  ;
 	public Representation delete() throws ResourceException  ;

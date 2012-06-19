@@ -26,7 +26,7 @@ public class HelloWorldLet2 extends AbstractLet{
 
 	@Override
 	protected Representation myPut(Representation entity) throws Exception {
-		getInnerRequest().getContext().putAttribute("test",getInnerRequest().getEntityAsText() );
+		// getInnerRequest().getContext().putAttribute("test", getInnerRequest().getEntityAsText() );
 		return new StringRepresentation("Hello World2 PUT");
 	}
 

@@ -1,6 +1,11 @@
 package net.ion.radon.client;
 
 import java.security.cert.X509Certificate;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -13,6 +18,7 @@ import org.restlet.Client;
 import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;
+import org.restlet.Uniform;
 import org.restlet.data.Parameter;
 import org.restlet.data.Protocol;
 import org.restlet.engine.connector.HttpClientHelper;
@@ -25,14 +31,16 @@ import org.restlet.util.Series;
 public class AradonHttpClient implements AradonClient {
 	private String host;
 	private HttpClientHelper client;
+	private ExecutorService es ;
 
-	private AradonHttpClient(String host) {
+	private AradonHttpClient(String host, ExecutorService es) {
 		this.host = host;
 		this.client = new HttpClientHelper(new Client(ListUtil.toList(Protocol.HTTP, Protocol.HTTPS)));
+		this.es = es ;
 	}
 
-	public final static AradonHttpClient create(String hostAddress) {
-		return new AradonHttpClient(hostAddress);
+	public final static AradonHttpClient create(String hostAddress, ExecutorService es) {
+		return new AradonHttpClient(hostAddress, es);
 	}
 
 	public BasicRequest createRequest(String path) {
@@ -44,7 +52,7 @@ public class AradonHttpClient implements AradonClient {
 	}
 
 	public BasicSerialRequest createSerialRequest(String path) {
-		return BasicSerialRequest.create(this, path, "anony", "");
+		return BasicSerialRequest.create(this, path, "anony", "") ;
 	}
 
 	public BasicSerialRequest createSerialRequest(String path, String id, String pwd) {
@@ -61,7 +69,9 @@ public class AradonHttpClient implements AradonClient {
 
 	
 	public void stop() throws Exception {
-		client.stop();
+//		client.stop();
+		client.getHelped().stop() ;
+		AradonClientFactory.shutdownNow(es) ;
 	}
 
 	public String getHostAddress() {
@@ -76,6 +86,21 @@ public class AradonHttpClient implements AradonClient {
 		}
 
 		return response.getEntity();
+	}
+	
+	
+	
+	<T> Future<T> handle(final Request request, final AsyncHttpHandler<T> ahandler){
+		final Client c = client.getHelped() ;
+		return es.submit(new Callable<T>() {
+			public T call() throws Exception {
+				Response response = c.handle(request) ;
+				if (response.getStatus().isServerError() || response.getStatus().isClientError()){
+					ahandler.onError(request, response) ;
+					return null;
+				} else return ahandler.onCompleted(request, response) ;
+			}
+		}) ;
 	}
 
 	Response handle(Request request) {

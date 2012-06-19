@@ -42,7 +42,7 @@ public class TestLongResponse {
 
 		Runnable runn = new Runnable(){
 			public void run() {
-				AradonClient ac = AradonHttpClient.create("http://novision.i-on.net:8080") ;
+				AradonClient ac = AradonClientFactory.create("http://novision.i-on.net:8080") ;
 				IAradonRequest req = ac.createRequest("/ics/sub/login.do") ;
 				req.get() ;
 				Debug.line('#') ;

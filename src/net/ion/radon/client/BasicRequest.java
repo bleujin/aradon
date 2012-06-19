@@ -3,6 +3,7 @@ package net.ion.radon.client;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Future;
 
 import net.ion.framework.parse.gson.JsonParser;
 import net.ion.framework.util.StringUtil;
@@ -11,6 +12,7 @@ import net.ion.radon.core.RadonAttributeKey;
 import org.eclipse.jetty.http.HttpHeaders;
 import org.restlet.Request;
 import org.restlet.Response;
+import org.restlet.Uniform;
 import org.restlet.data.ChallengeResponse;
 import org.restlet.data.ChallengeScheme;
 import org.restlet.data.CharacterSet;
@@ -76,6 +78,12 @@ public class BasicRequest implements IAradonRequest {
 	public Response handle(Method method) {
 		return aclient.handle(makeRequest(method));
 	}
+	
+	public <T> Future<T> handle(Method method, final AsyncHttpHandler<T> ahandler) {
+		Request request = makeRequest(method);
+		return aclient.handle(request, ahandler);	
+	}
+
 
 	public Representation get() {
 		return handle(makeRequest(Method.GET));
@@ -191,5 +199,6 @@ public class BasicRequest implements IAradonRequest {
 			throw new ResourceException(ex) ;
 		}
 	}
+
 	
 }

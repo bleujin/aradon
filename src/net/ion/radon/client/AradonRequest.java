@@ -2,8 +2,12 @@ package net.ion.radon.client;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 import net.ion.framework.parse.gson.JsonParser;
+import net.ion.framework.util.ListUtil;
 import net.ion.framework.util.StringUtil;
 import net.ion.radon.core.Aradon;
 import net.ion.radon.core.RadonAttributeKey;
@@ -11,6 +15,7 @@ import net.ion.radon.core.RadonAttributeKey;
 import org.eclipse.jetty.http.HttpHeaders;
 import org.restlet.Request;
 import org.restlet.Response;
+import org.restlet.Uniform;
 import org.restlet.data.ChallengeResponse;
 import org.restlet.data.ChallengeScheme;
 import org.restlet.data.CharacterSet;
@@ -29,13 +34,15 @@ public class AradonRequest implements IAradonRequest{
 
 	private Form form ;
 	private Aradon aradon ;
+	private ExecutorService es ;
 	private String path ;
 	private User user ;
 	private Form headerForm ;
 	private ChallengeResponse challengeResponse;
 	
-	private AradonRequest(Aradon aradon, String path, User user, Form form) {
+	private AradonRequest(Aradon aradon, ExecutorService es, String path, User user, Form form) {
 		this.aradon = aradon ;
+		this.es = es; 
 		this.path = path ;
 		this.challengeResponse = new ChallengeResponse(ChallengeScheme.HTTP_BASIC, user.getIdentifier(), user.getSecret());
 		this.user = user ;
@@ -43,13 +50,13 @@ public class AradonRequest implements IAradonRequest{
 		this.headerForm = new Form() ;
 	}
 
-	public static AradonRequest create(Aradon aradon, String path, String id, String pwd) {
+	public static AradonRequest create(Aradon aradon, ExecutorService es, String path, String id, String pwd) {
 		String[] getPath = StringUtil.split(path, '?');
 		if (getPath.length == 1) {
-			return new AradonRequest(aradon, path, new User(id, pwd), new Form());
+			return new AradonRequest(aradon, es, path, new User(id, pwd), new Form());
 		} else {
 			Form form = new Form(getPath[1], CharacterSet.UTF_8);
-			return new AradonRequest(aradon, getPath[0], new User(id, pwd), form);
+			return new AradonRequest(aradon, es, getPath[0], new User(id, pwd), form);
 		}
 	}
 	
@@ -74,7 +81,23 @@ public class AradonRequest implements IAradonRequest{
 	public Response handle(Method method){
 		return aradon.handle(makeRequest(method)) ;
 	}
+
+	public <T> Future<T> handle(final Method method, final AsyncHttpHandler<T> ahandler){
+		
+		return es.submit(new Callable<T>() {
+			public T call() throws Exception {
+				final Request request = makeRequest(method);
+				Response response = aradon.handle(request) ;
+				
+				if (response.getStatus().isServerError() || response.getStatus().isClientError()){
+					ahandler.onError(request, response) ;
+					return null;
+				} else return ahandler.onCompleted(request, response) ;
+			}
+		}) ;
+	}
 	
+
 	public Representation get() {
 		Request request = makeRequest(Method.GET) ;
 		return aradon.handle(request).getEntity();

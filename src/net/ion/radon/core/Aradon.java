@@ -11,6 +11,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import net.ion.framework.util.Debug;
 import net.ion.framework.util.IOUtil;
@@ -18,6 +22,7 @@ import net.ion.framework.util.InstanceCreationException;
 import net.ion.framework.util.ListUtil;
 import net.ion.framework.util.MapUtil;
 import net.ion.framework.util.ObjectUtil;
+import net.ion.radon.client.AsyncHttpHandler;
 import net.ion.radon.core.EnumClass.FilterLocation;
 import net.ion.radon.core.EnumClass.PlugInApply;
 import net.ion.radon.core.config.AradonConstant;
@@ -39,6 +44,7 @@ import org.restlet.Component;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.Server;
+import org.restlet.Uniform;
 import org.restlet.data.Protocol;
 import org.restlet.data.Reference;
 import org.restlet.data.Status;
@@ -56,6 +62,7 @@ public class Aradon extends Component implements IService, AradonConstant {
 
 	private AradonConfig aconfig;
 	private AradonServerHelper serverHelper;
+	private boolean initialized = false ;
 	public Aradon() {
 		super();
 		this.releasables = ListUtil.newList();
@@ -74,6 +81,7 @@ public class Aradon extends Component implements IService, AradonConstant {
 		this.aconfig = AradonConfig.create(config).init(this, rootContext);
 
 		setLogService(new RadonLogService());
+		this.initialized = true ;
 	}
 
 	public Response handle(Request request) {
@@ -101,6 +109,7 @@ public class Aradon extends Component implements IService, AradonConstant {
 		
 		// new URI(request.getResourceRef().toString()).toString()
 		
+
 		InnerResponse innerResponse = InnerResponse.create(response, innerRequest);
 		// innerResponse.setRequest(innerRequest) ;
 
@@ -182,6 +191,7 @@ public class Aradon extends Component implements IService, AradonConstant {
 			return ;
 		}
 		try {
+			if (! initialized) init(XMLConfig.BLANK) ;
 			getServers().add(new Server(Protocol.RIAP)) ;
 			super.start();
 			getConfig().loadPlugIn(this);
@@ -193,7 +203,8 @@ public class Aradon extends Component implements IService, AradonConstant {
 	}
 
 	public void startServer(int port) throws Exception {
-		if (alreadyUsePortNum(port)) {
+		if (! initialized) init(XMLConfig.BLANK) ;
+		if (port > 0 && alreadyUsePortNum(port)) {
 			Debug.warn(port + " port is occupied");
 			throw new IllegalArgumentException(port + " port is occupied");
 		}
@@ -202,6 +213,8 @@ public class Aradon extends Component implements IService, AradonConstant {
 	}
 
 	public synchronized void startServer(ConnectorConfig cfig) throws Exception {
+		rootContext.putAttribute(CONFIG_PORT, cfig.getPort());
+		
 		this.serverHelper = ServerFactory.create(getContext(), this, cfig) ;
 		serverHelper.start() ;
 //		loadServerHelper(cfig) ;
@@ -216,8 +229,6 @@ public class Aradon extends Component implements IService, AradonConstant {
 		});
 
 		getLogger().warning("aradon started : " + cfig.getPort());
-
-		rootContext.putAttribute(CONFIG_PORT, cfig.getPort());
 	}
 
 	public synchronized void reload() throws Exception {
@@ -429,7 +440,6 @@ public class Aradon extends Component implements IService, AradonConstant {
 	public Engine getEngine() {
 		return Engine.getInstance();
 	}
-
 
 }
 

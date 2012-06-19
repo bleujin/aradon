@@ -11,11 +11,11 @@ import org.restlet.data.Protocol;
 public class ConnectorConfig {
 
 	private XMLConfig config ;
-	private int defaultPort ;
+	private int settedPort ;
 
-	private ConnectorConfig(XMLConfig config, int defaultPort) {
+	private ConnectorConfig(XMLConfig config, int settedPort) {
 		this.config = config;
-		this.defaultPort = defaultPort;
+		this.settedPort = settedPort;
 	}
 
 	public final static ConnectorConfig makeJettyHTTPConfig(int port) {
@@ -75,7 +75,7 @@ public class ConnectorConfig {
 	}
 
 	public int getPort() {
-		int portNum = config.getInt("[@port]", defaultPort);
+		int portNum = settedPort > 0 ? settedPort : config.getInt("[@port]", 9000);
 		return portNum;
 	}
 

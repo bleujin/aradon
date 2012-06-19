@@ -52,14 +52,6 @@ public class WebSocketToAradon {
 
 	
 	@Test
-	public void testPattern() throws Exception {
-		Pattern p = Pattern.compile("/.*/.*/.*") ;
-		Debug.line(p.matcher("/hello").matches()) ;
-		Debug.line(p.matcher("/bleujin/topicid/timeout=123&abcd=dd").matches()) ;
-	}
-	
-	
-	@Test
 	public void aradonSocket() throws Exception {
 		WebServer webServer = WebServers.createWebServer(8080) ;
 		
@@ -126,9 +118,7 @@ class AradonWebSocket implements WebSocketHandler {
 	}
 
 	public void onPong(WebSocketConnection conn, String msg) throws Throwable {
-		
 	}
-	
 }
 
 

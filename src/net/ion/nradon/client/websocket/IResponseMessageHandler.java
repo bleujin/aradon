@@ -21,13 +21,11 @@ public interface IResponseMessageHandler {
 
 	void onDisconnected();
 	
-	boolean isConnected() ;
 }
 
 
 class DebugMessageHandler implements IResponseMessageHandler {
 
-	private boolean connected = false;
 	public void onBinMessage(BinaryWebSocketFrame bframe) {
 		Debug.debug("WebSocket Client received message: " + bframe.getBinaryData().array().length) ;
 	}
@@ -41,21 +39,15 @@ class DebugMessageHandler implements IResponseMessageHandler {
 	}
 
 	public void onOpen() {
-		this.connected = true ;
 		Debug.debug("WebSocket Client connected!");
 	}
 
 	public void onPong() {
 		Debug.debug("WebSocket Client received pong");
 	}
-	
-	public boolean isConnected(){
-		return connected ;
-	}
 
 	public void onDisconnected() {
 		Debug.debug("WebSocket Client disconnected");
-		this.connected = false ;
 	}
 	
 }

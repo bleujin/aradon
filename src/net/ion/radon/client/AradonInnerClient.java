@@ -1,17 +1,20 @@
 package net.ion.radon.client;
 
+import java.util.concurrent.ExecutorService;
+
 import net.ion.radon.core.Aradon;
 
 public class AradonInnerClient implements AradonClient{
 
 	private Aradon aradon;
-
-	private AradonInnerClient(Aradon aradon) {
+	private ExecutorService es ;
+	private AradonInnerClient(Aradon aradon, ExecutorService es) {
 		this.aradon = aradon;
+		this.es = es ;
 	} 
 	
-	public static AradonInnerClient create(Aradon aradon){
-		return new AradonInnerClient(aradon);
+	public static AradonInnerClient create(Aradon aradon, ExecutorService es){
+		return new AradonInnerClient(aradon, es);
 	}
 	
 	public IAradonRequest createRequest(String path) {
@@ -19,7 +22,7 @@ public class AradonInnerClient implements AradonClient{
 	}
 
 	public IAradonRequest createRequest(String path, String id, String pwd) {
-		return AradonRequest.create(aradon, path, id, pwd);
+		return AradonRequest.create(aradon, es, path, id, pwd);
 	}
 
 	public ISerialRequest createSerialRequest(String path) {
@@ -44,6 +47,7 @@ public class AradonInnerClient implements AradonClient{
 	}
 
 	public void stop() throws Exception {
+		AradonClientFactory.shutdownNow(es) ;
 	}
 	
 

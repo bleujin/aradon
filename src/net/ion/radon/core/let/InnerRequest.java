@@ -297,7 +297,7 @@ public class InnerRequest extends Request {
 				}
 
 			} catch (FileUploadException ex) {
-				throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, ex.getMessage());
+				throw new ResourceException(Status.CLIENT_ERROR_UNPROCESSABLE_ENTITY, ex.getMessage());
 			}
 		} else if (isFormParameter(entity)) {
 			if (entity == null || entity.getSize() == 0) return params ;
@@ -307,14 +307,14 @@ public class InnerRequest extends Request {
 			for (String name : names) { // POST or PUT or DELETE
 				params.putParameter(name, form.getValuesArray(name));
 			}
+			
+			request.setEntity(form.getWebRepresentation()) ;
 		} else { // not form parameter
 			Representation den =  request.getEntity() ;
 			if (den.getMediaType() != null && den.getMediaType().toString().startsWith("text")){
 				try {
 					InnerRequest ir = (InnerRequest) request ;
 					String str = den.getText() ;
-					Debug.line(request.getClass(),  getHeaders(request)) ;
-					Debug.line(str) ;
 					if (ir.getMethod().equals(Method.LOCK)){
 						ir.getHeaders().add("Timeout", "Second-1") ;
 					}
@@ -563,6 +563,7 @@ public class InnerRequest extends Request {
 	}
 
 	public Representation getEntity() {
+		
 		return real.getEntity();
 	}
 

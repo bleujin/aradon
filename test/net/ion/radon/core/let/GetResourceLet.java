@@ -6,7 +6,7 @@ public class GetResourceLet extends AbstractServerResource{
 	
 	@Get
 	public String myGet() throws Exception {
-		return GetLet.class.getCanonicalName();
+		return GetResourceLet.class.getCanonicalName();
 	}
 
 }

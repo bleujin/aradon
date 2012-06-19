@@ -85,6 +85,9 @@ public class RouterSection extends SectionService{
 		}
 	}
 
+	public void attach(String urlPattern, Restlet target){
+		router.attach(makePathPattern(urlPattern), target) ;
+	}
 
 	public void attach(BasePathInfo pathInfo) {
 		attach(PathService.create(this, context.createChildContext(), pathInfo));
@@ -96,10 +99,13 @@ public class RouterSection extends SectionService{
 		pathServices.put(pathInfo.getName(), pservice);
 		
 		for (String urlPattern : pathInfo.getUrls()) {
-			final String path = StringUtil.isBlank(sectionName) ? urlPattern.substring(1) : urlPattern;
 			// router.attach(path, pathInfo.getHandlerClass(), pathInfo.getMatchMode().toRouterMode()) ;
-			router.attach(path, finder, pathInfo.getMatchMode().toRouterMode()) ;
+			router.attach(makePathPattern(urlPattern), finder, pathInfo.getMatchMode().toRouterMode()) ;
 		}
+	}
+	
+	private String makePathPattern(String urlPattern){
+		return StringUtil.isBlank(sectionName) ? urlPattern.substring(1) : urlPattern;
 	}
 	
 	public void detach(String pathName){

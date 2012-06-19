@@ -33,7 +33,7 @@ public class TestAradonHttpsClient {
 
 	@Test
 	public void testHttps() throws Exception {
-		String configStr = "<connector-config port='9000' protocol='https'>"
+		String configStr = "<connector-config port='9000' protocol='https' engine='simple'>"
 			+ "<parameter name='keystorePath' description=''>./resource/keystore/keystore</parameter>\n" 
 			+ "<parameter name='keystorePassword' description=''>password</parameter>\n"
 			+ "<parameter name='keystoreType' description=''>JKS</parameter>\n"

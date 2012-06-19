@@ -16,7 +16,6 @@ public class GroovyShellService extends GroovyService {
 
     private ServerSocket serverSocket;
     private int socket;
-    private Thread serverThread;
     private List<GroovyShellThread>threads = new ArrayList<GroovyShellThread>();
 
     public GroovyShellService() {
@@ -33,16 +32,17 @@ public class GroovyShellService extends GroovyService {
         this.socket = socket;
     }
     
-    public void launch() {
+    public synchronized void launch() {
         logger.info("GroovyShellService launch()");
 
         try {
             serverSocket = new ServerSocket(socket);
             logger.info("GroovyShellService launch() serverSocket: " + serverSocket);
 
-            while (true) {
+            while (! isShutdownRequested()) {
                 Socket clientSocket = null;
                 try {
+                	//serverSocket.setSoTimeout(1000) ;
                     clientSocket = serverSocket.accept();
                     logger.info("GroovyShellService launch() clientSocket: " + clientSocket);
                 }
@@ -73,11 +73,17 @@ public class GroovyShellService extends GroovyService {
         }
     }
 
-    @Override
+    private boolean isShutdown = false;
+    private synchronized boolean isShutdownRequested() {
+		return isShutdown;
+	}
+
+	@Override
     public void destroy() {
+		isShutdown = true ;
         logger.info("closing serverSocket: " + serverSocket);
         try {
-        	if (serverSocket != null) serverSocket.close();
+            if (serverSocket != null) serverSocket.close();
             for (GroovyShellThread nextThread : threads)  {
                 logger.info("closing nextThread: " + nextThread);
                 nextThread.getSocket().close();

@@ -1,5 +1,9 @@
 package net.ion.radon.impl.filter;
 
+import java.util.Set;
+import java.util.Map.Entry;
+
+import net.ion.framework.util.CollectionUtil;
 import net.ion.framework.util.Debug;
 import net.ion.radon.core.IService;
 import net.ion.radon.core.TreeContext;
@@ -8,7 +12,6 @@ import net.ion.radon.core.filter.IRadonFilter;
 import net.ion.radon.core.let.DefaultLet;
 import net.ion.radon.impl.util.DebugPrinter;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.ClientInfo;
@@ -42,6 +45,7 @@ public class SystemOutLog extends IRadonFilter{
 	private void printRequestHeader(Request request) {
 		Form requestHeaderForm = (Form) request.getAttributes().get(DefaultLet.ATTRIBUTE_HEADERS);
 		Debug.line(request.getMethod(), request.getResourceRef());
-		CollectionUtils.forAllDo(requestHeaderForm.getValuesMap().entrySet(), new DebugPrinter());
+		Set<Entry<String, String>> set = requestHeaderForm.getValuesMap().entrySet();
+		CollectionUtil.each(set, new DebugPrinter<Entry<String, String>>());
 	}
 }
