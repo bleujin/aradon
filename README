@@ -4,80 +4,67 @@
 
 <h2>Quick start</h2>
 
-<p>Start a web server on port 8080 and serve some static files:</p>
+<p>Start a web server on port 9000 and serve that you want:</p>
 
-Aradon aradon = new Aradon() ;
-aradon.init(XMLConfig.BLANK) ;
-SectionService section = aradon.attach("section", XMLConfig.BLANK); // base section..
-section.attach(PathInfo.create("test", "/web", StaticFileLet.class)) ;
+package net.ion.radon;
+...
 
-aradon.startServer(8080) ;
-
-
-
-For JUnit TestCase.. you use riap(remote internal access protocol)
-
-Request request = new Request(Method.GET, "riap://component/section/web/") ;
-Response response = aradon.handle(request) ;
-
-
-
-<p>sample test code. for more example, confirm test/net/ion/radon/TestAllAradon.java</p>
-<pre><code>
-	private Aradon aradon;
+public class TestFirst {
+	
+	private Aradon aradon ;
+	@Before
 	public void setUp() throws Exception {
-		this.aradon = new Aradon();
-		aradon.init(XMLConfig.BLANK) ;
-		
-		SectionService section = aradon.attach("section", XMLConfig.BLANK); // base section..
-		section.attach(PathInfo.create("test", "/hello", HelloWorldLet.class)) ;
+		this.aradon = AradonTester.create().mergeSection("sname").addLet("/hello/, /hello/{name}", "hello", HelloLet.class).getAradon() ;
 	}
 	
-	@Override
-	protected void tearDown() throws Exception {
+	@After
+	public void tearDown() {
 		aradon.stop() ;
-		super.tearDown();
 	}
-
-	public void testHello() throws Exception {
-		Request request = new Request(Method.GET, "riap://component/section/hello");
-		Response response = aradon.handle(request);
-
-		assertEquals(Status.SUCCESS_OK, response.getStatus());
+	
+	@Test
+	public void hello() throws Exception {
+		AradonClient ac = AradonClientFactory.create(aradon) ;
+		Response response = ac.createRequest("/sname/hello/bleujin").handle(Method.GET) ;
+		Assert.assertEquals(200, response.getStatus().getCode()) ;
+		Assert.assertEquals("Hello bleujin", response.getEntity().getText()) ;
 	}
-
-	public void testGet() throws Exception {
-		Request request = new Request(Method.GET, "riap://component/section/hello?abcd=test");
-		Response response = aradon.handle(request);
-
-		assertEquals("test", getInnerRequest().getFormParameter().get("abcd"));
-
-	}
-
-	public void testHello2() throws Exception {
-		SectionService section = aradon.attach("test", XMLConfig.BLANK);
-		section.attach(PathInfo.create("hello", "/hello", "", "", HelloWorldLet.class));
-
-		Request request = new Request(Method.GET, "riap://component/test/hello");
-		Response response = aradon.handle(request);
-
-		Debug.debug(response.getEntityAsText());
-
-	}
-
-	public void testRun() throws Exception {
-		aradon.startServer(9010) ;
+	
+	@Test
+	public void http() throws Exception {
+		aradon.startServer(9000) ;
 		
-		AradonClient ac = AradonClientFactory.create("http://localhost:9010") ;
-		Representation repr = ac.createRequest("/section/hello").get() ;
-		
-		Debug.debug(repr, repr.getText()) ;
+		AradonClient ac = AradonClientFactory.create("http://localhost:9000") ;
+		Response response = ac.createRequest("/sname/hello/bleujin").handle(Method.GET) ;
+		Assert.assertEquals(200, response.getStatus().getCode()) ;
+		Assert.assertEquals("Hello bleujin", response.getEntity().getText()) ;
+	}
+
+	
+	@Test
+	public void post() throws Exception {
+		AradonClient ac = AradonClientFactory.create(aradon) ;
+		Response response = ac.createRequest("/sname/hello/").addParameter("p1", "bleujin") .handle(Method.POST) ;
+		Assert.assertEquals(200, response.getStatus().getCode()) ;
+		Assert.assertEquals("Hi bleujin", response.getEntity().getText()) ;
 	}
 	
 	
+}
+
+class HelloLet extends AbstractServerResource{
 	
-	private InnerRequest getInnerRequest(){
-		return ((InnerResponse)Response.getCurrent()).getInnerRequest() ;		
+	@Get
+	public String hello(){
+		return "Hello " + getInnerRequest().getAttribute("name") ; 
 	}
+
+	@Post
+	public String postHello(){
+		return "Hi " + getInnerRequest().getParameter("p1") ; 
+	}
+
+}
+
 	
 </code></pre>
