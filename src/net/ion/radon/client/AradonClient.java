@@ -13,7 +13,7 @@ public interface AradonClient {
 	public IJsonRequest createJsonRequest(String path, String id, String pwd) ;
 
 
-	public void stop() throws Exception  ;
+	public void stop() throws Exception ;
 	
 	public String getHostAddress() ;
 //

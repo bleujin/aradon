@@ -39,11 +39,12 @@ public class TestAradonClient {
 
 		AradonClient ac = AradonClientFactory.create(at.getAradon());
 
-		IAradonRequest frequest = ac.createRequest("/hello?abcd=ÇÑ±ÛÇÑ±Û", "bleujin", "notmatch");
+		IAradonRequest frequest = ac.createRequest("/hello?abcd=ï¿½Ñ±ï¿½ï¿½Ñ±ï¿½", "bleujin", "notmatch");
 		Response fresponse = frequest.handle(Method.GET);
 		assertEquals(Status.CLIENT_ERROR_UNAUTHORIZED, fresponse.getStatus());
+		
 
-		IAradonRequest srequest = ac.createRequest("/hello?abcd=ÇÑ±ÛÇÑ±Û", "bleujin", "1234");
+		IAradonRequest srequest = ac.createRequest("/hello?abcd=ï¿½Ñ±ï¿½ï¿½Ñ±ï¿½", "bleujin", "1234");
 		Response rep = srequest.handle(Method.GET);
 		assertEquals(Status.SUCCESS_OK, rep.getStatus());
 	}
@@ -69,7 +70,7 @@ public class TestAradonClient {
 		at.getAradon().getChildService("").addPreFilter(authfilter);
 
 		AradonClient ac = AradonClientFactory.create(at.getAradon());
-		IAradonRequest request = ac.createRequest("/hello?abcd=ÇÑ±ÛÇÑ±Û", "bleujin", "redf");
+		IAradonRequest request = ac.createRequest("/hello?abcd=ï¿½Ñ±ï¿½ï¿½Ñ±ï¿½", "bleujin", "redf");
 
 		User user = request.getUser();
 		assertEquals("bleujin", user.getIdentifier().toString());
@@ -79,7 +80,7 @@ public class TestAradonClient {
 	@Test
 	public void whenNotConnected() throws Exception {
 		AradonClient ac = AradonClientFactory.create("http://notfoundaddress.com");
-		IAradonRequest ar = ac.createRequest("/other/hello?abcd=ÇÑ±ÛÇÑ±Û", "bleujin", "redf");
+		IAradonRequest ar = ac.createRequest("/other/hello?abcd=ï¿½Ñ±ï¿½ï¿½Ñ±ï¿½", "bleujin", "redf");
 		Response res = ar.handle(Method.GET);
 		assertEquals(1001, res.getStatus().getCode());
 		try {
