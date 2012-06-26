@@ -293,16 +293,22 @@ public class AradonConfig {
 		
 		void loadPlugIn(Aradon aradon) throws ConfigurationException, InstanceCreationException, IOException {
 			AradonConfig aconfig = aradon.getConfig() ;
-			File plugInRootDir = new File(StringUtil.defaultIfEmpty(aconfig.getXMLConfig().getString("plugin[@home]"), "./plugin"));
-			if (!(plugInRootDir.exists()) || !(plugInRootDir.isDirectory()))
+			
+			String parentDir = StringUtil.defaultIfEmpty(System.getProperty(Aradon.HOME_DIR), "./") ;
+			String plugInDir = StringUtil.defaultIfEmpty(aconfig.getXMLConfig().getString("plugin[@home]"), "plugin");
+			String plugInFullPath = PathMaker.getFilePath((plugInDir.startsWith("/") ? "" : parentDir) , plugInDir) ;
+			
+			
+			File plugInFileDir = new File(plugInFullPath);
+			if (!(plugInFileDir.exists()) || !(plugInFileDir.isDirectory()))
 				return;
 
-			extractPluginZip(plugInRootDir);
+			extractPluginZip(plugInFileDir);
 
 			List<File> configFiles = ListUtil.newList();
 			ClassAppender appender = ClassAppender.create();
 
-			File[] plugDirs = plugInRootDir.listFiles(DIR_FILTER);
+			File[] plugDirs = plugInFileDir.listFiles(DIR_FILTER);
 			for (File plugDir : plugDirs) {
 
 				File[] foundConfigFiles = FileUtil.findFiles(plugDir, PLUGIN_CONFIG_FILE_FILTER, true);

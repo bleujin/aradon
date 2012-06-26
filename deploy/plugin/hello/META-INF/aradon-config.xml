@@ -1,7 +1,7 @@
 <?xml version="1.0"  encoding="UTF-8"?>
 
 <root version="0.1">
-	<plugin apply="overwrite">
+	<plugin>
 		<id>net.bleujin.sample.hello</id>
 		<version>0.7</version>
 		<name>Sample HelloWorld Plugin</name>

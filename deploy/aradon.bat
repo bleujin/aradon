@@ -2,10 +2,11 @@
 @Echo OFF
 rem * JavaService installation script for Aradon Server
 
-rem set JAVA5_HOME=C:/java/jdk5_22
+set JAVA5_HOME=C:/java/jdk5_22
 set JAVASERVICE=JavaService.exe
 rem set current Dir at ARADON_HOME
-set ARADON_HOME=%cd%
+rem set ARADON_HOME=%cd%
+set ARADON_HOME=d:/github/aradon/deploy/
 
 rem check java
 if not exist "%JAVA5_HOME%\jre" goto no_java
