@@ -4,7 +4,10 @@ import junit.framework.Assert;
 import net.ion.radon.client.AradonClient;
 import net.ion.radon.client.AradonClientFactory;
 import net.ion.radon.core.Aradon;
+import net.ion.radon.core.filter.IRadonFilter;
 import net.ion.radon.core.let.AbstractServerResource;
+import net.ion.radon.core.security.ChallengeAuthenticator;
+import net.ion.radon.core.security.SimpleVerifier;
 import net.ion.radon.util.AradonTester;
 
 import org.junit.After;
@@ -50,11 +53,29 @@ public class TestFirst {
 	@Test
 	public void post() throws Exception {
 		AradonClient ac = AradonClientFactory.create(aradon) ;
-		Response response = ac.createRequest("/sname/hello/").addParameter("p1", "bleujin") .handle(Method.POST) ;
+		Response response = ac.createRequest("/sname/hello/").addParameter("p1", "bleujin").handle(Method.POST) ;
 		Assert.assertEquals(200, response.getStatus().getCode()) ;
 		Assert.assertEquals("Hi bleujin", response.getEntity().getText()) ;
 	}
 	
+	
+	@Test
+	public void filter() throws Exception {
+		IRadonFilter filter = new ChallengeAuthenticator("sec", new SimpleVerifier("bleujin", "1234"));
+		aradon.getChildService("sname").addPreFilter(filter) ;
+		
+		
+		aradon.startServer(9000) ;
+		
+		AradonClient ac = AradonClientFactory.create("http://localhost:9000") ;
+		Response response = ac.createRequest("/sname/hello/bleujin").handle(Method.GET) ;
+		Assert.assertEquals(401, response.getStatus().getCode()) ;
+
+		response = ac.createRequest("/sname/hello/bleujin", "bleujin", "1234").handle(Method.GET) ;
+		Assert.assertEquals(200, response.getStatus().getCode()) ;
+		
+		// new InfinityThread().startNJoin() ;
+	}
 	
 }
 
