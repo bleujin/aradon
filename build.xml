@@ -70,23 +70,25 @@
 		<echo>Copy to Deployer</echo>
 		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="./deploy/" />
 		<echo>Copy to ICSS6</echo>
-		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../ICSS6/icss/WEB-INF/lib/" />
+		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../../workspace/ICSS6/icss/WEB-INF/lib/" />
 		<echo>Copy to ICS6</echo>
-		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../ICS6/ics/WEB-INF/lib/" />
+		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../../workspace/ICS6/ics/WEB-INF/lib/" />
 		<echo>Copy to ICS6 Extend</echo>
-		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../ICS6Extend/lib/common/" />
-		<echo>Copy to AradonClient</echo>
-		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../AradonClient/lib/" />
-		<echo>Copy to AradonExtend</echo>
-		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../AradonExtend/lib/" />
-		<echo>Copy to WebSocket</echo>
-		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../WebSocket/libs/" />
+		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../../workspace/ICS6Extend/lib/common/" />
 		<echo>Copy to ToonServer</echo>
-		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../ToonServer/lib_source/aradon/" />
-		<echo>Copy to MongoSearch</echo>
-		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../MongoSearch/lib/" />
+		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../../workspace/ToonServer/lib_source/aradon/" />
 		<echo>Copy to Fluffy</echo>
-		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../fluffy/trunk/fluffy/lib/common/" />
+		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../../workspace/fluffy/trunk/fluffy/lib/common/" />
+
+		
+		<echo>Copy to AradonClient</echo>
+		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../aradonClient/lib/" />
+		<echo>Copy to AradonExtend</echo>
+		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../aradonExtend/lib/" />
+		<echo>Copy to WebSocket</echo>
+		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../webSocketPlug/libs/" />
+		<echo>Copy to MongoSearch</echo>
+		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../mongoSearch/lib/" />
 	</target>
 
 	<target name="copy_novision" depends="publish">
