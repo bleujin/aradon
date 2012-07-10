@@ -22,7 +22,7 @@ public class TestManyRequest {
 		AradonTester at = AradonTester.create().register("", "/hello/{num}", DummyLet.class) ;
 		at.getAradon().startServer(ConnectorConfig.makeJettyHTTPConfig(9005)) ;
 		
-		AradonClient client = AradonClientFactory.create("http://61.250.201.157:9005");
+		AradonClient client = AradonClientFactory.create("http://127.0.0.1:9005");
 		
 		for (int i : ListUtil.rangeNum(50000)) {
 			IAradonRequest request = client.createRequest("/hello/" + i);

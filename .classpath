@@ -21,6 +21,6 @@
 	<classpathentry kind="lib" path="aradon_lib/aradon/option/netty-3.2.7.Final.jar"/>
 	<classpathentry kind="lib" path="aradon_lib/aradon/imsi/servlet-api.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk5_22"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.5.22"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
