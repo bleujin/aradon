@@ -9,16 +9,18 @@ import net.ion.radon.client.AradonClientFactory;
 import net.ion.radon.client.IAradonRequest;
 import net.ion.radon.client.ISerialRequest;
 import net.ion.radon.client.MyUser;
-import net.ion.radon.client.ParameterTestLet;
 import net.ion.radon.core.Aradon;
+import net.ion.radon.core.let.AbstractServerResource;
+import net.ion.radon.core.security.ChallengeAuthenticator;
 import net.ion.radon.impl.let.HelloWorldLet;
 import net.ion.radon.util.AradonTester;
 
 import org.junit.Test;
 import org.restlet.Request;
 import org.restlet.Response;
+import org.restlet.data.ClientInfo;
 import org.restlet.data.Method;
-import org.restlet.security.User;
+import org.restlet.resource.Get;
 
 public class TestAradonHandler {
 
@@ -58,10 +60,12 @@ public class TestAradonHandler {
 	public void clientInfo() throws Exception {
 		WebServer webServer = WebServers.createWebServer(8080);
 		Aradon aradon = AradonTester.create().register("", "/client", ClientTestLet.class).getAradon();
+		aradon.addPreFilter(new ChallengeAuthenticator("sec")) ;
+		
 		webServer.add(AradonHandler.create(aradon)).start();
 
-		ISerialRequest request = AradonClientFactory.create("http://61.250.201.157:8080").createSerialRequest("/client?name=bleujin", "bleujin", "redf");
-		User user = request.get(User.class);
+		ISerialRequest request = AradonClientFactory.create("http://127.0.0.1:8080").createSerialRequest("/client?name=bleujin", "bleujin", "redf");
+		MyUser user = request.get(MyUser.class);
 
 		Debug.line(user);
 
@@ -73,4 +77,30 @@ public class TestAradonHandler {
 		webServer.stop().join();
 	}
 
+}
+
+
+class ParameterTestLet extends AbstractServerResource {
+
+	@Get
+	public MyUser getUser() {
+		return new MyUser(getInnerRequest().getParameter("name"));
+	}
+}
+
+class ClientTestLet extends AbstractServerResource {
+	
+	@Get
+	public MyUser getClient(){
+		ClientInfo ci = getInnerRequest().getClientInfo();
+		
+		if (ci.getUser() == null) throw new IllegalStateException("not setted auth") ;
+		
+		Debug.line(ci.getUser());
+		Debug.line(ci.getPort(), ci.getAddress()) ;
+		Debug.line(getInnerRequest().getResourceRef().getHostDomain()) ;
+		Debug.line(getInnerRequest().getResourceRef()) ;
+		
+		return new MyUser(ci.getUser().getName());
+	}
 }

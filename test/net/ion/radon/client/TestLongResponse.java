@@ -1,5 +1,8 @@
 package net.ion.radon.client;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -9,9 +12,13 @@ import net.ion.framework.util.Debug;
 import net.ion.framework.util.InfinityThread;
 import net.ion.framework.util.ListUtil;
 import net.ion.radon.core.Aradon;
+import net.ion.radon.core.let.AbstractServerResource;
 import net.ion.radon.util.AradonTester;
 
 import org.junit.Test;
+import org.restlet.representation.InputRepresentation;
+import org.restlet.representation.Representation;
+import org.restlet.resource.Get;
 import org.restlet.resource.ResourceException;
 
 public class TestLongResponse {
@@ -99,3 +106,19 @@ class ClientThread extends Thread {
 	}
 
 }
+
+class LongResponseLet extends AbstractServerResource{
+
+	@Get
+	public Representation print() throws FileNotFoundException{
+		
+		try {
+			Thread.sleep(3000) ;
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		FileInputStream fis = new FileInputStream(new File("aradon_lib/imsi/jmxtools-1.2.jar")) ;
+		return new InputRepresentation(fis) ;
+	}
+}
+

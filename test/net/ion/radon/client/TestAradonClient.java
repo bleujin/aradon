@@ -3,6 +3,7 @@ package net.ion.radon.client;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import net.ion.radon.core.filter.IRadonFilter;
+import net.ion.radon.core.let.AbstractServerResource;
 import net.ion.radon.core.security.ChallengeAuthenticator;
 import net.ion.radon.core.security.SimpleVerifier;
 import net.ion.radon.impl.let.HelloWorldLet;
@@ -14,6 +15,7 @@ import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.data.Status;
 import org.restlet.representation.Representation;
+import org.restlet.resource.Post;
 import org.restlet.resource.ResourceException;
 import org.restlet.security.User;
 
@@ -39,12 +41,12 @@ public class TestAradonClient {
 
 		AradonClient ac = AradonClientFactory.create(at.getAradon());
 
-		IAradonRequest frequest = ac.createRequest("/hello?abcd=�ѱ��ѱ�", "bleujin", "notmatch");
+		IAradonRequest frequest = ac.createRequest("/hello?abcd=abcd", "bleujin", "notmatch");
 		Response fresponse = frequest.handle(Method.GET);
 		assertEquals(Status.CLIENT_ERROR_UNAUTHORIZED, fresponse.getStatus());
 		
 
-		IAradonRequest srequest = ac.createRequest("/hello?abcd=�ѱ��ѱ�", "bleujin", "1234");
+		IAradonRequest srequest = ac.createRequest("/hello?abcd=abcd", "bleujin", "1234");
 		Response rep = srequest.handle(Method.GET);
 		assertEquals(Status.SUCCESS_OK, rep.getStatus());
 	}
@@ -90,4 +92,12 @@ public class TestAradonClient {
 		}
 	}
 
+}
+
+class RequestLet extends AbstractServerResource {
+
+	@Post
+	public String getName(Representation rep) {
+		return getInnerRequest().getParameter("name");
+	}
 }

@@ -7,15 +7,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
 import net.ion.framework.parse.gson.JsonParser;
-import net.ion.framework.util.ListUtil;
 import net.ion.framework.util.StringUtil;
 import net.ion.radon.core.Aradon;
-import net.ion.radon.core.RadonAttributeKey;
 
 import org.eclipse.jetty.http.HttpHeaders;
 import org.restlet.Request;
 import org.restlet.Response;
-import org.restlet.Uniform;
 import org.restlet.data.ChallengeResponse;
 import org.restlet.data.ChallengeScheme;
 import org.restlet.data.CharacterSet;
@@ -37,7 +34,7 @@ public class AradonRequest implements IAradonRequest{
 	private ExecutorService es ;
 	private String path ;
 	private User user ;
-	private Form headerForm ;
+	private Form tempHeaderForm ;
 	private ChallengeResponse challengeResponse;
 	
 	private AradonRequest(Aradon aradon, ExecutorService es, String path, User user, Form form) {
@@ -47,7 +44,7 @@ public class AradonRequest implements IAradonRequest{
 		this.challengeResponse = new ChallengeResponse(ChallengeScheme.HTTP_BASIC, user.getIdentifier(), user.getSecret());
 		this.user = user ;
 		this.form = form ;
-		this.headerForm = new Form() ;
+		this.tempHeaderForm = new Form() ;
 	}
 
 	public static AradonRequest create(Aradon aradon, ExecutorService es, String path, String id, String pwd) {
@@ -139,12 +136,12 @@ public class AradonRequest implements IAradonRequest{
 	
 	private void setHeader(Request request) {
 		request.setChallengeResponse(challengeResponse);
-		String cookieValue = headerForm.getFirstValue(HttpHeaders.COOKIE);
+		String cookieValue = tempHeaderForm.getFirstValue(HttpHeaders.COOKIE);
 		if (StringUtil.isNotBlank(cookieValue)) {
 			request.setCookies(new CookieSeries(new CookieReader(cookieValue).readValues()));
 		}
 
-		if (headerForm.size() > 0) request.getAttributes().put(RadonAttributeKey.ATTRIBUTE_HEADERS, headerForm);
+		HeaderUtil.setHeader(request, tempHeaderForm) ;
 	}
 	
 	private Request makeRequest(Method method, Representation entity) {
@@ -164,7 +161,7 @@ public class AradonRequest implements IAradonRequest{
 	}
 
 	public IAradonRequest addHeader(String name, String value) {
-		headerForm.add(name, value) ;
+		tempHeaderForm.add(name, value) ;
 		return this;
 	}
 

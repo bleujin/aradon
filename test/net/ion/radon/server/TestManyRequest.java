@@ -20,10 +20,9 @@ public class TestManyRequest {
 	@Test
 	public void testManyRequest() throws Exception {
 		AradonTester at = AradonTester.create().register("", "/hello/{num}", DummyLet.class) ;
-		at.getAradon().startServer(ConnectorConfig.makeJettyHTTPConfig(9005)) ;
+		at.getAradon().startServer(ConnectorConfig.makeSimpleHTTPConfig(9005)) ;
 		
 		AradonClient client = AradonClientFactory.create("http://127.0.0.1:9005");
-		
 		for (int i : ListUtil.rangeNum(50000)) {
 			IAradonRequest request = client.createRequest("/hello/" + i);
 			Response res = request.handle(Method.GET) ;
@@ -38,6 +37,7 @@ public class TestManyRequest {
 			}
 			res.release() ;
 		}
+		client.stop() ;
 		at.getAradon().stop() ;
 	}
 }

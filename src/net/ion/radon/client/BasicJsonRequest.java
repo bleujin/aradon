@@ -1,13 +1,10 @@
 package net.ion.radon.client;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
 import java.util.List;
 
 import net.ion.framework.parse.gson.JsonParser;
 import net.ion.framework.util.StringUtil;
-import net.ion.radon.core.RadonAttributeKey;
 import net.ion.radon.core.representation.JsonObjectRepresentation;
 
 import org.restlet.Request;
@@ -19,11 +16,8 @@ import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
-import org.restlet.resource.ClientResource;
 import org.restlet.resource.ResourceException;
-import org.restlet.resource.UniformResource;
 import org.restlet.security.User;
-import org.restlet.service.ConverterService;
 
 public class BasicJsonRequest implements IJsonRequest {
 
@@ -31,7 +25,7 @@ public class BasicJsonRequest implements IJsonRequest {
 	private ChallengeResponse challengeResponse;
 	private String fullPath;
 	private User user;
-	private Form headerForm;
+	private Form tempHeaderForm;
 
 	private BasicJsonRequest(AradonHttpClient aclient, String path, String id, String pwd) {
 		this.aclient = aclient;
@@ -108,15 +102,13 @@ public class BasicJsonRequest implements IJsonRequest {
 		Request request = new Request(method, fullPath);
 		request.getClientInfo().setUser(this.user);
 		request.setChallengeResponse(new ChallengeResponse(ChallengeScheme.HTTP_BASIC, user.getIdentifier(), user.getSecret()));
-		if (headerForm != null)
-			request.getAttributes().put(RadonAttributeKey.ATTRIBUTE_HEADERS, headerForm);
+		HeaderUtil.setHeader(request, tempHeaderForm);
 
 		if (arg != null) {
-			ClientResource resource = new ClientResource(aclient.getClient().getContext(), getFullPath());
-			request.setEntity(toRepresentation(resource, arg, null));
+			request.setEntity(toRepresentation(arg, null));
 		}
 		try {
-			Response response = aclient.getClient().handle(request);
+			Response response = aclient.handle(request);
 			if (!response.getStatus().isSuccess()) {
 				throw new ResourceException(response.getStatus());
 			}
@@ -126,25 +118,21 @@ public class BasicJsonRequest implements IJsonRequest {
 		}
 	}
 
-	private String getFullPath() {
-		return fullPath;
-	}
 
 	public BasicJsonRequest addHeader(String name, String value) {
-		if (headerForm == null) {
-			headerForm = new Form();
+		if (tempHeaderForm == null) {
+			tempHeaderForm = new Form();
 		}
 
-		headerForm.add(name, value);
+		tempHeaderForm.add(name, value);
 		return this;
 	}
 
-	private Representation toRepresentation(UniformResource resource, Object source, Variant target) {
-		Representation result = null;
+	private Representation toRepresentation(Object source, Variant target) {
 		if (source != null) {
-			result = new JsonObjectRepresentation(JsonParser.fromObject(source));
+			return new JsonObjectRepresentation(JsonParser.fromObject(source));
 		}
-		return result;
+		return null;
 	}
 
 }

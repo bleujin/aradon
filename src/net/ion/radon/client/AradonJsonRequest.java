@@ -7,7 +7,6 @@ import net.ion.framework.parse.gson.JsonElement;
 import net.ion.framework.parse.gson.JsonParser;
 import net.ion.framework.util.StringUtil;
 import net.ion.radon.core.Aradon;
-import net.ion.radon.core.RadonAttributeKey;
 import net.ion.radon.core.representation.JsonObjectRepresentation;
 
 import org.restlet.Request;
@@ -19,21 +18,19 @@ import org.restlet.data.Form;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.data.Status;
-import org.restlet.representation.ObjectRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.ClientResource;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.UniformResource;
 import org.restlet.security.User;
-import org.restlet.service.ConverterService;
 
 public class AradonJsonRequest implements IJsonRequest {
 
 	private Aradon aradon;
 	private String path;
 	private User user;
-	private Form headerForm;
+	private Form tempHeaderForm;
 
 	private AradonJsonRequest(Aradon aradon, String path, User user, Form form) {
 		this.aradon = aradon;
@@ -55,8 +52,7 @@ public class AradonJsonRequest implements IJsonRequest {
 		Request request = new Request(method, getFullPath());
 		ChallengeResponse challengeResponse = new ChallengeResponse(ChallengeScheme.HTTP_BASIC, user.getIdentifier(), user.getSecret());
 		request.setChallengeResponse(challengeResponse);
-		if (headerForm != null)
-			request.getAttributes().put(RadonAttributeKey.ATTRIBUTE_HEADERS, headerForm);
+		HeaderUtil.setHeader(request, tempHeaderForm) ;
 
 		if (arg != null) {
 			ClientResource resource = new ClientResource(aradon.getContext(), getFullPath());
@@ -131,11 +127,11 @@ public class AradonJsonRequest implements IJsonRequest {
 	}
 
 	public AradonJsonRequest addHeader(String name, String value) {
-		if (headerForm == null) {
-			headerForm = new Form();
+		if (tempHeaderForm == null) {
+			tempHeaderForm = new Form();
 		}
 
-		headerForm.add(name, value);
+		tempHeaderForm.add(name, value);
 		return this;
 	}
 

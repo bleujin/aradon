@@ -1,31 +1,29 @@
 package net.ion.radon.client;
 
 import java.security.cert.X509Certificate;
-import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import net.ion.framework.util.Debug;
 import net.ion.framework.util.ListUtil;
 
 import org.restlet.Client;
 import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;
-import org.restlet.Uniform;
 import org.restlet.data.Parameter;
 import org.restlet.data.Protocol;
 import org.restlet.engine.connector.HttpClientHelper;
-import org.restlet.ext.ssl.HttpsClientHelper;
 import org.restlet.ext.ssl.SslContextFactory;
 import org.restlet.representation.Representation;
+import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
+import org.restlet.resource.UniformResource;
+import org.restlet.service.ConverterService;
 import org.restlet.util.Series;
 
 public class AradonHttpClient implements AradonClient {
@@ -33,6 +31,7 @@ public class AradonHttpClient implements AradonClient {
 	private HttpClientHelper client;
 	private ExecutorService es ;
 
+	private ConverterService cs = new ConverterService() ;
 	private AradonHttpClient(String host, ExecutorService es) {
 		this.host = host;
 		this.client = new HttpClientHelper(new Client(ListUtil.toList(Protocol.HTTP, Protocol.HTTPS)));
@@ -114,6 +113,27 @@ public class AradonHttpClient implements AradonClient {
 	Client getClient() {
 		return client.getHelped();
 	}
+	
+	<T> Representation toRepresentation(T arg){
+		if (arg != null) {
+			//ClientResource resource = new ClientResource(getClient().getContext(), getFullPath()) ;
+			return toRepresentation(null, arg, null);
+		}
+		return null ;
+	}
+	
+	private Representation toRepresentation(UniformResource resource, Object source, Variant target) {
+		Representation result = null;
+		if (source != null) {
+			result = getConverterService().toRepresentation(source, target, resource);
+		}
+		return result;
+	}
+
+	private ConverterService getConverterService() {
+		return cs;
+	}
+
 
 	public String toString() {
 		return host;

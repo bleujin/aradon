@@ -4,8 +4,6 @@ import java.io.IOException;
 
 import net.ion.framework.util.StringUtil;
 import net.ion.radon.core.Aradon;
-import net.ion.radon.core.RadonAttributeKey;
-import net.ion.radon.core.representation.JsonObjectRepresentation;
 
 import org.restlet.Request;
 import org.restlet.Response;
@@ -18,7 +16,6 @@ import org.restlet.data.Status;
 import org.restlet.representation.ObjectRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
-import org.restlet.resource.ClientResource;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.UniformResource;
 import org.restlet.security.User;
@@ -29,7 +26,7 @@ public class AradonSerialRequest implements ISerialRequest {
 	private Aradon aradon;
 	private String path;
 	private User user;
-	private Form headerForm ;
+	private Form tempHeaderForm ;
 
 	private AradonSerialRequest(Aradon aradon, String path, User user, Form form) {
 		this.aradon = aradon;
@@ -51,12 +48,9 @@ public class AradonSerialRequest implements ISerialRequest {
 		Request request = new Request(method, getFullPath());
 		ChallengeResponse challengeResponse = new ChallengeResponse(ChallengeScheme.HTTP_BASIC, user.getIdentifier(), user.getSecret());
 		request.setChallengeResponse(challengeResponse);
-		if (headerForm != null) request.getAttributes().put(RadonAttributeKey.ATTRIBUTE_HEADERS, headerForm) ;
+		HeaderUtil.setHeader(request, tempHeaderForm) ;
 		
-		if (arg != null) {
-			ClientResource resource = new ClientResource(aradon.getContext(), getFullPath());
-			request.setEntity(toRepresentation(resource, arg, null));
-		}
+		request.setEntity( toRepresentation(null, arg, null));
 		// request.getClientInfo().setUser(user) ;
 
 		return request;
@@ -110,21 +104,20 @@ public class AradonSerialRequest implements ISerialRequest {
 	}
 
 	public AradonSerialRequest addHeader(String name, String value) {
-		if (headerForm == null){
-			headerForm = new Form() ;
+		if (tempHeaderForm == null){
+			tempHeaderForm = new Form() ;
 		}
 		
-		headerForm.add(name, value) ;
+		tempHeaderForm.add(name, value) ;
 		return this;
 	}
 	
 	private Representation toRepresentation(UniformResource resource, Object source, Variant target) {
-		Representation result = null;
 		if (source != null) {
 			ConverterService cs = aradon.getConverterService();
-			result = cs.toRepresentation(source, target, resource);
+			return cs.toRepresentation(source, target, resource);
 		}
-		return result;
+		return null;
 	}
 
 }
