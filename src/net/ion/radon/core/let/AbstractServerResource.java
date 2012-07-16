@@ -16,11 +16,9 @@ import net.ion.radon.core.filter.IFilterResult;
 
 import org.restlet.Request;
 import org.restlet.Response;
-import org.restlet.data.ClientInfo;
 import org.restlet.data.Status;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ResourceException;
-import org.restlet.resource.ServerResource;
 import org.restlet.routing.Filter;
 
 public class AbstractServerResource extends BaseServerResource {
@@ -118,5 +116,6 @@ public class AbstractServerResource extends BaseServerResource {
 		if (agent == null) return false ;
 		return agent.indexOf("MSIE") > -1;
 	}
+
 
 }

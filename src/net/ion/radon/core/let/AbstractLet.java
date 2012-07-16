@@ -275,4 +275,16 @@ public abstract class AbstractLet extends ServerResource implements RadonAttribu
 	public SectionService getMySectionService() {
 		return (SectionService) getApplication();
 	}
+
+	@Override
+	public String getAttribute(String key) {
+		Map<String, Object> attrs = getRequestAttributes();
+		if (attrs == null) return null ;
+		return (attrs.get(key) != null) ? attrs.get(key).toString() : null ;
+	}
+
+	@Override
+	public void setAttribute(String name, Object value) {
+		 getRequestAttributes().put(name, value);
+	}
 }

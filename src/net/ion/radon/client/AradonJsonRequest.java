@@ -6,7 +6,6 @@ import java.util.List;
 import net.ion.framework.parse.gson.JsonElement;
 import net.ion.framework.parse.gson.JsonParser;
 import net.ion.framework.util.StringUtil;
-import net.ion.radon.core.Aradon;
 import net.ion.radon.core.representation.JsonObjectRepresentation;
 
 import org.restlet.Request;
@@ -19,32 +18,29 @@ import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.data.Status;
 import org.restlet.representation.Representation;
-import org.restlet.representation.Variant;
-import org.restlet.resource.ClientResource;
 import org.restlet.resource.ResourceException;
-import org.restlet.resource.UniformResource;
 import org.restlet.security.User;
 
 public class AradonJsonRequest implements IJsonRequest {
 
-	private Aradon aradon;
+	private AradonInnerClient aclient;
 	private String path;
 	private User user;
 	private Form tempHeaderForm;
 
-	private AradonJsonRequest(Aradon aradon, String path, User user, Form form) {
-		this.aradon = aradon;
+	private AradonJsonRequest(AradonInnerClient aclient, String path, User user, Form form) {
+		this.aclient = aclient;
 		this.path = path;
 		this.user = user;
 	}
 
-	public static IJsonRequest create(Aradon aradon, String path, String id, String pwd) {
+	public static IJsonRequest create(AradonInnerClient aclient, String path, String id, String pwd) {
 		String[] getPath = StringUtil.split(path, '?');
 		if (getPath.length == 1) {
-			return new AradonJsonRequest(aradon, path, new User(id, pwd), new Form());
+			return new AradonJsonRequest(aclient, path, new User(id, pwd), new Form());
 		} else {
 			Form form = new Form(getPath[1], CharacterSet.UTF_8);
-			return new AradonJsonRequest(aradon, path, new User(id, pwd), form);
+			return new AradonJsonRequest(aclient, path, new User(id, pwd), form);
 		}
 	}
 
@@ -55,8 +51,7 @@ public class AradonJsonRequest implements IJsonRequest {
 		HeaderUtil.setHeader(request, tempHeaderForm) ;
 
 		if (arg != null) {
-			ClientResource resource = new ClientResource(aradon.getContext(), getFullPath());
-			request.setEntity(toRepresentation(resource, arg, null));
+			request.setEntity(toRepresentation(arg));
 		}
 		// request.getClientInfo().setUser(user) ;
 
@@ -85,7 +80,7 @@ public class AradonJsonRequest implements IJsonRequest {
 	}
 
 	private <V> Object handle(Request request, Class<? extends V> rtnClz) {
-		Response response = aradon.handle(request);
+		Response response = aclient.handle(request);
 
 		try {
 			if (!response.getStatus().isSuccess())
@@ -135,7 +130,7 @@ public class AradonJsonRequest implements IJsonRequest {
 		return this;
 	}
 
-	private Representation toRepresentation(UniformResource resource, Object source, Variant target) {
+	private Representation toRepresentation(Object source) {
 		Representation result = null;
 		if (source != null) {
 			result = new JsonObjectRepresentation(JsonParser.fromObject(source));

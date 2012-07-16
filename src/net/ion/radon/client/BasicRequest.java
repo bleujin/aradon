@@ -7,7 +7,6 @@ import java.util.concurrent.Future;
 import net.ion.framework.parse.gson.JsonParser;
 import net.ion.framework.util.StringUtil;
 
-import org.eclipse.jetty.http.HttpHeaders;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.ChallengeResponse;
@@ -17,8 +16,6 @@ import org.restlet.data.Form;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.data.Parameter;
-import org.restlet.engine.header.CookieReader;
-import org.restlet.engine.util.CookieSeries;
 import org.restlet.representation.Representation;
 import org.restlet.representation.StringRepresentation;
 import org.restlet.resource.ResourceException;
@@ -110,26 +107,17 @@ public class BasicRequest implements IAradonRequest {
 			request = new Request(method, fullPath);
 			request.setEntity(form.getWebRepresentation());
 		}
-
-		setHeader(request);
+		request.setChallengeResponse(challengeResponse);
+		HeaderUtil.setHeader(request, tempHeaderForm);
 
 		return request;
 	}
 
-	private void setHeader(Request request) {
-		request.setChallengeResponse(challengeResponse);
-		String cookieValue = tempHeaderForm.getFirstValue(HttpHeaders.COOKIE);
-		if (StringUtil.isNotBlank(cookieValue)) {
-			request.setCookies(new CookieSeries(new CookieReader(cookieValue).readValues()));
-		}
-		
-		HeaderUtil.setHeader(request, tempHeaderForm);
-	}
-
 	private Request makeRequest(Method method, Representation entity) {
 		Request request = new Request(method, fullPath);
+		HeaderUtil.setHeader(request, tempHeaderForm);
+		request.setChallengeResponse(challengeResponse);
 		request.setEntity(entity);
-		setHeader(request);
 
 		return request;
 	}

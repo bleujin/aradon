@@ -20,6 +20,7 @@ import net.ion.radon.impl.filter.RevokeServiceFilter;
 import org.apache.commons.configuration.ConfigurationException;
 import org.restlet.Client;
 import org.restlet.Context;
+import org.restlet.Restlet;
 import org.restlet.routing.VirtualHost;
 import org.restlet.security.Enroler;
 import org.restlet.security.Verifier;
@@ -114,7 +115,7 @@ public final class TreeContext extends Context {
 		return getAttributes().get(key) != null;
 	}
 
-	public Client getClientDispatcher() {
+	public Restlet getClientDispatcher() {
 		return context.getClientDispatcher();
 	}
 
@@ -134,7 +135,7 @@ public final class TreeContext extends Context {
 		return context.getParameters();
 	}
 
-	public Client getServerDispatcher() {
+	public Restlet getServerDispatcher() {
 		return context.getServerDispatcher();
 	}
 

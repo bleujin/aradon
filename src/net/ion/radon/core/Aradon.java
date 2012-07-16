@@ -11,10 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 import net.ion.framework.util.Debug;
 import net.ion.framework.util.IOUtil;
@@ -22,7 +18,6 @@ import net.ion.framework.util.InstanceCreationException;
 import net.ion.framework.util.ListUtil;
 import net.ion.framework.util.MapUtil;
 import net.ion.framework.util.ObjectUtil;
-import net.ion.radon.client.AsyncHttpHandler;
 import net.ion.radon.core.EnumClass.FilterLocation;
 import net.ion.radon.core.EnumClass.PlugInApply;
 import net.ion.radon.core.config.AradonConstant;
@@ -44,7 +39,6 @@ import org.restlet.Component;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.Server;
-import org.restlet.Uniform;
 import org.restlet.data.Protocol;
 import org.restlet.data.Reference;
 import org.restlet.data.Status;
@@ -84,11 +78,11 @@ public class Aradon extends Component implements IService, AradonConstant {
 		this.initialized = true ;
 	}
 
-	public Response handle(Request request) {
-		final Response response = new Response(request);
-		handle(request, response);
-		return response;
-	}
+//	public Response handle(Request request) {
+//		final Response response = new Response(request);
+//		handle(request, response);
+//		return response;
+//	}
 	
 	private String getSectionName(Request request) {
 		Reference resourceRef = request.getResourceRef() ;

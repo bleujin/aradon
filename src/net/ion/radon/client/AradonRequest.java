@@ -8,7 +8,6 @@ import java.util.concurrent.Future;
 
 import net.ion.framework.parse.gson.JsonParser;
 import net.ion.framework.util.StringUtil;
-import net.ion.radon.core.Aradon;
 
 import org.eclipse.jetty.http.HttpHeaders;
 import org.restlet.Request;
@@ -30,15 +29,15 @@ import org.restlet.security.User;
 public class AradonRequest implements IAradonRequest{
 
 	private Form form ;
-	private Aradon aradon ;
+	private AradonInnerClient aclient ;
 	private ExecutorService es ;
 	private String path ;
 	private User user ;
 	private Form tempHeaderForm ;
 	private ChallengeResponse challengeResponse;
 	
-	private AradonRequest(Aradon aradon, ExecutorService es, String path, User user, Form form) {
-		this.aradon = aradon ;
+	private AradonRequest(AradonInnerClient aclient, ExecutorService es, String path, User user, Form form) {
+		this.aclient = aclient ;
 		this.es = es; 
 		this.path = path ;
 		this.challengeResponse = new ChallengeResponse(ChallengeScheme.HTTP_BASIC, user.getIdentifier(), user.getSecret());
@@ -47,13 +46,13 @@ public class AradonRequest implements IAradonRequest{
 		this.tempHeaderForm = new Form() ;
 	}
 
-	public static AradonRequest create(Aradon aradon, ExecutorService es, String path, String id, String pwd) {
+	public static AradonRequest create(AradonInnerClient aclient, ExecutorService es, String path, String id, String pwd) {
 		String[] getPath = StringUtil.split(path, '?');
 		if (getPath.length == 1) {
-			return new AradonRequest(aradon, es, path, new User(id, pwd), new Form());
+			return new AradonRequest(aclient, es, path, new User(id, pwd), new Form());
 		} else {
 			Form form = new Form(getPath[1], CharacterSet.UTF_8);
-			return new AradonRequest(aradon, es, getPath[0], new User(id, pwd), form);
+			return new AradonRequest(aclient, es, getPath[0], new User(id, pwd), form);
 		}
 	}
 	
@@ -76,7 +75,7 @@ public class AradonRequest implements IAradonRequest{
 	}
 	
 	public Response handle(Method method){
-		return aradon.handle(makeRequest(method)) ;
+		return aclient.handle(makeRequest(method)) ;
 	}
 
 	public <T> Future<T> handle(final Method method, final AsyncHttpHandler<T> ahandler){
@@ -84,7 +83,7 @@ public class AradonRequest implements IAradonRequest{
 		return es.submit(new Callable<T>() {
 			public T call() throws Exception {
 				final Request request = makeRequest(method);
-				Response response = aradon.handle(request) ;
+				Response response = aclient.handle(request) ;
 				
 				if (response.getStatus().isServerError() || response.getStatus().isClientError()){
 					ahandler.onError(request, response) ;
@@ -97,27 +96,27 @@ public class AradonRequest implements IAradonRequest{
 
 	public Representation get() {
 		Request request = makeRequest(Method.GET) ;
-		return aradon.handle(request).getEntity();
+		return aclient.handle(request).getEntity();
 	}
 
 
 	public Representation delete() throws ResourceException {
 		Request request = makeRequest(Method.DELETE) ;
-		return aradon.handle(request).getEntity();
+		return aclient.handle(request).getEntity();
 	}
 
 	public Representation post() throws ResourceException {
 		Request request = makeRequest(Method.POST) ;
-		return aradon.handle(request).getEntity();
+		return aclient.handle(request).getEntity();
 	}
 
 	public Representation put() throws ResourceException {
 		Request request = makeRequest(Method.PUT) ;
-		return aradon.handle(request).getEntity();
+		return aclient.handle(request).getEntity();
 	}
 
 	public Representation multipart(Method method, Representation entity) {
-		return aradon.handle(makeRequest(method, entity)).getEntity();
+		return aclient.handle(makeRequest(method, entity)).getEntity();
 	}
 
 	private Request makeRequest(Method method) {
@@ -177,7 +176,7 @@ public class AradonRequest implements IAradonRequest{
 		try {
 			Request request = makeRequest(method);
 			request.setEntity(new StringRepresentation(JsonParser.fromObject(plainObject).toString()));
-			Representation repr = aradon.handle(request).getEntity() ;
+			Representation repr = aclient.handle(request).getEntity() ;
 			if (repr.getMediaType().equals(MediaType.APPLICATION_JSON)) {
 				String str = repr.getText();
 				if (StringUtil.isBlank(str)) return null ;
@@ -193,7 +192,7 @@ public class AradonRequest implements IAradonRequest{
 		try {
 			Request request = makeRequest(method);
 			request.setEntity(new StringRepresentation(JsonParser.fromObject(plainObject).toString()));
-			Representation repr = aradon.handle(request).getEntity();
+			Representation repr = aclient.handle(request).getEntity();
 			if (repr.getMediaType().equals(MediaType.APPLICATION_JSON)) {
 				String str = repr.getText();
 				if (StringUtil.isBlank(str)) return null ;

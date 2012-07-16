@@ -9,14 +9,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.restlet.Application;
-import org.restlet.Response;
+
 import org.restlet.Uniform;
-import org.restlet.data.ClientInfo;
-import org.restlet.data.Conditions;
 import org.restlet.data.Dimension;
 import org.restlet.data.Form;
 import org.restlet.data.Method;
@@ -29,8 +26,6 @@ import org.restlet.engine.resource.VariantInfo;
 import org.restlet.representation.Representation;
 import org.restlet.representation.RepresentationInfo;
 import org.restlet.representation.Variant;
-import org.restlet.service.ConnegService;
-import org.restlet.service.StatusService;
 import org.restlet.util.Series;
 
 // Referenced classes of package org.restlet.resource:
@@ -636,6 +631,19 @@ public abstract class ServerResource extends UniformResource {
 		getDimensions().add(Dimension.ENCODING);
 		getDimensions().add(Dimension.LANGUAGE);
 		getDimensions().add(Dimension.MEDIA_TYPE);
+	}
+	
+
+	@Override
+	public String getAttribute(String key) {
+		Map<String, Object> attrs = getRequestAttributes();
+		if (attrs == null) return null ;
+		return (attrs.get(key) != null) ? attrs.get(key).toString() : null ;
+	}
+
+	@Override
+	public void setAttribute(String name, Object value) {
+		 getRequestAttributes().put(name, value);
 	}
 
 	private volatile boolean annotated;

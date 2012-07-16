@@ -3,7 +3,6 @@ package net.ion.radon.client;
 import java.io.IOException;
 
 import net.ion.framework.util.StringUtil;
-import net.ion.radon.core.Aradon;
 
 import org.restlet.Request;
 import org.restlet.Response;
@@ -23,24 +22,24 @@ import org.restlet.service.ConverterService;
 
 public class AradonSerialRequest implements ISerialRequest {
 
-	private Aradon aradon;
+	private AradonInnerClient aclient;
 	private String path;
 	private User user;
 	private Form tempHeaderForm ;
 
-	private AradonSerialRequest(Aradon aradon, String path, User user, Form form) {
-		this.aradon = aradon;
+	private AradonSerialRequest(AradonInnerClient aclient, String path, User user, Form form) {
+		this.aclient = aclient;
 		this.path = path;
 		this.user = user;
 	}
 
-	public static ISerialRequest create(Aradon aradon, String path, String id, String pwd) {
+	public static ISerialRequest create(AradonInnerClient aclient, String path, String id, String pwd) {
 		String[] getPath = StringUtil.split(path, '?');
 		if (getPath.length == 1) {
-			return new AradonSerialRequest(aradon, path, new User(id, pwd), new Form());
+			return new AradonSerialRequest(aclient, path, new User(id, pwd), new Form());
 		} else {
 			Form form = new Form(getPath[1], CharacterSet.UTF_8);
-			return new AradonSerialRequest(aradon, path, new User(id, pwd), form);
+			return new AradonSerialRequest(aclient, path, new User(id, pwd), form);
 		}
 	}
 
@@ -76,7 +75,7 @@ public class AradonSerialRequest implements ISerialRequest {
 	}
 
 	private <V> V handle(Request request, Class<? extends V> resultClass) {
-		Response response = aradon.handle(request) ;
+		Response response = aclient.handle(request) ;
 		if (!response.getStatus().isSuccess())
 			throw new ResourceException(response.getStatus(), response.toString());
 
@@ -114,7 +113,7 @@ public class AradonSerialRequest implements ISerialRequest {
 	
 	private Representation toRepresentation(UniformResource resource, Object source, Variant target) {
 		if (source != null) {
-			ConverterService cs = aradon.getConverterService();
+			ConverterService cs = aclient.getConverterService();
 			return cs.toRepresentation(source, target, resource);
 		}
 		return null;

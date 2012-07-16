@@ -3,6 +3,7 @@ package net.ion.radon.core.let;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import net.ion.framework.util.ObjectUtil;
 
@@ -259,6 +260,19 @@ public abstract class BaseServerResource extends ServerResource {
 		}
 
 		return result;
+	}
+
+
+	@Override
+	public String getAttribute(String key) {
+		Map<String, Object> attrs = getRequestAttributes();
+		if (attrs == null) return null ;
+		return (attrs.get(key) != null) ? attrs.get(key).toString() : null ;
+	}
+
+	@Override
+	public void setAttribute(String name, Object value) {
+		 getRequestAttributes().put(name, value);
 	}
 
 }

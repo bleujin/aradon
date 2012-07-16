@@ -15,14 +15,14 @@ import org.restlet.Client;
 import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;
+import org.restlet.data.Cookie;
+import org.restlet.data.CookieSetting;
 import org.restlet.data.Parameter;
 import org.restlet.data.Protocol;
-import org.restlet.engine.connector.HttpClientHelper;
+import org.restlet.ext.httpclient.HttpClientHelper;
 import org.restlet.ext.ssl.SslContextFactory;
 import org.restlet.representation.Representation;
-import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
-import org.restlet.resource.UniformResource;
 import org.restlet.service.ConverterService;
 import org.restlet.util.Series;
 
@@ -32,9 +32,12 @@ public class AradonHttpClient implements AradonClient {
 	private ExecutorService es ;
 
 	private ConverterService cs = new ConverterService() ;
+	private Series<CookieSetting> cookies ; 
 	private AradonHttpClient(String host, ExecutorService es) {
 		this.host = host;
 		this.client = new HttpClientHelper(new Client(ListUtil.toList(Protocol.HTTP, Protocol.HTTPS)));
+		
+		this.client.getHelped().setContext(new Context()) ;
 		this.es = es ;
 	}
 
@@ -83,14 +86,13 @@ public class AradonHttpClient implements AradonClient {
 		if (!response.getStatus().isSuccess()) {
 			throw new ResourceException(response.getStatus());
 		}
-
 		return response.getEntity();
 	}
 	
 	
 	
 	<T> Future<T> handle(final Request request, final AsyncHttpHandler<T> ahandler){
-		final Client c = client.getHelped() ;
+		final AradonHttpClient c = this ;
 		return es.submit(new Callable<T>() {
 			public T call() throws Exception {
 				Response response = c.handle(request) ;
@@ -103,7 +105,18 @@ public class AradonHttpClient implements AradonClient {
 	}
 
 	Response handle(Request request) {
+		if (cookies != null) {
+			for (CookieSetting cs : cookies) {
+				Cookie c = new Cookie(cs.getVersion(), cs.getName(), cs.getValue(), cs.getPath(), cs.getDomain()) ;
+				request.getCookies().add(c);
+			}
+		}
 		Response response = client.getHelped().handle(request);
+		request.release() ;
+		response.release() ;
+		
+		cookies = response.getCookieSettings(); 
+		
 		return response;
 		// Response response = new Response(request) ;
 		// client.handle(request, response) ;
@@ -115,21 +128,13 @@ public class AradonHttpClient implements AradonClient {
 	}
 	
 	<T> Representation toRepresentation(T arg){
-		if (arg != null) {
-			//ClientResource resource = new ClientResource(getClient().getContext(), getFullPath()) ;
-			return toRepresentation(null, arg, null);
-		}
-		return null ;
-	}
-	
-	private Representation toRepresentation(UniformResource resource, Object source, Variant target) {
 		Representation result = null;
-		if (source != null) {
-			result = getConverterService().toRepresentation(source, target, resource);
+		if (arg != null) {
+			result = getConverterService().toRepresentation(arg);
 		}
 		return result;
 	}
-
+	
 	private ConverterService getConverterService() {
 		return cs;
 	}

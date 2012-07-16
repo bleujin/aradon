@@ -116,16 +116,17 @@
             <fatjar.manifest/>
 			<!-- 2.0.9 -->
         	
-        	<fatjar.jarsource file="${basedir}\rest\org.restlet.ext.crypto.jar" relpath=""/> 
-        	<fatjar.jarsource file="${basedir}\rest\org.restlet.ext.fileupload.jar" relpath=""/> 
+        	<fatjar.jarsource file="${basedir}\rest21r5\org.restlet.ext.crypto.jar" relpath=""/> 
+        	<fatjar.jarsource file="${basedir}\rest21r5\org.restlet.ext.fileupload.jar" relpath=""/> 
+        	<fatjar.jarsource file="${basedir}\rest21r5\org.restlet.ext.httpclient.jar" relpath=""/> 
         	<!--fatjar.jarsource file="${basedir}\rest\org.restlet.ext.json.jar" relpath=""/--> 
-        	<fatjar.jarsource file="${basedir}\rest\org.restlet.ext.servlet.jar" relpath=""/> 
+        	<fatjar.jarsource file="${basedir}\rest21r5\org.restlet.ext.servlet.jar" relpath=""/> 
         	<!--fatjar.jarsource file="${basedir}\rest\org.restlet.ext.sip.jar" relpath=""/--> 
-        	<fatjar.jarsource file="${basedir}\rest\org.restlet.ext.net.jar" relpath=""/> 
+        	<fatjar.jarsource file="${basedir}\rest21r5\org.restlet.ext.net.jar" relpath=""/> 
         	<!--fatjar.jarsource file="${basedir}\rest\org.restlet.ext.velocity.jar" relpath=""/ --> 
         	<!--fatjar.jarsource file="${basedir}\rest\org.restlet.ext.freemarker.jar" relpath=""/ -->
-        	<fatjar.jarsource file="${basedir}\rest\org.restlet.jar" relpath=""/> 
-            <fatjar.jarsource file="${basedir}\rest\org.restlet.ext.ssl.mod.jar" relpath=""/>
+        	<fatjar.jarsource file="${basedir}\rest21r5\org.restlet.jar" relpath=""/> 
+            <fatjar.jarsource file="${basedir}\rest21r5\org.restlet.ext.ssl.jar" relpath=""/>
         	<!-- fatjar.jarsource file="${basedir}\rest\org.restlet.ext.jetty.jar" relpath=""/ --> 
         	<!-- fatjar.jarsource file="${basedir}\rest\org.restlet.ext.netty.jar" relpath=""/ --> 
         	<!-- fatjar.jarsource file="${basedir}\rest\standalone_fat.jar" relpath=""/ -->

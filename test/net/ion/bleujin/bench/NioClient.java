@@ -36,6 +36,7 @@ public class NioClient {
 		ClientResource cr = new ClientResource(uri);
 		cr.setRetryOnError(false);
 		cr.setNext(client);
+		
 		Representation r = null;
 		// ClientResource fr = new ClientResource("file://C/temp/report.txt");
 
