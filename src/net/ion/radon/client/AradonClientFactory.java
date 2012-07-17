@@ -20,7 +20,7 @@ public class AradonClientFactory {
 	}
 
 	public static synchronized AradonClient create(String hostAddress, boolean reliable) {
-		return create(hostAddress, reliable, Executors.newFixedThreadPool(10)) ;
+		return create(hostAddress, reliable, Executors.newFixedThreadPool(5)) ;
 	}
 	
 	public static synchronized void remove(String hostAddress){
@@ -40,7 +40,7 @@ public class AradonClientFactory {
 	}
 
 	public static synchronized AradonClient create(Aradon aradon) {
-		return create(aradon, Executors.newFixedThreadPool(10)) ;
+		return create(aradon, Executors.newFixedThreadPool(5)) ;
 	}
 	
 	public static synchronized AradonClient create(Aradon aradon, ExecutorService es) {

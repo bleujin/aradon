@@ -50,7 +50,7 @@ public class AradonHttpClient implements AradonClient {
 		try {
 			client.getHelped().start();
 		} catch (Exception e) {
-			Debug.error(e.getMessage()) ;
+			Debug.error(e.getMessage());
 		}
 		this.es = es;
 	}
@@ -85,20 +85,21 @@ public class AradonHttpClient implements AradonClient {
 
 	public void stop() throws Exception {
 		client.stop();
-//		client.getHelped().stop();
+		// client.getHelped().stop();
 		es.awaitTermination(1, TimeUnit.SECONDS);
-		es.shutdownNow();	
-		AradonClientFactory.remove(host) ;
+		es.shutdownNow();
+		AradonClientFactory.remove(host);
 	}
 
 	public String getHostAddress() {
 		return host;
 	}
 
-	Representation handleRequest(Request request){
+	Representation handleRequest(Request request) {
 		Response response = syncHandle(request);
-		if (response.getStatus().isConnectorError()) throw new ResourceException(response.getStatus().getCode()) ;
-		return response.getEntity() ;
+		if (response.getStatus().isConnectorError())
+			throw new ResourceException(response.getStatus().getCode());
+		return response.getEntity();
 	}
 
 	<T> Future<T> asyncHandle(final Request request, final AsyncHttpHandler<T> ahandler) {
@@ -114,7 +115,8 @@ public class AradonHttpClient implements AradonClient {
 						return ahandler.onCompleted(request, response);
 				} finally {
 					Representation entity = response.getEntity();
-					if (entity != null) entity.release();
+					if (entity != null)
+						entity.release();
 					response.release();
 				}
 			}
@@ -123,27 +125,28 @@ public class AradonHttpClient implements AradonClient {
 
 	Response syncHandle(Request request) {
 		Response response = innerHandle(request);
-		InputStream input = null ;
-		Representation oldEntity = null ;
+		InputStream input = null;
+		Representation oldEntity = null;
 		try {
-			
+
 			if (response.getStatus().isConnectorError() || response.getStatus().isServerError() || response.getStatus().isClientError()) {
-				return response ;
+				return response;
 			}
 			ByteArrayOutputStream output = new ByteArrayOutputStream();
 			oldEntity = response.getEntity();
 			input = oldEntity.getStream();
 			IOUtil.copyNClose(input, output);
 			InputRepresentation copyEntity = new InputRepresentation(new ByteArrayInputStream(output.toByteArray()));
-			copyEntity.setMediaType(oldEntity.getMediaType()) ;
+			copyEntity.setMediaType(oldEntity.getMediaType());
 			response.setEntity(copyEntity);
-		} catch(IOException ex) {
-			throw new IllegalStateException(ex) ;
+		} catch (IOException ex) {
+			throw new IllegalStateException(ex);
 		} finally {
-			IOUtil.closeQuietly(input) ;
-			if (oldEntity != null) oldEntity.release() ;
+			IOUtil.closeQuietly(input);
+			if (oldEntity != null)
+				oldEntity.release();
 		}
-		return response ;
+		return response;
 	}
 
 	private Response innerHandle(Request request) {
