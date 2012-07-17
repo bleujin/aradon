@@ -113,7 +113,7 @@ public class AradonHttpClient implements AradonClient {
 		}
 		Response response = client.getHelped().handle(request);
 		request.release() ;
-		response.release() ;
+//		response.release() ;
 		
 		cookies = response.getCookieSettings(); 
 		

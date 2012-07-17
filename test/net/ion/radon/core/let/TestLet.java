@@ -1,20 +1,12 @@
 package net.ion.radon.core.let;
 
 import static org.junit.Assert.assertEquals;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import net.ion.framework.util.ListUtil;
 import net.ion.radon.client.AradonClient;
 import net.ion.radon.client.AradonClientFactory;
-import net.ion.radon.client.AradonHttpClient;
 import net.ion.radon.client.IAradonRequest;
 import net.ion.radon.core.Aradon;
-import net.ion.radon.core.config.ConnectorConfig;
 import net.ion.radon.util.AradonTester;
 
-import org.jboss.netty.util.internal.ExecutorUtil;
 import org.junit.Test;
 import org.restlet.Request;
 import org.restlet.Response;
@@ -41,7 +33,7 @@ public class TestLet {
 		Aradon aradon = AradonTester.create().register("test", "/test", GetResourceLet.class).getAradon();
 		aradon.startServer(9080);
 
-		IAradonRequest req = AradonClientFactory.create("http://61.250.201.157:9080").createRequest("/test/test");
+		IAradonRequest req = AradonClientFactory.create("http://127.0.0.1:9080").createRequest("/test/test");
 		assertEquals(GetResourceLet.class.getCanonicalName(), req.handle(Method.GET).getEntityAsText());
 
 		aradon.stop();
