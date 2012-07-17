@@ -8,12 +8,13 @@ import java.io.IOException;
 import net.ion.framework.util.InstanceCreationException;
 import net.ion.radon.client.AradonClientFactory;
 import net.ion.radon.core.config.XMLConfig;
-import net.ion.radon.core.let.ContextLet;
+import net.ion.radon.core.let.AbstractServerResource;
 import net.ion.radon.util.AradonTester;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
+import org.restlet.resource.Get;
 
 public class TestContext{
 
@@ -81,3 +82,13 @@ public class TestContext{
 	
 	
 }
+
+class ContextLet extends AbstractServerResource {
+
+	@Get
+	public String loadGet() {
+		return getContext().getAttributeObject("context.id", String.class);
+	}
+
+}
+

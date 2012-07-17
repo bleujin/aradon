@@ -4,26 +4,35 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.Arrays;
+import java.util.Map.Entry;
 
 import net.ion.framework.parse.gson.JsonObject;
 import net.ion.framework.parse.gson.JsonParser;
 import net.ion.framework.util.Debug;
+import net.ion.framework.util.IOUtil;
+import net.ion.framework.util.ObjectUtil;
 import net.ion.radon.client.HttpMultipartEntity;
 import net.ion.radon.core.Aradon;
 import net.ion.radon.core.PathService;
 import net.ion.radon.core.RadonAttributeKey;
+import net.ion.radon.core.representation.JsonObjectRepresentation;
 import net.ion.radon.impl.section.BasePathInfo;
 import net.ion.radon.util.AradonTester;
 
+import org.apache.commons.fileupload.FileItem;
 import org.junit.Before;
 import org.junit.Test;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.Form;
+import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.data.Status;
+import org.restlet.representation.Representation;
+import org.restlet.representation.StringRepresentation;
 
 public class TestRequest {
 
@@ -150,8 +159,8 @@ public class TestRequest {
 
 		HttpMultipartEntity entity = new HttpMultipartEntity();
 		entity.addParameter("to", "bleujin@i-on.net");
-		entity.addParameter("subject", "ÇÑ±Û", Charset.forName("UTF-8"));
-		entity.addParameter("content", "¾È³çÇÏ¼¼¿ä.", Charset.forName("UTF-8"));
+		entity.addParameter("subject", "ï¿½Ñ±ï¿½", Charset.forName("UTF-8"));
+		entity.addParameter("content", "ï¿½È³ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½.", Charset.forName("UTF-8"));
 		entity.addParameter("attach1", new File("./build.xml"));
 
 		request.setEntity(entity.makeRepresentation());
@@ -160,9 +169,36 @@ public class TestRequest {
 		JsonObject jso = JsonParser.fromString(response.getEntityAsText()).getAsJsonObject();
 
 		assertEquals("bleujin@i-on.net", jso.asString("to"));
-		assertEquals("ÇÑ±Û", jso.asString("subject"));
-		assertEquals("¾È³çÇÏ¼¼¿ä.", jso.asString("content"));
+		assertEquals("ï¿½Ñ±ï¿½", jso.asString("subject"));
+		assertEquals("ï¿½È³ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½.", jso.asString("content"));
 		assertEquals(true, jso.asString("attach1").length() > 10);
 	}
 
 }
+
+class MultipartLet extends DefaultLet{
+
+	
+
+	@Override
+	protected Representation myPost(Representation entity) throws Exception {
+		if (MediaType.MULTIPART_FORM_DATA.equals(entity.getMediaType(), true)) {
+			JsonObject jso = new JsonObject() ;
+			for (Entry<String, Object> entry : getInnerRequest().getFormParameter().entrySet()) {
+				
+				if (entry.getValue() instanceof FileItem) {
+					FileItem fitem = (FileItem) entry.getValue();
+					InputStream is = fitem.getInputStream();
+					String output = IOUtil.toString(is) ;
+					jso.addProperty(entry.getKey(), output) ;
+				} else {
+					jso.addProperty(entry.getKey(), ObjectUtil.toString(entry.getValue())) ;
+				}
+			}
+			return new JsonObjectRepresentation(jso) ;
+		}
+		return new StringRepresentation("not found uploadfile ")  ;
+	}
+
+}
+

@@ -30,6 +30,7 @@ public class BasicRequest implements IAradonRequest {
 	private final String fullPath;
 	private User user;
 	private Form tempHeaderForm;
+	private Representation directEntity = null ;
 
 	private BasicRequest(AradonHttpClient aclient, String path, String id, String pwd, Form form) {
 		this.aclient = aclient;
@@ -70,33 +71,30 @@ public class BasicRequest implements IAradonRequest {
 	}
 
 	public Response handle(Method method) {
-		return aclient.handle(makeRequest(method));
+		Response response = aclient.syncHandle(makeRequest(method));
+		return response;
 	}
 	
-	public <T> Future<T> handle(Method method, final AsyncHttpHandler<T> ahandler) {
+	public <T> Future<T> asyncHandle(Method method, final AsyncHttpHandler<T> ahandler) {
 		Request request = makeRequest(method);
-		return aclient.handle(request, ahandler);	
+		return aclient.asyncHandle(request, ahandler);	
 	}
 
 
 	public Representation get() {
-		return handle(makeRequest(Method.GET));
+		return handleRequest(makeRequest(Method.GET));
 	}
 
 	public Representation post() {
-		return handle(makeRequest(Method.POST));
-	}
-
-	public Representation multipart(Method method, Representation entity) {
-		return handle(makeRequest(method, entity));
+		return handleRequest(makeRequest(Method.POST));
 	}
 
 	public Representation delete() {
-		return handle(makeRequest(Method.DELETE));
+		return handleRequest(makeRequest(Method.DELETE));
 	}
 
 	public Representation put() {
-		return handle(makeRequest(Method.PUT));
+		return handleRequest(makeRequest(Method.PUT));
 	}
 
 	private Request makeRequest(Method method) {
@@ -105,7 +103,8 @@ public class BasicRequest implements IAradonRequest {
 			request = new Request(method, fullPath + "?" + form.getQueryString());
 		} else {
 			request = new Request(method, fullPath);
-			request.setEntity(form.getWebRepresentation());
+			if (directEntity != null) request.setEntity(directEntity) ; 
+			else request.setEntity(form.getWebRepresentation());
 		}
 		request.setChallengeResponse(challengeResponse);
 		HeaderUtil.setHeader(request, tempHeaderForm);
@@ -113,16 +112,7 @@ public class BasicRequest implements IAradonRequest {
 		return request;
 	}
 
-	private Request makeRequest(Method method, Representation entity) {
-		Request request = new Request(method, fullPath);
-		HeaderUtil.setHeader(request, tempHeaderForm);
-		request.setChallengeResponse(challengeResponse);
-		request.setEntity(entity);
-
-		return request;
-	}
-
-	private Representation handle(Request request) {
+	private Representation handleRequest(Request request) {
 		Representation result = aclient.handleRequest(request);
 		return result;
 	}
@@ -156,7 +146,7 @@ public class BasicRequest implements IAradonRequest {
 		try {
 			Request request = makeRequest(method);
 			request.setEntity(new StringRepresentation(JsonParser.fromObject(plainObject).toString()));
-			Representation repr = handle(request);
+			Representation repr = handleRequest(request);
 			if (repr.getMediaType().equals(MediaType.APPLICATION_JSON)) {
 				String str = repr.getText();
 				if (StringUtil.isBlank(str)) return null ;
@@ -172,7 +162,7 @@ public class BasicRequest implements IAradonRequest {
 		try {
 			Request request = makeRequest(method);
 			request.setEntity(new StringRepresentation(JsonParser.fromObject(plainObject).toString()));
-			Representation repr = handle(request);
+			Representation repr = handleRequest(request);
 			if (repr.getMediaType().equals(MediaType.APPLICATION_JSON)) {
 				String str = repr.getText();
 				if (StringUtil.isBlank(str)) return null ;
@@ -182,6 +172,11 @@ public class BasicRequest implements IAradonRequest {
 		} catch (IOException ex) {
 			throw new ResourceException(ex) ;
 		}
+	}
+
+	public IAradonRequest setEntity(Representation entity) {
+		this.directEntity = entity ;
+		return this;
 	}
 
 	

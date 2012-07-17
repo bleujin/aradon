@@ -1,14 +1,21 @@
 package net.ion.radon.client;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.security.cert.X509Certificate;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import net.ion.framework.util.Debug;
+import net.ion.framework.util.IOUtil;
 import net.ion.framework.util.ListUtil;
 
 import org.restlet.Client;
@@ -19,8 +26,9 @@ import org.restlet.data.Cookie;
 import org.restlet.data.CookieSetting;
 import org.restlet.data.Parameter;
 import org.restlet.data.Protocol;
-import org.restlet.ext.httpclient.HttpClientHelper;
+import org.restlet.engine.connector.HttpClientHelper;
 import org.restlet.ext.ssl.SslContextFactory;
+import org.restlet.representation.InputRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ResourceException;
 import org.restlet.service.ConverterService;
@@ -29,16 +37,22 @@ import org.restlet.util.Series;
 public class AradonHttpClient implements AradonClient {
 	private String host;
 	private HttpClientHelper client;
-	private ExecutorService es ;
+	private ExecutorService es;
 
-	private ConverterService cs = new ConverterService() ;
-	private Series<CookieSetting> cookies ; 
+	private ConverterService cs = new ConverterService();
+	private Series<CookieSetting> cookies;
+
 	private AradonHttpClient(String host, ExecutorService es) {
 		this.host = host;
 		this.client = new HttpClientHelper(new Client(ListUtil.toList(Protocol.HTTP, Protocol.HTTPS)));
-		
-		this.client.getHelped().setContext(new Context()) ;
-		this.es = es ;
+
+		this.client.getHelped().setContext(new Context());
+		try {
+			client.getHelped().start();
+		} catch (Exception e) {
+			Debug.error(e.getMessage()) ;
+		}
+		this.es = es;
 	}
 
 	public final static AradonHttpClient create(String hostAddress, ExecutorService es) {
@@ -54,7 +68,7 @@ public class AradonHttpClient implements AradonClient {
 	}
 
 	public BasicSerialRequest createSerialRequest(String path) {
-		return BasicSerialRequest.create(this, path, "anony", "") ;
+		return BasicSerialRequest.create(this, path, "anony", "");
 	}
 
 	public BasicSerialRequest createSerialRequest(String path, String id, String pwd) {
@@ -69,76 +83,96 @@ public class AradonHttpClient implements AradonClient {
 		return BasicJsonRequest.create(this, path, id, pwd);
 	}
 
-	
 	public void stop() throws Exception {
-//		client.stop();
-		client.getHelped().stop() ;
-		AradonClientFactory.shutdownNow(es) ;
+		client.stop();
+//		client.getHelped().stop();
+		es.awaitTermination(1, TimeUnit.SECONDS);
+		es.shutdownNow();	
+		AradonClientFactory.remove(host) ;
 	}
 
 	public String getHostAddress() {
 		return host;
 	}
 
-	Representation handleRequest(Request request) {
-		Response response = handle(request);
-
-		if (!response.getStatus().isSuccess()) {
-			throw new ResourceException(response.getStatus());
-		}
-		return response.getEntity();
+	Representation handleRequest(Request request){
+		Response response = syncHandle(request);
+		if (response.getStatus().isConnectorError()) throw new ResourceException(response.getStatus().getCode()) ;
+		return response.getEntity() ;
 	}
-	
-	
-	
-	<T> Future<T> handle(final Request request, final AsyncHttpHandler<T> ahandler){
-		final AradonHttpClient c = this ;
+
+	<T> Future<T> asyncHandle(final Request request, final AsyncHttpHandler<T> ahandler) {
+		final AradonHttpClient c = this;
 		return es.submit(new Callable<T>() {
 			public T call() throws Exception {
-				Response response = c.handle(request) ;
-				if (response.getStatus().isServerError() || response.getStatus().isClientError()){
-					ahandler.onError(request, response) ;
-					return null;
-				} else return ahandler.onCompleted(request, response) ;
+				Response response = c.innerHandle(request);
+				try {
+					if (response.getStatus().isConnectorError() || response.getStatus().isServerError() || response.getStatus().isClientError()) {
+						ahandler.onError(request, response);
+						return null;
+					} else
+						return ahandler.onCompleted(request, response);
+				} finally {
+					Representation entity = response.getEntity();
+					if (entity != null) entity.release();
+					response.release();
+				}
 			}
-		}) ;
+		});
 	}
 
-	Response handle(Request request) {
+	Response syncHandle(Request request) {
+		Response response = innerHandle(request);
+		InputStream input = null ;
+		Representation oldEntity = null ;
+		try {
+			
+			if (response.getStatus().isConnectorError() || response.getStatus().isServerError() || response.getStatus().isClientError()) {
+				return response ;
+			}
+			ByteArrayOutputStream output = new ByteArrayOutputStream();
+			oldEntity = response.getEntity();
+			input = oldEntity.getStream();
+			IOUtil.copyNClose(input, output);
+			InputRepresentation copyEntity = new InputRepresentation(new ByteArrayInputStream(output.toByteArray()));
+			copyEntity.setMediaType(oldEntity.getMediaType()) ;
+			response.setEntity(copyEntity);
+		} catch(IOException ex) {
+			throw new IllegalStateException(ex) ;
+		} finally {
+			IOUtil.closeQuietly(input) ;
+			if (oldEntity != null) oldEntity.release() ;
+		}
+		return response ;
+	}
+
+	private Response innerHandle(Request request) {
 		if (cookies != null) {
 			for (CookieSetting cs : cookies) {
-				Cookie c = new Cookie(cs.getVersion(), cs.getName(), cs.getValue(), cs.getPath(), cs.getDomain()) ;
+				Cookie c = new Cookie(cs.getVersion(), cs.getName(), cs.getValue(), cs.getPath(), cs.getDomain());
 				request.getCookies().add(c);
 			}
 		}
 		Response response = client.getHelped().handle(request);
-		request.release() ;
-//		response.release() ;
-		
-		cookies = response.getCookieSettings(); 
-		
+		cookies = response.getCookieSettings();
+
 		return response;
 		// Response response = new Response(request) ;
 		// client.handle(request, response) ;
 		// return response ;
 	}
 
-	Client getClient() {
-		return client.getHelped();
-	}
-	
-	<T> Representation toRepresentation(T arg){
+	<T> Representation toRepresentation(T arg) {
 		Representation result = null;
 		if (arg != null) {
 			result = getConverterService().toRepresentation(arg);
 		}
 		return result;
 	}
-	
+
 	private ConverterService getConverterService() {
 		return cs;
 	}
-
 
 	public String toString() {
 		return host;
@@ -155,7 +189,7 @@ public class AradonHttpClient implements AradonClient {
 
 		if (client.getContext() == null)
 			client.getHelped().setContext(new Context());
-		
+
 		client.getContext().getAttributes().put("sslContextFactory", new SslContextFactory() {
 			@Override
 			public void init(Series<Parameter> param) {

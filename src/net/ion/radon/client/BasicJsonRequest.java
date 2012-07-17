@@ -2,6 +2,8 @@ package net.ion.radon.client;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 import net.ion.framework.parse.gson.JsonParser;
 import net.ion.framework.util.StringUtil;
@@ -61,44 +63,8 @@ public class BasicJsonRequest implements IJsonRequest {
 		return createResource(method, arg, clz);
 	}
 
-	public <V> V delete(Class<V> clz) {
-		return createResource(Method.DELETE, null, clz);
-	}
 
-	private <T, V> V createResource(Method method, T arg, Class<V> rtnClz) {
-		Response response = handle(method, arg);
-		try {
-			Representation repr = response.getEntity();
-			if (repr.getMediaType().equals(MediaType.APPLICATION_JSON) || repr.getMediaType().equals(MediaType.TEXT_ALL)) {
-				String str = repr.getText();
-				if (StringUtil.isBlank(str))
-					return null;
-				return JsonParser.fromString(str).getAsJsonObject().getAsObject(rtnClz);
-			}
-			return null;
-		} catch (IOException e) {
-			throw new ResourceException(response.getStatus(), e.getMessage());
-		}
-	}
-
-	private <T, V> List<V> createResources(Method method, T arg, Class<V> rtnClz) {
-		Response response = handle(method, arg);
-		try {
-			Representation repr = response.getEntity();
-			if (repr.getMediaType().equals(MediaType.APPLICATION_JSON) || repr.getMediaType().equals(MediaType.TEXT_ALL)) {
-				String str = repr.getText();
-				if (StringUtil.isBlank(str))
-					return null;
-				return JsonParser.fromString(str).getAsJsonArray().asList(rtnClz);
-			}
-			return null;
-		} catch (IOException e) {
-			throw new ResourceException(response.getStatus(), e.getMessage());
-		}
-	}
-
-
-	private <T> Response handle(Method method, T arg) {
+	public <T, V> Future<V> asyncHandle(Method method, T arg, final Class<V> resultClass) {
 		Request request = new Request(method, fullPath);
 		request.getClientInfo().setUser(this.user);
 		request.setChallengeResponse(new ChallengeResponse(ChallengeScheme.HTTP_BASIC, user.getIdentifier(), user.getSecret()));
@@ -107,17 +73,96 @@ public class BasicJsonRequest implements IJsonRequest {
 		if (arg != null) {
 			request.setEntity(toRepresentation(arg, null));
 		}
-		try {
-			Response response = aclient.handle(request);
-			if (!response.getStatus().isSuccess()) {
-				throw new ResourceException(response.getStatus());
+		
+		Future<V> future = aclient.asyncHandle(request, new AsyncHttpCompletionHandler<V>() {
+			public V onCompleted(Request request, Response response) {
+				Representation entity = null ;
+				try {
+					if (!response.getStatus().isSuccess()) {
+						throw new ResourceException(response.getStatus());
+					}
+					entity = response.getEntity();
+					if (entity == null) {
+						return null;
+					}
+					if (entity.getMediaType().equals(MediaType.APPLICATION_JSON) || entity.getMediaType().equals(MediaType.TEXT_ALL)) {
+						String jsonText = entity.getText();
+						if (StringUtil.isBlank(jsonText))
+							return null;
+						return JsonParser.fromString(jsonText).getAsJsonObject().getAsObject(resultClass);
+					} else {
+						return null;
+					}
+				} catch (IOException ex) {
+					return null;
+				} finally {
+					if (entity != null) entity.release() ;
+				}
 			}
-			return response;
-		} finally {
-			request.release();
-		}
+		});
+		
+		return future;
+	}
+	
+	public <V> V delete(Class<V> clz) {
+		return createResource(Method.DELETE, null, clz);
 	}
 
+	private <T, V> V createResource(Method method, T arg, Class<V> rtnClz) {
+		String str = handleText(method, arg);
+		if (StringUtil.isBlank(str))
+			return null;
+		return JsonParser.fromString(str).getAsJsonObject().getAsObject(rtnClz);
+	}
+
+	private <T, V> List<V> createResources(Method method, T arg, Class<V> rtnClz) {
+		String str = handleText(method, arg);
+		if (StringUtil.isBlank(str))
+			return null;
+		return JsonParser.fromString(str).getAsJsonArray().asList(rtnClz);
+	}
+
+	private <T> String handleText(Method method, T arg) {
+		Request request = new Request(method, fullPath);
+		request.getClientInfo().setUser(this.user);
+		request.setChallengeResponse(new ChallengeResponse(ChallengeScheme.HTTP_BASIC, user.getIdentifier(), user.getSecret()));
+		HeaderUtil.setHeader(request, tempHeaderForm);
+
+		if (arg != null) {
+			request.setEntity(toRepresentation(arg, null));
+		}
+		Future<String> future = aclient.asyncHandle(request, new AsyncHttpCompletionHandler<String>() {
+			public String onCompleted(Request request, Response response) {
+				Representation entity = null ;
+				try {
+					if (!response.getStatus().isSuccess()) {
+						throw new ResourceException(response.getStatus());
+					}
+					entity = response.getEntity();
+					if (entity == null) {
+						return null;
+					}
+					if (entity.getMediaType().equals(MediaType.APPLICATION_JSON) || entity.getMediaType().equals(MediaType.TEXT_ALL)) {
+						return entity.getText();
+					} else {
+						return null;
+					}
+				} catch (IOException ex) {
+					return null;
+				} finally {
+					if (entity != null) entity.release() ;
+				}
+			}
+		});
+
+		try {
+			return future.get();
+		} catch (InterruptedException e) {
+			return null ;
+		} catch (ExecutionException e) {
+			return null ;
+		}
+	}
 
 	public BasicJsonRequest addHeader(String name, String value) {
 		if (tempHeaderForm == null) {
@@ -134,5 +179,6 @@ public class BasicJsonRequest implements IJsonRequest {
 		}
 		return null;
 	}
+
 
 }

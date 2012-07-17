@@ -7,6 +7,7 @@ import net.ion.radon.core.Aradon;
 import net.ion.radon.util.AradonTester;
 
 import org.junit.Test;
+import org.restlet.resource.Get;
 
 public class TestResourceLet {
 
@@ -28,6 +29,15 @@ public class TestResourceLet {
 		assertEquals(GetResourceLet.class.getCanonicalName(), req.get().getText());
 
 		aradon.stop();
+	}
+
+}
+
+class GetResourceLet extends AbstractServerResource{
+	
+	@Get
+	public String myGet() throws Exception {
+		return GetResourceLet.class.getCanonicalName();
 	}
 
 }

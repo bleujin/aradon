@@ -1,5 +1,7 @@
 package net.ion.radon.client;
 
+import java.util.concurrent.Future;
+
 import org.restlet.data.Method;
 import org.restlet.resource.ResourceException;
 
@@ -12,4 +14,5 @@ public interface ISerialRequest {
 	public ISerialRequest addHeader(String string, String string2);
 
 	public <T, V> V handle(Method method, T arg, Class<? extends V> resultClass) ;
+	public <T, V> Future<V> asyncHandle(Method method, T arg, Class<? extends V> resultClass) ;
 }

@@ -1,6 +1,7 @@
 package net.ion.radon.client;
 
 import java.util.List;
+import java.util.concurrent.Future;
 
 import org.restlet.data.Method;
 import org.restlet.resource.ResourceException;
@@ -15,4 +16,5 @@ public interface IJsonRequest {
 	public IJsonRequest addHeader(String string, String string2);
 
 	public <T, V> V handle(Method method, T arg, Class<V> resultClass) ;
+	public <T, V> Future<V> asyncHandle(Method method, T arg, Class<V> resultClass) ;
 }

@@ -72,7 +72,7 @@ public class TestAradonClient {
 		at.getAradon().getChildService("").addPreFilter(authfilter);
 
 		AradonClient ac = AradonClientFactory.create(at.getAradon());
-		IAradonRequest request = ac.createRequest("/hello?abcd=�ѱ��ѱ�", "bleujin", "redf");
+		IAradonRequest request = ac.createRequest("/hello?abcd=Han", "bleujin", "redf");
 
 		User user = request.getUser();
 		assertEquals("bleujin", user.getIdentifier().toString());
@@ -82,7 +82,7 @@ public class TestAradonClient {
 	@Test
 	public void whenNotConnected() throws Exception {
 		AradonClient ac = AradonClientFactory.create("http://notfoundaddress.com");
-		IAradonRequest ar = ac.createRequest("/other/hello?abcd=�ѱ��ѱ�", "bleujin", "redf");
+		IAradonRequest ar = ac.createRequest("/other/hello?abcd=Han", "bleujin", "redf");
 		Response res = ar.handle(Method.GET);
 		assertEquals(1001, res.getStatus().getCode());
 		try {

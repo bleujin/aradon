@@ -1,18 +1,18 @@
-2012. 7. 17 오전 11:44:26 org.restlet.ext.httpclient.HttpClientHelper start
+2012. 7. 17 오후 7:00:38 org.restlet.ext.httpclient.HttpClientHelper start
 정보: Starting the Apache HTTP client
-2012. 7. 17 오전 11:44:26 org.restlet.ext.httpclient.HttpClientHelper start
+2012. 7. 17 오후 7:00:38 org.restlet.ext.httpclient.HttpClientHelper start
 정보: Starting the Apache HTTP client
-2012. 7. 17 오전 11:44:27 org.restlet.engine.connector.ServerConnectionHelper start
+2012. 7. 17 오후 7:00:39 org.restlet.engine.connector.ServerConnectionHelper start
 정보: Starting the internal [HTTP/1.1] server on port 9050
-2012. 7. 17 오전 11:44:27 net.ion.radon.core.Aradon startServer
+2012. 7. 17 오후 7:00:39 net.ion.radon.core.Aradon startServer
 경고: aradon started : 9050
-2012. 7. 17 오전 11:44:27 net.ion.radon.core.AradonConfig launchShell
+2012. 7. 17 오후 7:00:39 net.ion.radon.core.AradonConfig launchShell
 경고: aradon manage shell port :4567
-2012. 7. 17 오전 11:44:27 org.restlet.ext.httpclient.HttpClientHelper stop
+2012. 7. 17 오후 7:00:39 org.restlet.ext.httpclient.HttpClientHelper stop
 정보: Stopping the HTTP client
-2012. 7. 17 오전 11:44:27 org.restlet.ext.httpclient.HttpClientHelper stop
+2012. 7. 17 오후 7:00:39 org.restlet.ext.httpclient.HttpClientHelper stop
 정보: Stopping the HTTP client
-2012. 7. 17 오전 11:44:27 org.restlet.engine.connector.ServerConnectionHelper stop
+2012. 7. 17 오후 7:00:39 org.restlet.engine.connector.ServerConnectionHelper stop
 정보: Stopping the internal [HTTP/1.1] server
-2012. 7. 17 오전 11:44:27 net.ion.radon.core.Aradon stop
+2012. 7. 17 오후 7:00:39 net.ion.radon.core.Aradon stop
 경고: aradon server stoped

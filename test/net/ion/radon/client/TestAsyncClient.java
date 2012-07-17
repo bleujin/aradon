@@ -3,9 +3,6 @@ package net.ion.radon.client;
 import java.util.List;
 import java.util.concurrent.Future;
 
-import javax.swing.plaf.ListUI;
-
-import net.ion.framework.util.Debug;
 import net.ion.framework.util.ListUtil;
 import net.ion.radon.core.Aradon;
 import net.ion.radon.impl.let.HelloWorldLet;
@@ -15,7 +12,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.restlet.Request;
 import org.restlet.Response;
-import org.restlet.Uniform;
 import org.restlet.data.Method;
 
 public class TestAsyncClient {
@@ -25,7 +21,7 @@ public class TestAsyncClient {
 		Aradon aradon = AradonTester.create().register("", "/hello", HelloWorldLet.class).getAradon() ;
 		
 		AradonClient ac = AradonClientFactory.create(aradon) ;
-		Future<Integer> future = ac.createRequest("/hello").handle(Method.GET, new AsyncHttpHandler<Integer>() {
+		Future<Integer> future = ac.createRequest("/hello").asyncHandle(Method.GET, new AsyncHttpHandler<Integer>() {
 			public Integer onCompleted(Request request, Response response) {
 				return response.getStatus().getCode();
 			}
@@ -46,8 +42,8 @@ public class TestAsyncClient {
 		aradon.startServer(9000) ;
 		final List<Integer> codes = ListUtil.newList() ;
 		
-		AradonClient ac = AradonClientFactory.create("http://61.250.201.157:9000") ;
-		Future<Integer> future = ac.createRequest("/notfound").handle(Method.GET, new AsyncHttpHandler<Integer>() {
+		AradonClient ac = AradonClientFactory.create("http://127.0.0.1:9000") ;
+		Future<Integer> future = ac.createRequest("/notfound").asyncHandle(Method.GET, new AsyncHttpHandler<Integer>() {
 			public Integer onCompleted(Request request, Response response) {
 				return response.getStatus().getCode();
 			}

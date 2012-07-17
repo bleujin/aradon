@@ -1,6 +1,7 @@
 package net.ion.radon.client;
 
 import java.io.IOException;
+import java.util.concurrent.Future;
 
 import net.ion.framework.util.StringUtil;
 
@@ -74,6 +75,11 @@ public class AradonSerialRequest implements ISerialRequest {
 		return handle(request, resultClass);
 	}
 
+
+	public <T, V> Future<V> asyncHandle(Method method, T arg, Class<? extends V> resultClass) {
+		throw new UnsupportedOperationException("not yet supported") ;
+	}
+	
 	private <V> V handle(Request request, Class<? extends V> resultClass) {
 		Response response = aclient.handle(request) ;
 		if (!response.getStatus().isSuccess())
@@ -118,5 +124,6 @@ public class AradonSerialRequest implements ISerialRequest {
 		}
 		return null;
 	}
+
 
 }

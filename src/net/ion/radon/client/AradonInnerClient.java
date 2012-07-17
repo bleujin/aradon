@@ -1,6 +1,7 @@
 package net.ion.radon.client;
 
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import net.ion.radon.core.Aradon;
 
@@ -69,7 +70,8 @@ public class AradonInnerClient implements AradonClient{
 	}
 
 	public void stop() throws Exception {
-		AradonClientFactory.shutdownNow(es) ;
+		es.awaitTermination(1, TimeUnit.SECONDS) ;
+		es.shutdownNow() ;
 	}
 
 	public ConverterService getConverterService() {

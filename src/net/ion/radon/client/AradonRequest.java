@@ -35,6 +35,7 @@ public class AradonRequest implements IAradonRequest{
 	private User user ;
 	private Form tempHeaderForm ;
 	private ChallengeResponse challengeResponse;
+	private Representation directEntity = null ;
 	
 	private AradonRequest(AradonInnerClient aclient, ExecutorService es, String path, User user, Form form) {
 		this.aclient = aclient ;
@@ -78,7 +79,7 @@ public class AradonRequest implements IAradonRequest{
 		return aclient.handle(makeRequest(method)) ;
 	}
 
-	public <T> Future<T> handle(final Method method, final AsyncHttpHandler<T> ahandler){
+	public <T> Future<T> asyncHandle(final Method method, final AsyncHttpHandler<T> ahandler){
 		
 		return es.submit(new Callable<T>() {
 			public T call() throws Exception {
@@ -115,17 +116,14 @@ public class AradonRequest implements IAradonRequest{
 		return aclient.handle(request).getEntity();
 	}
 
-	public Representation multipart(Method method, Representation entity) {
-		return aclient.handle(makeRequest(method, entity)).getEntity();
-	}
-
 	private Request makeRequest(Method method) {
 		Request request = null;
 		if (method == Method.GET || method == Method.DELETE) {
 			request = new Request(method, getFullPath() + "?" + form.getQueryString()) ;
 		} else {
 			request = new Request(method, getFullPath());
-			request.setEntity(form.getWebRepresentation());
+			if (directEntity != null) request.setEntity(directEntity) ; 
+			else request.setEntity(form.getWebRepresentation());
 		}
 
 		setHeader(request) ;
@@ -143,14 +141,6 @@ public class AradonRequest implements IAradonRequest{
 		HeaderUtil.setHeader(request, tempHeaderForm) ;
 	}
 	
-	private Request makeRequest(Method method, Representation entity) {
-		Request request = new Request(method, getFullPath());
-		request.setEntity(entity);
-		setHeader(request) ;
-
-		return request;
-	}
-
 	public String getFullPath() {
 		return "riap://component" + (path.startsWith("/") ? "" : "/") + path;
 	}
@@ -204,4 +194,8 @@ public class AradonRequest implements IAradonRequest{
 		}
 	}
 
+	public IAradonRequest setEntity(Representation entity) {
+		this.directEntity = entity ;
+		return this;
+	}
 }

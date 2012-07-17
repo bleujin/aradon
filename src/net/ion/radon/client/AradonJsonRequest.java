@@ -2,6 +2,7 @@ package net.ion.radon.client;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.Future;
 
 import net.ion.framework.parse.gson.JsonElement;
 import net.ion.framework.parse.gson.JsonParser;
@@ -109,7 +110,6 @@ public class AradonJsonRequest implements IJsonRequest {
 		} catch (IOException e) {
 			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, e.getMessage());
 		} finally {
-			request.release();
 		}
 	}
 
@@ -137,4 +137,9 @@ public class AradonJsonRequest implements IJsonRequest {
 		}
 		return result;
 	}
+
+	public <T, V> Future<V> asyncHandle(Method method, T arg, Class<V> resultClass) {
+		throw new UnsupportedOperationException("not yet supported") ;
+	}
+
 }

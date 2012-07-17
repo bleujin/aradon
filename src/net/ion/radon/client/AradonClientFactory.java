@@ -10,19 +10,22 @@ import java.util.concurrent.Executors;
 import net.ion.radon.core.Aradon;
 
 import org.apache.commons.collections.map.LRUMap;
-import org.apache.tools.ant.taskdefs.ExecTask;
 
 public class AradonClientFactory {
 
 	private static Map<Object, AradonClient> clientMap = Collections.synchronizedMap(new LRUMap(20)) ;
-	private static ExecutorService eService = Executors.newCachedThreadPool() ;
 	
 	public static synchronized AradonClient create(String hostAddress) {
 			return create(hostAddress, false) ;
 	}
 
 	public static synchronized AradonClient create(String hostAddress, boolean reliable) {
-		return create(hostAddress, reliable, eService) ;
+		return create(hostAddress, reliable, Executors.newFixedThreadPool(10)) ;
+	}
+	
+	public static synchronized void remove(String hostAddress){
+		clientMap.remove(makeKey(hostAddress, true)) ;
+		clientMap.remove(makeKey(hostAddress, false)) ;
 	}
 
 	public static synchronized AradonClient create(String hostAddress, boolean reliable, ExecutorService es) {
@@ -37,7 +40,7 @@ public class AradonClientFactory {
 	}
 
 	public static synchronized AradonClient create(Aradon aradon) {
-		return create(aradon, eService) ;
+		return create(aradon, Executors.newFixedThreadPool(10)) ;
 	}
 	
 	public static synchronized AradonClient create(Aradon aradon, ExecutorService es) {
@@ -63,11 +66,5 @@ public class AradonClientFactory {
 		return aradon ;
 	}
 
-	public static void shutdownNow(ExecutorService es) {
-		if (es != eService){
-			es.shutdown() ;
-		}
-	}
-	
 
 }

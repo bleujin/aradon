@@ -2,11 +2,10 @@ package net.ion.radon.client;
 
 import java.io.File;
 
-import net.ion.framework.util.Debug;
+import junit.framework.Assert;
 import net.ion.radon.util.AradonTester;
 
 import org.junit.Test;
-import org.restlet.data.Method;
 import org.restlet.representation.Representation;
 
 /**
@@ -30,9 +29,9 @@ public class TestMultiPartRequest {
 		rf.addParameter("name", "bleujin") ;
 		rf.addParameter("uploadfile", new File("./build.xml")) ;
 		
-		Representation result =  ac.createRequest("/hello").multipart(Method.POST, rf.makeRepresentation()) ;
+		Representation result =  ac.createRequest("/hello").setEntity(rf.makeRepresentation()).post() ;
 		
-		Debug.line(result.getText()) ;
+		Assert.assertEquals(true, result.getText().length() > 500) ;
 		at.getAradon().stop() ;
 	}
 	

@@ -16,7 +16,6 @@ import net.ion.radon.client.IAradonRequest;
 import net.ion.radon.core.Aradon;
 import net.ion.radon.core.PathService;
 import net.ion.radon.core.SectionService;
-import net.ion.radon.core.TestAradon;
 import net.ion.radon.core.TestBaseAradon;
 import net.ion.radon.core.config.XMLConfig;
 import net.ion.radon.core.filter.IFilterResult;
@@ -50,7 +49,7 @@ public class TestGroovyFilter extends TestBaseAradon {
 			Debug.debug(response.getEntityAsText());
 
 			if (i > 0)
-				assertEquals(true, System.currentTimeMillis() - start < 50);
+				assertEquals(true, System.currentTimeMillis() - start < 100);
 		}
 	}
 
