@@ -16,6 +16,7 @@ import org.junit.Test;
 import org.restlet.Response;
 import org.restlet.data.Method;
 import org.restlet.representation.Representation;
+import org.restlet.representation.StringRepresentation;
 import org.restlet.resource.Delete;
 import org.restlet.resource.Get;
 import org.restlet.resource.Post;
@@ -96,7 +97,7 @@ class HelloLet extends AbstractServerResource{
 	
 	@Delete
 	public Representation delete() throws ResourceException {
-		return super.delete();
+		return new StringRepresentation("del");
 	}
 
 }
