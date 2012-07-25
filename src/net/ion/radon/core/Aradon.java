@@ -9,8 +9,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import net.ion.framework.util.Debug;
 import net.ion.framework.util.IOUtil;
@@ -341,7 +341,7 @@ public class Aradon extends Component implements IService, AradonConstant {
 				getInternalRouter().attach("/" + newName, newSection, Router.MODE_BEST_MATCH);
 				sections.put(newName, (SectionService) newSection);
 				
-				Debug.line('%', newSection) ;
+				Debug.debug('%', newSection.toString()) ;
 				
 			} else if (apply == PlugInApply.MERGE) {
 				SectionService existSection = sections.get(newName) ;

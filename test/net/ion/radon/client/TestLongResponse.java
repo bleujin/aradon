@@ -52,7 +52,7 @@ public class TestLongResponse {
 				AradonClient ac = AradonClientFactory.create("http://novision.i-on.net:8080") ;
 				IAradonRequest req = ac.createRequest("/ics/sub/login.do") ;
 				req.get() ;
-				Debug.line('#') ;
+				Debug.debug('#') ;
 			}
 		} ;
 		ses.scheduleWithFixedDelay(runn, 0, 1, TimeUnit.SECONDS);

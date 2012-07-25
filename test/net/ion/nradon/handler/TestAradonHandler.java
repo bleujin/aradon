@@ -71,7 +71,7 @@ public class TestAradonHandler {
 
 		Response response = Response.getCurrent();
 		Request req = response.getRequest();
-		Debug.line('r', req.getClientInfo().getPort(), req.getClientInfo().getAgent(), req.getClientInfo().getAgent(), req.getCacheDirectives());
+		Debug.debug('r', req.getClientInfo().getPort(), req.getClientInfo().getAgent(), req.getClientInfo().getAgent(), req.getCacheDirectives());
 
 		// new InfinityThread().startNJoin() ;
 		webServer.stop().join();
