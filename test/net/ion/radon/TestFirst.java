@@ -15,12 +15,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.restlet.Response;
 import org.restlet.data.Method;
-import org.restlet.representation.Representation;
-import org.restlet.representation.StringRepresentation;
-import org.restlet.resource.Delete;
 import org.restlet.resource.Get;
 import org.restlet.resource.Post;
-import org.restlet.resource.ResourceException;
 
 public class TestFirst {
 	
@@ -95,10 +91,6 @@ class HelloLet extends AbstractServerResource{
 		return "Hi " + getInnerRequest().getParameter("p1") ; 
 	}
 	
-	@Delete
-	public Representation delete() throws ResourceException {
-		return new StringRepresentation("del");
-	}
 
 }
 
