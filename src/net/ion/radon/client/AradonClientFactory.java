@@ -23,7 +23,7 @@ public class AradonClientFactory {
 		return create(hostAddress, reliable, Executors.newFixedThreadPool(5)) ;
 	}
 	
-	public static synchronized void remove(String hostAddress){
+	static synchronized void remove(String hostAddress){
 		clientMap.remove(makeKey(hostAddress, true)) ;
 		clientMap.remove(makeKey(hostAddress, false)) ;
 	}
