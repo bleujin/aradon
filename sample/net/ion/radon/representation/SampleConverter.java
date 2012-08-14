@@ -2,18 +2,9 @@ package net.ion.radon.representation;
 
 import java.io.IOException;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.restlet.Response;
-import org.restlet.data.Method;
-import org.restlet.representation.Representation;
-import org.restlet.representation.StringRepresentation;
-import org.restlet.resource.Get;
-import org.restlet.resource.Post;
-
+import junit.framework.TestCase;
 import net.ion.framework.parse.gson.JsonParser;
 import net.ion.framework.parse.gson.JsonSyntaxException;
-import net.ion.framework.parse.gson.annotations.SerializedName;
-import net.ion.framework.util.Debug;
 import net.ion.radon.client.AradonClient;
 import net.ion.radon.client.AradonClientFactory;
 import net.ion.radon.core.Aradon;
@@ -22,7 +13,12 @@ import net.ion.radon.core.let.AbstractServerResource;
 import net.ion.radon.core.representation.BeanToJsonFilter;
 import net.ion.radon.core.representation.PlainObjectConverter;
 import net.ion.radon.util.AradonTester;
-import junit.framework.TestCase;
+
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.restlet.data.Method;
+import org.restlet.representation.Representation;
+import org.restlet.resource.Get;
+import org.restlet.resource.Post;
 
 public class SampleConverter extends TestCase{
 
@@ -51,6 +47,8 @@ public class SampleConverter extends TestCase{
 		assertEquals("bleujin", user.name) ;
 		assertEquals(20, user.age) ;
 		assertEquals("seoul", user.address.getCity()) ;
+		
+		ac.stop() ;
 		aradon.stop() ;
 	}
 	
@@ -68,6 +66,7 @@ public class SampleConverter extends TestCase{
 		
 		assertEquals(21, user.age) ;
 		assertEquals(20, newUser.age) ;
+		ac.stop() ;
 		aradon.stop() ;
 	}
 }

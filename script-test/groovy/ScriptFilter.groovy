@@ -8,12 +8,9 @@ import net.ion.framework.rest.* ;
 import org.restlet.representation.*;
 
 
-	StdObject sto = request.getContext().getAttributeObject(StdObject.class.getCanonicalName()) ;
-	
-	
 	def writer = new StringWriter()
 	def builder = new groovy.xml.MarkupBuilder(writer) ;
-	def greeting = sto.getDatas() ;
+	def greeting = [] ;
 	
 	builder.person() { 
        name(first:"bleu", last:"jin") { 

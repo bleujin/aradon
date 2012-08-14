@@ -1,16 +1,12 @@
-2012. 7. 17 오후 7:00:41 org.restlet.engine.connector.ServerConnectionHelper start
+2012. 8. 9 오전 11:34:26 org.restlet.engine.connector.ServerConnectionHelper start
 정보: Starting the internal [HTTP/1.1] server on port 9000
-2012. 7. 17 오후 7:00:41 net.ion.radon.core.Aradon stop
-경고: aradon server stoped
-2012. 7. 17 오후 7:00:41 net.ion.radon.core.Aradon stop
-경고: aradon server stoped
-2012. 7. 17 오후 7:00:41 net.ion.radon.core.Aradon startServer
+2012. 8. 9 오전 11:34:26 net.ion.radon.core.Aradon startServer
 경고: aradon started : 9000
-2012. 7. 17 오후 7:00:41 net.ion.radon.core.AradonConfig launchShell
+2012. 8. 9 오전 11:34:26 net.ion.radon.core.AradonConfig launchShell
 경고: aradon manage shell not loaded
-2012. 7. 17 오후 7:00:41 org.restlet.engine.log.LogFilter afterHandle
-정보: 2012-07-17	19:00:41	-	-	-	-1	GET	/abcdefg/test2	-	404	442	0	0	-	-	-
-2012. 7. 17 오후 7:00:41 org.restlet.engine.connector.ServerConnectionHelper stop
+2012. 8. 9 오전 11:34:26 org.restlet.engine.log.LogFilter afterHandle
+정보: 2012-08-09	11:34:26	-	-	-	-1	GET	/abcdefg/test2	-	404	442	0	1	-	-	-
+2012. 8. 9 오전 11:34:26 org.restlet.engine.connector.ServerConnectionHelper stop
 정보: Stopping the internal [HTTP/1.1] server
-2012. 7. 17 오후 7:00:41 net.ion.radon.core.Aradon stop
+2012. 8. 9 오전 11:34:26 net.ion.radon.core.Aradon stop
 경고: aradon server stoped

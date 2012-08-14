@@ -3,19 +3,15 @@ package net.ion.radon.core.filter;
 import static org.junit.Assert.assertEquals;
 import net.ion.framework.util.Debug;
 import net.ion.radon.core.Aradon;
-import net.ion.radon.core.IService;
-import net.ion.radon.core.PathService;
-import net.ion.radon.core.RadonAttributeKey;
 import net.ion.radon.core.SectionService;
-import net.ion.radon.core.TestAradon;
 import net.ion.radon.core.TestBaseAradon;
 import net.ion.radon.core.TreeContext;
-import net.ion.radon.core.EnumClass.IConvertType;
 import net.ion.radon.core.EnumClass.IZone;
+import net.ion.radon.core.config.PathConfiguration;
 import net.ion.radon.core.let.InnerRequest;
 import net.ion.radon.core.let.InnerResponse;
+import net.ion.radon.core.let.PathService;
 import net.ion.radon.impl.filter.ExecuteTimeFilter;
-import net.ion.radon.impl.section.PathInfo;
 import net.ion.radon.param.ParamToBeanFilter;
 
 import org.junit.Test;
@@ -30,27 +26,23 @@ public class TestFilter extends TestBaseAradon {
 		Aradon aradon = testAradon();
 		SectionService section = aradon.getChildService("another");
 		final PathService helloService = section.getChildService("hello");
-		helloService.addPreFilter(new ParamToBeanFilter("mybean", "net.ion.radon.core.filter.HelloBean")) ;
-		helloService.addPreFilter(new HiFilter()) ;
+		helloService.getConfig().addPreFilter(new ParamToBeanFilter("mybean", "net.ion.radon.core.filter.HelloBean")) ;
+		helloService.getConfig().addPreFilter(new HiFilter()) ;
 
-		assertEquals(2, helloService.getPreFilters().size()) ;
+		assertEquals(2, helloService.getConfig().prefilters().size()) ;
 		
 		Request request = new Request(Method.GET, "riap://component/another/hello?greeting=Hello&name=bleujin");
 		Response response = aradon.handle(request);
 		
 		InnerResponse res = (InnerResponse) Response.getCurrent() ;
-		IService pservice = res.getPathService(aradon) ; 
+		PathConfiguration pconfig = res.getPathConfiguration() ; 
 		InnerRequest ireq = ((InnerResponse)Response.getCurrent()).getInnerRequest() ;
-		assertEquals(2, pservice.getPreFilters().size()) ;
+		assertEquals(2, pconfig.prefilters().size()) ;
 		
-		assertEquals(true, helloService.getServiceContext() == ireq.getContext().getParentContext()) ;
+		assertEquals(true, helloService.getServiceContext() == ireq.getPathService().getServiceContext()) ;
 		
-		TreeContext requestContext = (TreeContext) response.getRequest().getAttributes().get(RadonAttributeKey.REQUEST_CONTEXT);
-		assertEquals(true, requestContext == ireq.getContext()) ;
-		
-		HelloBean bean = requestContext.getSelfAttributeObject("mybean", HelloBean.class);
+		HelloBean bean = (HelloBean) response.getRequest().getAttributes().get("mybean");
 		Debug.debug(bean) ;
-		
 		
 		assertEquals("bleujin", bean.getName()) ;
 	}
@@ -62,19 +54,17 @@ public class TestFilter extends TestBaseAradon {
 		TreeContext sectionContext = secSrv.getServiceContext();
 		assertEquals(IZone.Section, sectionContext.getZone());
 		final ParamToBeanFilter paramfilter = new ParamToBeanFilter("mybean", "net.ion.radon.core.filter.HelloBean");
-		secSrv.addPreFilter(paramfilter) ;
-		secSrv.addPreFilter(new HiFilter()) ;
+		secSrv.getConfig().addPreFilter(paramfilter) ;
+		secSrv.getConfig().addPreFilter(new HiFilter()) ;
 
 		Request request = new Request(Method.GET, "riap://component/another/hello?greeting=Hello&name=bleujin");
 		Response response = aradon.handle(request);
 
 		InnerResponse res = (InnerResponse) Response.getCurrent() ;
-		IService pservice = res.getPathService(aradon) ;
+		PathConfiguration pconfig = res.getPathConfiguration() ;
 		
-		TreeContext requestContext = (TreeContext) response.getRequest().getAttributes().get(RadonAttributeKey.REQUEST_CONTEXT);
-		assertEquals(true, pservice.getParent().getPreFilters().contains(paramfilter)) ;
-		Debug.debug(requestContext.getSelfAttributeObject("mybean", HelloBean.class));
-		HelloBean bean = requestContext.getSelfAttributeObject("mybean", HelloBean.class);
+		assertEquals(true, res.getInnerRequest().getPathService().getParent().getConfig().prefilters().contains(paramfilter)) ;
+		HelloBean bean = (HelloBean) request.getAttributes().get("mybean");
 		assertEquals("bleujin", bean.getName()) ;
 	}
 	
@@ -84,18 +74,18 @@ public class TestFilter extends TestBaseAradon {
 
 		assertEquals(IZone.Application, aradon.getServiceContext().getZone());
 		final ParamToBeanFilter paramFilter = new ParamToBeanFilter("mybean", "net.ion.radon.core.filter.HelloBean");
-		aradon.addPreFilter(paramFilter) ;
-		aradon.addPreFilter(new HiFilter()) ;
+		aradon.getConfig().addPreFilter(paramFilter) ;
+		aradon.getConfig().addPreFilter(new HiFilter()) ;
 
 		Request request = new Request(Method.GET, "riap://component/another/hello?greeting=Hello&name=bleujin");
 		Response response = aradon.handle(request);
 
 		InnerResponse res = (InnerResponse) Response.getCurrent() ;
-		IService pservice = res.getPathService(aradon) ;
-		TreeContext requestContext = (TreeContext) response.getRequest().getAttributes().get(RadonAttributeKey.REQUEST_CONTEXT);
-		assertEquals(true, pservice.getAradon().getPreFilters().contains(paramFilter)) ;
-		
-		Debug.debug(requestContext.getSelfAttributeObject("mybean", HelloBean.class));
+		PathConfiguration pservice = res.getPathConfiguration();
+		assertEquals(true, aradon.getConfig().prefilters().contains(paramFilter)) ;
+
+		HelloBean bean = (HelloBean) request.getAttributes().get("mybean");
+		Debug.debug(bean);
 	}
 	
 	
@@ -104,13 +94,10 @@ public class TestFilter extends TestBaseAradon {
 		Aradon aradon = testAradon();
 		
 		SectionService section = aradon.getChildService("another");
-		section.attach(PathInfo.HELLO) ;
+		section.attach(PathConfiguration.testHello()) ;
 		
-		section.addPreFilter(new ExecuteTimeFilter()) ;
-
-		
-		section.getPreFilters() ;
-		
+		section.getConfig().addPreFilter(new ExecuteTimeFilter()) ;
+		section.getConfig().prefilters() ;
 	}
 	
 	

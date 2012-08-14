@@ -1,16 +1,11 @@
 package net.ion.bleujin.restlet;
 
-import static org.junit.Assert.*;
-
-import javax.swing.plaf.ListUI;
-
+import static org.junit.Assert.assertEquals;
 import net.ion.framework.util.Debug;
-import net.ion.framework.util.InfinityThread;
 import net.ion.framework.util.ListUtil;
 import net.ion.radon.client.AradonClient;
 import net.ion.radon.client.AradonClientFactory;
 import net.ion.radon.core.Aradon;
-import net.ion.radon.core.RadonLogService;
 import net.ion.radon.core.let.InnerRequest;
 import net.ion.radon.core.let.InnerResponse;
 import net.ion.radon.impl.let.HelloWorldLet;
@@ -30,14 +25,8 @@ import org.restlet.engine.ConnectorHelper;
 import org.restlet.engine.Engine;
 import org.restlet.engine.connector.HttpServerHelper;
 import org.restlet.resource.ServerResource;
-import org.restlet.routing.Route;
 import org.restlet.routing.Router;
 import org.restlet.routing.Template;
-import org.restlet.routing.TemplateRoute;
-import org.restlet.service.LogService;
-import org.restlet.service.StatusService;
-
-import junit.framework.TestCase;
 
 public class TestComponentAsServer  {
 	
@@ -168,6 +157,7 @@ public class TestComponentAsServer  {
 		Response response = ac.createRequest("/").handle(Method.GET) ;
 		Debug.line(response, response.getEntityAsText()) ;
 
+		ac.stop() ;
 		aradon.stop() ;
 	}
 	

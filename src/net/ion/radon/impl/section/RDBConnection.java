@@ -11,11 +11,9 @@ import net.ion.framework.util.InstanceCreationException;
 import net.ion.radon.core.config.ConfigCreator;
 import net.ion.radon.core.config.XMLConfig;
 
-import org.apache.commons.configuration.ConfigurationException;
-
 public class RDBConnection {
 
-	public static IDBController createDC(final XMLConfig xmlConfig) throws InstanceCreationException, ConfigurationException {
+	public static IDBController createDC(final XMLConfig xmlConfig) throws InstanceCreationException{
 
 		XMLConfig dbConfig = xmlConfig.firstChild("database-controller");
 

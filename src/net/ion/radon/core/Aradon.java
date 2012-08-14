@@ -10,30 +10,34 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import net.ion.framework.util.Debug;
 import net.ion.framework.util.IOUtil;
 import net.ion.framework.util.InstanceCreationException;
-import net.ion.framework.util.ListUtil;
 import net.ion.framework.util.MapUtil;
 import net.ion.framework.util.ObjectUtil;
-import net.ion.radon.core.EnumClass.FilterLocation;
 import net.ion.radon.core.EnumClass.PlugInApply;
+import net.ion.radon.core.config.AradonConfiguration;
 import net.ion.radon.core.config.AradonConstant;
-import net.ion.radon.core.config.ConnectorConfig;
-import net.ion.radon.core.config.Releasable;
+import net.ion.radon.core.config.AttributeValue;
+import net.ion.radon.core.config.Configuration;
+import net.ion.radon.core.config.ConfigurationBuilder;
+import net.ion.radon.core.config.ConnectorConfiguration;
+import net.ion.radon.core.config.PathConfiguration;
+import net.ion.radon.core.config.SectionConfiguration;
 import net.ion.radon.core.config.XMLConfig;
 import net.ion.radon.core.context.OnEventObject;
 import net.ion.radon.core.context.OnEventObject.AradonEvent;
 import net.ion.radon.core.except.AradonRuntimeException;
+import net.ion.radon.core.filter.IFilterResult;
 import net.ion.radon.core.filter.IRadonFilter;
+import net.ion.radon.core.let.FilterUtil;
 import net.ion.radon.core.let.InnerRequest;
 import net.ion.radon.core.let.InnerResponse;
 import net.ion.radon.core.server.AradonServerHelper;
 import net.ion.radon.core.server.ServerFactory;
+import net.ion.radon.impl.filter.RevokeServiceFilter;
 
-import org.apache.commons.configuration.ConfigurationException;
 import org.restlet.Application;
 import org.restlet.Component;
 import org.restlet.Request;
@@ -44,80 +48,94 @@ import org.restlet.data.Reference;
 import org.restlet.data.Status;
 import org.restlet.engine.Engine;
 import org.restlet.resource.ResourceException;
+import org.restlet.routing.Filter;
 import org.restlet.routing.Router;
 import org.restlet.service.ConverterService;
 import org.restlet.service.MetadataService;
 
-public class Aradon extends Component implements IService, AradonConstant {
+public class Aradon extends Component implements IService<SectionService>, AradonConstant {
 
-	private Map<String, SectionService> sections;
-	private List<WrapperReleaseObject> releasables;
 	private TreeContext rootContext;
 
-	private AradonConfig aconfig;
+	// private AradonConfig aconfig;
 	private AradonServerHelper serverHelper;
-	private boolean initialized = false ;
-	public Aradon() {
+	private boolean initialized = false;
+
+	private Aradon() {
 		super();
-		this.releasables = ListUtil.newList();
-		this.sections = MapUtil.newCaseInsensitiveMap();
 		this.rootContext = TreeContext.createRootContext(getDefaultHost());
 	}
 
-	public void init(String rootConfigFilePath) throws ConfigurationException, InstanceCreationException {
-		if (!new File(rootConfigFilePath).exists()) {
-			throw new ConfigurationException(rootConfigFilePath + " not exists");
+	public static Aradon create(XMLConfig config) throws InstanceCreationException {
+		return create(ConfigurationBuilder.load(config).build());
+	}
+
+	public static Aradon create(String configFilePath) throws InstanceCreationException {
+		if (!new File(configFilePath).exists()) {
+			throw new IllegalArgumentException(configFilePath + " not exists");
 		}
-		init(XMLConfig.create(rootConfigFilePath));
+		return create(XMLConfig.create(configFilePath));
 	}
 
-	public void init(XMLConfig config) throws ConfigurationException, InstanceCreationException {
-		this.aconfig = AradonConfig.create(config).init(this, rootContext);
-
-		setLogService(new RadonLogService());
-		this.initialized = true ;
+	public static Aradon create() {
+		return create(ConfigurationBuilder.newBuilder().build()) ;
 	}
-
-//	public Response handle(Request request) {
-//		final Response response = new Response(request);
-//		handle(request, response);
-//		return response;
-//	}
 	
+	public static Aradon create(Configuration config) {
+		Aradon aradon = new Aradon();
+		aradon.init(config);
+		return aradon;
+	}
+	
+
+	private Configuration config;
+	private Map<String, SectionService> sections = MapUtil.newMap();
+
+	private void init(Configuration config) {
+		this.rootContext = TreeContext.createRootContext(getDefaultHost());
+		for (SectionConfiguration sconfig : config.aradon().sections().sections()) {
+			attach(sconfig);
+		}
+
+		for (Entry<String, AttributeValue> entry : config.aradon().attributes().entrySet()) {
+			rootContext.putAttribute(entry.getKey(), entry.getValue());
+		}
+		this.config = config;
+		this.setContext(rootContext);
+		setLogService(new RadonLogService());
+		this.initialized = true;
+
+		start();
+	}
+
 	private String getSectionName(Request request) {
-		Reference resourceRef = request.getResourceRef() ;
-		List<String> segs = resourceRef.getSegments() ;
-		if(segs.size() <= 1) {
-			return "" ;
+		Reference resourceRef = request.getResourceRef();
+		List<String> segs = resourceRef.getSegments();
+		if (segs.size() <= 1) {
+			return "";
 		}
 		String firstSeg = segs.get(0);
-		return sections.containsKey(firstSeg) ? firstSeg : "" ;
+		return sections.containsKey(firstSeg) ? firstSeg : "";
 	}
-
 
 	public void handle(Request request, Response response) {
 		if (!isStarted())
 			start();
 
 		InnerRequest innerRequest = InnerRequest.create(getSectionName(request), request);
-		
-		// new URI(request.getResourceRef().toString()).toString()
-		
-
 		InnerResponse innerResponse = InnerResponse.create(response, innerRequest);
 		// innerResponse.setRequest(innerRequest) ;
 
-		// response.setRequest(innerRequest) ;
-		// Response innerResponse = response ;
+		IFilterResult preResult = FilterUtil.preHandle(this, config.aradon().prefilters(), innerRequest, innerResponse);
+		if (preResult.getResult() == Filter.STOP) {
+			response.setStatus(preResult.getCause().getStatus());
+			response.setEntity(preResult.getReplaceRepresentation());
+			return;
+		}
 		try {
-
-			if (Protocol.RIAP.equals(innerRequest.getProtocol())) {
-				getDefaultHost().getContext().getClientDispatcher().handle(innerRequest, innerResponse);
-
-			} else {
+			if (preResult.getResult() != Filter.SKIP) {
 				super.handle(innerRequest, innerResponse);
 			}
-
 		} catch (ResourceException ex) {
 			ex.printStackTrace();
 			getLogger().warning(ex.getMessage());
@@ -130,65 +148,69 @@ public class Aradon extends Component implements IService, AradonConstant {
 			ex.printStackTrace();
 			getLogger().warning(ex.getMessage());
 			throw new ResourceException(Status.SERVER_ERROR_INTERNAL, ex);
+		} finally {
+			FilterUtil.afterHandle(this, config.aradon().afterfilters(), innerRequest, innerResponse);
 		}
 	}
 
-	public void addReleasable(IService service, Releasable releasable) {
-		releasables.add(WrapperReleaseObject.create(service, releasable));
-	}
-
-	private void slayReleasable() {
-		if (isStarted())
-			return;
-		Debug.debug("Bye....... Aradon");
-		for (WrapperReleaseObject releasable : releasables) {
-			if (releasable != null && releasable.getValue() != null)
-				releasable.getValue().doRelease();
-		}
-
-		for (SectionService section : sections.values()) {
-			try {
-				section.stop();
-			} catch (Throwable ignore) {
-				ignore.printStackTrace();
-			}
-		}
-		Debug.debug("End World.........");
-	}
-
+	// public void addReleasable(IService service, Releasable releasable) {
+	// releasables.add(WrapperReleaseObject.create(service, releasable));
+	// }
+	
 	@Override
-	public void stop() {
-		if (isStopped()) return ;
+	public void stop(){
+		this.destorySelf() ;
+	}
+
+	public void destorySelf() {
+		if (isStopped())
+			return;
+
+		onEventFire(AradonEvent.STOP, this);
+		for (SectionService section : sections.values()) {
+			detach(section.getName()) ;
+		}
+		
+		getServiceContext().closeAttribute();
+		
 		try {
-			super.stop() ;
-			getConfig().stopShell();
-			onEventFire(AradonEvent.STOP, this);
- 			getServices().stop() ;
-//			getServices().clear() ;
-			if (serverHelper != null) serverHelper.stop() ;
+			super.stop();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		getGlobalConfig().server().stopShell();
+		try {
+//			getServices().stop();
+//			getServices().clear();
+			if (serverHelper != null)
+				serverHelper.stop();
 		} catch (Exception ignore) {
 			ignore.printStackTrace();
 			getLogger().warning(ignore.getMessage());
 		} finally {
-			this.slayReleasable();
+			Debug.debug("Bye....... Aradon");
 			getLogger().warning("aradon server stoped");
 		}
 	}
 
-	public AradonConfig getConfig() {
-		return this.aconfig;
+	public AradonConfiguration getConfig() {
+		return config.aradon();
+	}
+
+	public Configuration getGlobalConfig() {
+		return config;
 	}
 
 	@Override
 	public void start() {
 		if (isStarted()) {
-			return ;
+			return;
 		}
 		try {
-			if (! initialized) init(XMLConfig.BLANK) ;
-			getServers().add(new Server(Protocol.RIAP)) ;
+			getServers().add(new Server(Protocol.RIAP));
 			super.start();
-			getConfig().loadPlugIn(this);
+			getGlobalConfig().plugin().loadPlugIn(this);
 		} catch (Exception e) {
 			throw new AradonRuntimeException(e);
 		}
@@ -197,32 +219,36 @@ public class Aradon extends Component implements IService, AradonConstant {
 	}
 
 	public void startServer(int port) throws Exception {
-		if (! initialized) init(XMLConfig.BLANK) ;
-		if (port > 0 && alreadyUsePortNum(port)) {
-			Debug.warn(port + " port is occupied");
-			throw new IllegalArgumentException(port + " port is occupied");
-		}
-		startServer(aconfig.getConnectorConfig(port));
-		getConfig().launchShell(this);
+		
+		long start = System.currentTimeMillis() ;
+//		if (port > 0 && useAlreadyPortNum(port)) {
+//			Debug.warn(port + " port is occupied");
+//			throw new IllegalArgumentException(port + " port is occupied");
+//		}
+		
+//		Debug.line(System.currentTimeMillis() - start) ;
+
+		startServer(config.server().connector().port(port));
+		
 	}
 
-	public synchronized void startServer(ConnectorConfig cfig) throws Exception {
-		rootContext.putAttribute(CONFIG_PORT, cfig.getPort());
-		
-		this.serverHelper = ServerFactory.create(getContext(), this, cfig) ;
-		serverHelper.start() ;
-//		loadServerHelper(cfig) ;
+	public synchronized void startServer(ConnectorConfiguration cfig) throws Exception {
+		rootContext.putAttribute(CONFIG_PORT, cfig.port());
 
-		start() ;
+		this.serverHelper = ServerFactory.create(getContext(), this, cfig);
+		serverHelper.start();
+
+		start();
 
 		final Aradon aradon = this;
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			public void run() {
-				aradon.stop();
+				aradon.destorySelf();
 			}
 		});
 
-		getLogger().warning("aradon started : " + cfig.getPort());
+		getGlobalConfig().server().launchShell(this);
+		getLogger().warning("aradon started : " + cfig.port());
 	}
 
 	public synchronized void reload() throws Exception {
@@ -234,18 +260,15 @@ public class Aradon extends Component implements IService, AradonConstant {
 		}
 		sections.clear();
 
-		// release
-		slayReleasable();
-
-		aconfig.init(this, rootContext);
+		config.init(this, rootContext);
 		onEventFire(AradonEvent.RELOAD, this);
 	}
 
-	private boolean alreadyUsePortNum(int port) {
+	private boolean useAlreadyPortNum(int port) {
 		Socket s = null;
 		try {
 			s = new Socket(InetAddress.getLocalHost(), port);
-			s.setSoTimeout(1000);
+			s.setSoTimeout(400);
 			s.close();
 			return true;
 		} catch (UnknownHostException e) {
@@ -255,125 +278,110 @@ public class Aradon extends Component implements IService, AradonConstant {
 			e.getStackTrace();
 			return false;
 		} finally {
-			IOUtil.closeQuietly(s) ;
+			IOUtil.closeQuietly(s);
 		}
 	}
 
 	private void onEventFire(AradonEvent event, IService service) {
-		for (Object key : service.getServiceContext().getAttributes().keySet()) {
-			Object value = service.getServiceContext().getAttributeObject(ObjectUtil.toString(key));
+		TreeContext serviceContext = service.getServiceContext();
+		for (Object key : serviceContext.getAttributes().keySet()) {
+			Object value = serviceContext.getAttributeObject(ObjectUtil.toString(key));
 			if (OnEventObject.class.isInstance(value)) {
 				((OnEventObject) value).onEvent(event, service);
 			}
 		}
 
-		for (IService child : service.getChildren()) {
-			onEventFire(event, child);
+		for (Object child : service.getChildren()) {
+			onEventFire(event, (IService) child);
 		}
 	}
 
-	public void addAfterFilter(IRadonFilter filter) {
-		rootContext.addAfterFilter(this, filter);
+	public SectionService attach(SectionConfiguration sconfig) {
+		if (sections.containsKey(sconfig.name())) {
+			throw new IllegalArgumentException("already exist section : " + sconfig);
+		}
+		HttpRestSection restSection = HttpRestSection.create(this, rootContext.createChildContext(), sconfig);
+		getDefaultHost().attach("/" + sconfig.name(), restSection, Router.MODE_BEST_MATCH);
+		getInternalRouter().attach("/" + sconfig.name(), restSection, Router.MODE_BEST_MATCH);
+		sections.put(sconfig.name(), restSection);
+		return restSection;
 	}
 
-	public void addPreFilter(IRadonFilter filter) {
-		rootContext.addPreFilter(this, filter);
+	public SectionService attach(SectionConfiguration sconfig, PlugInApply apply) {
+
+		String newName = sconfig.name();
+
+		if (!sections.containsKey(newName)) {
+			HttpRestSection newSection = HttpRestSection.create(this, rootContext.createChildContext(), sconfig);
+			Debug.info("SECTION : " + newName + " loaded");
+			getDefaultHost().attach("/" + newName, newSection, Router.MODE_BEST_MATCH);
+			getInternalRouter().attach("/" + newName, newSection, Router.MODE_BEST_MATCH);
+			sections.put(newName, newSection);
+			return newSection;
+		} else {
+			SectionService existSection = sections.get(newName);
+			if (apply == PlugInApply.IGNORE) {
+				Debug.warn("SECTION[" + newName + "] already exists. Ignored....======================");
+			} else if (apply == PlugInApply.OVERWRITE) {
+				if (existSection != null) {
+					onEventFire(AradonEvent.STOP, existSection);
+
+					getDefaultHost().detach(existSection);
+					getInternalRouter().detach(existSection);
+				}
+
+				HttpRestSection newSection = HttpRestSection.create(this, rootContext.createChildContext(), sconfig);
+				getDefaultHost().attach("/" + newName, newSection, Router.MODE_BEST_MATCH);
+				getInternalRouter().attach("/" + newName, newSection, Router.MODE_BEST_MATCH);
+				sections.put(newName, newSection);
+
+				Debug.debug('%', sconfig.toString());
+
+			} else if (apply == PlugInApply.MERGE) {
+				for (IRadonFilter prefilter : sconfig.prefilters()) {
+					existSection.getConfig().addPreFilter(prefilter);
+				}
+				for (IRadonFilter afterFilter : sconfig.afterfilters()) {
+					existSection.getConfig().addAfterFilter(afterFilter);
+				}
+				for (Entry<String, AttributeValue> entry : sconfig.attributes().entrySet()) {
+					existSection.getConfig().attributes().put(entry.getKey(), entry.getValue());
+				}
+				for (PathConfiguration pconfig : sconfig.pathConfiguration()) {
+					existSection.attach(pconfig);
+				}
+			}
+			return existSection;
+		}
+
 	}
 
-	public List<IRadonFilter> getAfterFilters() {
-		return rootContext.getAfterFilters();
-	}
-
-	public List<IRadonFilter> getPreFilters() {
-		return rootContext.getPreFilters();
+	public Aradon detach(String sname) {
+		SectionService child = sections.get(sname);
+		if (child == null)
+			return this;
+		config.aradon().sections().removeSection(sname);
+		sections.remove(sname);
+		getDefaultHost().detach(child);
+		getInternalRouter().detach(child);
+		child.stop();
+		return this;
 	}
 
 	public TreeContext getServiceContext() {
 		return rootContext;
 	}
 
-	public void removeAfterFilter(IRadonFilter filter) {
-		rootContext.removeFilter(FilterLocation.AFTER, filter);
-	}
-
-	public void removePreFilter(IRadonFilter filter) {
-		rootContext.removeFilter(FilterLocation.PRE, filter);
-	}
-
 	public void restart() {
-		rootContext.restart();
+		config.aradon().removePreFilter(RevokeServiceFilter.SELF);
 	}
 
 	public void suspend() {
-		rootContext.suspend();
+		config.aradon().addPreFilter(0, RevokeServiceFilter.SELF);
 	}
 
 	public IService getParent() {
 		return IService.ROOT;
-	}
-
-	public SectionService attach(String sectionName, XMLConfig xmlConfig) throws ConfigurationException, InstanceCreationException {
-
-		final SectionService section = SectionFactory.parse(this, sectionName, xmlConfig);
-		attach(section);
-		return section;
-	}
-
-	public void attach(SectionService newSection, PlugInApply apply) {
-		
-		String newName = newSection.getName();
-		if (! sections.containsKey(newName)) {
-			Debug.info("SECTION : " + newName + " loaded");
-			getDefaultHost().attach("/" + newName, newSection, Router.MODE_BEST_MATCH);
-			getInternalRouter().attach("/" + newName, newSection, Router.MODE_BEST_MATCH);
-			sections.put(newName, (SectionService) newSection);
-		} else {
-			if (apply == PlugInApply.IGNORE){
-				Debug.warn("SECTION[" + newName + "] already exists. Ignored....======================");
-			} else if (apply == PlugInApply.OVERWRITE){
-				SectionService existSection = sections.get(newName) ;
-				onEventFire(AradonEvent.STOP, existSection) ;
-				
-				getDefaultHost().detach(existSection) ;
-				getInternalRouter().detach(existSection) ;
-				
-				getDefaultHost().attach("/" + newName, newSection, Router.MODE_BEST_MATCH);
-				getInternalRouter().attach("/" + newName, newSection, Router.MODE_BEST_MATCH);
-				sections.put(newName, (SectionService) newSection);
-				
-				Debug.debug('%', newSection.toString()) ;
-				
-			} else if (apply == PlugInApply.MERGE) {
-				SectionService existSection = sections.get(newName) ;
-				for (IRadonFilter prefilter : newSection.getPreFilters()) {
-					existSection.addPreFilter(prefilter) ;
-				}  
-				for (IRadonFilter afterFilter : newSection.getAfterFilters()) {
-					existSection.addAfterFilter(afterFilter) ;
-				}  
-				for (Entry entry : (Set<Entry>)(newSection.getServiceContext().getAttributes().entrySet())) {
-					existSection.getServiceContext().getAttributes().put(entry.getKey(), entry.getValue()) ;
-				}
-				for(PathService pservice : newSection.getChildren()) {
-					existSection.attach(pservice) ;
-				}
-			}
-		}
-		
-		
-	}
-
-	public void attach(SectionService section) {
-		attach(section, PlugInApply.IGNORE) ;
-	}
-
-	public void detach(String sectionName) {
-		SectionService section = getChildService(sectionName);
-		getDefaultHost().detach(section);
-		getInternalRouter().detach(section);
-		sections.remove(sectionName);
-
-		getLogger().warning(sectionName + " section detattached..");
 	}
 
 	public SectionService getChildService(String name) {
@@ -433,26 +441,6 @@ public class Aradon extends Component implements IService, AradonConstant {
 
 	public Engine getEngine() {
 		return Engine.getInstance();
-	}
-
-}
-
-class WrapperReleaseObject {
-
-	private IService service;
-	private Releasable releasable;
-
-	private WrapperReleaseObject(IService service, Releasable releasable) {
-		this.service = service;
-		this.releasable = releasable;
-	}
-
-	Releasable getValue() {
-		return releasable;
-	}
-
-	static WrapperReleaseObject create(IService service, Releasable releasable) {
-		return new WrapperReleaseObject(service, releasable);
 	}
 
 }

@@ -1,6 +1,11 @@
 package net.ion.radon.client;
 
 import static org.junit.Assert.assertEquals;
+
+import java.util.Map;
+
+import net.ion.framework.util.Debug;
+import net.ion.framework.util.MapUtil;
 import net.ion.radon.core.Aradon;
 import net.ion.radon.impl.let.HelloWorldLet;
 import net.ion.radon.util.AradonTester;
@@ -21,6 +26,11 @@ public class TestAradonClientFactory {
 		assertEquals(true, ac1 == ac2) ;
 		assertEquals(true, ac2 == ac3) ;
 		assertEquals(true, ac3 == ac4) ;
+		
+		ac1.stop() ;
+		ac2.stop() ;
+		ac3.stop() ;
+		ac4.stop() ;
 	}
 
 	@Test
@@ -42,6 +52,21 @@ public class TestAradonClientFactory {
 		
 		ac.stop() ;
 		aradon.stop() ;
+	}
+	
+	@Test
+	public void removeValue() throws Exception {
+		Map x = MapUtil.newMap() ;
+		x.put(1, "value1");
+		x.put(2, "value2");
+		x.put(3, "value3");
+		x.put(4, "value4");
+		x.put(5, "value5");
+		x.put(6, "value6");
+
+		x.values().remove("value4");
+
+		Debug.line(x) ;
 	}
 	
 }

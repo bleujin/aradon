@@ -63,7 +63,4 @@ public class LetResponse {
 		return response.getStdObject() ;
 	}
 
-	public Object getContextValue() {
-		return getRequest().getContext().getSelfAttributeObject(StdObject.class.getCanonicalName(), StdObject.class);
-	}
 }

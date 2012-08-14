@@ -3,6 +3,20 @@ package net.ion.nradon.ajax;
 import java.io.File;
 import java.nio.charset.Charset;
 
+import net.ion.framework.util.Debug;
+import net.ion.nradon.HttpControl;
+import net.ion.nradon.HttpRequest;
+import net.ion.nradon.HttpResponse;
+import net.ion.nradon.WebServer;
+import net.ion.nradon.WebServers;
+import net.ion.nradon.handler.AbstractHttpHandler;
+import net.ion.nradon.handler.aradon.AradonHandler;
+import net.ion.radon.client.AradonClient;
+import net.ion.radon.client.AradonClientFactory;
+import net.ion.radon.core.Aradon;
+import net.ion.radon.core.let.AbstractServerResource;
+import net.ion.radon.util.AradonTester;
+
 import org.junit.Test;
 import org.restlet.Response;
 import org.restlet.data.MediaType;
@@ -10,23 +24,6 @@ import org.restlet.data.Method;
 import org.restlet.representation.FileRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.Get;
-
-import net.ion.bleujin.HelloWorldLet2;
-import net.ion.framework.util.Debug;
-import net.ion.framework.util.InfinityThread;
-import net.ion.nradon.HttpControl;
-import net.ion.nradon.HttpRequest;
-import net.ion.nradon.HttpResponse;
-import net.ion.nradon.WebServer;
-import net.ion.nradon.WebServers;
-import net.ion.nradon.handler.AbstractHttpHandler;
-import net.ion.nradon.handler.StaticFileHandler;
-import net.ion.nradon.handler.aradon.AradonHandler;
-import net.ion.radon.client.AradonClient;
-import net.ion.radon.client.AradonClientFactory;
-import net.ion.radon.core.Aradon;
-import net.ion.radon.core.let.AbstractServerResource;
-import net.ion.radon.util.AradonTester;
 
 public class TestStaticFileHandler {
 
@@ -42,6 +39,7 @@ public class TestStaticFileHandler {
 		Response res = ac.createRequest("/").handle(Method.GET) ;
 		Debug.line(res.getEntityAsText()) ;
 		
+		ac.stop() ;
 		webServer.stop() ;
 	}
 	
@@ -57,6 +55,7 @@ public class TestStaticFileHandler {
 		Response res = ac.createRequest("/aradon/").handle(Method.GET) ;
 		Debug.line(res.getEntityAsText()) ;
 		
+		ac.stop() ;
 		webServer.stop() ;
 
 	}

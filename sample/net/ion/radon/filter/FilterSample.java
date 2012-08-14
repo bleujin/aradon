@@ -1,12 +1,12 @@
 package net.ion.radon.filter;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.Map;
 
-import junit.framework.TestCase;
 import net.ion.framework.parse.gson.JsonObject;
 import net.ion.framework.parse.gson.JsonParser;
 import net.ion.framework.parse.gson.JsonUtil;
-import net.ion.framework.util.InfinityThread;
 import net.ion.radon.client.AradonClient;
 import net.ion.radon.client.AradonClientFactory;
 import net.ion.radon.client.IAradonRequest;
@@ -20,6 +20,7 @@ import net.ion.radon.param.MyParameter;
 import net.ion.radon.util.AradonTester;
 
 import org.junit.Assert;
+import org.junit.Test;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.Method;
@@ -28,11 +29,12 @@ import org.restlet.resource.Get;
 import org.restlet.resource.Post;
 import org.restlet.resource.ResourceException;
 
-public class FilterSample extends TestCase{
+public class FilterSample {
 
+	@Test
 	public void testParamToFilter() throws Exception {
 		Aradon aradon = AradonTester.create().register("", "/test", ConfirmLet.class).getAradon() ;
-		aradon.addPreFilter(ParamToBeanFilter.create("emp", Employee.class)) ;
+		aradon.getConfig().addPreFilter(ParamToBeanFilter.create("emp", Employee.class)) ;
 		
 		AradonClient ac = AradonClientFactory.create(aradon) ;
 		IAradonRequest request = ac.createRequest("/test") ;
@@ -47,11 +49,12 @@ public class FilterSample extends TestCase{
 		assertEquals("[\"bleu\",\"jin\"]", rtn.asJsonArray("names").toString()) ;
 	}
 	
+	@Test
 	public void testAuthFilter() throws Exception {
 		Aradon aradon = AradonTester.create()
 			.register("sec", "/test", ConfirmLet.class)
 			.register("nosec", "/test", ConfirmLet.class).getAradon() ;
-		aradon.getChildService("sec").addPreFilter(new ChallengeAuthenticator("sec area", "admin", "redf")) ;
+		aradon.getChildService("sec").getConfig().addPreFilter(new ChallengeAuthenticator("sec area", "admin", "redf")) ;
 		
 		AradonClient ac = AradonClientFactory.create(aradon) ;
 		
@@ -77,7 +80,7 @@ class ConfirmLet extends AbstractServerResource {
 	
 	@Post
 	public String post(){
-		Employee emp = getContext().getAttributeObject("emp", Employee.class) ;
+		Employee emp = getInnerRequest().getAttribute("emp", Employee.class) ;
 		Assert.assertEquals("bleujin", emp.getEname()) ;
 		Assert.assertEquals(100, emp.getEmpNo()) ;
 		Assert.assertEquals(new String[]{"bleu","jin"}, emp.getNames()) ;
@@ -106,7 +109,7 @@ class ParamToBeanFilter extends IRadonFilter {
 		
 		try {
 			Object beanObj = MyParameter.create(params).toBean(Class.forName(className)) ;
-			getInnerRequest(request).getContext().putAttribute(this.beanName, beanObj) ;
+			getInnerRequest(request).putAttribute(this.beanName, beanObj) ;
 		} catch (ClassNotFoundException e) {
 			return IFilterResult.stopResult(new ResourceException(Status.SERVER_ERROR_NOT_IMPLEMENTED, e.getMessage())) ;
 		}

@@ -7,8 +7,6 @@ import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.Method;
 
-import junit.framework.TestCase;
-
 public class TestBaseAradon {
 
 	protected Aradon testAradon() throws ConfigurationException, InstanceCreationException{
@@ -16,8 +14,7 @@ public class TestBaseAradon {
 	}
 	
 	protected Aradon testAradon(String configPath) throws ConfigurationException, InstanceCreationException{
-		Aradon aradon = new Aradon() ;
-		aradon.init(configPath) ;
+		Aradon aradon = Aradon.create(configPath) ;
 		aradon.start() ;
 		return aradon ;
 	}

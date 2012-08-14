@@ -37,7 +37,7 @@ public class TestHelloLet {
 		Response response = at.getAradon().handle(request);
 
 		InnerRequest ireq = ((InnerResponse) Response.getCurrent()).getInnerRequest();
-		assertEquals("bleujin", ireq.getContext().getSelfAttributeObject("context.id", String.class));
+		assertEquals("bleujin", ireq.getAttribute("context.id", String.class));
 	}
 
 	@Test

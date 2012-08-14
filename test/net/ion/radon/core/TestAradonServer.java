@@ -9,13 +9,10 @@ import java.util.List;
 import java.util.Map;
 
 import net.ion.framework.util.Debug;
-import net.ion.framework.util.InfinityThread;
 import net.ion.radon.Options;
-import net.ion.radon.core.Aradon;
-import net.ion.radon.core.AradonConfig;
-import net.ion.radon.core.AradonServer;
-import net.ion.radon.core.config.AradonConstant;
+import net.ion.radon.core.config.Configuration;
 import net.ion.radon.core.config.ConnectorConfig;
+import net.ion.radon.core.config.ConnectorConfiguration;
 import net.ion.radon.core.config.XMLConfig;
 import net.ion.radon.core.config.ConnectorConfig.EngineType;
 
@@ -40,8 +37,8 @@ public class TestAradonServer extends TestBaseAradon {
 		AradonServer as = new AradonServer(options);
 		Aradon aradon = as.start();
 
-		AradonConfig aconfig =  aradon.getConfig() ;
-		assertEquals("jupiter", aconfig.getId()) ;
+		Configuration aconfig =  aradon.getGlobalConfig() ;
+		assertEquals("jupiter", aconfig.server().id()) ;
 		
 		as.stop();
 	}
@@ -65,12 +62,12 @@ public class TestAradonServer extends TestBaseAradon {
 		AradonServer as = new AradonServer(new Options(new String[] { "-port:9002", "-config:resource/config/readonly-config.xml" }));
 		Aradon aradon = as.start();
 
-		XMLConfig config = aradon.getConfig().getXMLConfig();
+		Configuration config = aradon.getGlobalConfig() ;
 
-		Debug.debug(config.getString("server-config.log-config-file"));
+		Debug.debug(config.server().logConfigPath());
 
-		XMLConfig cc = config.firstChild("server-config.connector-config");
-		Map<String, String> attr = cc.childMap("parameter", "name");
+		ConnectorConfiguration cc = config.server().connector();
+		Map<String, String> attr = cc.properties() ;
 		Debug.debug(attr);
 	}
 

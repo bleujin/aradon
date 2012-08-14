@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
-import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -14,20 +13,18 @@ import java.util.concurrent.TimeUnit;
 
 import net.ion.framework.util.Debug;
 import net.ion.framework.util.IOUtil;
-import net.ion.framework.util.InfinityThread;
 import net.ion.framework.util.ListUtil;
 import net.ion.radon.client.AradonClient;
 import net.ion.radon.client.AradonClientFactory;
 import net.ion.radon.client.IAradonRequest;
 import net.ion.radon.core.Aradon;
-import net.ion.radon.core.config.ConnectorConfig;
+import net.ion.radon.core.config.ConnectorConfiguration;
 import net.ion.radon.core.let.AbstractServerResource;
 import net.ion.radon.util.AradonTester;
 
 import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.data.MediaType;
-import org.restlet.representation.ChannelRepresentation;
 import org.restlet.representation.OutputRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.representation.WritableRepresentation;
@@ -36,6 +33,7 @@ import org.restlet.resource.ResourceException;
 
 public class TestAradonClientFactory {
 
+	@Ignore
 	@Test
 	public void cache() throws Exception {
 		AradonClient ac1 = AradonClientFactory.create("http://www.i-on.net");
@@ -46,6 +44,10 @@ public class TestAradonClientFactory {
 		assertEquals(true, ac1 == ac2);
 		assertEquals(true, ac2 == ac3);
 		assertEquals(true, ac3 == ac4);
+		ac1.stop() ;
+		ac2.stop() ;
+		ac3.stop() ;
+		ac4.stop() ;
 	}
 
 	
@@ -54,7 +56,7 @@ public class TestAradonClientFactory {
 	public void testRequest() throws Exception {
 		Aradon aradon = AradonTester.create().register("", "/test", LongTimeLet.class).getAradon();
 		// WebServer server = WebServers.createWebServer(80).add(AradonHandler.create(aradon)).start() ;
-		aradon.startServer(ConnectorConfig.makeSimpleHTTPConfig(9000)) ;
+		aradon.startServer(ConnectorConfiguration.makeSimpleHTTPConfig(9000)) ;
 		
 		final AradonClient ac = AradonClientFactory.create("http://localhost:9000");
 
@@ -103,6 +105,7 @@ public class TestAradonClientFactory {
 		synchronized (this) {
 			wait(3000);
 		}
+		ac.stop() ;
 		aradon.stop() ;
 	}
 }

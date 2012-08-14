@@ -11,6 +11,7 @@ public class TestBasicRequest extends TestCase {
 		for (int i = 0; i < 10; i++) {
 			Debug.debug(client.createRequest("/", "bleujin", "redfpark").get().getText());
 		}
+		client.stop() ;
 		// new InfinityThread().startNJoin() ;
 	}
 
@@ -20,6 +21,8 @@ public class TestBasicRequest extends TestCase {
 		for (int i = 0; i < 10; i++) {
 			Debug.debug(client.createSerialRequest("/", "bleujin", "redfpark").get(String.class));
 		}
+		
+		client.stop() ;
 		// new InfinityThread().startNJoin() ;
 	}
 

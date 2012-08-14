@@ -11,32 +11,33 @@ import net.ion.framework.util.Debug;
 import net.ion.framework.util.InstanceCreationException;
 import net.ion.framework.util.ObjectUtil;
 import net.ion.framework.util.StringUtil;
-import net.ion.radon.core.EnumClass.IZone;
-import net.ion.radon.core.EnumClass.Scope;
 import net.ion.radon.core.IService;
 import net.ion.radon.core.TreeContext;
+import net.ion.radon.core.EnumClass.IZone;
+import net.ion.radon.core.EnumClass.Scope;
 import net.ion.radon.impl.section.RDBConnection;
 
 import org.apache.commons.configuration.ConfigurationException;
 
 public class AttributeUtil {
 
-	public static void load(IService service, XMLConfig parentConfig) throws InstanceCreationException, ConfigurationException {
+	public static void load(IService service, XMLConfig contextConfig) throws InstanceCreationException, ConfigurationException {
 		//Debug.line(context.getZone(), parentConfig);
 		
-		if (! parentConfig.hasChild("context")) return ;
 		
-		XMLConfig contextConfig = parentConfig.firstChild("context") ;
+		if (! contextConfig.getTagName().equals("context")) return ;
+		
+		// XMLConfig contextConfig = parentConfig.firstChild("context") ;
 
-		final String name = StringUtil.toString(parentConfig.getAttributeValue("name"), "aradon");
+		final String name = StringUtil.toString(contextConfig.getAttributeValue("name"), "aradon");
 		
 		
-		setStringAttribute(service, contextConfig, name);
-		setObjectAttribute(service, contextConfig, name) ;
+		setStringAttribute(service, contextConfig);
+		setObjectAttribute(service, contextConfig) ;
 		setConnectionAttribute(service, contextConfig);
 	}
 	
-	private static void setObjectAttribute(IService service, XMLConfig contextConfig, final String name) throws InstanceCreationException {
+	private static void setObjectAttribute(IService service, XMLConfig contextConfig) throws InstanceCreationException {
 		TreeContext context = service.getServiceContext() ;
 		List<XMLConfig> configs =  contextConfig.children("configured-object") ;
 		for (XMLConfig config : configs) {
@@ -45,13 +46,13 @@ public class AttributeUtil {
 			Scope scope = Scope.valueOf(StringUtil.capitalize(config.getAttributeValue("scope")));
 			ReferencedObject refObj = ReferencedObject.create(context, id, scope, config) ;
 
-			Debug.debug(String.format("%1$15s[%2$s], %3$s : %4$s", context.getAttributeObject(IZONE_ATTRIBUTE_KEY, IZone.class), name, id, refObj)) ;
+			Debug.debug(String.format("%1$15s[%2$s], %3$s : %4$s", context.getAttributeObject(IZONE_ATTRIBUTE_KEY, IZone.class), service.getName(), id, refObj)) ;
 			context.putAttribute(id, refObj) ;
 		}
 	}
 
 
-	private static void setStringAttribute(IService service, XMLConfig config, final String name) {
+	private static void setStringAttribute(IService service, XMLConfig config) {
 		TreeContext context = service.getServiceContext() ;
 		List<XMLConfig> children = config.children("attribute") ;
 		for (XMLConfig child : children) {
@@ -69,7 +70,7 @@ public class AttributeUtil {
 			
 			Object attrValue = ObjectUtil.coalesce(child.getElementValue(), ObjectUtil.NULL) ;
 			
-			Debug.info(String.format("%1$15s[%2$s], %3$s : %4$s", context.getAttributeObject(IZONE_ATTRIBUTE_KEY, IZone.class), name, id, attrValue)) ;
+			Debug.info(String.format("%1$15s[%2$s], %3$s : %4$s", context.getAttributeObject(IZONE_ATTRIBUTE_KEY, IZone.class), service.getName(), id, attrValue)) ;
 			context.putAttribute(id, attrValue) ;
 		}
 	}
@@ -85,7 +86,6 @@ public class AttributeUtil {
 				final IDBController dc = RDBConnection.createDC(cconfig);
 				dc.initSelf();
 				context.putAttribute(connectionId, dc);
-				if (service.getAradon() != null) service.getAradon().addReleasable(service, DBReleasable.create(dc)) ;
 			} catch (SQLException ex) {
 				ex.printStackTrace();
 				Debug.warn(connectionId + " not initialized...");

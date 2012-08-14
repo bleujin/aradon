@@ -33,7 +33,6 @@ public abstract class BaseServerResource extends ServerResource {
 		} else {
 			doError(Status.CLIENT_ERROR_METHOD_NOT_ALLOWED);
 		}
-
 		return result;
 	}
 

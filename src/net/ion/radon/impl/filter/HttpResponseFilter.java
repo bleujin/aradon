@@ -31,7 +31,7 @@ public class HttpResponseFilter extends IRadonFilter {
 		} else { // occured exception
 			
 			if (currentStatus.isSuccess()) { // first..
-				service.addPreFilter(this);
+				service.getConfig().addPreFilter(this);
 			}
 			return IFilterResult.CONTINUE_RESULT;
 		}

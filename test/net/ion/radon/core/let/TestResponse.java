@@ -42,13 +42,15 @@ public class TestResponse {
 		Aradon aradon = at.getAradon();
 		aradon.startServer(9000);
 
-		IAradonRequest req = AradonClientFactory.create("http://localhost:9000").createRequest("/test");
+		AradonClient ac = AradonClientFactory.create("http://localhost:9000");
+		IAradonRequest req = ac.createRequest("/test");
 		req.addParameter("name", "bleujin");
 		req.addParameter("age", "20");
 
 		Response res = req.handle(Method.POST);
 		assertEquals(200, res.getStatus().getCode());
-
+		
+		ac.stop() ;
 		aradon.stop();
 	}
 
@@ -75,6 +77,7 @@ public class TestResponse {
 		Reader reader = new DetectStream(res).getBodyReader();
 
 		assertEquals(true, IOUtil.toString(reader).length() > 100);
+		ac.stop() ;
 	}
 
 }

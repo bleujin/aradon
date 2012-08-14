@@ -4,8 +4,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import net.ion.radon.core.Aradon;
 
@@ -19,20 +17,22 @@ public class AradonClientFactory {
 			return create(hostAddress, false) ;
 	}
 
-	public static synchronized AradonClient create(String hostAddress, boolean reliable) {
-		return create(hostAddress, reliable, Executors.newFixedThreadPool(5)) ;
-	}
-	
-	static synchronized void remove(String hostAddress){
-		clientMap.remove(makeKey(hostAddress, true)) ;
-		clientMap.remove(makeKey(hostAddress, false)) ;
+	static synchronized void remove(AradonClient client){
+		clientMap.values().remove(client) ;
+//		clientMap.remove(makeKey(hostAddress, true)) ;
+//		clientMap.remove(makeKey(hostAddress, false)) ;
 	}
 
-	public static synchronized AradonClient create(String hostAddress, boolean reliable, ExecutorService es) {
+	public static synchronized AradonClient create(String hostAddress, boolean reliable) {
+		
+//		AradonHttpClient newClient = AradonHttpClient.create(hostAddress);
+//		if (reliable) newClient.setReliable() ;
+//		return newClient ;
+		
 		String key = makeKey(hostAddress, reliable) ;
 		
 		if ( ! clientMap.containsKey(key)){
-			AradonHttpClient newClient = AradonHttpClient.create(hostAddress, es);
+			AradonHttpClient newClient = AradonHttpClient.create(hostAddress);
 			if (reliable) newClient.setReliable() ;
 			clientMap.put(key, newClient) ;
 		} 
@@ -40,14 +40,13 @@ public class AradonClientFactory {
 	}
 
 	public static synchronized AradonClient create(Aradon aradon) {
-		return create(aradon, Executors.newFixedThreadPool(5)) ;
-	}
-	
-	public static synchronized AradonClient create(Aradon aradon, ExecutorService es) {
+		
+//		return AradonInnerClient.create(aradon) ;
+		
 		Object key = makeKey(aradon) ;
 		
 		if ( ! clientMap.containsKey(key)){
-			clientMap.put(key, AradonInnerClient.create(aradon, es)) ;
+			clientMap.put(key, AradonInnerClient.create(aradon)) ;
 		} 
 		return clientMap.get(key) ;
 	}

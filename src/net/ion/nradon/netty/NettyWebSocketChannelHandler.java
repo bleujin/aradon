@@ -21,9 +21,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.Executor;
 
+import net.ion.nradon.WebSocketConnection;
 import net.ion.nradon.WebSocketHandler;
 import net.ion.nradon.helpers.Base64;
 import net.ion.radon.core.except.AradonRuntimeException;
+import net.ion.radon.core.except.ConnectionException;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
@@ -138,9 +140,11 @@ public class NettyWebSocketChannelHandler extends SimpleChannelUpstreamHandler {
 			e.getChannel().close();
 		} else {
 			final Thread thread = Thread.currentThread();
+			final WebSocketConnection conn = this.webSocketConnection ;
+			
 			executor.execute(new Runnable() {
 				public void run() {
-					ioExceptionHandler.uncaughtException(thread, AradonRuntimeException.fromExceptionEvent(e));
+					ioExceptionHandler.uncaughtException(thread, ConnectionException.fromExceptionEvent(e, conn));
 				}
 			});
 		}

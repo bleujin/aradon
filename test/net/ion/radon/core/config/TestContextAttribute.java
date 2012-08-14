@@ -2,12 +2,12 @@ package net.ion.radon.core.config;
 
 import static org.junit.Assert.assertEquals;
 import net.ion.radon.core.Aradon;
-import net.ion.radon.core.PathService;
 import net.ion.radon.core.SectionService;
 import net.ion.radon.core.TestBaseAradon;
 import net.ion.radon.core.TreeContext;
 import net.ion.radon.core.let.InnerRequest;
 import net.ion.radon.core.let.InnerResponse;
+import net.ion.radon.core.let.PathService;
 
 import org.junit.Test;
 import org.restlet.Client;
@@ -36,7 +36,8 @@ public class TestContextAttribute extends TestBaseAradon {
 		Object value = scontext.getAttributeObject("section.contact.email") ;
 		
 		PathService pservice = section.getChildService("favicon.ico") ;
-		assertEquals("./resource/favicon.ico", pservice.getAttributes().get("base.dir")) ;
+		
+		assertEquals("./resource/favicon.ico", pservice.getContext().getAttributeObject("base.dir")) ;
 	}
 	
 
@@ -44,12 +45,12 @@ public class TestContextAttribute extends TestBaseAradon {
 	public void testRootContext() throws Exception {
 		Aradon aradon =  testAradon() ;
 		
-		Response response = super.handle(aradon, "/", Method.GET) ;
+		Request req = new Request(Method.GET, "riap://component/") ;
+		Response response = aradon.handle(req) ;
 		assertEquals(200, response.getStatus().getCode()) ;
 		
 		InnerRequest ireq = ((InnerResponse)Response.getCurrent()).getInnerRequest() ;
-		
-		assertEquals("default", ireq.getPathInfo(aradon).getName()) ;
+		assertEquals("default", ireq.getPathConfiguration().name()) ;
 	}
 	
 	@Test
@@ -59,7 +60,7 @@ public class TestContextAttribute extends TestBaseAradon {
 		Response response = super.handle(aradon, "/hello", Method.GET) ;
 		
 		InnerRequest ireq = ((InnerResponse)Response.getCurrent()).getInnerRequest() ;
-		assertEquals("hello", ireq.getPathInfo(aradon).getName()) ;
+		assertEquals("hello", ireq.getPathConfiguration().name()) ;
 	}
 	
 	@Test

@@ -33,13 +33,13 @@ public class ReferencedObject {
 	public synchronized Object valueObject() throws InstanceCreationException {
 		if (scope == Scope.Application) {
 			return firstObject;
-		} else if (scope == Scope.Thread) {
-			Object val = CURRENT.get();
-			if (val == null) {
-				val = createInstance(context, config);
-				CURRENT.set(val);
-			}
-			return val;
+//		} else if (scope == Scope.Thread) {
+//			Object val = CURRENT.get();
+//			if (val == null) {
+//				val = createInstance(context, config);
+//				CURRENT.set(val);
+//			}
+//			return val;
 		} else if (scope == Scope.Request) {
 			return createInstance(context, config);
 		}

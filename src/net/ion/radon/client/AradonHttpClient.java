@@ -2,13 +2,14 @@ package net.ion.radon.client;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.cert.X509Certificate;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -34,7 +35,7 @@ import org.restlet.resource.ResourceException;
 import org.restlet.service.ConverterService;
 import org.restlet.util.Series;
 
-public class AradonHttpClient implements AradonClient {
+public class AradonHttpClient implements AradonClient, Closeable {
 	private String host;
 	private HttpClientHelper client;
 	private ExecutorService es;
@@ -42,21 +43,24 @@ public class AradonHttpClient implements AradonClient {
 	private ConverterService cs = new ConverterService();
 	private Series<CookieSetting> cookies;
 
-	private AradonHttpClient(String host, ExecutorService es) {
+	private AradonHttpClient(String host) {
 		this.host = host;
 		this.client = new HttpClientHelper(new Client(ListUtil.toList(Protocol.HTTP, Protocol.HTTPS)));
 
-		this.client.getHelped().setContext(new Context());
+		Context context = new Context();
+		// http://www.restlet.org/documentation/2.0/jee/ext/org/restlet/ext/httpclient/HttpClientHelper.html
+//		context.getParameters().add(new Parameter("socketTimeout","3000")) ;
+		this.client.getHelped().setContext(context);
 		try {
 			client.getHelped().start();
 		} catch (Exception e) {
 			Debug.error(e.getMessage());
 		}
-		this.es = es;
+		this.es = Executors.newCachedThreadPool();
 	}
 
-	public final static AradonHttpClient create(String hostAddress, ExecutorService es) {
-		return new AradonHttpClient(hostAddress, es);
+	public final static AradonHttpClient create(String hostAddress) {
+		return new AradonHttpClient(hostAddress);
 	}
 
 	public BasicRequest createRequest(String path) {
@@ -84,11 +88,12 @@ public class AradonHttpClient implements AradonClient {
 	}
 
 	public void stop() throws Exception {
+		AradonClientFactory.remove(this);
 		client.stop();
 		// client.getHelped().stop();
-		es.awaitTermination(1, TimeUnit.SECONDS);
 		es.shutdownNow();
-		AradonClientFactory.remove(host);
+		// es.awaitTermination(1, TimeUnit.SECONDS);
+		// es.shutdownNow();
 	}
 
 	public String getHostAddress() {
@@ -117,7 +122,7 @@ public class AradonHttpClient implements AradonClient {
 					Representation entity = response.getEntity();
 					if (entity != null)
 						entity.release();
-					response.release();
+//					response.release();
 				}
 			}
 		});
@@ -130,6 +135,7 @@ public class AradonHttpClient implements AradonClient {
 		try {
 
 			if (response.getStatus().isConnectorError() || response.getStatus().isServerError() || response.getStatus().isClientError()) {
+				Debug.warn(response) ;
 				return response;
 			}
 			ByteArrayOutputStream output = new ByteArrayOutputStream();
@@ -145,21 +151,29 @@ public class AradonHttpClient implements AradonClient {
 			IOUtil.closeQuietly(input);
 			if (oldEntity != null)
 				oldEntity.release();
+			//response.commit() ;
+			//request.getEntity().release() ;
 		}
 		return response;
 	}
 
 	private Response innerHandle(Request request) {
-		if (cookies != null) {
-			for (CookieSetting cs : cookies) {
-				Cookie c = new Cookie(cs.getVersion(), cs.getName(), cs.getValue(), cs.getPath(), cs.getDomain());
-				request.getCookies().add(c);
+		try {
+			if (cookies != null) {
+				for (CookieSetting cs : cookies) {
+					Cookie c = new Cookie(cs.getVersion(), cs.getName(), cs.getValue(), cs.getPath(), cs.getDomain());
+					request.getCookies().add(c);
+				}
 			}
-		}
-		Response response = client.getHelped().handle(request);
-		cookies = response.getCookieSettings();
+//			Response response = new Response(request) ;
+//			client.handle(request, response);
+			Response response = client.getHelped().handle(request);
+			cookies = response.getCookieSettings();
 
-		return response;
+			return response;
+		} catch (Throwable ex) {
+			return null;
+		}
 		// Response response = new Response(request) ;
 		// client.handle(request, response) ;
 		// return response ;
@@ -182,6 +196,7 @@ public class AradonHttpClient implements AradonClient {
 	}
 
 	void setReliable() {
+
 		final SSLContext sslClientContext = getCustomSSLContext();
 
 		javax.net.ssl.HttpsURLConnection.setDefaultHostnameVerifier(new javax.net.ssl.HostnameVerifier() {
@@ -229,6 +244,14 @@ public class AradonHttpClient implements AradonClient {
 			e.printStackTrace();
 		}
 		return sc;
+	}
+
+	public void close() throws IOException {
+		try {
+			stop();
+		} catch (Exception e) {
+			throw new IOException(e.getMessage());
+		}
 	}
 
 }

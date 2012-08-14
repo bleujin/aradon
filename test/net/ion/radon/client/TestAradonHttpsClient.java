@@ -1,25 +1,31 @@
 package net.ion.radon.client;
 
 import static org.junit.Assert.assertEquals;
+
+import java.util.Map;
+
 import net.ion.framework.util.Debug;
 import net.ion.framework.util.InfinityThread;
-import net.ion.radon.core.config.ConnectorConfig;
-import net.ion.radon.core.config.XMLConfig;
+import net.ion.framework.util.MapUtil;
+import net.ion.radon.core.config.ConnectorConfiguration;
+import net.ion.radon.core.config.ConnectorConfig.EngineType;
 import net.ion.radon.impl.let.HelloWorldLet;
 import net.ion.radon.util.AradonTester;
 
 import org.junit.Test;
 import org.restlet.Response;
 import org.restlet.data.Method;
+import org.restlet.data.Protocol;
 
 public class TestAradonHttpsClient {
 
 	@Test
-	public void get() {
+	public void get() throws Exception{
 		AradonClient ac = AradonClientFactory.create("https://www.google.co.kr");
 		Response res = ac.createRequest("/").handle(Method.GET);
 
 		assertEquals(200, res.getStatus().getCode());
+		ac.stop() ;
 	}
 
 	@Test
@@ -33,16 +39,14 @@ public class TestAradonHttpsClient {
 
 	@Test
 	public void testHttps() throws Exception {
-		String configStr = "<connector-config port='9000' protocol='https' engine='simple'>"
-			+ "<parameter name='keystorePath' description=''>./resource/keystore/keystore</parameter>\n" 
-			+ "<parameter name='keystorePassword' description=''>password</parameter>\n"
-			+ "<parameter name='keystoreType' description=''>JKS</parameter>\n"
-			+ "<parameter name='keyPassword' description=''>password</parameter>\n" + "</connector-config>";
-
-		XMLConfig config = XMLConfig.load(configStr);
-
 		AradonTester at = AradonTester.create().register("", "/hello", HelloWorldLet.class);
-		at.getAradon().startServer(ConnectorConfig.create(config, 9000));
+		Map<String, String> properties = MapUtil.<String>chainKeyMap()
+			.put("keystorePath", "./resource/keystore/keystore")
+			.put("keystorePassword", "password")
+			.put("keystoreType", "JKS")
+			.put("keyPassword", "password")
+			.toMap();
+		at.getAradon().startServer(ConnectorConfiguration.create(EngineType.Simple, Protocol.HTTPS, 9000, properties));
 
 		new InfinityThread().startNJoin();
 	}

@@ -14,7 +14,7 @@ import net.ion.radon.client.AsyncHttpHandler;
 import net.ion.radon.client.IAradonRequest;
 import net.ion.radon.client.IJsonRequest;
 import net.ion.radon.client.ISerialRequest;
-import net.ion.radon.core.config.ConnectorConfig;
+import net.ion.radon.core.config.ConnectorConfiguration;
 import net.ion.radon.core.let.AbstractServerResource;
 import net.ion.radon.core.representation.BeanToJsonFilter;
 import net.ion.radon.core.representation.PlainObjectConverter;
@@ -35,7 +35,7 @@ public class TestManyRequest {
 	@Test
 	public void testManyRequest() throws Exception {
 		AradonTester at = AradonTester.create().register("", "/hello/{num}", DummyLet.class) ;
-		at.getAradon().startServer(ConnectorConfig.makeJettyHTTPConfig(9005)) ;
+		at.getAradon().startServer(ConnectorConfiguration.makeJettyHTTPConfig(9005)) ;
 		
 		AradonClient client = AradonClientFactory.create("http://127.0.0.1:9005");
 		for (int i : ListUtil.rangeNum(50000)) {
@@ -54,7 +54,7 @@ public class TestManyRequest {
 	@Test
 	public void testManyAsyncRequest() throws Exception {
 		AradonTester at = AradonTester.create().register("", "/hello/{num}", DummyLet.class) ;
-		at.getAradon().startServer(ConnectorConfig.makeJettyHTTPConfig(9005)) ;
+		at.getAradon().startServer(ConnectorConfiguration.makeJettyHTTPConfig(9005)) ;
 		
 		AradonClient client = AradonClientFactory.create("http://127.0.0.1:9005");
 		List<Future> store = ListUtil.newList();
@@ -82,7 +82,7 @@ public class TestManyRequest {
 	@Test
 	public void testManySerialAsyncRequest() throws Exception {
 		AradonTester at = AradonTester.create().register("", "/hello/{num}", SerialLet.class) ;
-		at.getAradon().startServer(ConnectorConfig.makeJettyHTTPConfig(9005)) ;
+		at.getAradon().startServer(ConnectorConfiguration.makeJettyHTTPConfig(9005)) ;
 		
 		AradonClient client = AradonClientFactory.create("http://127.0.0.1:9005");
 		for (int i : ListUtil.rangeNum(50000)) {
@@ -100,7 +100,7 @@ public class TestManyRequest {
 	@Test
 	public void testManySerialRequest() throws Exception {
 		AradonTester at = AradonTester.create().register("", "/hello/{num}", SerialLet.class) ;
-		at.getAradon().startServer(ConnectorConfig.makeJettyHTTPConfig(9005)) ;
+		at.getAradon().startServer(ConnectorConfiguration.makeJettyHTTPConfig(9005)) ;
 		
 		AradonClient client = AradonClientFactory.create("http://127.0.0.1:9005");
 		for (int i : ListUtil.rangeNum(50000)) {
@@ -117,8 +117,8 @@ public class TestManyRequest {
 	public void testManyJsonRequest() throws Exception {
 		AradonTester at = AradonTester.create().register("", "/hello/{num}", SerialLet.class) ;
 		at.getAradon().getEngine().getRegisteredConverters().add(new PlainObjectConverter()) ;
-		at.getAradon().addAfterFilter(BeanToJsonFilter.create()) ;
-		at.getAradon().startServer(ConnectorConfig.makeJettyHTTPConfig(9005)) ;
+		at.getAradon().getConfig().addAfterFilter(BeanToJsonFilter.create()) ;
+		at.getAradon().startServer(ConnectorConfiguration.makeJettyHTTPConfig(9005)) ;
 		
 		AradonClient client = AradonClientFactory.create("http://127.0.0.1:9005");
 		for (int i : ListUtil.rangeNum(50000)) {

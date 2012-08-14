@@ -28,11 +28,15 @@ public class XMLConfig {
 		this.config = config;
 	}
 
-	public static XMLConfig create(File file) throws ConfigurationException {
-		return create(new XMLConfiguration(file));
+	public static XMLConfig create(File file) {
+		try {
+			return create(new XMLConfiguration(file));
+		} catch (ConfigurationException e) {
+			throw net.ion.radon.core.except.ConfigurationException.throwIt(e) ;
+		}
 	}
 
-	public static XMLConfig load(String configString) throws IOException, ConfigurationException {
+	public static XMLConfig load(String configString) throws IOException {
 
 		File tempDir = SystemUtils.getJavaIoTmpDir();
 		if (tempDir.canRead() && tempDir.canWrite()) {
@@ -50,11 +54,11 @@ public class XMLConfig {
 		return new XMLConfig(hconfig);
 	}
 
-	public static XMLConfig create(String filePath) throws ConfigurationException {
+	public static XMLConfig create(String filePath) {
 		return create(new File(filePath));
 	}
 
-	public XMLConfig firstChild(String key) throws ConfigurationException {
+	public XMLConfig firstChild(String key) {
 		List<XMLConfig> children = children(key);
 		if (children == null || children.size() == 0)
 			return BLANK;

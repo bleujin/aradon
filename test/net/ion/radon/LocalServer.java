@@ -14,7 +14,7 @@ public class LocalServer {
 	}
 
 	Aradon start(String configFileName, int port) throws Exception {
-		Aradon aradon = new Aradon();
+		Aradon aradon = Aradon.create(configFileName) ;
 		
 		aradon.getStatusService().setContactEmail("bleujin@i-on.net") ;
 		aradon.getStatusService().setHomeRef(new Reference("http://localhost/")) ;
@@ -22,9 +22,6 @@ public class LocalServer {
 		aradon.getServers().add(Protocol.HTTP, 9002);
 		aradon.getClients().add(Protocol.FILE);
 
-		aradon.init(configFileName) ;
-		
-		
 		// Now, let's start the component!
 		// Note that the HTTP server connector is also automatically started.
 		Server jserver = new Server(aradon.getContext(), Protocol.HTTP, port, aradon);

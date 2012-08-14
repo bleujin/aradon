@@ -1,27 +1,32 @@
 package net.ion.radon.server;
 
 import static org.junit.Assert.assertEquals;
+
+import java.util.Map;
+
 import net.ion.framework.util.Debug;
 import net.ion.framework.util.InfinityThread;
 import net.ion.framework.util.ListUtil;
+import net.ion.framework.util.MapUtil;
 import net.ion.radon.client.AradonClient;
 import net.ion.radon.client.AradonClientFactory;
 import net.ion.radon.client.IAradonRequest;
-import net.ion.radon.core.config.ConnectorConfig;
-import net.ion.radon.core.config.XMLConfig;
+import net.ion.radon.core.config.ConnectorConfiguration;
+import net.ion.radon.core.config.ConnectorConfig.EngineType;
 import net.ion.radon.impl.let.HelloWorldLet;
 import net.ion.radon.util.AradonTester;
 
 import org.junit.Test;
 import org.restlet.Response;
 import org.restlet.data.Method;
+import org.restlet.data.Protocol;
 
 public class TestAradonNetty {
 	
 	@Test
 	public void useJetty() throws Exception {
 		AradonTester at = AradonTester.create().register("", "/hello", HelloWorldLet.class) ;
-		at.getAradon().startServer(ConnectorConfig.makeJettyHTTPConfig(9005)) ;
+		at.getAradon().startServer(ConnectorConfiguration.makeJettyHTTPConfig(9005)) ;
 		
 		AradonClient client = AradonClientFactory.create("http://localhost:9005");
 		
@@ -29,6 +34,7 @@ public class TestAradonNetty {
 		Response res = request.handle(Method.GET) ;
 		assertEquals(200, res.getStatus().getCode()) ;
 		Debug.line(res.getEntityAsText()) ;
+		client.stop() ;
 		at.getAradon().stop() ;
 		// new InfinityThread().startNJoin() ;
 	}
@@ -36,7 +42,7 @@ public class TestAradonNetty {
 	@Test
 	public void useNetty() throws Exception {
 		AradonTester at = AradonTester.create().register("", "/hello", HelloWorldLet.class) ;
-		at.getAradon().startServer(ConnectorConfig.makeSimpleHTTPConfig(9005)) ;
+		at.getAradon().startServer(ConnectorConfiguration.makeSimpleHTTPConfig(9005)) ;
 		
 		AradonClient client = AradonClientFactory.create("http://localhost:9005");
 		
@@ -53,17 +59,14 @@ public class TestAradonNetty {
 
 	@Test
 	public void testHttps() throws Exception {
-		String configStr = "<connector-config port='9000' protocol='https'>" 
-			+ "<parameter name='keystorePath' description=''>./resource/keystore/keystore</parameter>\n" 
-			+ "<parameter name='keystorePassword' description=''>password</parameter>\n"
-		 	+ "<parameter name='keystoreType' description=''>JKS</parameter>\n"
-		 	+ "<parameter name='keyPassword' description=''>password</parameter>\n"
-			+ "</connector-config>" ;
-		
-		XMLConfig config = XMLConfig.load(configStr) ;
-		
 		AradonTester at = AradonTester.create().register("", "/hello", HelloWorldLet.class) ;
-		at.getAradon().startServer(ConnectorConfig.create(config, 9000)) ;
+		Map<String, String> properties = MapUtil.<String>chainKeyMap()
+			.put("keystorePath", "./resource/keystore/keystore")
+			.put("keystorePassword", "password")
+			.put("keystoreType", "JKS")
+			.put("keyPassword", "password")
+			.toMap();
+		at.getAradon().startServer(ConnectorConfiguration.create(EngineType.Unknown, Protocol.HTTPS, 9000, properties)) ;
 		
 		
 		new InfinityThread().startNJoin() ;
@@ -71,13 +74,8 @@ public class TestAradonNetty {
 
 	@Test
 	public void testHttp() throws Exception {
-		String configStr = "<connector-config engine='jetty' port='9000' protocol='http'>" 
-			+ "</connector-config>" ;
-		
-		XMLConfig config = XMLConfig.load(configStr) ;
-		
 		AradonTester at = AradonTester.create().register("", "/hello", HelloWorldLet.class) ;
-		at.getAradon().startServer(ConnectorConfig.create(config, 9000)) ;
+		at.getAradon().startServer(ConnectorConfiguration.create(EngineType.Jetty, Protocol.HTTP, 9000, MapUtil.<String, String>newMap())) ;
 		new InfinityThread().startNJoin() ;
 	}
 

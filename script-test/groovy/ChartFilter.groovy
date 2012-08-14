@@ -13,7 +13,6 @@ import net.ion.framework.util.* ;
 import org.restlet.representation.*;
 
 
-	StdObject sto = request.getContext().getAttributeObject(StdObject.class.getCanonicalName()) ;
 	Debug.line(response.getClass(), response.getEntity().getClass()) ;
 	
 	AradonClient client = AradonClientFactory.create("http://chart.apis.google.com") 

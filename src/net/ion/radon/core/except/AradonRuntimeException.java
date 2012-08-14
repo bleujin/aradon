@@ -33,4 +33,5 @@ public class AradonRuntimeException extends RuntimeException {
 	public static AradonRuntimeException fromException(Throwable t, Channel channel) {
 		return new AradonRuntimeException(t.getMessage() + " on " + channel.toString(), t);
 	}
+
 }

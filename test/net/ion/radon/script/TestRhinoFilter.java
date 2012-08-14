@@ -6,12 +6,11 @@ import java.io.File;
 
 import net.ion.radon.core.Aradon;
 import net.ion.radon.core.SectionService;
-import net.ion.radon.core.TestAradon;
 import net.ion.radon.core.TestBaseAradon;
-import net.ion.radon.core.config.XMLConfig;
+import net.ion.radon.core.config.PathConfiguration;
+import net.ion.radon.core.config.SectionConfiguration;
 import net.ion.radon.core.script.ScriptFactory;
 import net.ion.radon.impl.let.HelloWorldLet;
-import net.ion.radon.impl.section.PathInfo;
 
 import org.junit.Test;
 import org.restlet.Request;
@@ -24,10 +23,10 @@ public class TestRhinoFilter extends TestBaseAradon{
 	@Test
 	public void scriptRun() throws Exception {
 		Aradon aradon = testAradon();
-		SectionService section = aradon.attach("test", XMLConfig.BLANK);
-		section.attach(PathInfo.create("test", "/test", HelloWorldLet.class));
+		SectionService section = aradon.attach(SectionConfiguration.createBlank("test"));
+		section.attach(PathConfiguration.create("test", "/test", HelloWorldLet.class));
 
-		section.addAfterFilter(ScriptFactory.createRhinoFilter(new File("./script-test/rhino/ChartFilter.js")));
+		section.getConfig().addAfterFilter(ScriptFactory.createRhinoFilter(new File("./script-test/rhino/ChartFilter.js")));
 		Request request = new Request(Method.GET, "riap://component/test/test?aradon.result.format=xml");
 		Response response = aradon.handle(request);
 		
@@ -38,10 +37,10 @@ public class TestRhinoFilter extends TestBaseAradon{
 	@Test
 	public void checkParam() throws Exception {
 		Aradon aradon = testAradon();
-		SectionService section = aradon.attach("test", XMLConfig.BLANK);
-		section.attach(PathInfo.create("test", "/test", HelloWorldLet.class));
+		SectionService section = aradon.attach(SectionConfiguration.createBlank("test"));
+		section.attach(PathConfiguration.create("test", "/test", HelloWorldLet.class));
 
-		section.addAfterFilter(ScriptFactory.createRhinoFilter(new File("./script-test/rhino/CheckParam.js")));
+		section.getConfig().addAfterFilter(ScriptFactory.createRhinoFilter(new File("./script-test/rhino/CheckParam.js")));
 		assertEquals(501, sendRequest(aradon, "not_allowed").getStatus().getCode());
 		assertEquals(200, sendRequest(aradon, "allowed").getStatus().getCode());
 	}

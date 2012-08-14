@@ -5,6 +5,7 @@ import net.ion.framework.util.Debug;
 import net.ion.nradon.WebServer;
 import net.ion.nradon.WebServers;
 import net.ion.nradon.handler.aradon.AradonHandler;
+import net.ion.radon.client.AradonClient;
 import net.ion.radon.client.AradonClientFactory;
 import net.ion.radon.client.IAradonRequest;
 import net.ion.radon.client.ISerialRequest;
@@ -60,11 +61,12 @@ public class TestAradonHandler {
 	public void clientInfo() throws Exception {
 		WebServer webServer = WebServers.createWebServer(8080);
 		Aradon aradon = AradonTester.create().register("", "/client", ClientTestLet.class).getAradon();
-		aradon.addPreFilter(new ChallengeAuthenticator("sec")) ;
+		aradon.getConfig().addPreFilter(new ChallengeAuthenticator("sec")) ;
 		
 		webServer.add(AradonHandler.create(aradon)).start();
 
-		ISerialRequest request = AradonClientFactory.create("http://127.0.0.1:8080").createSerialRequest("/client?name=bleujin", "bleujin", "redf");
+		AradonClient ac = AradonClientFactory.create("http://127.0.0.1:8080");
+		ISerialRequest request = ac.createSerialRequest("/client?name=bleujin", "bleujin", "redf");
 		MyUser user = request.get(MyUser.class);
 
 		Debug.line(user);
@@ -74,6 +76,7 @@ public class TestAradonHandler {
 		Debug.debug('r', req.getClientInfo().getPort(), req.getClientInfo().getAgent(), req.getClientInfo().getAgent(), req.getCacheDirectives());
 
 		// new InfinityThread().startNJoin() ;
+		ac.stop() ;
 		webServer.stop().join();
 	}
 

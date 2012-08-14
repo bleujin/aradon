@@ -5,9 +5,8 @@ import net.ion.radon.core.Aradon;
 import net.ion.radon.core.SectionService;
 import net.ion.radon.core.EnumClass.ILocation;
 import net.ion.radon.core.EnumClass.IMatchMode;
-import net.ion.radon.core.config.XMLConfig;
+import net.ion.radon.core.config.SectionConfiguration;
 import net.ion.radon.core.filter.IRadonFilter;
-import net.ion.radon.param.ParamToBeanFilter;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.restlet.resource.ServerResource;
@@ -47,8 +46,8 @@ public class FakeSection {
 	public FakeSection addFilter(ILocation loc, IRadonFilter filter) throws ConfigurationException, InstanceCreationException {
 		SectionService ss = mergeSection();
 		
-		if (loc == ILocation.PRE) ss.addPreFilter(filter) ;
-		else if (loc == ILocation.AFTER) ss.addAfterFilter(filter) ;
+		if (loc == ILocation.PRE) ss.getConfig().addPreFilter(filter) ;
+		else if (loc == ILocation.AFTER) ss.getConfig().addAfterFilter(filter) ;
 		
 		return this;
 	}
@@ -58,7 +57,7 @@ public class FakeSection {
 		try {
 			ss = getAradon().getChildService(sectionName) ;
 		} catch(IllegalArgumentException notfoud){
-			ss = getAradon().attach(sectionName, XMLConfig.BLANK) ;
+			ss = getAradon().attach(SectionConfiguration.createBlank(sectionName)) ;
 		}
 		return ss;
 	}

@@ -1,7 +1,8 @@
 package net.ion.radon.core;
 
 import net.ion.radon.core.EnumClass.IZone;
-import net.ion.radon.impl.section.PathInfo;
+import net.ion.radon.core.config.PathConfiguration;
+import net.ion.radon.core.let.PathService;
 
 import org.restlet.Context;
 import org.restlet.data.Form;
@@ -13,6 +14,7 @@ public interface RadonAttributeKey {
 	public final static String IZONE_ATTRIBUTE_KEY = IZone.class.getCanonicalName();
 
 	public final static String PATH_SERVICE_KEY = PathService.class.getCanonicalName() ;
+	public final static String PATH_CONFIGURATION = PathConfiguration.class.getCanonicalName() ;
 	
 //	public static final String PATH_ATTRIBUTE = PathInfo.class.getCanonicalName();
 //	public static final String SECTION_PAHT_CONTEXTS = SectionService.class.getCanonicalName();

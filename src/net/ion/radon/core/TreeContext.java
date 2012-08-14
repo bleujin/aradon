@@ -1,21 +1,18 @@
 package net.ion.radon.core;
 
-import java.util.Collections;
-import java.util.List;
+import java.io.Closeable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 import java.util.logging.Logger;
 
+import net.ion.framework.util.IOUtil;
 import net.ion.framework.util.InstanceCreationException;
-import net.ion.framework.util.ListUtil;
 import net.ion.framework.util.ObjectUtil;
-import net.ion.radon.core.EnumClass.FilterLocation;
 import net.ion.radon.core.EnumClass.IZone;
-import net.ion.radon.core.config.ReferencedObject;
+import net.ion.radon.core.config.AttributeUtil;
+import net.ion.radon.core.config.AttributeValue;
 import net.ion.radon.core.config.XMLConfig;
 import net.ion.radon.core.context.IParentContext;
-import net.ion.radon.core.filter.IRadonFilter;
-import net.ion.radon.impl.filter.RevokeServiceFilter;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.restlet.Client;
@@ -87,8 +84,8 @@ public final class TreeContext extends Context {
 	public <T> T getSelfAttributeObject(String key, Class<T> T, T defaultValue) {
 		try {
 			Object value = context.getAttributes().get(key);
-			if (value != null && value instanceof ReferencedObject) {
-				return (T) ((ReferencedObject) value).valueObject();
+			if (value != null && value instanceof AttributeValue) {
+				return (T) ((AttributeValue) value).get(this);
 			}
 			return (T.isInstance(value)) ? (T) value : defaultValue;
 		} catch (InstanceCreationException ex) {
@@ -171,67 +168,21 @@ public final class TreeContext extends Context {
 		context.setServerDispatcher(serverDispatcher);
 	}
 
-	private void addFilter(FilterLocation location, IService service, IRadonFilter filter) {
-		if (!getFilters(location).contains(filter)) {
-			getFilters(location).add(filter);
-			filter.init(service);
-
-		}
-	}
-
-	
-	
-	
-	void addPreFilter(IService service, IRadonFilter filter) {
-
-		addFilter(FilterLocation.PRE, service, filter);
-	}
-
-	void addAfterFilter(IService service, IRadonFilter filter) {
-		addFilter(FilterLocation.AFTER, service, filter);
-	}
-
-	List<IRadonFilter> getPreFilters() {
-		return Collections.unmodifiableList(getFilters(FilterLocation.PRE));
-	}
-
-	List<IRadonFilter> getAfterFilters() {
-		return Collections.unmodifiableList(getFilters(FilterLocation.AFTER));
-	}
-
-	private List<IRadonFilter> getFilters(FilterLocation location) {
-		List<IRadonFilter> filters = (List<IRadonFilter>) getSelfAttributeObject(location.getString(), List.class);
-		if (filters == null) {
-			filters = ObjectUtil.coalesce(getSelfAttributeObject(location.getString(), List.class), ListUtil.newList());
-			putAttribute(location.getString(), filters);
-		}
-		return filters;
-	}
-
-	void addPreFilter(int index, IRadonFilter filter) {
-		if (!getPreFilters().contains(filter)) {
-			getFilters(FilterLocation.PRE).add(index, filter);
-		}
-	}
-
-	void removeFilter(FilterLocation location, IRadonFilter self) {
-		getFilters(location).remove(self);
-	}
-
 	public String toString() {
 		return getZone() + "Context:" + hashCode();
 	}
 
-	void restart() {
-		removeFilter(FilterLocation.PRE, RevokeServiceFilter.SELF);
-	}
-
-	void suspend() {
-		addPreFilter(0, RevokeServiceFilter.SELF);
-	}
-
 	public void loadAttribute(IService service, XMLConfig config) throws ConfigurationException, InstanceCreationException {
 		AttributeUtil.load(service, config) ;
+	}
+
+	public void closeAttribute() {
+		for (Object key : getAttributes().keySet()) {
+			Object value = getAttributeObject(ObjectUtil.toString(key)) ;
+			if (value instanceof Closeable){
+				IOUtil.closeQuietly((Closeable)value) ;
+			}
+		}
 	}
 
 

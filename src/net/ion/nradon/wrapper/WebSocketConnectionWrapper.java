@@ -7,6 +7,8 @@ import java.util.concurrent.Executor;
 import net.ion.nradon.HttpRequest;
 import net.ion.nradon.WebSocketConnection;
 
+import org.jboss.netty.channel.ChannelFuture;
+
 public class WebSocketConnectionWrapper implements WebSocketConnection {
 
 	private WebSocketConnection connection;
@@ -41,6 +43,11 @@ public class WebSocketConnectionWrapper implements WebSocketConnection {
 		connection.send(message);
 		return this;
 	}
+	
+	public ChannelFuture sendFuture(String message){
+		return connection.sendFuture(message) ;
+	}
+	
 
 	public WebSocketConnectionWrapper send(byte[] message) {
 		connection.send(message);

@@ -1,11 +1,8 @@
 package net.ion.radon.param;
 
 import java.util.Map;
-import java.util.Map.Entry;
 
-import net.ion.framework.util.CaseInsensitiveHashMap;
 import net.ion.radon.core.IService;
-import net.ion.radon.core.EnumClass.IConvertType;
 import net.ion.radon.core.filter.IFilterResult;
 import net.ion.radon.core.filter.IRadonFilter;
 
@@ -33,7 +30,7 @@ public class ParamToBeanFilter extends IRadonFilter {
 		
 		try {
 			Object beanObj = MyParameter.create(params).toBean(Class.forName(className)) ;
-			getInnerRequest(request).getContext().putAttribute(this.beanName, beanObj) ;
+			getInnerRequest(request).putAttribute(this.beanName, beanObj) ;
 		} catch (ClassNotFoundException e) {
 			return IFilterResult.stopResult(new ResourceException(Status.SERVER_ERROR_NOT_IMPLEMENTED, e.getMessage())) ;
 		}

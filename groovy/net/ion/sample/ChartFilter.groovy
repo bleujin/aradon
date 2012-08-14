@@ -5,9 +5,7 @@ import net.ion.framework.parse.gson.JsonObject;
 import java.util.*;
 import java.util.Map.Entry;
 
-import javax.swing.plaf.ListUI;
 
-import org.restlet.data.MediaType;
 import net.ion.radon.client.*;
 
 import net.ion.radon.core.*;
@@ -39,7 +37,7 @@ import org.restlet.representation.*;
 		label.add (entry.getKey()) ;
 	}
 	
-	AradonClient client = AradonClientFactory.create("http://chart.apis.google.com") 
+	AradonClient client = AradonClientFactory.create("https://chart.googleapis.com") 
 	IAradonRequest ir = client.createRequest("/chart") ;
 	ir.addParameter("cht", "p3") ;
 	ir.addParameter("chs", "500x250") ;

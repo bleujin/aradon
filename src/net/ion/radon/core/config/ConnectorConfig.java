@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.util.Map;
 
 import net.ion.framework.util.StringUtil;
+import net.ion.radon.core.except.ConfigurationException;
 
-import org.apache.commons.configuration.ConfigurationException;
 import org.restlet.data.Protocol;
 
 public class ConnectorConfig {

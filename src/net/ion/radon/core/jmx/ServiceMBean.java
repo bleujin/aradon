@@ -63,10 +63,10 @@ public class ServiceMBean implements DynamicMBean {
 		try {
 			if ("addPreFilter".equals(actionName) || "addAfterFilter".equals(actionName) || "removePreFilter".equals(actionName) || "removeAfterFilter".equals(actionName)) {
 				IRadonFilter filter = createFilter(params);
-				if (filter != null && "addPreFilter".equals(actionName)) service.addPreFilter(filter) ;
-				if (filter != null && "addAfterFilter".equals(actionName)) service.addAfterFilter(filter) ;
-				if (filter != null && "removePreFilter".equals(actionName)) service.removePreFilter(filter) ;
-				if (filter != null && "removeAfterFilter".equals(actionName)) service.removeAfterFilter(filter) ;
+				if (filter != null && "addPreFilter".equals(actionName)) service.getConfig().addPreFilter(filter) ;
+				if (filter != null && "addAfterFilter".equals(actionName)) service.getConfig().addAfterFilter(filter) ;
+				if (filter != null && "removePreFilter".equals(actionName)) service.getConfig().removePreFilter(filter) ;
+				if (filter != null && "removeAfterFilter".equals(actionName)) service.getConfig().removeAfterFilter(filter) ;
 			} else {
 				Object result = IService.class.getMethod(actionName).invoke(service) ;
 				return result ;

@@ -93,6 +93,9 @@ public class BasicSerialRequest implements ISerialRequest {
 					return null;
 				} finally {
 					IOUtil.closeQuietly(input) ;
+//					request.abort() ;
+					request.release() ;
+					response.release() ;
 				}
 			}
 		});
@@ -100,7 +103,7 @@ public class BasicSerialRequest implements ISerialRequest {
 	}
 
 	
-	private <T, V> V handleResource(Method method, T arg, final Class<? extends V> resultClass) {
+	private synchronized <T, V> V handleResource(Method method, T arg, final Class<? extends V> resultClass) {
 		Future<V> future = asyncHandle(method, arg, resultClass) ;
 		try {
 			return future.get();

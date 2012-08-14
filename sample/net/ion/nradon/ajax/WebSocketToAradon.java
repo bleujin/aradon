@@ -1,12 +1,14 @@
 package net.ion.nradon.ajax;
 
+import java.lang.Thread.UncaughtExceptionHandler;
 import java.net.InetAddress;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.regex.Pattern;
 
 import net.ion.bleujin.HelloWorldLet2;
 import net.ion.framework.util.Debug;
@@ -16,14 +18,19 @@ import net.ion.nradon.WebServer;
 import net.ion.nradon.WebServers;
 import net.ion.nradon.WebSocketConnection;
 import net.ion.nradon.WebSocketHandler;
+import net.ion.nradon.client.websocket.WebSocketClient;
 import net.ion.nradon.handler.StaticFileHandler;
 import net.ion.nradon.handler.aradon.AradonHandler;
 import net.ion.nradon.handler.aradon.JSONMessagePacket;
 import net.ion.nradon.handler.aradon.NradonClient;
 import net.ion.radon.core.Aradon;
 import net.ion.radon.core.RadonAttributeKey;
+import net.ion.radon.core.except.ConnectionException;
 import net.ion.radon.util.AradonTester;
 
+import org.jboss.netty.channel.ChannelFuture;
+import org.jboss.netty.channel.ChannelFutureListener;
+import org.jboss.netty.channel.ExceptionEvent;
 import org.junit.Test;
 import org.restlet.Request;
 import org.restlet.Response;
@@ -38,15 +45,72 @@ public class WebSocketToAradon {
 		
 		Aradon aradon = AradonTester.create().register("", "/test", HelloWorldLet2.class).getAradon() ;
 		
+		final BroadEchoWebSockets handler = new BroadEchoWebSockets();
 		webServer
-			.add("/a/.*/.*", new HelloWebSockets())
+			.add("/a/.*/.*", handler)
 			.add("/test", AradonHandler.create(aradon))
-			.add(new StaticFileHandler("./resource/web")).start();
+			.add(new StaticFileHandler("./resource/web/client"))
+			.connectionExceptionHandler(new UncaughtExceptionHandler() {
+				public void uncaughtException(Thread t, Throwable e) {
+					ConnectionException ce = ConnectionException.class.cast(e) ;
+					ExceptionEvent event = ((ConnectionException)e).getEvent();
+					event.getChannel().getRemoteAddress() ;
+					
+					
+					Debug.linec('#', t, e, event) ;
+				}
+			})
+			.start();
 		
 		System.out.println("Server running at " + webServer.getUri());
 		
 		// Desktop.getDesktop().browse(new URI("http://" + InetAddress.getLocalHost().getHostAddress() + ":8080/client/sample.html")) ;
 
+		
+//		new Thread(){
+//			public void run(){
+//				while(true){
+//					try {
+//						Thread.sleep(1000) ;
+//					} catch (InterruptedException e) {
+//						e.printStackTrace();
+//					}
+//					Debug.line(handler.getConnList()) ;
+//				}
+//			}
+//		}.start() ;
+		
+		new Thread(){
+			public void run() {
+				WebSocketClient client = WebSocketClient.create();
+				try {
+					client.connect(new URI("ws://127.0.0.1:8080/a/b/c")) ;
+					int i = 0 ;
+					while(true){
+						client.sendMessage("Hi bleujin " + i++) ;
+						Thread.sleep(5000) ;
+					}
+					
+				} catch (URISyntaxException e) {
+					e.printStackTrace();
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					Debug.line() ;
+					try {
+						client.disconnect() ;
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+				
+			}
+		}.start() ;
+		
+		
+		
+		
+		
 		new InfinityThread().startNJoin() ;
 	}
 
@@ -123,21 +187,28 @@ class AradonWebSocket implements WebSocketHandler {
 
 
 
-class HelloWebSockets implements WebSocketHandler {
+class BroadEchoWebSockets implements WebSocketHandler {
 
 	private List<WebSocketConnection> conns = new ArrayList<WebSocketConnection>() ;
 	public void onOpen(WebSocketConnection connection) {
 		connection.send("Hello! There are " + conns.size() + " other connections active");
 		conns.add(connection) ;
+		Debug.line(connection + " connected") ;
 	}
 
 	public void onClose(WebSocketConnection connection) {
 		conns.remove(connection) ;
+		Debug.line(connection + " disconnected") ;
 	}
 
 	public void onMessage(WebSocketConnection connection, String message) {
-		for (WebSocketConnection conn : conns) {
-			conn.send(message.toUpperCase()); // echo back message in upper
+		for (final WebSocketConnection conn : conns) {
+//			conn.send(message.toUpperCase() + " to " + conns.size()) ;
+			conn.sendFuture(message.toUpperCase() + " to " + conns.size()).addListener(new ChannelFutureListener() {
+				public void operationComplete(ChannelFuture future) throws Exception {
+					Debug.line(conn, future.getCause(), future.isDone(), future.isSuccess(), future.getCause()) ;
+				}
+			}) ; // echo back message in upper
 		}
 	}
 
@@ -147,4 +218,7 @@ class HelloWebSockets implements WebSocketHandler {
 	public void onPong(WebSocketConnection connection, String message) {
 	}
 
+	List<WebSocketConnection> getConnList(){
+		return conns ;
+	}
 }

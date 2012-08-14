@@ -5,9 +5,8 @@ import net.ion.framework.util.Debug;
 import net.ion.radon.core.Aradon;
 import net.ion.radon.core.SectionService;
 import net.ion.radon.core.TestBaseAradon;
-import net.ion.radon.core.config.XMLConfig;
-import net.ion.radon.impl.let.HelloWorldLet;
-import net.ion.radon.impl.section.PathInfo;
+import net.ion.radon.core.config.PathConfiguration;
+import net.ion.radon.core.config.SectionConfiguration;
 
 import org.junit.Test;
 import org.restlet.Request;
@@ -27,8 +26,7 @@ public class TestSection extends TestBaseAradon{
 	@Test
 	public void testRestart() throws Exception {
 		Aradon aradon = testAradon() ;
-		SectionService section = aradon.attach("test", XMLConfig.BLANK) ;
-		section.attach(PathInfo.HELLO) ;
+		SectionService section = aradon.attach(SectionConfiguration.createBlank("test")).attach(PathConfiguration.testHello()) ;
 		
 		Request req = new Request(Method.GET, "riap://component/test/test");
 		Response res = aradon.handle(req) ;
@@ -45,8 +43,8 @@ public class TestSection extends TestBaseAradon{
 	public void testGetPathName() throws Exception {
 		Aradon aradon = testAradon() ;
 
-		SectionService section = aradon.attach("test", XMLConfig.BLANK) ;
-		section.attach(PathInfo.create("hello", "/test, /test/{next}", HelloWorldLet.class)) ;
+		SectionService section = aradon.attach(SectionConfiguration.createBlank("test")) ;
+		section.attach(PathConfiguration.testHello()) ;
 
 		Request req = new Request(Method.GET, "riap://component/test/test");
 		Response res = aradon.handle(req) ;

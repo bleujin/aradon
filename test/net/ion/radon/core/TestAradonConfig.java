@@ -2,17 +2,14 @@ package net.ion.radon.core;
 
 import java.io.File;
 
-import net.ion.framework.util.Debug;
-import net.ion.radon.core.config.XMLConfig;
 import junit.framework.TestCase;
 
 public class TestAradonConfig extends TestCase{
 
 	public void testSystemSetting() throws Exception {
-		Aradon aradon = new Aradon() ;
-		aradon.init(XMLConfig.BLANK) ;
+		Aradon aradon = Aradon.create() ;
 		
-		assertEquals("mercury", aradon.getConfig().getId()) ;
+		assertEquals("mercury", aradon.getGlobalConfig().server().id()) ;
 		assertEquals(new File(".").getCanonicalPath(), System.getProperty("aradon.mercury.home.dir")) ;
 		
 	}

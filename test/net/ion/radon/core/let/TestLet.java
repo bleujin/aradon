@@ -27,6 +27,7 @@ public class TestLet {
 		Response response = req.handle(Method.GET);
 		assertEquals(200, response.getStatus().getCode());
 
+		ac.stop() ;
 		aradon.stop();
 	}
 
@@ -35,9 +36,11 @@ public class TestLet {
 		Aradon aradon = AradonTester.create().register("test", "/test", GetResourceLet.class).getAradon();
 		aradon.startServer(9080);
 
-		IAradonRequest req = AradonClientFactory.create("http://127.0.0.1:9080").createRequest("/test/test");
+		AradonClient ac = AradonClientFactory.create("http://127.0.0.1:9080");
+		IAradonRequest req = ac.createRequest("/test/test");
 		assertEquals(GetResourceLet.class.getCanonicalName(), req.handle(Method.GET).getEntityAsText());
 
+		ac.stop() ;
 		aradon.stop();
 	}
 	
@@ -45,8 +48,10 @@ public class TestLet {
 	public void useClient() throws Exception {
 		Aradon aradon = AradonTester.create().register("another", "/test", GetLet.class).getAradon();
 
-		IAradonRequest req = AradonClientFactory.create(aradon).createRequest("/another/test");
+		AradonClient ac = AradonClientFactory.create(aradon);
+		IAradonRequest req = ac.createRequest("/another/test");
 		assertEquals(GetLet.class.getCanonicalName(), req.get().getText());
+		ac.stop() ;
 		aradon.stop() ;
 	}
 

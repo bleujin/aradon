@@ -18,7 +18,7 @@ public class ReloadLet extends AbstractLet{
 	@Override
 	protected Representation myGet() throws Exception {
 		
-		final IService service =  getMySectionService().getParent();
+		final IService service =  getSectionService().getParent();
 		service.reload() ;
 		
 		Debug.warn("RELOADED") ;

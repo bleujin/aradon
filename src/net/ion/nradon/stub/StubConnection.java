@@ -10,6 +10,9 @@ import net.ion.nradon.HttpRequest;
 import net.ion.nradon.WebSocketConnection;
 import net.ion.nradon.netty.contrib.EventSourceMessage;
 
+import org.jboss.netty.channel.ChannelFuture;
+import org.jboss.netty.channel.SucceededChannelFuture;
+
 /**
  * Implementation of {@link EventSourceConnection} and {@link WebSocketConnection} that is easy to construct and makes it easy to inspect results. Useful for testing.
  */
@@ -46,6 +49,11 @@ public class StubConnection extends StubDataHolder implements EventSourceConnect
 	public StubConnection send(String message) {
 		sentMessages.add(message);
 		return this;
+	}
+	
+	public ChannelFuture sendFuture(String message) {
+		sentMessages.add(message);
+		return new SucceededChannelFuture(null) ;
 	}
 
 	public StubConnection send(byte[] message) {

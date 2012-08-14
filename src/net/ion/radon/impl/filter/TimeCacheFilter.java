@@ -35,7 +35,7 @@ public class TimeCacheFilter  extends IRadonFilter{
 	
 	@Override
 	public void init(IService service) {
-		service.addAfterFilter(this) ;
+		service.getConfig().addAfterFilter(this) ;
 	}
 	
 	@Override

@@ -39,7 +39,7 @@ public class HiFilter extends IRadonFilter{
 
 	@Override
 	public IFilterResult preHandle(IService iservice, Request request, Response response) {
-		Debug.line("Hi PRE!............", num, iservice, iservice.getServiceContext().getZone()) ;
+		Debug.line("Hi PRE!............", num, iservice, (iservice != null) ? iservice.getServiceContext().getZone() : null) ;
 		result.add(this.num) ;
 		return expectResult;
 	}

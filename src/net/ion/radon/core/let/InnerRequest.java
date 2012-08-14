@@ -12,16 +12,12 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentMap;
 
 import net.ion.framework.parse.gson.JsonObject;
-import net.ion.framework.util.Debug;
 import net.ion.framework.util.ObjectUtil;
 import net.ion.framework.util.StringUtil;
-import net.ion.radon.core.IService;
 import net.ion.radon.core.PageBean;
-import net.ion.radon.core.PathService;
 import net.ion.radon.core.RadonAttributeKey;
-import net.ion.radon.core.TreeContext;
 import net.ion.radon.core.EnumClass.IFormat;
-import net.ion.radon.impl.section.BasePathInfo;
+import net.ion.radon.core.config.PathConfiguration;
 import net.ion.radon.param.MyParameter;
 
 import org.apache.commons.fileupload.FileItem;
@@ -110,12 +106,12 @@ public class InnerRequest extends Request {
 	}
 
 	public MultiValueMap getFormParameter() {
-		MultiValueMap params = (MultiValueMap) getAttributes().get(RadonAttributeKey.FORM_ATTRIBUTE_KEY);
+		MultiValueMap params = getAttribute(RadonAttributeKey.FORM_ATTRIBUTE_KEY, MultiValueMap.class);
 		if (params != null) {
 			return params;
 		} else {
 			final Map<String, Object> result = makeFormParam(this);
-			getAttributes().put(RadonAttributeKey.FORM_ATTRIBUTE_KEY, result);
+			putAttribute(RadonAttributeKey.FORM_ATTRIBUTE_KEY, result);
 			return getFormParameter();
 		}
 	}
@@ -155,14 +151,12 @@ public class InnerRequest extends Request {
 		return getAttributes().containsKey(key);
 	}
 
-	public BasePathInfo getPathInfo(IService service) {
-		for (PathService pservice :service.getAradon().getChildService(sectionName).getChildren()) {
-			//if (pathInfo.getPathInfo().isMatchURL(getResourceRef())) {
-			if (pservice.getPathInfo().isMatchURL(getPathReference())) {
-				return pservice.getPathInfo();
-			}
-		}
-		throw new IllegalAccessError("not found path info");
+	public PathConfiguration getPathConfiguration() {
+		return getAttribute(RadonAttributeKey.PATH_CONFIGURATION, PathConfiguration.class) ;
+	}
+
+	public PathService getPathService(){
+		return getAttribute(RadonAttributeKey.PATH_SERVICE_KEY, PathService.class);
 	}
 
 	private final void initMethod() {
@@ -198,9 +192,7 @@ public class InnerRequest extends Request {
 		return StringUtil.isBlank(val) ? dftNum : Integer.parseInt(val);
 	}
 
-	public TreeContext getContext() {
-		return (TreeContext) getAttributes().get(RadonAttributeKey.REQUEST_CONTEXT);
-	}
+	
 
 	public String[] getParameterValues(String key) {
 		List value = getFormParameter().getAsList(key) ;
@@ -625,10 +617,9 @@ public class InnerRequest extends Request {
 		}
 	}
 
-	public PathService getPathService(IService service) {
-		
-		return service.getAradon().getChildService(sectionName).getPathService(getPathReference());
-	}
+//	public PathService getPathService(IService service) {
+//		return service.getAradon().getChildService(sectionName).getChildService(getPathReference());
+//	}
 
 	public String getSectionName(){
 		return sectionName ;

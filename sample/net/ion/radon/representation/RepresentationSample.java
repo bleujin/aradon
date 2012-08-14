@@ -1,5 +1,7 @@
 package net.ion.radon.representation;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -7,7 +9,6 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-import junit.framework.TestCase;
 import net.ion.framework.parse.gson.JsonObject;
 import net.ion.framework.parse.gson.JsonParser;
 import net.ion.framework.util.IOUtil;
@@ -18,6 +19,7 @@ import net.ion.radon.core.let.AbstractServerResource;
 import net.ion.radon.core.representation.JsonObjectRepresentation;
 import net.ion.radon.util.AradonTester;
 
+import org.junit.Test;
 import org.restlet.data.CharacterSet;
 import org.restlet.data.Disposition;
 import org.restlet.data.Language;
@@ -31,15 +33,16 @@ import org.restlet.resource.Get;
 import org.restlet.resource.Post;
 import org.restlet.resource.Put;
 
-public class RepresentationSample extends TestCase {
+public class RepresentationSample  {
 
+	@Test
 	public void testMediaType() throws Exception {
 		Aradon aradon = AradonTester.create().register("", "/test", ConfirmLet.class).getAradon() ;
 		AradonClient ac = AradonClientFactory.create(aradon) ;
 		
 		Representation getRep = ac.createRequest("/test").get() ;
 		assertEquals(MediaType.TEXT_HTML, getRep.getMediaType()) ;
-		assertEquals("ÇÏÀÌ", getRep.getText()) ;
+		assertEquals("ï¿½ï¿½ï¿½ï¿½", getRep.getText()) ;
 		
 
 		Representation postRep = ac.createRequest("/test").post() ;
@@ -47,6 +50,7 @@ public class RepresentationSample extends TestCase {
 		assertEquals("hello", JsonParser.fromString(postRep.getText()).getAsJsonObject().asString("greeting") ) ;
 	}
 	
+	@Test
 	public void testFile() throws Exception {
 		Aradon aradon = AradonTester.create().register("", "/test", ConfirmLet.class).getAradon() ;
 		AradonClient ac = AradonClientFactory.create(aradon) ;
@@ -59,7 +63,7 @@ public class RepresentationSample extends TestCase {
 		assertEquals(MediaType.APPLICATION_MSOFFICE_DOCX, delRep.getMediaType()) ;
 		
 		String disposition = new String(delRep.getDisposition().getType().getBytes("latin1"), "UTF-8") ;
-		assertEquals("attachment;filename=ÀÌ¸§.docx", disposition) ;
+		assertEquals("attachment;filename=ï¿½Ì¸ï¿½.docx", disposition) ;
 
 	}
 	
@@ -69,7 +73,7 @@ class ConfirmLet extends AbstractServerResource {
 	
 	@Get
 	public Representation returnHTML(){
-		return new StringRepresentation("ÇÏÀÌ", MediaType.TEXT_HTML, Language.ALL, CharacterSet.UTF_8) ;
+		return new StringRepresentation("ï¿½ï¿½ï¿½ï¿½", MediaType.TEXT_HTML, Language.ALL, CharacterSet.UTF_8) ;
 	}
 
 	@Post
@@ -94,10 +98,10 @@ class ConfirmLet extends AbstractServerResource {
 		};
 		result.setCharacterSet(CharacterSet.UTF_8) ;
 		if (isExplorer()){
-			String encodedName = URLEncoder.encode("ÀÌ¸§.docx", "UTF-8") ;
+			String encodedName = URLEncoder.encode("ï¿½Ì¸ï¿½.docx", "UTF-8") ;
 			result.setDisposition(new Disposition("attachment;filename=" + encodedName)) ;
 		} else {
-			result.setDisposition(new Disposition("attachment;filename=" + new String("ÀÌ¸§.docx".getBytes("UTF-8"), "latin1"))) ;
+			result.setDisposition(new Disposition("attachment;filename=" + new String("ï¿½Ì¸ï¿½.docx".getBytes("UTF-8"), "latin1"))) ;
 		}
 		
 		return result;

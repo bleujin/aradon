@@ -13,11 +13,10 @@ import org.restlet.representation.*;
 class DummyObject{
 	
 	public IFilterResult run(IService service, Request request, Response response){	
-		StdObject sto = request.getContext().getAttributeObject(StdObject.class.getCanonicalName()) ;
-		
+
 		def writer = new StringWriter()
 		def builder = new groovy.xml.MarkupBuilder(writer) ;
-		def greeting = sto.getDatas() ;
+		def greeting = [] ;
 		
 		builder.person() { 
 			name(first:"bleu", last:"jin") { 

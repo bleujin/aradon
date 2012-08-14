@@ -27,8 +27,8 @@ public class ExecuteTimeFilter extends IRadonFilter{
 	@Override
 	public void init(IService service){
 		super.init(service) ;
-		service.addPreFilter(this);
-		service.addAfterFilter(this);
+		service.getConfig().addPreFilter(this);
+		service.getConfig().addAfterFilter(this);
 	}
 	
 	@Override

@@ -2,17 +2,22 @@ package net.ion.radon.core;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.File;
+import java.io.Closeable;
 import java.io.IOException;
 
+import net.ion.framework.util.Debug;
 import net.ion.framework.util.InstanceCreationException;
+import net.ion.radon.client.AradonClient;
 import net.ion.radon.client.AradonClientFactory;
+import net.ion.radon.core.config.Configuration;
+import net.ion.radon.core.config.ConfigurationBuilder;
 import net.ion.radon.core.config.XMLConfig;
+import net.ion.radon.core.context.OnEventObject;
 import net.ion.radon.core.let.AbstractServerResource;
+import net.ion.radon.impl.let.HelloWorldLet;
 import net.ion.radon.util.AradonTester;
 
 import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 import org.restlet.resource.Get;
 
@@ -52,15 +57,19 @@ public class TestContext{
 		TreeContext scontext = section.getServiceContext();
 		scontext.putAttribute("context.id", "Hello") ;
 
-		String resText = AradonClientFactory.create(at.getAradon()).createRequest("/abc/test").get().getText() ;
+		AradonClient ac = AradonClientFactory.create(at.getAradon());
+		String resText = ac.createRequest("/abc/test").get().getText() ;
 		assertEquals("Hello", resText) ;
 
 		int attrSize = scontext.getAttributes().size() ;
 		loadConfig(section, scontext);
 		
+		
+		Debug.debug(scontext.getAttributes()) ;
 		assertEquals(attrSize + 2, scontext.getAttributes().size()) ; 
 		
-		assertEquals("Hello", AradonClientFactory.create(at.getAradon()).createRequest("/abc/test").get().getText()) ; // duplicate..
+		assertEquals("Hello", ac.createRequest("/abc/test").get().getText()) ; // duplicate..
+		ac.stop() ;
 	}
 
 	
@@ -70,16 +79,69 @@ public class TestContext{
 		"<attribute id=\"let.contact.help.doc\">/help/doc</attribute> " +
 		"<attribute id=\"context.id\">Bye</attribute> " +
 		"</context>" ;
-
-		File tfile = File.createTempFile("aradon", "config") ;
-		FileUtils.writeStringToFile(tfile, contextConfig) ;
 		
-		scontext.loadAttribute(section, XMLConfig.create(tfile)) ;
+		scontext.loadAttribute(section, XMLConfig.load(contextConfig)) ;
 		
 	}
 	
 	
+	@Test
+	public void closeContextAttribute() throws Exception {
+		ClosableObject obj = new ClosableObject();
+		Configuration config = ConfigurationBuilder.newBuilder().
+			aradon().addAttribute("aradon", obj).
+				sections().restSection("").addAttribute("section", obj)
+					.path("abcd").addUrlPattern("/hello").addAttribute("path", obj).handler(HelloWorldLet.class)
+					.path("efgh").addUrlPattern("/hi").addAttribute("hi", obj).handler(HelloWorldLet.class)
+		.build() ; 
+		Aradon aradon = Aradon.create(config) ;
+		aradon.start() ;
+		
+		aradon.destorySelf() ;
+		assertEquals(4, obj.calledCount) ;
+	}
 	
+	@Test
+	public void eventContextAttribute() throws Exception {
+		EventObject eobj = new EventObject();
+		Configuration config = ConfigurationBuilder.newBuilder().
+			aradon().addAttribute("aradon", eobj).
+				sections().restSection("").addAttribute("section", eobj)
+					.path("abcd").addUrlPattern("/hello").addAttribute("path", eobj).handler(HelloWorldLet.class)
+					.path("efgh").addUrlPattern("/hi").addAttribute("hi", eobj).handler(HelloWorldLet.class)
+		.build() ; 
+		Aradon aradon = Aradon.create(config) ;
+		aradon.start() ;
+		assertEquals(4, eobj.startEventCount) ;
+		
+		aradon.destorySelf() ;
+		assertEquals(4, eobj.stopEventCount) ;
+	}
+	
+
+
+}
+
+class EventObject implements OnEventObject {
+
+	int startEventCount = 0 ;
+	int stopEventCount = 0 ;
+	public void onEvent(AradonEvent event, IService service) {
+		if (event == AradonEvent.START){
+			startEventCount++ ;
+		} else if (event == AradonEvent.STOP){
+			stopEventCount++ ;
+		}
+	}
+	
+}
+
+class ClosableObject implements Closeable {
+	int calledCount = 0;
+	
+	public void close() throws IOException {
+		this.calledCount++;
+	}
 	
 }
 

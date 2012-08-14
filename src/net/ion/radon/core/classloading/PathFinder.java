@@ -5,15 +5,14 @@ import static net.ion.radon.core.RadonAttributeKey.PATH_SERVICE_KEY;
 import java.lang.reflect.Constructor;
 import java.util.logging.Level;
 
-import net.ion.radon.core.PathService;
 import net.ion.radon.core.let.InnerRequest;
+import net.ion.radon.core.let.PathService;
 
 import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.Restlet;
 import org.restlet.data.Status;
-import org.restlet.resource.Finder;
 import org.restlet.resource.ServerResource;
 
 public class PathFinder extends Restlet {
@@ -40,7 +39,7 @@ public class PathFinder extends Restlet {
 	private Class<? extends ServerResource> getTargetClass(Request request) {
 		InnerRequest ireq = (InnerRequest) request;
 		PathService pservice = ireq.getAttribute(PATH_SERVICE_KEY, PathService.class);
-		return pservice.getPathInfo().getHandlerClass();
+		return pservice.getConfig().handlerClz();
 	}
 
 	public void handle(Request request, Response response) {

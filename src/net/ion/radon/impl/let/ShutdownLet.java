@@ -23,7 +23,7 @@ public class ShutdownLet extends AbstractServerResource {
 		final Aradon self = getAradon() ;
 		new Timer().schedule(new TimerTask() {
 			@Override public void run() {
-				self.stop() ;
+				self.destorySelf() ;
 				System.exit(0)  ;
 			}
 		}, timeoutMili) ;

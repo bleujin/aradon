@@ -7,24 +7,21 @@ import net.ion.framework.rest.IMapListRepresentationHandler;
 import net.ion.framework.rest.IRequest;
 import net.ion.framework.rest.IResponse;
 import net.ion.radon.core.Aradon;
-import net.ion.radon.core.PathService;
-import net.ion.radon.core.RadonAttributeKey;
 import net.ion.radon.core.SectionService;
 import net.ion.radon.core.TreeContext;
 import net.ion.radon.core.EnumClass.IFormat;
-import net.ion.radon.core.filter.IFilterResult;
 
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.Status;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ResourceException;
-import org.restlet.routing.Filter;
 
 public class AbstractServerResource extends BaseServerResource {
 
 	public TreeContext getContext() {
-		return ((TreeContext) getRequest().getAttributes().get(RadonAttributeKey.REQUEST_CONTEXT));
+		return (TreeContext) super.getContext() ;
+//		return ((TreeContext) getRequest().getAttributes().get(RadonAttributeKey.REQUEST_CONTEXT));
 	}
 
 	protected Aradon getAradon() {
@@ -32,7 +29,7 @@ public class AbstractServerResource extends BaseServerResource {
 	}
 
 	protected SectionService getMySectionService() {
-		return (SectionService) getApplication();
+		return (SectionService)getApplication();
 	}
 
 	public InnerRequest getInnerRequest() {
@@ -77,19 +74,19 @@ public class AbstractServerResource extends BaseServerResource {
 		Request request = getRequest();
 		Response response = getResponse();
 
-		PathService pservice = getPathService();
-
-		IFilterResult preResult = FilterUtil.handlePreFilter(pservice, request, response);
-		if (preResult.getResult() == Filter.STOP) {
-			response.setStatus(preResult.getCause().getStatus());
-			return preResult.getReplaceRepresentation();
-			// return EMPTY_REPRESENTATION;
-		}
+//		IFilterResult preResult = FilterUtil.handlePreFilter(pservice, request, response);
+//		if (preResult.getResult() == Filter.STOP) {
+//			response.setStatus(preResult.getCause().getStatus());
+//			return preResult.getReplaceRepresentation();
+//			// return EMPTY_REPRESENTATION;
+//		}
 
 		try {
-			if (preResult.getResult() != Filter.SKIP) {
-				super.handle();
-			}
+//			if (preResult.getResult() != Filter.SKIP) {
+//				super.handle();
+//			}
+			super.handle() ;
+			
 			return response.getEntity();
 		} catch (ResourceException ex) {
 			doCatch(ex);
@@ -99,16 +96,12 @@ public class AbstractServerResource extends BaseServerResource {
 			doCatch(ex);
 			throw new ResourceException(Status.SERVER_ERROR_INTERNAL, ex.getMessage());
 		} finally {
-			FilterUtil.handleAfterFilter(pservice, request, response);
+//			FilterUtil.handleAfterFilter(pservice, request, response);
 		}
 	}
 
 	private void initRequest() {
 
-	}
-
-	protected PathService getPathService() {
-		return getInnerRequest().getPathService(getMySectionService().getAradon());
 	}
 
 	protected boolean isExplorer() {

@@ -10,14 +10,11 @@ import net.ion.framework.rest.IRequest;
 import net.ion.framework.rest.IResponse;
 import net.ion.framework.util.ListUtil;
 import net.ion.framework.util.StringUtil;
-import net.ion.radon.core.PathService;
 import net.ion.radon.core.RadonAttributeKey;
 import net.ion.radon.core.SectionService;
 import net.ion.radon.core.TreeContext;
 import net.ion.radon.core.EnumClass.IFormat;
-import net.ion.radon.core.filter.IFilterResult;
 
-import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
@@ -28,7 +25,6 @@ import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
-import org.restlet.routing.Filter;
 import org.restlet.util.Series;
 
 @Deprecated
@@ -58,24 +54,9 @@ public abstract class AbstractLet extends ServerResource implements RadonAttribu
 		initRequest();
 		// String str = getRequest().getEntityAsText() ;
 		// Debug.line(str != null ? str.length() : 0, str) ;
-
-		TreeContext rcontext = getContext();
-		Request request = getRequest();
 		Response response = getResponse();
-
-		PathService pservice = getPathService();
-
-		IFilterResult preResult = FilterUtil.handlePreFilter(pservice, request, response);
-		if (preResult.getResult() == Filter.STOP) {
-			response.setStatus(preResult.getCause().getStatus());
-			return preResult.getReplaceRepresentation();
-			// return EMPTY_REPRESENTATION;
-		}
-
 		try {
-			if (preResult.getResult() != Filter.SKIP) {
-				handleLet();
-			}
+			handleLet();
 			return response.getEntity();
 		} catch (ResourceException ex) {
 			doCatch(ex);
@@ -85,14 +66,13 @@ public abstract class AbstractLet extends ServerResource implements RadonAttribu
 			doCatch(ex);
 			throw new ResourceException(Status.SERVER_ERROR_INTERNAL, ex.getMessage());
 		} finally {
-			FilterUtil.handleAfterFilter(pservice, request, response);
 		}
 
 	}
 
-	protected PathService getPathService() {
-		return getInnerRequest().getPathService(getMySectionService().getAradon());
-	}
+//	protected PathService getPathService() {
+//		return getInnerRequest().getPathService(getMySectionService().getAradon());
+//	}
 
 	protected Representation doNormalHandle() throws Exception {
 		Representation result = null;
@@ -222,7 +202,8 @@ public abstract class AbstractLet extends ServerResource implements RadonAttribu
 	}
 
 	public TreeContext getContext() {
-		return (TreeContext) getRequest().getAttributes().get(REQUEST_CONTEXT);
+		return (TreeContext)super.getContext() ;
+//		return (TreeContext) getRequest().getAttributes().get(REQUEST_CONTEXT);
 	}
 
 	private void initRequest() {
@@ -272,8 +253,8 @@ public abstract class AbstractLet extends ServerResource implements RadonAttribu
 		return agent.indexOf("MSIE") > -1;
 	}
 
-	public SectionService getMySectionService() {
-		return (SectionService) getApplication();
+	public SectionService getSectionService() {
+		return (SectionService) (getApplication().getApplication());
 	}
 
 	@Override

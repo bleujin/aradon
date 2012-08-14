@@ -5,21 +5,20 @@ import net.ion.framework.util.InfinityThread;
 import net.ion.radon.client.AradonClient;
 import net.ion.radon.client.AradonClientFactory;
 import net.ion.radon.core.Aradon;
-import net.ion.radon.core.config.XMLConfig;
+import net.ion.radon.core.config.PathConfiguration;
+import net.ion.radon.core.config.SectionConfiguration;
 import net.ion.radon.impl.let.HelloWorldLet;
-import net.ion.radon.impl.section.PathInfo;
 
 import org.restlet.representation.Representation;
 
 public class TestSimpleVerify extends TestCase {
 
 	public void testFilter() throws Exception {
-		Aradon aradon = new Aradon();
-		aradon.init(XMLConfig.BLANK);
+		Aradon aradon = Aradon.create() ;
 
-		aradon.attach("test", XMLConfig.BLANK);
-		aradon.getChildService("test").attach(PathInfo.create("hello", "/hello", HelloWorldLet.class));
-		aradon.getChildService("test").addPreFilter(new ChallengeAuthenticator("test", new SimpleVerifier("haha", "haha")));
+		aradon.attach(SectionConfiguration.createBlank("test"));
+		aradon.getChildService("test").attach(PathConfiguration.create("hello", "/hello", HelloWorldLet.class));
+		aradon.getChildService("test").getConfig().addPreFilter(new ChallengeAuthenticator("test", new SimpleVerifier("haha", "haha")));
 
 		AradonClient client = AradonClientFactory.create(aradon);
 		Representation repr = client.createRequest("/test/hello", "haha", "haha").get();

@@ -12,8 +12,7 @@ public class TestAradon {
 	@Test
 	public void setUp() throws Exception {
 		Debug.setPrintLevel(Debug.Level.Debug) ;
-		Aradon aradon = new Aradon() ;
-		aradon.init(TEST_CONFIG_FILE) ;
+		Aradon aradon = Aradon.create(TEST_CONFIG_FILE) ;
 		aradon.start() ;
 	}
 	

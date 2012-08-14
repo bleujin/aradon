@@ -1,25 +1,13 @@
 package net.ion.radon.core;
 
-import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
-import java.util.List;
 
 import net.ion.framework.util.Debug;
-import net.ion.framework.util.FileUtil;
 import net.ion.framework.util.InstanceCreationException;
-import net.ion.framework.util.ListUtil;
 import net.ion.framework.util.NumberUtil;
-import net.ion.framework.util.ObjectUtil;
-import net.ion.framework.util.PathMaker;
-import net.ion.framework.util.StringUtil;
-import net.ion.framework.util.ZipUtil;
 import net.ion.radon.Options;
 import net.ion.radon.core.config.AradonConstant;
-import net.ion.radon.core.config.XMLConfig;
-import net.ion.radon.core.let.FilterUtil;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.configuration.ConfigurationException;
 import org.restlet.data.Protocol;
 
@@ -51,7 +39,7 @@ public class AradonServer {
 
 	public void stop() {
 		if (aradon != null) {
-			aradon.stop();
+			aradon.destorySelf();
 		}
 	}
 
@@ -64,14 +52,12 @@ public class AradonServer {
 	}
 	
 	private Aradon newAradon() throws ConfigurationException, InstanceCreationException {
-		Aradon newAradon = new Aradon();
+		Aradon newAradon = Aradon.create(options.getString("config", AradonConstant.DEFAULT_CONFIG_PATH)) ;
 
 		newAradon.getClients().add(Protocol.HTTP);
 		newAradon.getClients().add(Protocol.HTTPS);
 		newAradon.getClients().add(Protocol.FILE);
 		newAradon.getClients().add(Protocol.RIAP);
-
-		newAradon.init(options.getString("config", AradonConstant.DEFAULT_CONFIG_PATH));
 
 		return newAradon;
 	}

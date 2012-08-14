@@ -9,8 +9,6 @@ import net.ion.radon.client.AradonClient;
 import net.ion.radon.client.AradonClientFactory;
 
 import org.junit.Test;
-import org.restlet.Response;
-import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 
 public class TestAradonStaticFileHandler {
@@ -30,6 +28,7 @@ public class TestAradonStaticFileHandler {
 		assertEquals(200, ac.createRequest("/ptest.prop").handle(Method.GET).getStatus().getCode()) ;
 		assertEquals(200, ac.createRequest("/web/index.html").handle(Method.GET).getStatus().getCode()) ;
 		//assertEquals(MediaType.TEXT_PLAIN, res.getEntity().getMediaType()) ;
+		ac.stop() ;
 		server.stop() ;
 			
 	}

@@ -5,16 +5,13 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 
-import net.ion.framework.util.Debug;
 import net.ion.framework.util.ListUtil;
 import net.ion.radon.client.AradonClient;
 import net.ion.radon.client.AradonClientFactory;
 import net.ion.radon.core.Aradon;
-import net.ion.radon.core.PathService;
+import net.ion.radon.core.IService;
 import net.ion.radon.core.SectionService;
-import net.ion.radon.core.TestAradon;
 import net.ion.radon.core.TestBaseAradon;
-import net.ion.radon.impl.filter.RevokeServiceFilter;
 
 import org.junit.Test;
 import org.restlet.Request;
@@ -39,10 +36,10 @@ public class TestAdvanseFilter extends TestBaseAradon{
 	@Test
 	public void testSectionRevokeFilter() throws Exception {
 		Aradon aradon = testAradon();
-		SectionService secSrv = aradon.getChildService("another");
-		secSrv.addPreFilter(RevokeServiceFilter.SELF) ;
+		SectionService section = aradon.getChildService("another");
+		section.suspend();
 		
-		secSrv.getChildService("hello").addPreFilter(new HiFilter());
+		section.getChildService("hello").getConfig().addPreFilter(new HiFilter());
 
 		Request request = new Request(Method.GET, "riap://component/another/hello?greeting=Hello&name=bleujin");
 		Response response = aradon.handle(request);
@@ -56,10 +53,10 @@ public class TestAdvanseFilter extends TestBaseAradon{
 		Aradon aradon = testAradon();
 
 		SectionService section = aradon.getChildService("another");
-		section.addPreFilter(new HiFilter(1)) ;
-		section.addPreFilter(new HiFilter(2)) ;
+		section.getConfig().addPreFilter(new HiFilter(1)) ;
+		section.getConfig().addPreFilter(new HiFilter(2)) ;
 		
-		section.getChildService("hello").addPreFilter(new HiFilter(3)) ;
+		section.getChildService("hello").getConfig().addPreFilter(new HiFilter(3)) ;
 		
 		HiFilter.result = ListUtil.newList() ;
 		Request request = new Request(Method.GET, "riap://component/another/hello?greeting=Hello&name=bleujin");
@@ -73,9 +70,9 @@ public class TestAdvanseFilter extends TestBaseAradon{
 		Aradon aradon = testAradon();
 
 		SectionService section = aradon.getChildService("another");
-		section.addPreFilter(new HiFilter(1)) ;
-		section.addPreFilter(new HiFilter(2)) ;
-		section.getChildService("hello").addPreFilter(new HiFilter(3)) ;
+		section.getConfig().addPreFilter(new HiFilter(1)) ;
+		section.getConfig().addPreFilter(new HiFilter(2)) ;
+		section.getChildService("hello").getConfig().addPreFilter(new HiFilter(3)) ;
 		
 		AradonClient ac = AradonClientFactory.create(aradon) ;
 		HiFilter.result = ListUtil.newList() ;
@@ -91,13 +88,13 @@ public class TestAdvanseFilter extends TestBaseAradon{
 		Aradon aradon = testAradon();
 		
 		SectionService secSrv = aradon.getChildService("another");
-		secSrv.addPreFilter(new HiFilter(1)) ;
+		secSrv.getConfig().addPreFilter(new HiFilter(1)) ;
 		
-		PathService pservice = secSrv.getChildService("hello");
+		IService pservice = secSrv.getChildService("hello");
 		
-		pservice.addPreFilter(new HiFilter(2, IFilterResult.SKIP_RESULT)) ;
-		pservice.addPreFilter(new HiFilter(3)) ;
-		pservice.addAfterFilter(new HiFilter(4)) ;
+		pservice.getConfig().addPreFilter(new HiFilter(2, IFilterResult.SKIP_RESULT)) ;
+		pservice.getConfig().addPreFilter(new HiFilter(3)) ;
+		pservice.getConfig().addAfterFilter(new HiFilter(4)) ;
 
 		HiFilter.result = ListUtil.newList() ;
 		Request request = new Request(Method.GET, "riap://component/another/hello?greeting=Hello&name=bleujin");

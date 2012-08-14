@@ -7,13 +7,13 @@ import javax.management.MBeanServerFactory;
 import javax.management.ObjectName;
 
 import net.ion.radon.core.Aradon;
-import net.ion.radon.core.IService;
 import net.ion.radon.core.SectionService;
-import net.ion.radon.core.config.XMLConfig;
+import net.ion.radon.core.config.PathConfiguration;
+import net.ion.radon.core.config.SectionConfiguration;
 import net.ion.radon.core.jmx.ContextMBean;
 import net.ion.radon.core.jmx.ServiceMBean;
+import net.ion.radon.core.let.PathService;
 import net.ion.radon.impl.let.HelloWorldLet;
-import net.ion.radon.impl.section.PathInfo;
 
 import com.sun.jdmk.comm.AuthInfo;
 import com.sun.jdmk.comm.HtmlAdaptorServer;
@@ -22,17 +22,17 @@ public class TestAradonJMX {
 
 	public static void main(String[] args) throws Exception {
 
-		Aradon aradon = new Aradon();
-		SectionService section = aradon.attach("my", XMLConfig.BLANK);
-		section.attach(PathInfo.create("hello", "/test", HelloWorldLet.class));
-		section.attach(PathInfo.create("hello2", "/test2", HelloWorldLet.class));
+		Aradon aradon = Aradon.create();
+		SectionService section = aradon.attach(SectionConfiguration.createBlank("my"));
+		section.attach(PathConfiguration.create("hello", "/test", HelloWorldLet.class));
+		section.attach(PathConfiguration.create("hello2", "/test2", HelloWorldLet.class));
 		section.getServiceContext().putAttribute("my.hello.name", "bleujin");
 
 		MBeanServer server = MBeanServerFactory.createMBeanServer();
-		for (IService sec : aradon.getChildren()) {
+		for (SectionService sec : aradon.getChildren()) {
 			server.registerMBean(new ServiceMBean(sec), new ObjectName("net.ion.radon.section:Name=" + sec.getNamePath() + ",serverType=net.ion.radon.core.SectionService"));
 			server.registerMBean(new ContextMBean(sec, sec.getServiceContext()), new ObjectName("net.ion.radon.section:Name=" + sec.getNamePath() + "Context,serverType=net.ion.radon.core.TreeContext"));
-			for (IService ps : sec.getChildren()) {
+			for (PathService ps : sec.getChildren()) {
 				server.registerMBean(new ServiceMBean(ps), new ObjectName("net.ion.radon.section." + sec.getName() + ":Name=" + ps.getNamePath() + ",serverType=net.ion.radon.core.PathService"));
 				server.registerMBean(new ContextMBean(ps, ps.getServiceContext()), new ObjectName("net.ion.radon.section." + sec.getName() + ":Name=" + ps.getNamePath() + "Context,serverType=net.ion.radon.core.TreeContext"));
 			}

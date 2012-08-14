@@ -19,7 +19,7 @@ public class TestServerResource {
 		AradonTester at = AradonTester.create().register("", "/test", ConfirmContextLet.class);
 
 		AradonClient ac = AradonClientFactory.create(at.getAradon());
-		assertEquals("Request", ac.createRequest("/test?level=2").get().getText());
+		assertEquals("Path", ac.createRequest("/test?level=2").get().getText());
 
 	}
 
@@ -28,8 +28,7 @@ public class TestServerResource {
 		AradonTester at = AradonTester.create().register("", "/test", ConfirmContextLet2.class);
 
 		AradonClient ac = AradonClientFactory.create(at.getAradon());
-		assertEquals("Request", ac.createRequest("/test").get().getText());
-
+		assertEquals("Path", ac.createRequest("/test").get().getText());
 	}
 
 }

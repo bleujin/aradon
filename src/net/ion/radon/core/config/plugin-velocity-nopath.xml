@@ -1,0 +1,32 @@
+<?xml version="1.0"  encoding="UTF-8"?>
+
+<aradon version="0.1">
+	<plugin>
+		<name>Velocity Template</name>
+		<description></description>
+		<provider>
+			<homepage>http://www.i-on.net</homepage>
+			<developer>bleujin</developer>
+			<email>bleujin@i-on.net</email>
+		</provider>
+		<license>LGPL</license>
+	</plugin>
+
+	<context>
+		<configured-object id="aradon.template.velocity.entry" scope="application">
+			<class-name>net.ion.radon.impl.let.velocity.VelocityEntry</class-name>
+	        <constructor>
+	            <constructor-param>
+	                <description>config file path</description>
+	                <type>java.lang.String</type>
+	                <value>${BASEPATH}/resource/velocity.init.props</value>
+	            </constructor-param>
+	            <constructor-param>
+	                <description>toolbox config file path</description>
+	                <type>java.lang.String</type>
+	                <value>${BASEPATH}/resource/toolbox.xml</value>
+	            </constructor-param>
+	        </constructor>
+		</configured-object>
+	</context>
+</aradon>

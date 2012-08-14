@@ -34,11 +34,12 @@ import java.io.IOException;
 
 import javax.servlet.ServletException;
 
+import net.ion.radon.core.server.jetty.internal.JettyCall;
+
 import org.eclipse.jetty.server.AbstractConnector;
 import org.eclipse.jetty.server.HttpConnection;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
-import net.ion.radon.core.server.jetty.internal.JettyCall;
 
 /**
  * Abstract Jetty Web server connector. Here is the list of parameters that are supported. They should be set in the Server's context before it is started:

@@ -7,9 +7,8 @@ import net.ion.framework.util.Debug;
 import net.ion.radon.core.Aradon;
 import net.ion.radon.core.RadonLogService;
 import net.ion.radon.core.SectionService;
-import net.ion.radon.core.TestAradon;
 import net.ion.radon.core.TestBaseAradon;
-import net.ion.radon.impl.section.PathInfo;
+import net.ion.radon.core.config.PathConfiguration;
 
 import org.junit.Test;
 import org.restlet.Request;
@@ -21,7 +20,7 @@ import org.restlet.service.LogService;
 public class TestAradonMethod extends TestBaseAradon {
 
 	@Test
-	public void testReload() throws Exception {
+	public void testAttach() throws Exception {
 		Aradon aradon = testAradon();
 		Request request = new Request(Method.GET, "riap://component/another/test");
 
@@ -30,12 +29,11 @@ public class TestAradonMethod extends TestBaseAradon {
 
 		try {
 			Response response = aradon.handle(request);
-			assertEquals(404, response.getStatus().getCode());
 		} catch (ResourceException ignore) {
 
 		}
-
-		another.attach(PathInfo.HELLO);
+		
+		another.attach(PathConfiguration.testHello());
 		Response response = aradon.handle(request);
 		assertEquals(200, response.getStatus().getCode());
 
@@ -70,6 +68,7 @@ public class TestAradonMethod extends TestBaseAradon {
 
 		assertEquals(3, another.getChildren().size());
 		another.detach("hello");
+		
 		assertEquals(2, another.getChildren().size());
 
 		Request request = new Request(Method.GET, "riap://component/another/hello");
@@ -79,6 +78,7 @@ public class TestAradonMethod extends TestBaseAradon {
 
 		request = new Request(Method.GET, "riap://component/another/ghello");
 		response = aradon.handle(request);
+		
 		assertEquals(200, response.getStatus().getCode());
 	}
 

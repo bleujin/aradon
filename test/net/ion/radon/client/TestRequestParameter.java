@@ -13,44 +13,51 @@ public class TestRequestParameter {
 
 	@Test
 	public void get() throws Exception {
-		IAradonRequest req = AradonClientFactory.create("http://127.0.0.1").createRequest("/?p1=a&p2=3");
+		AradonClient ac = AradonClientFactory.create("http://127.0.0.1");
+		IAradonRequest req = ac.createRequest("/?p1=a&p2=3");
 		Form form = req.getForm();
 
 		assertEquals(2, form.getNames().size());
 		assertEquals("p1=a&p2=3", form.getQueryString());
+		ac.stop() ;
 	}
 
 	@Test
 	public void getAdd() throws Exception {
-		IAradonRequest req = AradonClientFactory.create("http://127.0.0.1").createRequest("/?p1=a&p2=b");
+		AradonClient ac = AradonClientFactory.create("http://127.0.0.1");
+		IAradonRequest req = ac.createRequest("/?p1=a&p2=b");
 		Form form = req.getForm();
 		form.add("p3", "c");
 
 		assertEquals(3, form.getNames().size());
 		assertEquals("p1=a&p2=b&p3=c", form.getQueryString());
+		ac.stop() ;
 	}
 
 	@Test
 	public void getSameName() throws Exception {
-		IAradonRequest req = AradonClientFactory.create("http://127.0.0.1").createRequest("/?p1=a&p2=b");
+		AradonClient ac = AradonClientFactory.create("http://127.0.0.1");
+		IAradonRequest req = ac.createRequest("/?p1=a&p2=b");
 		Form form = req.getForm();
 		form.add("p2", "c");
 
 		assertEquals(2, form.getNames().size());
 		Debug.debug("b", form.getFirstValue("p2"));
 		Debug.debug("b,c", form.getValues("p2"));
+		ac.stop() ;
 	}
 
 	@Test
 	public void form() throws Exception {
-		IAradonRequest req = AradonClientFactory.create("http://127.0.0.1").createRequest("/?p1=a&p2=b");
+		AradonClient ac = AradonClientFactory.create("http://127.0.0.1");
+		IAradonRequest req = ac.createRequest("/?p1=a&p2=b");
 		req.addParameter("p2", "c");
 
 		Form form = req.getForm();
 		assertEquals(2, form.getNames().size());
 		Debug.debug("b", form.getFirstValue("p2"));
 		Debug.debug("b,c", form.getValues("p2"));
-
+		ac.stop() ;
 	}
 
 	@Test

@@ -9,17 +9,19 @@ import net.ion.radon.client.AradonClient;
 import net.ion.radon.client.AradonClientFactory;
 import net.ion.radon.client.ISerialRequest;
 import net.ion.radon.core.Aradon;
-import net.ion.radon.core.TestAradon;
 import net.ion.radon.core.TestBaseAradon;
-import net.ion.radon.impl.section.PathInfo;
+import net.ion.radon.core.config.PathConfiguration;
 import net.ion.radon.param.TestBean;
 import net.ion.radon.util.AradonTester;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.restlet.Request;
 import org.restlet.data.Method;
-import org.restlet.representation.ObjectRepresentation;
+import org.restlet.engine.resource.VariantInfo;
+import org.restlet.resource.Post;
+import org.restlet.resource.Put;
+import org.restlet.resource.Search;
+import org.restlet.resource.ServerResource;
 
 public class TestObjectLet extends TestBaseAradon{
 
@@ -52,7 +54,7 @@ public class TestObjectLet extends TestBaseAradon{
 	public void testObjectPut() throws Exception {
 		Aradon aradon = testAradon() ;
 		
-		aradon.getChildService("another").attach(PathInfo.create("object", "/object", ObjectLet.class)) ;
+		aradon.getChildService("another").attach(PathConfiguration.create("object", "/object", ObjectLet.class)) ;
 
 		
 		AradonClient ac = AradonClientFactory.create(aradon) ;
@@ -81,3 +83,28 @@ public class TestObjectLet extends TestBaseAradon{
 	}
 
 }
+
+class ObjectLet extends ServerResource{
+	
+	@Post 
+	public TestBean toXML(TestBean tb){
+		Debug.line(((VariantInfo) (getVariants().get(0)) ).getAnnotationInfo()) ;
+		return tb ;
+	}
+
+	
+	@Search
+	public TestBean listMyBean(TestBean tb){
+		tb.setQuery("SEARCH") ;
+		return tb ;
+	}
+
+	
+	@Put
+	public TestBean putMyBean(TestBean tb){
+		return tb ;
+	}
+	
+
+}
+

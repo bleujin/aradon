@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import net.ion.radon.core.Aradon;
 import net.ion.radon.core.let.AbstractServerResource;
+import net.ion.radon.impl.let.HelloWorldLet;
 import net.ion.radon.util.AradonTester;
 
 import org.junit.Assert;
@@ -30,6 +31,7 @@ public class TestRequestCookie {
 		IAradonRequest req2 = ac.createRequest("/test");
 		Assert.assertEquals("bleujin", req2.post().getText()) ;
 		
+		ac.stop() ;
 		aradon.stop() ;
 	}
 	
@@ -46,23 +48,39 @@ public class TestRequestCookie {
 		IAradonRequest req2 = ac.createRequest("/test");
 		Assert.assertEquals("bleujin", req2.post().getText()) ;
 		
+		ac.stop() ;
 		aradon.stop() ;
 	}
 	
 	@Test
 	public void testSerialRequest() throws Exception {
-		Aradon aradon = AradonTester.create().register("", "/test", MySerialLet.class).getAradon() ;
+		Aradon aradon = AradonTester.create()
+			.register("", "/test", MySerialLet.class)
+			.register("", "/hello", HelloWorldLet.class)
+			.getAradon() ;
+		
+//		aradon.startServer(ConnectorConfiguration.makeNettyHTTPConfig(9000)) ;
 		aradon.startServer(9000) ;
+
+		for (int i = 0; i < 10; i++) {
+			
+			AradonClient ac = AradonClientFactory.create("http://127.0.0.1:9000");
+			
+			ISerialRequest req1 = ac.createSerialRequest("/test");
+			Assert.assertEquals("hello", req1.get(String.class)) ;
+			
+//		IAradonRequest req3 = ac.createRequest("/hello");
+//		Debug.line(req3.get()) ;
+			
+//		ISerialRequest req2 = ac.createSerialRequest("/test");
+//		Assert.assertEquals("bleujin", req2.post(null, String.class)) ;
+			
+			ac.stop() ;
+		}
 		
-		AradonClient ac = AradonClientFactory.create("http://127.0.0.1:9000");
-		ISerialRequest req1 = ac.createSerialRequest("/test");
-		Assert.assertEquals("hello", req1.get(String.class)) ;
-		
-		ISerialRequest req2 = ac.createSerialRequest("/test");
-		Assert.assertEquals("bleujin", req2.post(null, String.class)) ;
-		
-		aradon.stop() ;
+		aradon.destorySelf() ;
 	}
+	
 	
 }
 

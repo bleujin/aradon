@@ -16,11 +16,10 @@ import net.ion.framework.util.IOUtil;
 import net.ion.framework.util.ObjectUtil;
 import net.ion.radon.client.HttpMultipartEntity;
 import net.ion.radon.core.Aradon;
-import net.ion.radon.core.PathService;
 import net.ion.radon.core.RadonAttributeKey;
+import net.ion.radon.core.config.ConfigurationBuilder;
+import net.ion.radon.core.config.PathConfiguration;
 import net.ion.radon.core.representation.JsonObjectRepresentation;
-import net.ion.radon.impl.section.BasePathInfo;
-import net.ion.radon.util.AradonTester;
 
 import org.apache.commons.fileupload.FileItem;
 import org.junit.Before;
@@ -36,13 +35,11 @@ import org.restlet.representation.StringRepresentation;
 
 public class TestRequest {
 
-	private AradonTester at;
 	private Aradon aradon;
 
 	@Before
 	public void setUp() throws Exception {
-		at = AradonTester.create().register("", "/test", GetLet.class);
-		aradon = at.getAradon();
+		aradon = Aradon.create(ConfigurationBuilder.newBuilder().aradon().sections().restSection("").path("get").handler(GetLet.class).addUrlPattern("/test").build()) ;
 	}
 
 	@Test
@@ -74,8 +71,7 @@ public class TestRequest {
 
 	@Test
 	public void requestAttribute() throws Exception {
-		AradonTester at = AradonTester.create().register("another", "/test/{greeting}", GetLet.class);
-		Aradon aradon = at.getAradon();
+		Aradon aradon = Aradon.create(ConfigurationBuilder.newBuilder().aradon().sections().restSection("another").path("get").handler(GetLet.class).addUrlPattern("/test/{greeting}").build()) ;
 
 		Request request = new Request(Method.GET, "riap://component/another/test/hi");
 		Response response = aradon.handle(request);
@@ -83,7 +79,7 @@ public class TestRequest {
 		assertEquals("hi", request.getAttributes().get("greeting"));
 		assertEquals(true, request.getAttributes().get(RadonAttributeKey.ATTRIBUTE_HEADERS) != null);
 		assertEquals(true, request.getAttributes().get(RadonAttributeKey.FORM_ATTRIBUTE_KEY) != null);
-		assertEquals(true, request.getAttributes().get(RadonAttributeKey.REQUEST_CONTEXT) != null);
+		assertEquals(true, request.getAttributes().get(RadonAttributeKey.PATH_SERVICE_KEY) != null);
 
 		Debug.debug(request.getAttributes());
 	}
@@ -145,22 +141,22 @@ public class TestRequest {
 		aradon.handle(request);
 
 		InnerRequest ireq = ((InnerResponse) Response.getCurrent()).getInnerRequest();
-		BasePathInfo pinfo = ireq.getPathInfo(aradon);
+		PathConfiguration pinfo = ireq.getPathConfiguration();
 
 		String settedname = aradon.getChildService("").getChildren().toArray(new PathService[0])[0].getName();
-		assertEquals(settedname, pinfo.getName());
+		assertEquals(settedname, pinfo.name());
 	}
 
 	@Test
 	public void multipart() throws Exception {
-		at.register("", "/multipart", MultipartLet.class);
+		Aradon aradon = Aradon.create(ConfigurationBuilder.newBuilder().aradon().sections().restSection("").path("multipart").handler(MultipartLet.class).addUrlPattern("/multipart").build()) ;
 
 		Request request = new Request(Method.POST, "riap://component/multipart");
 
 		HttpMultipartEntity entity = new HttpMultipartEntity();
 		entity.addParameter("to", "bleujin@i-on.net");
-		entity.addParameter("subject", "�ѱ�", Charset.forName("UTF-8"));
-		entity.addParameter("content", "�ȳ��ϼ���.", Charset.forName("UTF-8"));
+		entity.addParameter("subject", "한글", Charset.forName("UTF-8"));
+		entity.addParameter("content", "안녕하세요.", Charset.forName("UTF-8"));
 		entity.addParameter("attach1", new File("./build.xml"));
 
 		request.setEntity(entity.makeRepresentation());
@@ -169,8 +165,8 @@ public class TestRequest {
 		JsonObject jso = JsonParser.fromString(response.getEntityAsText()).getAsJsonObject();
 
 		assertEquals("bleujin@i-on.net", jso.asString("to"));
-		assertEquals("�ѱ�", jso.asString("subject"));
-		assertEquals("�ȳ��ϼ���.", jso.asString("content"));
+		assertEquals("한글", jso.asString("subject"));
+		assertEquals("안녕하세요.", jso.asString("content"));
 		assertEquals(true, jso.asString("attach1").length() > 10);
 	}
 

@@ -1,16 +1,17 @@
 package net.ion.radon.core.representation;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
 import net.ion.framework.parse.gson.JsonElement;
 import net.ion.framework.parse.gson.JsonParser;
-import net.ion.framework.util.Debug;
 import net.ion.framework.util.InfinityThread;
 import net.ion.radon.client.AradonClient;
 import net.ion.radon.client.AradonClientFactory;
 import net.ion.radon.core.Aradon;
 import net.ion.radon.core.let.AbstractServerResource;
 import net.ion.radon.util.AradonTester;
+import net.ion.radon.util.ShortConfigBuilder;
 
+import org.junit.Test;
 import org.restlet.Response;
 import org.restlet.data.Language;
 import org.restlet.data.MediaType;
@@ -20,25 +21,25 @@ import org.restlet.representation.StringRepresentation;
 import org.restlet.resource.Get;
 import org.restlet.resource.Post;
 
-public class TestRepresentation extends TestCase {
+public class TestRepresentation {
 	
+	@Test
 	public void testCreate() throws Exception {
-		Aradon aradon = AradonTester.create().register("", "/test", JsonLet.class).getAradon() ;
-		
+		Aradon aradon = Aradon.create(ShortConfigBuilder.create().restSection("").path("test").addUrlPattern("/test").handler(JsonLet.class).build()) ;
 		
 		AradonClient ac = AradonClientFactory.create(aradon) ;
-		Representation rep = ac.createRequest("/test").get() ;
+		Response rep = ac.createRequest("/test").handle(Method.GET) ;
 		
-		Debug.line(rep.getText()); 
+		assertEquals(200, rep.getStatus().getCode()) ;
 	}
 	
+	@Test
 	public void testToObject() throws Exception {
-		Aradon aradon = AradonTester.create().register("", "/test", JsonLet.class).getAradon() ;
+		Aradon aradon = Aradon.create(ShortConfigBuilder.create().restSection("").path("test").addUrlPattern("/test").handler(JsonLet.class).build()) ;
 		aradon.getEngine().getRegisteredConverters().add(new JsonObjectConverter()) ;
 		
 		AradonClient ac = AradonClientFactory.create(aradon) ;
 		Representation rep = ac.createRequest("/test").post() ;
-		Response res = ac.createRequest("/test").handle(Method.POST) ;
 		assertEquals(true, rep != null); 
 	}
 	
@@ -48,7 +49,6 @@ public class TestRepresentation extends TestCase {
 		aradon.startServer(9000) ;
 		
 		new InfinityThread().startNJoin() ;
-		
 	}
 }
 

@@ -30,6 +30,7 @@ public class TestAradonClient {
 		IAradonRequest request = ac.createRequest("/");
 
 		assertEquals(MediaType.APPLICATION_XML, request.get().getMediaType());
+		ac.stop() ;
 		at.getAradon().stop();
 	}
 
@@ -37,7 +38,7 @@ public class TestAradonClient {
 	public void auth() throws Exception {
 		AradonTester at = AradonTester.create().register("", "/hello", HelloWorldLet.class);
 		IRadonFilter authfilter = new ChallengeAuthenticator("my", new SimpleVerifier("bleujin", "1234"));
-		at.getAradon().getChildService("").addPreFilter(authfilter);
+		at.getAradon().getChildService("").getConfig().addPreFilter(authfilter);
 
 		AradonClient ac = AradonClientFactory.create(at.getAradon());
 
@@ -49,13 +50,14 @@ public class TestAradonClient {
 		IAradonRequest srequest = ac.createRequest("/hello?abcd=abcd", "bleujin", "1234");
 		Response rep = srequest.handle(Method.GET);
 		assertEquals(Status.SUCCESS_OK, rep.getStatus());
+		ac.stop() ;
 	}
 
 	@Test
 	public void parameter() throws Exception {
 		AradonTester at = AradonTester.create().register("", "/req", RequestLet.class);
 		AradonClient ac = AradonClientFactory.create(at.getAradon());
-
+		
 		IAradonRequest req = ac.createRequest("/req");
 		req.addParameter("name", "bleujin");
 
@@ -63,19 +65,21 @@ public class TestAradonClient {
 
 		Representation rep = req.post();
 		assertEquals("bleujin", rep.getText());
+		ac.stop() ;
 	}
 
 	@Test
 	public void requestUser() throws Exception {
 		AradonTester at = AradonTester.create().register("", "/hello", HelloWorldLet.class);
 		IRadonFilter authfilter = new ChallengeAuthenticator("my", new SimpleVerifier("bleujin", "1234"));
-		at.getAradon().getChildService("").addPreFilter(authfilter);
+		at.getAradon().getChildService("").getConfig().addPreFilter(authfilter);
 
 		AradonClient ac = AradonClientFactory.create(at.getAradon());
 		IAradonRequest request = ac.createRequest("/hello?abcd=Han", "bleujin", "redf");
 
 		User user = request.getUser();
 		assertEquals("bleujin", user.getIdentifier().toString());
+		ac.stop() ;
 	}
 
 

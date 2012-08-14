@@ -8,9 +8,8 @@ import java.util.concurrent.ConcurrentMap;
 
 import net.ion.framework.rest.StdObject;
 import net.ion.framework.util.StringUtil;
-import net.ion.radon.core.Aradon;
-import net.ion.radon.core.IService;
 import net.ion.radon.core.RadonAttributeKey;
+import net.ion.radon.core.config.PathConfiguration;
 
 import org.apache.http.impl.cookie.DateParseException;
 import org.apache.http.impl.cookie.DateUtils;
@@ -317,8 +316,8 @@ public class InnerResponse extends Response {
 		return this.sto ;
 	}
 
-	public IService getPathService(Aradon aradon) {
-		return getInnerRequest().getPathService(aradon) ;
+	public PathConfiguration getPathConfiguration() {
+		return getInnerRequest().getPathConfiguration() ;
 	}
 
 	public ContentType getContentType(){

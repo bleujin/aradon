@@ -6,7 +6,7 @@ import org.restlet.routing.Router;
 
 public class EnumClass {
 	public enum Scope {
-		Application, Session, Thread, Request ;
+		Application, Request ;
 
 		public boolean isApplication() {
 			return this == Application;

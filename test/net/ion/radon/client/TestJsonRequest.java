@@ -30,36 +30,40 @@ public class TestJsonRequest {
 		this.aradon = at.getAradon();
 		
 		aradon.getEngine().getRegisteredConverters().add(new PlainObjectConverter()) ;
-		aradon.addAfterFilter(BeanToJsonFilter.create()) ;
+		aradon.getConfig().addAfterFilter(BeanToJsonFilter.create()) ;
 		
 	}
 	
 	@After
 	public void tearDown() {
-		aradon.stop() ;
+		aradon.destorySelf() ;
 	}
 	
 	@Test
 	public void basicGet() throws Exception {
 		aradon.startServer(9000) ;
 		
-		IJsonRequest request = AradonClientFactory.create("http://127.0.0.1:9000").createJsonRequest("/test");
+		AradonClient ac = AradonClientFactory.create("http://127.0.0.1:9000");
+		IJsonRequest request = ac.createJsonRequest("/test");
 		
 		NoSerialUser muser = request.get(NoSerialUser.class) ;
 		assertEquals("jin", muser.getName()) ;
 		assertEquals("seoul", muser.getAddress().getCity()) ;
+		ac.stop() ;
 	}
 	
 	@Test
 	public void basicPost() throws Exception {
 		aradon.startServer(9250) ;
 
-		IJsonRequest request = AradonClientFactory.create("http://127.0.0.1:9250").createJsonRequest("/test");
+		AradonClient ac = AradonClientFactory.create("http://127.0.0.1:9250");
+		IJsonRequest request = ac.createJsonRequest("/test");
 		
 		NoSerialUser muser = request.post(new NoSerialUser("hero", 20), NoSerialUser.class) ;
 		assertEquals("hero", muser.getName()) ;
 		assertEquals("seoul", muser.getAddress().getCity()) ;
-		assertEquals(21, muser.getAge()) ; 
+		assertEquals(21, muser.getAge()) ;
+		ac.stop() ;
 	}
 
 }

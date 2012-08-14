@@ -3,7 +3,7 @@ package net.ion.radon.core.server;
 import java.util.Map.Entry;
 
 import net.ion.radon.core.Aradon;
-import net.ion.radon.core.config.ConnectorConfig;
+import net.ion.radon.core.config.ConnectorConfiguration;
 import net.ion.radon.core.server.netty.NettyServerHelper;
 
 import org.restlet.Context;
@@ -20,19 +20,19 @@ public class AradonNettyHelper implements AradonServerHelper {
 		this.helper = server;
 	}
 
-	public final static AradonNettyHelper create(Context context, ConnectorConfig cfig, Aradon aradon) {
+	public final static AradonNettyHelper create(Context context, ConnectorConfiguration cfig, Aradon aradon) {
 //		ConnectorHelper<Server> helper = new HttpServerHelper(null);
 // 		ConnectorHelper<Server> helper = new HttpsServerHelper(null) ;
 //		Engine.getInstance().getRegisteredServers().add(0, helper);
 		Engine.getInstance().getRegisteredServers().clear() ;
 		Engine.getInstance().getRegisteredServers().add(new RiapServerHelper(null)) ;
 		
-		Server server = new Server(context, cfig.getProtocol(), cfig.getPort(), aradon);
+		Server server = new Server(context, cfig.protocol(), cfig.port(), aradon);
 		
-		for (Entry<String, String> entry : cfig.getParams().entrySet()) {
+		for (Entry<String, String> entry : cfig.properties().entrySet()) {
 			server.getContext().getParameters().add(entry.getKey(), entry.getValue());
 		}
-		if (cfig.getProtocol() == Protocol.HTTP){
+		if (cfig.protocol() == Protocol.HTTP){
 			return new AradonNettyHelper(new  net.ion.radon.core.server.netty.HttpServerHelper(server)) ;
 		} else {
 			return new AradonNettyHelper(new  net.ion.radon.core.server.netty.HttpsServerHelper(server)); 
@@ -45,6 +45,7 @@ public class AradonNettyHelper implements AradonServerHelper {
 
 	public void stop() throws Exception {
 		helper.stop() ;
+//		helper.stop() ;
 	}
 
 }

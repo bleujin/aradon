@@ -9,6 +9,7 @@ import net.ion.nradon.WebSocketConnection;
 
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.Channel;
+import org.jboss.netty.channel.ChannelFuture;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.handler.codec.http.websocket.DefaultWebSocketFrame;
 import org.jboss.netty.util.CharsetUtil;
@@ -33,23 +34,34 @@ public class NettyWebSocketConnection implements WebSocketConnection {
 
 	public NettyWebSocketConnection send(String message) {
 		if (hybi) {
+			write(new EncodingHybiFrame(Opcodes.OPCODE_TEXT, true, 0, ChannelBuffers.copiedBuffer(message, CharsetUtil.UTF_8)));
+		} else {
+			write(new DefaultWebSocketFrame(message));
+		}
+		return this ;
+	}
+	
+	public ChannelFuture sendFuture(String message) {
+		if (hybi) {
 			return write(new EncodingHybiFrame(Opcodes.OPCODE_TEXT, true, 0, ChannelBuffers.copiedBuffer(message, CharsetUtil.UTF_8)));
 		} else {
 			return write(new DefaultWebSocketFrame(message));
-		}
+		}	
 	}
+	
 
 	public NettyWebSocketConnection send(byte[] message) {
-		return write(new EncodingHybiFrame(Opcodes.OPCODE_BINARY, true, 0, ChannelBuffers.wrappedBuffer(message)));
+		write(new EncodingHybiFrame(Opcodes.OPCODE_BINARY, true, 0, ChannelBuffers.wrappedBuffer(message)));
+		return this ;
 	}
 
 	public NettyWebSocketConnection ping(String message) {
-		return write(new EncodingHybiFrame(Opcodes.OPCODE_PING, true, 0, ChannelBuffers.copiedBuffer(message, CharsetUtil.UTF_8)));
+		write(new EncodingHybiFrame(Opcodes.OPCODE_PING, true, 0, ChannelBuffers.copiedBuffer(message, CharsetUtil.UTF_8)));
+		return this ;
 	}
 
-	private NettyWebSocketConnection write(Object frame) {
-		ctx.getChannel().write(frame);
-		return this;
+	private ChannelFuture write(Object frame) {
+		return ctx.getChannel().write(frame);
 	}
 
 	public NettyWebSocketConnection close() {

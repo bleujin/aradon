@@ -1,10 +1,9 @@
 package net.ion.radon.parameter;
 
-import java.util.List;
+import static org.junit.Assert.assertEquals;
+
 import java.util.Map;
 
-import junit.framework.TestCase;
-import net.ion.framework.util.ListUtil;
 import net.ion.framework.util.MapUtil;
 import net.ion.radon.client.AradonClient;
 import net.ion.radon.client.AradonClientFactory;
@@ -14,12 +13,14 @@ import net.ion.radon.core.Aradon;
 import net.ion.radon.core.let.AbstractServerResource;
 import net.ion.radon.util.AradonTester;
 
+import org.junit.Test;
 import org.restlet.resource.Get;
 import org.restlet.resource.Post;
 import org.restlet.resource.Put;
 
-public class ParameterSample extends TestCase {
+public class ParameterSample {
 
+	@Test
 	public void testParameter() throws Exception {
 		Aradon aradon = AradonTester.create().register("test", "/", ConfirmLet.class).getAradon();
 
@@ -30,6 +31,7 @@ public class ParameterSample extends TestCase {
 		assertEquals("bleujin", request.get().getText());
 	}
 
+	@Test
 	public void testAttribute() throws Exception {
 		Aradon aradon = AradonTester.create().register("test", "/{name}", ConfirmLet.class).getAradon();
 
@@ -37,6 +39,7 @@ public class ParameterSample extends TestCase {
 		assertEquals("hero", ac.createRequest("/test/hero").post().getText());
 	}
 
+	@Test
 	public void testSerialRequest() throws Exception {
 		Aradon aradon = AradonTester.create().register("test", "/", ConfirmLet.class).getAradon();
 

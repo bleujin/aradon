@@ -95,7 +95,11 @@ public class AradonSerialRequest implements ISerialRequest {
 			}
 		} catch (IOException e) {
 			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, e.getMessage());
+		} finally {
+			request.abort() ;
+			response.release() ;
 		}
+		
 	}
 
 	public <T, V> V handle(Method method, T arg, Class<? extends V> resultClass) {

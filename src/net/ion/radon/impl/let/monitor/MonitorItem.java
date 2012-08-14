@@ -5,9 +5,9 @@ import java.util.List;
 
 import net.ion.framework.util.ListUtil;
 import net.ion.radon.core.SectionService;
+import net.ion.radon.core.config.PathConfiguration;
 import net.ion.radon.core.filter.IRadonFilter;
 import net.ion.radon.impl.filter.RevokeServiceFilter;
-import net.ion.radon.impl.section.BasePathInfo;
 
 public class MonitorItem {
 	
@@ -32,14 +32,14 @@ public class MonitorItem {
 	
 	
 	public static MonitorItem create(SectionService si){
-		return new MonitorItem(si.getName(), si.getName(), "section", "",  si.isStarted(), si.getPreFilters(), si.getAfterFilters());
+		return new MonitorItem(si.getName(), si.getName(), "section", "",  si.isStarted(), si.getConfig().prefilters(), si.getConfig().afterfilters());
 	}
 	
-	public static MonitorItem create(SectionService section, BasePathInfo pinfo) {
-		List<IRadonFilter> preFilters  = section.getChildService(pinfo.getName()).getPreFilters() ;
-		List<IRadonFilter> afterFilters  = section.getChildService(pinfo.getName()).getAfterFilters() ;
+	public static MonitorItem create(SectionService section, PathConfiguration pinfo) {
+		List<IRadonFilter> preFilters  = section.getChildService(pinfo.name()).getConfig().prefilters() ;
+		List<IRadonFilter> afterFilters  = section.getChildService(pinfo.name()).getConfig().afterfilters();
 		boolean start = preFilters.contains(RevokeServiceFilter.SELF) ;
-		return new MonitorItem(section.getName() + "/" + pinfo.getName(), pinfo.getName(), "path",  pinfo.getDescription(), start, preFilters, afterFilters);
+		return new MonitorItem(section.getName() + "/" + pinfo.name(), pinfo.name(), "path",  pinfo.description(), start, preFilters, afterFilters);
 	}
 
 

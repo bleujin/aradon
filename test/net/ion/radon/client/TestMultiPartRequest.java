@@ -32,6 +32,7 @@ public class TestMultiPartRequest {
 		Representation result =  ac.createRequest("/hello").setEntity(rf.makeRepresentation()).post() ;
 		
 		Assert.assertEquals(true, result.getText().length() > 500) ;
+		ac.stop() ;
 		at.getAradon().stop() ;
 	}
 	

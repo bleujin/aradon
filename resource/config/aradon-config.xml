@@ -19,6 +19,7 @@
 			</afterfilter>
 		</path>
 	</section>
+	
 
 	<prefilter class="net.ion.radon.impl.filter.SayHello">
 	</prefilter>
@@ -29,6 +30,24 @@
 	<context>
 		<attribute id="let.contact.email">bleujin@i-on.net</attribute>
 		<attribute id="let.contact.help.doc">/help/doc</attribute>
+		<configured-object id="test.application.sb" scope="application">
+			<class-name>java.lang.StringBuffer</class-name>
+	        <constructor>
+	            <constructor-param>
+	                <type>java.lang.String</type>
+	                <value>hello</value>
+	            </constructor-param>
+	        </constructor>
+		</configured-object>
+		<configured-object id="test.request.sb" scope="request">
+			<class-name>java.lang.StringBuffer</class-name>
+	        <constructor>
+	            <constructor-param>
+	                <type>java.lang.String</type>
+	                <value>hello</value>
+	            </constructor-param>
+	        </constructor>
+		</configured-object>
 	</context>
 		
 	<plugin includepath="plugin/;">

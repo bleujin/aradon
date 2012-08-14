@@ -5,8 +5,9 @@ import net.ion.framework.util.ObjectId;
 import net.ion.radon.core.Aradon;
 import net.ion.radon.core.SectionService;
 import net.ion.radon.core.EnumClass.IMatchMode;
-import net.ion.radon.core.config.XMLConfig;
-import net.ion.radon.impl.section.PathInfo;
+import net.ion.radon.core.config.ConfigurationBuilder;
+import net.ion.radon.core.config.PathConfiguration;
+import net.ion.radon.core.config.SectionConfiguration;
 
 import org.restlet.Request;
 import org.restlet.Response;
@@ -25,10 +26,8 @@ public class AradonTester {
 	}
 
 	public final static AradonTester create() throws Exception {
-		Aradon aradon = new Aradon();
-		aradon.init(XMLConfig.BLANK);
-//		aradon.start();
-
+		Aradon aradon = Aradon.create(ConfigurationBuilder.newBuilder().build()) ;
+		aradon.start();
 		return new AradonTester(aradon);
 	}
 
@@ -43,16 +42,16 @@ public class AradonTester {
 	}
 
 	public AradonTester register(String sectionName, String urls, String name, IMatchMode matchMode, Class<? extends ServerResource> handlerClz) throws Exception {
-		SectionService ss = aradon.containsSection(sectionName) ? aradon.getChildService(sectionName) : aradon.attach(sectionName, XMLConfig.BLANK);
-		ss.attach(PathInfo.create(name, urls, matchMode, "", handlerClz));
+		SectionService ss = aradon.containsSection(sectionName) ? aradon.getChildService(sectionName) : aradon.attach(SectionConfiguration.createBlank(sectionName));
+		ss.attach(PathConfiguration.create(name, urls, "", matchMode, handlerClz));
 		return this;
 	}
 
 	
 	@Deprecated
 	public AradonTester register(String sectionName, String urls, IMatchMode matchMode, String description, Class<? extends ServerResource> handlerClz) throws Exception {
-		SectionService ss = aradon.containsSection(sectionName) ? aradon.getChildService(sectionName) : aradon.attach(sectionName, XMLConfig.BLANK);
-		ss.attach(PathInfo.create(new ObjectId().toString(), urls, matchMode, description, handlerClz));
+		SectionService ss = aradon.containsSection(sectionName) ? aradon.getChildService(sectionName) : aradon.attach(SectionConfiguration.createBlank(sectionName));
+		ss.attach(PathConfiguration.create(new ObjectId().toString(), urls, description, matchMode, handlerClz));
 		return this;
 	}
 

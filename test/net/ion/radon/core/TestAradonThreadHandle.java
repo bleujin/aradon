@@ -1,35 +1,19 @@
 package net.ion.radon.core;
 
-import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-
-import javax.swing.plaf.ListUI;
-
 import junit.framework.TestCase;
-
-import net.ion.framework.util.Debug;
 import net.ion.framework.util.InfinityThread;
-import net.ion.framework.util.ListUtil;
 import net.ion.framework.util.RandomUtil;
-import net.ion.radon.client.AradonClient;
-import net.ion.radon.client.AradonClientFactory;
-import net.ion.radon.core.config.ConnectorConfig;
+import net.ion.radon.core.config.ConnectorConfiguration;
 import net.ion.radon.core.let.AbstractServerResource;
 import net.ion.radon.util.AradonTester;
 
-import org.junit.Test;
-import org.restlet.Response;
-import org.restlet.data.Method;
 import org.restlet.resource.Get;
 
 public class TestAradonThreadHandle extends TestCase{
 
 	public void testServer() throws Exception {
 		Aradon aradon = AradonTester.create().register("", "/test", LongTimeLet.class).getAradon() ;
-		aradon.startServer(ConnectorConfig.makeNettyHTTPConfig(9000)) ;
+		aradon.startServer(ConnectorConfiguration.makeNettyHTTPConfig(9000)) ;
 		
 		new InfinityThread().startNJoin() ;
 	}

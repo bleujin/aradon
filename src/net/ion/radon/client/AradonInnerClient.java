@@ -1,7 +1,9 @@
 package net.ion.radon.client;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.Executors;
 
 import net.ion.radon.core.Aradon;
 
@@ -12,19 +14,19 @@ import org.restlet.data.CookieSetting;
 import org.restlet.service.ConverterService;
 import org.restlet.util.Series;
 
-public class AradonInnerClient implements AradonClient{
+public class AradonInnerClient implements AradonClient, Closeable{
 
 	private Aradon aradon;
 	private ExecutorService es ;
 	private Series<CookieSetting> cookies;
 	
-	private AradonInnerClient(Aradon aradon, ExecutorService es) {
+	private AradonInnerClient(Aradon aradon) {
 		this.aradon = aradon;
-		this.es = es ;
+		this.es = Executors.newCachedThreadPool() ;
 	} 
 	
-	public static AradonInnerClient create(Aradon aradon, ExecutorService es){
-		return new AradonInnerClient(aradon, es);
+	public static AradonInnerClient create(Aradon aradon){
+		return new AradonInnerClient(aradon);
 	}
 	
 	public IAradonRequest createRequest(String path) {
@@ -70,13 +72,21 @@ public class AradonInnerClient implements AradonClient{
 	}
 
 	public void stop() throws Exception {
-		es.awaitTermination(1, TimeUnit.SECONDS) ;
-		es.shutdownNow() ;
+		AradonClientFactory.remove(this);
+//		es.awaitTermination(1, TimeUnit.SECONDS) ;
+		es.shutdown() ;
 	}
 
 	public ConverterService getConverterService() {
 		return aradon.getConverterService();
 	}
 	
+	public void close() throws IOException {
+		try {
+			stop() ;
+		} catch (Exception e) {
+			throw new IOException(e.getMessage()) ;
+		}
+	}
 
 }

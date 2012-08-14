@@ -15,7 +15,7 @@ public class HelloWorldResource extends AbstractServerResource{
 	
 	@Put
 	public String putContext(String value){
-		getInnerRequest().getContext().putAttribute("context.id", value) ;
+		getInnerRequest().putAttribute("context.id", value) ;
 		return "Hello " + value ;
 	}
 	

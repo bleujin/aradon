@@ -1,21 +1,18 @@
 package net.ion.radon.core.server;
 
+import net.ion.framework.util.Debug;
+import net.ion.radon.client.AradonClientFactory;
+import net.ion.radon.core.Aradon;
+
 import org.junit.Test;
 import org.restlet.Response;
 import org.restlet.data.Method;
-
-import net.ion.framework.util.Debug;
-import net.ion.radon.client.AradonClient;
-import net.ion.radon.client.AradonClientFactory;
-import net.ion.radon.core.Aradon;
-import net.ion.radon.util.AradonTester;
 
 public class TestServerFactory {
 
 	@Test
 	public void serverType() throws Exception{
-		Aradon aradon = new Aradon() ;
-		aradon.init("resource/config/aradon-config.xml") ;
+		Aradon aradon = Aradon.create("resource/config/aradon-config.xml") ;
 		
 		aradon.startServer(9000) ;
 		

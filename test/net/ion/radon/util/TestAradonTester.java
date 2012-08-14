@@ -1,11 +1,10 @@
 package net.ion.radon.util;
 
 import static org.junit.Assert.assertEquals;
-
 import net.ion.radon.core.Aradon;
-import net.ion.radon.core.PathService;
 import net.ion.radon.core.EnumClass.IMatchMode;
 import net.ion.radon.core.let.AbstractServerResource;
+import net.ion.radon.core.let.PathService;
 
 import org.junit.Test;
 import org.restlet.Response;
@@ -22,10 +21,8 @@ public class TestAradonTester {
 		
 		Response response = at.get("/s1/shutdown/bleujin") ;
 		assertEquals("Hello bleujin", response.getEntityAsText()) ;
-
-		
-		
 	}
+	
 	
 	@Test
 	public void matchMode() throws Exception {
