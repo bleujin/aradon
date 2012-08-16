@@ -173,11 +173,7 @@ public class Aradon extends Component implements IService<SectionService>, Arado
 		
 		getServiceContext().closeAttribute();
 		
-		try {
-			super.stop();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+
 
 		getGlobalConfig().server().stopShell();
 		try {
@@ -185,6 +181,12 @@ public class Aradon extends Component implements IService<SectionService>, Arado
 //			getServices().clear();
 			if (serverHelper != null)
 				serverHelper.stop();
+			
+			try {
+				super.stop();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		} catch (Exception ignore) {
 			ignore.printStackTrace();
 			getLogger().warning(ignore.getMessage());
@@ -238,7 +240,7 @@ public class Aradon extends Component implements IService<SectionService>, Arado
 		this.serverHelper = ServerFactory.create(getContext(), this, cfig);
 		serverHelper.start();
 
-		start();
+//		start();
 
 		final Aradon aradon = this;
 		Runtime.getRuntime().addShutdownHook(new Thread() {

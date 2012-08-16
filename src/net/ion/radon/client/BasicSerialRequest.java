@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import net.ion.framework.util.Debug;
 import net.ion.framework.util.IOUtil;
 import net.ion.radon.core.RadonAttributeKey;
 
@@ -85,17 +86,22 @@ public class BasicSerialRequest implements ISerialRequest {
 					input = entity.getStream();
 					if (input == null)
 						return null;
+					
+//					entity.getMediaType().APPLICATION_JAVA_OBJECT
+					
 					Object obj = new ObjectInputStream(input).readObject();
 					return resultClass.cast(obj);
 				} catch (IOException ex) {
+					Debug.warn(ex) ;
 					return null;
 				} catch (ClassNotFoundException e) {
+					Debug.warn(e) ;
 					return null;
 				} finally {
 					IOUtil.closeQuietly(input) ;
 //					request.abort() ;
-					request.release() ;
-					response.release() ;
+//					request.release() ;
+//					response.release() ;
 				}
 			}
 		});

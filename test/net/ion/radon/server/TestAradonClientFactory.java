@@ -1,4 +1,4 @@
-package net.ion.radon.core.server;
+package net.ion.radon.server;
 
 import static org.junit.Assert.assertEquals;
 
@@ -51,12 +51,11 @@ public class TestAradonClientFactory {
 	}
 
 	
-	@Ignore
 	@Test
 	public void testRequest() throws Exception {
 		Aradon aradon = AradonTester.create().register("", "/test", LongTimeLet.class).getAradon();
 		// WebServer server = WebServers.createWebServer(80).add(AradonHandler.create(aradon)).start() ;
-		aradon.startServer(ConnectorConfiguration.makeSimpleHTTPConfig(9000)) ;
+		aradon.startServer(ConnectorConfiguration.makeNettyHTTPConfig(9000)) ;
 		
 		final AradonClient ac = AradonClientFactory.create("http://localhost:9000");
 

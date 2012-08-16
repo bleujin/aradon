@@ -135,6 +135,22 @@
         </fatjar.build>
     </target>
 
+
+    <target name="jetty_fat_74">
+    	
+        <fatjar.build output="${embedLibDir}/jetty_fat_74.jar">
+            <fatjar.manifest/>
+            <!-- fatjar.jarsource file="${basedir}\jetty\servlet-api.jar" relpath=""/ --> 
+
+        	<fatjar.jarsource file="${basedir}\jetty74\org.eclipse.jetty.ajp.jar" relpath=""/> 
+        	<fatjar.jarsource file="${basedir}\jetty74\org.eclipse.jetty.continuation.jar" relpath=""/> 
+        	<fatjar.jarsource file="${basedir}\jetty74\org.eclipse.jetty.http.jar" relpath=""/> 
+        	<fatjar.jarsource file="${basedir}\jetty74\org.eclipse.jetty.io.jar" relpath=""/> 
+        	<fatjar.jarsource file="${basedir}\jetty74\org.eclipse.jetty.server.jar" relpath=""/> 
+        	<fatjar.jarsource file="${basedir}\jetty74\org.eclipse.jetty.util.jar" relpath=""/> 
+        </fatjar.build>
+    </target>
+	
     <target name="jetty_fat">
     	
         <fatjar.build output="${embedLibDir}/jetty_fat_745.jar">
@@ -142,13 +158,17 @@
             <!-- fatjar.jarsource file="${basedir}\jetty\servlet-api.jar" relpath=""/ --> 
 
         	<fatjar.jarsource file="${basedir}\jetty745\jetty-ajp-7.4.5.v20110725.jar" relpath=""/> 
-        	<fatjar.jarsource file="${basedir}\jetty745\jetty-annotations-7.4.5.v20110725.jar" relpath=""/> 
-        	<fatjar.jarsource file="${basedir}\jetty745\jetty-client-7.4.5.v20110725.jar" relpath=""/> 
         	<fatjar.jarsource file="${basedir}\jetty745\jetty-continuation-7.4.5.v20110725.jar" relpath=""/> 
-        	<fatjar.jarsource file="${basedir}\jetty745\jetty-deploy-7.4.5.v20110725.jar" relpath=""/> 
-
         	<fatjar.jarsource file="${basedir}\jetty745\jetty-http-7.4.5.v20110725.jar" relpath=""/> 
            	<fatjar.jarsource file="${basedir}\jetty745\jetty-io-7.4.5.v20110725.jar" relpath=""/> 
+           	<fatjar.jarsource file="${basedir}\jetty745\jetty-server-7.4.5.v20110725.jar" relpath=""/> 
+           	<fatjar.jarsource file="${basedir}\jetty745\jetty-util-7.4.5.v20110725.jar" relpath=""/>
+
+        	<!--
+        	<fatjar.jarsource file="${basedir}\jetty745\jetty-client-7.4.5.v20110725.jar" relpath=""/> 
+        	<fatjar.jarsource file="${basedir}\jetty745\jetty-deploy-7.4.5.v20110725.jar" relpath=""/> 
+        	<fatjar.jarsource file="${basedir}\jetty745\jetty-annotations-7.4.5.v20110725.jar" relpath=""/>
+
         	<fatjar.jarsource file="${basedir}\jetty745\jetty-jmx-7.4.5.v20110725.jar" relpath=""/> 
            	<fatjar.jarsource file="${basedir}\jetty745\jetty-jndi-7.4.5.v20110725.jar" relpath=""/> 
            	<fatjar.jarsource file="${basedir}\jetty745\jetty-plus-7.4.5.v20110725.jar" relpath=""/> 
@@ -156,13 +176,12 @@
         	<fatjar.jarsource file="${basedir}\jetty745\jetty-policy-7.4.5.v20110725.jar" relpath=""/> 
            	<fatjar.jarsource file="${basedir}\jetty745\jetty-rewrite-7.4.5.v20110725.jar" relpath=""/> 
         	<fatjar.jarsource file="${basedir}\jetty745\jetty-security-7.4.5.v20110725.jar" relpath=""/> 
-           	<fatjar.jarsource file="${basedir}\jetty745\jetty-server-7.4.5.v20110725.jar" relpath=""/> 
            	<fatjar.jarsource file="${basedir}\jetty745\jetty-servlet-7.4.5.v20110725.jar" relpath=""/>
         	
-           	<fatjar.jarsource file="${basedir}\jetty745\jetty-util-7.4.5.v20110725.jar" relpath=""/>
            	<fatjar.jarsource file="${basedir}\jetty745\jetty-webapp-7.4.5.v20110725.jar" relpath=""/>
            	<fatjar.jarsource file="${basedir}\jetty745\jetty-websocket-7.4.5.v20110725.jar" relpath=""/>
             <fatjar.jarsource file="${basedir}\jetty745\jetty-xml-7.4.5.v20110725.jar" relpath=""/>
+            -->
         </fatjar.build>
     </target>
 	

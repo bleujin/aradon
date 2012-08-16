@@ -32,6 +32,10 @@ public class AradonJettyHelper implements AradonServerHelper {
 		for (Entry<String, String> entry : cfig.properties().entrySet()) {
 			server.getContext().getParameters().add(entry.getKey(), entry.getValue());
 		}
+		// It seems that I get the deadlocks with both NIO connectors, 
+		// the selecting one and the blocking one. This is both 2.1-RC4 and the 3rd of May snaphost. The BIO one ("3") is OK.
+		server.getContext().getParameters().set("type", "3") ;
+		
 		if (cfig.protocol() == Protocol.HTTP){
 			return new AradonJettyHelper(new  net.ion.radon.core.server.jetty.HttpServerHelper(server));
 		} else {

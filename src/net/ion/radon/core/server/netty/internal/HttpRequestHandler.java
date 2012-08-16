@@ -62,7 +62,6 @@ import org.jboss.netty.handler.codec.http.HttpVersion;
 import org.jboss.netty.handler.ssl.SslHandler;
 import org.jboss.netty.handler.stream.ChunkedStream;
 import org.restlet.Response;
-import org.restlet.data.Parameter;
 import org.restlet.engine.ConnectorHelper;
 import org.restlet.engine.header.Header;
 import org.restlet.engine.header.HeaderConstants;
@@ -119,7 +118,7 @@ public class HttpRequestHandler extends SimpleChannelUpstreamHandler {
 			return;
 		}
 
-		cause.printStackTrace();
+//		cause.printStackTrace();
 		if (ch.isConnected()) {
 			sendError(ctx, HttpResponseStatus.INTERNAL_SERVER_ERROR);
 		}

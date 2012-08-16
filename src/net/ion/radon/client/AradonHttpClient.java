@@ -89,9 +89,9 @@ public class AradonHttpClient implements AradonClient, Closeable {
 
 	public void stop() throws Exception {
 		AradonClientFactory.remove(this);
-		client.stop();
+		client.getHelped().stop();
 		// client.getHelped().stop();
-		es.shutdownNow();
+		es.shutdown();
 		// es.awaitTermination(1, TimeUnit.SECONDS);
 		// es.shutdownNow();
 	}
