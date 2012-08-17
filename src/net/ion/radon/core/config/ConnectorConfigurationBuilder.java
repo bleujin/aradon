@@ -39,6 +39,10 @@ public class ConnectorConfigurationBuilder extends AbstractConfigurationBuilder<
 		return this ;
 	}
 	
+	public static ConnectorConfigurationBuilder newBuilder(ServerConfigurationBuilder builder) {
+		return new ConnectorConfigurationBuilder(builder);
+	}
+	
 	@Override
 	public ConnectorConfiguration create() {
 		return new ConnectorConfiguration(this.engine, this.protocol, this.port, this.properties);

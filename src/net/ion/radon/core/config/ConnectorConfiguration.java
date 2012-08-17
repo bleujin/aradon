@@ -32,7 +32,7 @@ public class ConnectorConfiguration {
 	}
 
 
-	public final static ConnectorConfiguration makeDefaultHTTPConfig(int port) {
+	public final static ConnectorConfiguration makeRestletHTTPConfig(int port) {
 		return makeConfig(EngineType.Unknown, port) ;
 	}
 

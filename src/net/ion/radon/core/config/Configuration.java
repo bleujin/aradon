@@ -159,5 +159,9 @@ public class Configuration {
 			throw new ConfigurationException(ex);
 		}
 	}
+
+	public static ConfigurationBuilder newBuilder() {
+		return new ConfigurationBuilder() ;
+	}
 	
 }

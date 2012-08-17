@@ -5,11 +5,10 @@ import java.io.Serializable;
 import net.ion.framework.util.Debug;
 import net.ion.radon.client.AradonClient;
 import net.ion.radon.client.AradonClientFactory;
-import net.ion.radon.client.ISerialRequest;
 import net.ion.radon.core.Aradon;
-import net.ion.radon.core.config.ConnectorConfiguration;
+import net.ion.radon.core.config.Configuration;
+import net.ion.radon.core.config.ConnectorConfig.EngineType;
 import net.ion.radon.core.let.AbstractServerResource;
-import net.ion.radon.util.AradonTester;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -22,13 +21,12 @@ import org.restlet.resource.Post;
 public class TestProblem {
 
 	@Test
-	public void textRequestOnNetty() throws Exception {
+	public void onNetty() throws Exception {
 		for (int i = 0; i < 10; i++) {
-			Aradon aradon = AradonTester.create().register("", "/hello", MyTextLet.class).getAradon();
-			aradon.startServer(ConnectorConfiguration.makeNettyHTTPConfig(9000));
+			Aradon aradon = Aradon.create(createConfig(EngineType.Netty)).startServer(9000) ;
 			for (int loop = 0; loop < 10; loop++) {
 				AradonClient ac = AradonClientFactory.create("http://127.0.0.1:9000");
-				Assert.assertEquals("hello", ac.createRequest("/hello").get().getText()) ;;
+				Assert.assertEquals("hello", ac.createRequest("/hello").get().getText());
 				ac.stop();
 			}
 			aradon.destorySelf();
@@ -36,10 +34,37 @@ public class TestProblem {
 	}
 
 	@Test
-	public void textRequestOnJetty() throws Exception {
+	public void onSimple() throws Exception {
 		for (int i = 0; i < 10; i++) {
-			Aradon aradon = AradonTester.create().register("", "/hello", MyTextLet.class).getAradon();
-			aradon.startServer(ConnectorConfiguration.makeJettyHTTPConfig(9000));
+			Aradon aradon = Aradon.create(createConfig(EngineType.Simple)).startServer(9000) ;
+			for (int loop = 0; loop < 10; loop++) {
+				AradonClient ac = AradonClientFactory.create("http://127.0.0.1:9000");
+				Assert.assertEquals("hello", ac.createRequest("/hello").get().getText());
+				;
+				ac.stop();
+			}
+			aradon.destorySelf();
+		}
+	}
+
+	@Test
+	public void onRest() throws Exception {
+		for (int i = 0; i < 10; i++) {
+			Aradon aradon = Aradon.create(createConfig(EngineType.Unknown)).startServer(9000) ;
+			for (int loop = 0; loop < 10; loop++) {
+				AradonClient ac = AradonClientFactory.create("http://127.0.0.1:9000");
+				Assert.assertEquals("hello", ac.createRequest("/hello").get().getText());
+				ac.stop();
+			}
+			aradon.destorySelf();
+		}
+	}
+
+
+	@Test
+	public void onJetty() throws Exception {
+		for (int i = 0; i < 10; i++) {
+			Aradon aradon = Aradon.create(createConfig(EngineType.Jetty)).startServer(9000) ;
 			for (int loop = 0; loop < 10; loop++) {
 				AradonClient ac = AradonClientFactory.create("http://127.0.0.1:9000");
 				Debug.line(ac.createRequest("/hello").get().getText());
@@ -48,47 +73,22 @@ public class TestProblem {
 			aradon.destorySelf();
 		}
 	}
+	
+	private Configuration createConfig(EngineType engine){
+		return Configuration.newBuilder()
+		.server().connector().engine(engine).port(9000)
+		.aradon().sections().restSection("").path("hello").addUrlPattern("/hello").handler(MyTextLet.class)
+		.build() ;
+	}
 
 	
-
-
-	@Test
-	public void serialRequestOnNetty() throws Exception {
-		for (int i = 0; i < 10; i++) {
-			Aradon aradon = AradonTester.create()
-				.register("", "/hello", MySerialLet.class).getAradon();
-			aradon.startServer(ConnectorConfiguration.makeNettyHTTPConfig(9000));
-			for (int loop = 0; loop < 10; loop++) {
-				AradonClient ac = AradonClientFactory.create("http://127.0.0.1:9000");
-				ISerialRequest req1 = ac.createSerialRequest("/hello");
-				Assert.assertEquals("hello", req1.get(String.class)) ;
-				ac.stop();
-			}
-			aradon.destorySelf();
-		}
-	}
-
-	@Test
-	public void serialOnJetty() throws Exception {
-		for (int i = 0; i < 10; i++) {
-			Aradon aradon = AradonTester.create().register("", "/hello", MySerialLet.class).getAradon();
-			aradon.startServer(ConnectorConfiguration.makeJettyHTTPConfig(9000));
-			for (int loop = 0; loop < 10; loop++) {
-				AradonClient ac = AradonClientFactory.create("http://127.0.0.1:9000");
-				ISerialRequest req1 = ac.createSerialRequest("/hello");
-				Assert.assertEquals("hello", req1.get(String.class)) ;
-				ac.stop();
-			}
-			aradon.destorySelf();
-		}
-	}
 
 }
 
 class MySerialLet extends AbstractServerResource {
 	@Get
 	public ObjectRepresentation<Serializable> hello() {
-		return new ObjectRepresentation<Serializable>("hello");
+		return new ObjectRepresentation<Serializable>(new MyUser());
 	}
 
 	@Post
@@ -98,12 +98,20 @@ class MySerialLet extends AbstractServerResource {
 	}
 }
 
+class MyUser implements Serializable {
+	private static final long serialVersionUID = 1L;
+	private String name = "bleujin" ;
+	
+	public String getName(){
+		return name ;
+	}
+}
 
 class MyTextLet extends AbstractServerResource {
-	
+
 	@Get
-	public String hello(){
-		return "hello" ;
+	public String hello() {
+		return "hello";
 	}
-	
+
 }

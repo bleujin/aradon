@@ -220,7 +220,7 @@ public class Aradon extends Component implements IService<SectionService>, Arado
 		onEventFire(AradonEvent.START, this);
 	}
 
-	public void startServer(int port) throws Exception {
+	public Aradon startServer(int port) throws Exception {
 		
 		long start = System.currentTimeMillis() ;
 //		if (port > 0 && useAlreadyPortNum(port)) {
@@ -231,7 +231,7 @@ public class Aradon extends Component implements IService<SectionService>, Arado
 //		Debug.line(System.currentTimeMillis() - start) ;
 
 		startServer(config.server().connector().port(port));
-		
+		return this ;
 	}
 
 	public synchronized void startServer(ConnectorConfiguration cfig) throws Exception {

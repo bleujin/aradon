@@ -45,8 +45,10 @@ public class TestAradonServer extends TestBaseAradon {
 
 	@Test
 	public void create() throws Exception {
-		String configStr = "<connector-config engine='netty' port='8183' protocol='https'>\n" + "<parameter name='keystorePath' description=''>./resource/keystore/.keystore</parameter>\n" + "<parameter name='keystorePassword' description=''>nodara</parameter>\n"
-				+ "<parameter name='keyPassword' description=''>kkk</parameter>\n" + "</connector-config>";
+		String configStr = "<connector-config engine='netty' port='8183' protocol='https'>\n" + 
+			"<parameter name='keystorePath' description=''>./resource/keystore/.keystore</parameter>\n" + 
+			"<parameter name='keystorePassword' description=''>nodara</parameter>\n"+ 
+			"<parameter name='keyPassword' description=''>kkk</parameter>\n" + "</connector-config>";
 
 		XMLConfig config = XMLConfig.load(configStr);
 		ConnectorConfig cc = ConnectorConfig.create(config, 456);

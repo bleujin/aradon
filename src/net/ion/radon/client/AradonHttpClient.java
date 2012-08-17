@@ -27,7 +27,7 @@ import org.restlet.data.Cookie;
 import org.restlet.data.CookieSetting;
 import org.restlet.data.Parameter;
 import org.restlet.data.Protocol;
-import org.restlet.engine.connector.HttpClientHelper;
+import org.restlet.ext.net.HttpClientHelper;
 import org.restlet.ext.ssl.SslContextFactory;
 import org.restlet.representation.InputRepresentation;
 import org.restlet.representation.Representation;
@@ -47,15 +47,14 @@ public class AradonHttpClient implements AradonClient, Closeable {
 		this.host = host;
 		this.client = new HttpClientHelper(new Client(ListUtil.toList(Protocol.HTTP, Protocol.HTTPS)));
 
-		Context context = new Context();
 		// http://www.restlet.org/documentation/2.0/jee/ext/org/restlet/ext/httpclient/HttpClientHelper.html
-//		context.getParameters().add(new Parameter("socketTimeout","3000")) ;
-		this.client.getHelped().setContext(context);
-		try {
-			client.getHelped().start();
-		} catch (Exception e) {
-			Debug.error(e.getMessage());
+		
+		if (client.getHelped().getContext() == null){
+			Context context = new Context();
+			context.getParameters().add(new Parameter("socketTimeout","3000")) ;
+			this.client.getHelped().setContext(context);
 		}
+
 		this.es = Executors.newCachedThreadPool();
 	}
 
@@ -90,6 +89,7 @@ public class AradonHttpClient implements AradonClient, Closeable {
 	public void stop() throws Exception {
 		AradonClientFactory.remove(this);
 		client.getHelped().stop();
+		client.stop() ;
 		// client.getHelped().stop();
 		es.shutdown();
 		// es.awaitTermination(1, TimeUnit.SECONDS);
@@ -159,15 +159,28 @@ public class AradonHttpClient implements AradonClient, Closeable {
 
 	private Response innerHandle(Request request) {
 		try {
+			if (!client.getHelped().isStarted()) {
+				client.getHelped().start() ;
+			}
+			
+			
 			if (cookies != null) {
 				for (CookieSetting cs : cookies) {
 					Cookie c = new Cookie(cs.getVersion(), cs.getName(), cs.getValue(), cs.getPath(), cs.getDomain());
 					request.getCookies().add(c);
 				}
 			}
+			Response response ;
+			if (request.getProtocol().equals(Protocol.HTTPS)) {
+//				response = new Response(request) ;
+//				client.handle(request, response);
+				response = client.getHelped().handle(request);
+			} else {
+				response = client.getHelped().handle(request);
+			}
 //			Response response = new Response(request) ;
 //			client.handle(request, response);
-			Response response = client.getHelped().handle(request);
+			
 			cookies = response.getCookieSettings();
 
 			return response;
@@ -199,16 +212,12 @@ public class AradonHttpClient implements AradonClient, Closeable {
 
 		final SSLContext sslClientContext = getCustomSSLContext();
 
-		javax.net.ssl.HttpsURLConnection.setDefaultHostnameVerifier(new javax.net.ssl.HostnameVerifier() {
-			public boolean verify(String hostname, javax.net.ssl.SSLSession sslSession) {
-				return true;
-			}
-		});
-
-		if (client.getContext() == null)
+		javax.net.ssl.HttpsURLConnection.setDefaultHostnameVerifier(org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+		if (client.getHelped().getContext() == null){
 			client.getHelped().setContext(new Context());
-
-		client.getContext().getAttributes().put("sslContextFactory", new SslContextFactory() {
+		}
+		client.getHelped().getContext().getAttributes().put("hostnameVerifier", org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER) ;
+		client.getHelped().getContext().getAttributes().put("sslContextFactory", new SslContextFactory() {
 			@Override
 			public void init(Series<Parameter> param) {
 			}
@@ -218,6 +227,7 @@ public class AradonHttpClient implements AradonClient, Closeable {
 				return sslClientContext;
 			}
 		});
+		
 	}
 
 	private SSLContext getCustomSSLContext() {
