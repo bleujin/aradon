@@ -62,4 +62,7 @@ public class SectionConfiguration extends LetConfiguration<SectionConfiguration>
 		return ConfigurationBuilder.load(sconfig).build().aradon().sections() ;
 	}
 	
+	public String toString(){
+		return this.getClass().getName() + "[" + name() + "]" ;
+	}
 }

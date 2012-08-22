@@ -1,16 +1,12 @@
 package net.ion.radon.core.filter;
 
 
-import static net.ion.radon.core.RadonAttributeKey.REQUEST_CONTEXT;
-
 import java.util.Map;
 
 import net.ion.framework.util.CaseInsensitiveHashMap;
 import net.ion.radon.core.IService;
-import net.ion.radon.core.TreeContext;
 import net.ion.radon.core.config.Attribute;
 import net.ion.radon.core.let.InnerRequest;
-import net.ion.radon.core.let.InnerResponse;
 
 import org.restlet.Request;
 import org.restlet.Response;
@@ -18,14 +14,7 @@ import org.restlet.representation.Representation;
 public abstract class IRadonFilter {
 
 	private CaseInsensitiveHashMap<Attribute> attrs = new CaseInsensitiveHashMap<Attribute>() ;
-	private TreeContext getContext(Request request) {
-		TreeContext context = (TreeContext) request.getAttributes().get(REQUEST_CONTEXT) ;
-		if (context == null) throw new IllegalArgumentException("context not found") ;
-		
-		return context;
-	}
 
-	
 	public void init(IService service){
 		; // noaction 
 	}

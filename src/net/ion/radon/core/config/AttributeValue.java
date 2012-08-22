@@ -10,6 +10,7 @@ import net.ion.radon.core.TreeContext;
 public interface AttributeValue {
 
 	public Object get(TreeContext context) throws InstanceCreationException;
+	
 }
 
 class ApplicationAttributeValue implements AttributeValue {

@@ -36,7 +36,10 @@ public class RDBChallengeAuthenticator  extends Authenticator {
 	@Override
 	public void init(IService service){
 		super.init(service) ;
-		this.verifier = new JDBCVerifier(service.getServiceContext().getAttributeObject(contextId, IDBController.class), query) ;
+		
+		IDBController dc = service.getServiceContext().getAttributeObject(contextId, IDBController.class);
+		if (dc == null) throw new IllegalStateException(contextId + " is null") ;
+		this.verifier = new JDBCVerifier(dc, query) ;
 	}
 	
 

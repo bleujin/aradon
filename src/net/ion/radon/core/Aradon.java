@@ -14,6 +14,7 @@ import java.util.Map.Entry;
 import net.ion.framework.util.Debug;
 import net.ion.framework.util.IOUtil;
 import net.ion.framework.util.InstanceCreationException;
+import net.ion.framework.util.ListUtil;
 import net.ion.framework.util.MapUtil;
 import net.ion.framework.util.ObjectUtil;
 import net.ion.radon.core.EnumClass.PlugInApply;
@@ -59,8 +60,6 @@ public class Aradon extends Component implements IService<SectionService>, Arado
 
 	// private AradonConfig aconfig;
 	private AradonServerHelper serverHelper;
-	private boolean initialized = false;
-
 	private Aradon() {
 		super();
 		this.rootContext = TreeContext.createRootContext(getDefaultHost());
@@ -78,34 +77,33 @@ public class Aradon extends Component implements IService<SectionService>, Arado
 	}
 
 	public static Aradon create() {
-		return create(ConfigurationBuilder.newBuilder().build()) ;
+		return create(ConfigurationBuilder.newBuilder().build());
 	}
-	
+
 	public static Aradon create(Configuration config) {
 		Aradon aradon = new Aradon();
 		aradon.init(config);
 		return aradon;
 	}
-	
 
 	private Configuration config;
 	private Map<String, SectionService> sections = MapUtil.newMap();
 
 	private void init(Configuration config) {
-		this.rootContext = TreeContext.createRootContext(getDefaultHost());
+		for (Entry<String, AttributeValue> entry : config.aradon().attributes().entrySet()) {
+			rootContext.putAttribute(entry.getKey(), entry.getValue());
+		}
+		
 		for (SectionConfiguration sconfig : config.aradon().sections().sections()) {
 			attach(sconfig);
 		}
 
-		for (Entry<String, AttributeValue> entry : config.aradon().attributes().entrySet()) {
-			rootContext.putAttribute(entry.getKey(), entry.getValue());
-		}
 		this.config = config;
+		config.aradon().attachService(this) ;
 		this.setContext(rootContext);
 		setLogService(new RadonLogService());
-		this.initialized = true;
 
-		start();
+		//start();
 	}
 
 	private String getSectionName(Request request) {
@@ -156,10 +154,10 @@ public class Aradon extends Component implements IService<SectionService>, Arado
 	// public void addReleasable(IService service, Releasable releasable) {
 	// releasables.add(WrapperReleaseObject.create(service, releasable));
 	// }
-	
+
 	@Override
-	public void stop(){
-		this.destorySelf() ;
+	public void stop() {
+		this.destorySelf();
 	}
 
 	public void destorySelf() {
@@ -167,21 +165,24 @@ public class Aradon extends Component implements IService<SectionService>, Arado
 			return;
 
 		onEventFire(AradonEvent.STOP, this);
+		List<String> sectionNames = ListUtil.newList() ;
 		for (SectionService section : sections.values()) {
-			detach(section.getName()) ;
+			sectionNames.add(section.getName());
 		}
+		for (String sectionName : sectionNames) {
+			detach(sectionName);
+		}
+
 		
 		getServiceContext().closeAttribute();
-		
-
 
 		getGlobalConfig().server().stopShell();
 		try {
-//			getServices().stop();
-//			getServices().clear();
+			// getServices().stop();
+			// getServices().clear();
 			if (serverHelper != null)
 				serverHelper.stop();
-			
+
 			try {
 				super.stop();
 			} catch (Exception e) {
@@ -221,17 +222,17 @@ public class Aradon extends Component implements IService<SectionService>, Arado
 	}
 
 	public Aradon startServer(int port) throws Exception {
-		
-		long start = System.currentTimeMillis() ;
-//		if (port > 0 && useAlreadyPortNum(port)) {
-//			Debug.warn(port + " port is occupied");
-//			throw new IllegalArgumentException(port + " port is occupied");
-//		}
-		
-//		Debug.line(System.currentTimeMillis() - start) ;
+
+		long start = System.currentTimeMillis();
+		// if (port > 0 && useAlreadyPortNum(port)) {
+		// Debug.warn(port + " port is occupied");
+		// throw new IllegalArgumentException(port + " port is occupied");
+		// }
+
+		// Debug.line(System.currentTimeMillis() - start) ;
 
 		startServer(config.server().connector().port(port));
-		return this ;
+		return this;
 	}
 
 	public synchronized void startServer(ConnectorConfiguration cfig) throws Exception {
@@ -240,7 +241,7 @@ public class Aradon extends Component implements IService<SectionService>, Arado
 		this.serverHelper = ServerFactory.create(getContext(), this, cfig);
 		serverHelper.start();
 
-//		start();
+		// start();
 
 		final Aradon aradon = this;
 		Runtime.getRuntime().addShutdownHook(new Thread() {

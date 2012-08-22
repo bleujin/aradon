@@ -22,6 +22,10 @@ public abstract class AbstractConfigurationBuilder<T> implements IConfigurationC
 		return builder.aradon() ;
 	}
 	
+	public ServerConfigurationBuilder server(){
+		return builder.server() ;
+	}
+	
 	public boolean validate(){
 		return true ;
 	}

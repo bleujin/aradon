@@ -2,7 +2,10 @@ package net.ion.radon.core.filter;
 
 import static org.junit.Assert.assertEquals;
 import net.ion.framework.util.Debug;
+import net.ion.radon.client.AradonClient;
+import net.ion.radon.client.AradonClientFactory;
 import net.ion.radon.core.Aradon;
+import net.ion.radon.core.IService;
 import net.ion.radon.core.SectionService;
 import net.ion.radon.core.TestBaseAradon;
 import net.ion.radon.core.TreeContext;
@@ -11,7 +14,6 @@ import net.ion.radon.core.config.PathConfiguration;
 import net.ion.radon.core.let.InnerRequest;
 import net.ion.radon.core.let.InnerResponse;
 import net.ion.radon.core.let.PathService;
-import net.ion.radon.impl.filter.ExecuteTimeFilter;
 import net.ion.radon.param.ParamToBeanFilter;
 
 import org.junit.Test;
@@ -96,12 +98,36 @@ public class TestFilter extends TestBaseAradon {
 		SectionService section = aradon.getChildService("another");
 		section.attach(PathConfiguration.testHello()) ;
 		
-		section.getConfig().addPreFilter(new ExecuteTimeFilter()) ;
-		section.getConfig().prefilters() ;
+		SampleFilter filter = new SampleFilter();
+		section.getConfig().addPreFilter(filter) ;
+		
+		AradonClient client = AradonClientFactory.create(aradon);
+		client.createRequest("/another/hello").get() ;
+		
+		assertEquals(true, filter.initialized()) ;
 	}
 	
+}
+
+class SampleFilter extends IRadonFilter{
+
+	private boolean initialized = false ;
+	@Override
+	public IFilterResult afterHandle(IService iservice, Request request, Response response) {
+		return IFilterResult.CONTINUE_RESULT;
+	}
+
+	@Override
+	public void init(IService service){
+		this.initialized = true ;
+	}
 	
-	
-	
-	
+	@Override
+	public IFilterResult preHandle(IService iservice, Request request, Response response) {
+		return IFilterResult.CONTINUE_RESULT;
+	}
+
+	public boolean initialized(){
+		return initialized ;
+	}
 }

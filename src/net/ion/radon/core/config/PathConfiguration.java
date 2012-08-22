@@ -68,6 +68,9 @@ public class PathConfiguration extends LetConfiguration<PathConfiguration>{
 	public int matchMode() {
 		return matchMode;
 	}
+	public String toString(){
+		return this.getClass().getSimpleName() + "[" + name() + "]" ;
+	}
 
 }
 

@@ -51,6 +51,7 @@ public class HttpRestSection extends SectionService implements IService<PathServ
 			context.putAttribute(entry.getKey(), entry.getValue()) ;
 		} 
 		super.setName(sconfig.name()) ;
+		sconfig.attachService(this) ;
 	}
 
 	private String makePathPattern(String urlPattern) {
@@ -141,7 +142,7 @@ public class HttpRestSection extends SectionService implements IService<PathServ
 	}
 	
 	public String toString(){
-		return "RestSection[" + getName() + "]" ;
+		return this.getClass().getCanonicalName() + "[" + sconfig + "]" ;
 	}
 	
 }

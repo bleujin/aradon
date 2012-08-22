@@ -20,7 +20,7 @@ public abstract class AbstractLetConfigurationBuilder<V extends AbstractLetConfi
 
 	private List<IRadonFilter> prefilters = ListUtil.newList() ;
 	private List<IRadonFilter> afterfilters = ListUtil.newList() ;
-	private Map<String, AttributeValue> attributes = MapUtil.newCaseInsensitiveMap() ;
+	private Map<String, AttributeValue> attributes = MapUtil.newMap() ;
 	
 	protected AbstractLetConfigurationBuilder(IConfigurationChildBuilder builder){
 		super(builder) ;

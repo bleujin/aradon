@@ -4,6 +4,8 @@ public interface IConfigurationChildBuilder {
 	
 	AradonConfigurationBuilder aradon() ;
 	
+	ServerConfigurationBuilder server() ;
+	
 	Configuration build();
 	
 	ConfigurationBuilder toBuilder() ;

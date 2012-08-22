@@ -37,10 +37,10 @@ public class PathService extends Restlet implements IService {
 		this.section = section ;
 		this.context = context ;
 		this.pconfig = config ;
-
 		for (Entry<String, AttributeValue> entry : config.attributes().entrySet()) {
 			context.putAttribute(entry.getKey(), entry.getValue());
 		}
+		this.pconfig.attachService(this) ;
 	}
 
 	public static PathService create(Aradon aradon, SectionService section, TreeContext context, PathConfiguration pconfig) {
@@ -127,6 +127,9 @@ public class PathService extends Restlet implements IService {
 
 	}
 
+	public String toString(){
+		return "PathService[" + pconfig + "]" ;
+	}
 	
 	public void stop() {
 		try {

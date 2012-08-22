@@ -31,4 +31,8 @@ public class AradonConfiguration extends LetConfiguration<AradonConfiguration> {
 		return homeRef ;
 	}
 
+	public String toString(){
+		return this.getClass().getName() ;
+	}
+
 }

@@ -1,14 +1,15 @@
 package net.ion.radon.core.server.netty.internal;
 
+import java.io.ObjectOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.List;
 
-import net.ion.framework.util.Debug;
-
 import org.jboss.netty.buffer.ChannelBuffer;
+import org.jboss.netty.buffer.ChannelBufferOutputStream;
 import org.jboss.netty.buffer.ChannelBuffers;
+import org.jboss.netty.buffer.HeapChannelBuffer;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.handler.codec.http.HttpChunk;
@@ -32,7 +33,20 @@ public class HttpCompositeEncoder extends OneToOneEncoder {
 
 	protected Object encode(ChannelHandlerContext ctx, Channel channel, Object msg) throws Exception {
 		
-		Debug.line(msg.getClass()) ;
+		if (msg instanceof HeapChannelBuffer) {
+			int estimatedLength = 512;
+			final byte LENGTH_PLACEHOLDER[] = new byte[4];
+			ChannelBufferOutputStream bout = new ChannelBufferOutputStream(ChannelBuffers.dynamicBuffer(estimatedLength, ctx.getChannel().getConfig().getBufferFactory()));
+			bout.write(LENGTH_PLACEHOLDER);
+			ObjectOutputStream oout = new CompactObjectOutputStream(bout);
+			oout.writeObject(msg);
+			oout.flush();
+			oout.close();
+			ChannelBuffer encoded = bout.buffer();
+			encoded.setInt(0, encoded.writerIndex() - 4);
+			return encoded;
+		}
+		
 		
 		if (msg instanceof HttpMessage) {
 			HttpMessage m = (HttpMessage) msg;

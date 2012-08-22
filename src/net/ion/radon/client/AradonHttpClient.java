@@ -170,16 +170,15 @@ public class AradonHttpClient implements AradonClient, Closeable {
 					request.getCookies().add(c);
 				}
 			}
-			Response response ;
-			if (request.getProtocol().equals(Protocol.HTTPS)) {
+			Response response = client.getHelped().handle(request);
+			
+//			Response response ;
+//			if (request.getProtocol().equals(Protocol.CLAP)) {
 //				response = new Response(request) ;
 //				client.handle(request, response);
-				response = client.getHelped().handle(request);
-			} else {
-				response = client.getHelped().handle(request);
-			}
-//			Response response = new Response(request) ;
-//			client.handle(request, response);
+//			} else {
+//				response = client.getHelped().handle(request);
+//			}
 			
 			cookies = response.getCookieSettings();
 
