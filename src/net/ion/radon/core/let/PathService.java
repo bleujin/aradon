@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map.Entry;
 
+import net.ion.framework.util.Debug;
 import net.ion.radon.core.Aradon;
 import net.ion.radon.core.IService;
 import net.ion.radon.core.RadonAttributeKey;
@@ -39,6 +40,7 @@ public class PathService extends Restlet implements IService {
 		this.pconfig = config ;
 		for (Entry<String, AttributeValue> entry : config.attributes().entrySet()) {
 			context.putAttribute(entry.getKey(), entry.getValue());
+			Debug.line(entry.getKey(), entry.getValue()) ;
 		}
 		this.pconfig.attachService(this) ;
 	}

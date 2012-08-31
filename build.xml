@@ -89,6 +89,8 @@
 		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../webSocketPlug/libs/" />
 		<echo>Copy to MongoSearch</echo>
 		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../mongoSearch/lib/" />
+		<echo>Copy to Craken</echo>
+		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../craken/lib/" />
 	</target>
 
 	<target name="copy_novision" depends="publish">
