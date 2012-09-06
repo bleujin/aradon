@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -28,6 +29,7 @@ import net.ion.radon.core.config.PathConfiguration;
 import net.ion.radon.core.config.SectionConfiguration;
 import net.ion.radon.core.config.XMLConfig;
 import net.ion.radon.core.context.OnEventObject;
+import net.ion.radon.core.context.OnOrderEventObject;
 import net.ion.radon.core.context.OnEventObject.AradonEvent;
 import net.ion.radon.core.except.AradonRuntimeException;
 import net.ion.radon.core.filter.IFilterResult;
@@ -285,13 +287,32 @@ public class Aradon extends Component implements IService<SectionService>, Arado
 		}
 	}
 
-	private void onEventFire(AradonEvent event, IService service) {
+	private void onEventFire(final AradonEvent event, IService service) {
 		TreeContext serviceContext = service.getServiceContext();
+		
+		List<OnEventObject> temp =  ListUtil.newList() ;
 		for (Object key : serviceContext.getAttributes().keySet()) {
 			Object value = serviceContext.getAttributeObject(ObjectUtil.toString(key));
 			if (OnEventObject.class.isInstance(value)) {
-				((OnEventObject) value).onEvent(event, service);
+				temp.add((OnEventObject) value) ;
 			}
+		}
+		
+		Collections.sort(temp, new Comparator<OnEventObject>(){
+			private int order(OnEventObject o){
+				if (o instanceof OnOrderEventObject){
+					return ((OnOrderEventObject)o).order() ;
+				} else {
+					return 100 ;
+				}
+			}
+			public int compare(OnEventObject o1, OnEventObject o2) {
+				return (order(o1) - order(o2)) * (event == AradonEvent.START ? 1 : -1);
+			}}) ;
+		
+		
+		for (OnEventObject eventObject : temp) {
+			 eventObject.onEvent(event, service);
 		}
 
 		for (Object child : service.getChildren()) {
