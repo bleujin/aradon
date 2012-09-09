@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="bleujin-SV" name="net.ion.radon.TestAllAradon" tests="0" time="0.049" timestamp="2012-08-24T05:17:40">
+<testsuite errors="0" failures="0" hostname="bleujin-SV" name="net.ion.radon.TestAllAradon" tests="0" time="0.065" timestamp="2012-09-09T05:44:51">
   <properties>
     <property name="java.vendor" value="Sun Microsystems Inc." />
     <property name="sun.java.launcher" value="SUN_STANDARD" />
@@ -7,7 +7,7 @@
     <property name="sun.management.compiler" value="HotSpot Client Compiler" />
     <property name="os.name" value="Windows 7" />
     <property name="sun.boot.class.path" value="C:\java\jdk5_22\jre\lib\rt.jar;C:\java\jdk5_22\jre\lib\i18n.jar;C:\java\jdk5_22\jre\lib\sunrsasign.jar;C:\java\jdk5_22\jre\lib\jsse.jar;C:\java\jdk5_22\jre\lib\jce.jar;C:\java\jdk5_22\jre\lib\charsets.jar;C:\java\jdk5_22\jre\classes" />
-    <property name="TODAY" value="August 24 2012" />
+    <property name="TODAY" value="September 9 2012" />
     <property name="build.number" value="8" />
     <property name="sun.desktop" value="windows" />
     <property name="java.vm.specification.vendor" value="Sun Microsystems Inc." />
@@ -20,7 +20,7 @@
     <property name="sun.boot.library.path" value="C:\java\jdk5_22\jre\bin" />
     <property name="manifest.main.class" value="net.ion.radon.ServerRunner" />
     <property name="ant.project.name" value="builder_for_aradon" />
-    <property name="DSTAMP" value="20120824" />
+    <property name="DSTAMP" value="20120909" />
     <property name="java.version" value="1.5.0_22" />
     <property name="user.timezone" value="" />
     <property name="sun.arch.data.model" value="32" />
@@ -55,7 +55,7 @@
     <property name="java.runtime.name" value="Java(TM) 2 Runtime Environment, Standard Edition" />
     <property name="java.class.path" value="D:\github\aradon\aradon_lib\imsi\junit4_5.jar;D:\github\aradon\bin;D:\github\aradon\aradon_lib\aradon\embed\ant.jar;D:\github\aradon\aradon_lib\aradon\embed\apache_extend_fat.jar;D:\github\aradon\aradon_lib\aradon\embed\iframework_2.3.jar;D:\github\aradon\aradon_lib\aradon\embed\jci_fat.jar;D:\github\aradon\aradon_lib\aradon\embed\org.simpleframework.jar;D:\github\aradon\aradon_lib\aradon\embed\rest_fat.jar;D:\github\aradon;C:\Program Files (x86)\Java\jre6\lib\ext\QTJava.zip;D:\eclipse\plugins\org.apache.ant_1.7.1.v20090120-1145\lib\ant-launcher.jar;D:\eclipse\plugins\org.apache.ant_1.7.1.v20090120-1145\lib\ant.jar;D:\eclipse\plugins\org.apache.ant_1.7.1.v20090120-1145\lib\ant-junit.jar" />
     <property name="ant.version" value="Apache Ant version 1.7.1 compiled on June 27 2008" />
-    <property name="TSTAMP" value="1417" />
+    <property name="TSTAMP" value="1444" />
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
     <property name="java.vm.specification.version" value="1.0" />
     <property name="sun.cpu.endian" value="little" />
@@ -73,7 +73,7 @@
     <property name="basedir" value="D:\github\aradon" />
     <property name="baseDir" value="." />
     <property name="ant.java.version" value="1.5" />
-    <property name="TODAY_MY" value="08/24/2012 02:17" />
+    <property name="TODAY_MY" value="09/09/2012 02:44" />
     <property name="ant.core.lib" value="D:\eclipse\plugins\org.apache.ant_1.7.1.v20090120-1145\lib\ant.jar" />
     <property name="file.encoding" value="MS949" />
     <property name="java.specification.version" value="1.5" />
