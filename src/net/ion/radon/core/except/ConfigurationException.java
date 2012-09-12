@@ -4,6 +4,7 @@ public class ConfigurationException extends RuntimeException{
 
 	private Exception cause ;
 	private ConfigurationException(Exception cause) {
+		super(cause) ;
 		this.cause = cause ;
 	}
 

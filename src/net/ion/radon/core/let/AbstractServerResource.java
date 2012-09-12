@@ -101,7 +101,7 @@ public class AbstractServerResource extends BaseServerResource {
 	}
 
 	private void initRequest() {
-
+		getInnerRequest().getMethod() ;
 	}
 
 	protected boolean isExplorer() {

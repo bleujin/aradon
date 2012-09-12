@@ -161,7 +161,7 @@ public class InnerRequest extends Request {
 
 	private final void initMethod() {
 		// getRequest().getMethod() ; // super.getMethod() ;
-		final String overrideMethod = getParameter(RadonAttributeKey.ARADON_HTTP_METHOD);
+		final String overrideMethod = StringUtil.upperCase(getParameter(RadonAttributeKey.ARADON_HTTP_METHOD));
 
 		if (overrideMethod != null && overrideMethod.trim().length() > 0) {
 			if (getMethod().equals(Method.POST) && overrideMethod.trim().equalsIgnoreCase(Method.PUT.getName())) {

@@ -32,6 +32,7 @@ public class Configuration {
 		this.pluginConfig = pluginConfig ;
 	}
 	
+	
 	public AradonConfiguration aradon() {
 		return aradonConfig ;
 	}

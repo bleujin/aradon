@@ -76,6 +76,7 @@
 		<echo>Copy to ICS6 Extend</echo>
 		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../../workspace/ICS6Extend/lib/common/" />
 		<echo>Copy to ToonServer</echo>
+		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../../workspace/ToonServer/alone/lib/" />
 		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../../workspace/ToonServer/lib_source/aradon/" />
 		<echo>Copy to Fluffy</echo>
 		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../../workspace/fluffy/trunk/fluffy/lib/common/" />

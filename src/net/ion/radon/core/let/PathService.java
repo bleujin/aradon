@@ -79,6 +79,7 @@ public class PathService extends Restlet implements IService {
 		resource.init(context, request, response);
 
 		resource.handle();
+		Debug.line(response.getStatus()) ;
 		
 		resource.release() ;
 	}
