@@ -38,7 +38,7 @@ public class AradonConfigurationBuilder extends AbstractLetConfigurationBuilder<
 		this.homeRef = new Reference(homeRef) ;
 		return this ;
 	}
-	
+		
 	public AradonConfigurationBuilder fromLoad(XMLConfig config) throws InstanceCreationException {
 		
 		super.initContextFilter(config) ;

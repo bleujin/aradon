@@ -87,7 +87,7 @@ public class PathConfigurationBuilder extends AbstractLetConfigurationBuilder<Pa
 			description(pconfig.getString("description"))
 				.scope(Scope.valueOf(StringUtil.capitalize(pconfig.getString("handler[@scope]", "request"))))
 				.handler(clz)
-				.matchMode(IMatchMode.valueOf( StringUtil.upperCase(pconfig.getString("urls[@matchMode]", "equals")) ));
+				.matchMode(IMatchMode.fromString( StringUtil.upperCase(pconfig.getString("urls[@matchMode]", "equals")) ));
 
 			return this;
 		} catch (ClassNotFoundException ex) {

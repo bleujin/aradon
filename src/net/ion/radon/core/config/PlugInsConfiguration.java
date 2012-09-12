@@ -37,10 +37,20 @@ public class PlugInsConfiguration {
 		this.aradonId = aradonId ;
 		this.homePath = StringUtil.defaultIfEmpty(homePath, "") ;
 		this.paths = paths ;
+		
+		init() ;
 	}
 
-	public PlugInsConfiguration loadPlugIn(Aradon aradon) throws ConfigurationException, InstanceCreationException, IOException {
-		new PlugInDeployer(homePath).loadPlugIn(aradon) ;
+	public PlugInsConfiguration init() {
+		try {
+			new PlugInDeployer(homePath).loadPlugIn() ;
+		} catch(IOException ex){
+			throw new IllegalStateException(ex) ;
+		} catch (ConfigurationException ex) {
+			throw new IllegalStateException(ex) ;
+		} catch (InstanceCreationException ex) {
+			throw new IllegalStateException(ex) ;
+		}
 		
 		return this ;
 	}
@@ -56,25 +66,44 @@ public class PlugInsConfiguration {
 		return new File(PathMaker.getFilePath(homeDir, remainPath)) ;
 	}
 
+	public List<SectionConfiguration> sections() {
+		List<SectionConfiguration> result = ListUtil.newList() ;
+		
+		for (PlugInConfiguration pc : pconfigs) {
+			result.addAll(pc.getAradonConfig().sections().sections()) ; 
+		}
+		
+		return result;
+	}
+
 	
-	void addPlugInInfo(File xmlConfigFile, XMLConfig pxconfig) throws ConfigurationException, IOException, InstanceCreationException {
-		File pluginHomeDir = xmlConfigFile.getParentFile().getParentFile() ;
-		PlugInConfiguration pconfig = PlugInConfiguration.fromLoad(pxconfig) ;
-		pconfigs.add(pconfig) ;
-		System.setProperty("aradon." + aradonId + "[" + pconfig.getId() + "].home.dir", pluginHomeDir.getCanonicalPath()) ;
+	void addPlugInInfo(File xmlConfigFile, XMLConfig pxconfig) throws ConfigurationException, InstanceCreationException {
+//		File pluginHomeDir = xmlConfigFile.getParentFile().getParentFile() ;
+//		PlugInConfiguration pconfig = PlugInConfiguration.fromLoad(pxconfig) ;
+//		pconfigs.add(pconfig) ;
+//		
+//		System.setProperty("aradon." + aradonId + "[" + pconfig.getId() + "].home.dir", pluginHomeDir.getCanonicalPath()) ;
+	}
+	
+
+	public List<PlugInConfiguration> plugins() {
+		return pconfigs;
 	}
 	
 	
-	private static class PlugInDeployer {
+	private class PlugInDeployer {
 		private String homePath ;
 		private PlugInDeployer(String homePath){
 			this.homePath = homePath ;
 		}
 		
-		void loadPlugIn(Aradon aradon) throws ConfigurationException, InstanceCreationException, IOException {
+		void loadPlugIn() throws IOException, ConfigurationException, InstanceCreationException  {
 //			AradonConfig aconfig = aradon.getConfig() ;
 			
 			String parentDir = StringUtil.defaultIfEmpty(System.getProperty(Aradon.HOME_DIR), "./") ;
+			
+			System.setProperty("aradon." + aradonId +".home.dir", new File(parentDir).getCanonicalPath()) ;
+			
 			String plugInDir =  StringUtil.defaultIfEmpty(homePath, "plugin"); ;
 			String plugInFullPath = PathMaker.getFilePath((plugInDir.startsWith("/") ? "" : parentDir) , plugInDir) ;
 			
@@ -100,14 +129,21 @@ public class PlugInsConfiguration {
 			appender.invokeURL();
 
 			for (File xmlFile : configFiles) {
-				appendPlugin(aradon, xmlFile);
+				appendPlugin(xmlFile);
 			}
+			
 		}
 
-		private void appendPlugin(Aradon aradon, File xmlConfigFile) throws ConfigurationException, InstanceCreationException, IOException {
+		private void appendPlugin(File xmlConfigFile) throws ConfigurationException, InstanceCreationException, IOException  {
 			// plugins.put(pluginName, pconfig);
-			XMLConfig pconfig = XMLConfig.create(xmlConfigFile) ;
-			aradon.getGlobalConfig().plugin().addPlugInInfo(xmlConfigFile, pconfig);
+			XMLConfig xconfig = XMLConfig.create(xmlConfigFile) ;
+			File pluginHomeDir = xmlConfigFile.getParentFile().getParentFile() ;
+			PlugInConfiguration piconfig = PlugInConfiguration.fromLoad(xconfig) ;
+
+			PlugInsConfiguration.this.pconfigs.add(piconfig) ;
+			System.setProperty("aradon." + aradonId + "[" + piconfig.getId() + "].home.dir", pluginHomeDir.getCanonicalPath()) ;
+			
+			// addPlugInInfo(xmlConfigFile, xconfig);
 			// return this.rootContext;
 		}
 
@@ -155,6 +191,8 @@ public class PlugInsConfiguration {
 			return file.isFile() && file.getName().endsWith(".jar");
 		}
 	}
+
+
 
 }
 

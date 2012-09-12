@@ -38,6 +38,12 @@ public class ConfigurationBuilder implements IConfigurationChildBuilder{
 		return ConfigParser.create(config).parse() ;
 	}
 
+	public static AradonConfiguration loadPlugin(XMLConfig config) throws InstanceCreationException {
+		return ConfigParser.create(config).parsePlugin().aradonBuilder.create() ;
+	}
+
+
+	
 	public PlugInsConfigurationBuilder plugin() {
 		return pluginBuilder;
 	}
@@ -69,6 +75,11 @@ class ConfigParser {
 		return builder ;
 	}
 	
+
+	ConfigurationBuilder parsePlugin() throws InstanceCreationException{
+		builder.aradon().fromLoad(config) ;
+		return builder ;
+	}
 	
 	
 }

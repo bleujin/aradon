@@ -53,9 +53,6 @@ public class Configuration {
 	
 	private void initConfig(final Aradon aradon, TreeContext rootContext) throws InstanceCreationException, ConfigurationException {
 
-//		aradon.getStatusService().setContactEmail(aradonConfig.contactEmail());
-//		aradon.getStatusService().setHomeRef(aradonConfig.homeRef());
-//
 //		// at this point, the default class loader has all the jars you indicated
 //		loadClassPath();
 //

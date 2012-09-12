@@ -139,8 +139,8 @@ public class ServiceMBean implements DynamicMBean {
 				new MBeanOperationInfo("addPreFilter", "Add PreFilter", new MBeanParameterInfo[]{new MBeanParameterInfo("filterClzName", "java.lang.String", "filter Full Name"), new MBeanParameterInfo("constructor params", "java.lang.String", "constructor params(json array expression)")}, "void", MBeanOperationInfo.ACTION),
 				new MBeanOperationInfo("addAfterFilter", "Add AfterFilter", new MBeanParameterInfo[]{new MBeanParameterInfo("filterClzName", "java.lang.String", "filter Full Name"), new MBeanParameterInfo("constructor params", "java.lang.String", "constructor params(json array expression)")}, "void", MBeanOperationInfo.ACTION),
 				
-				new MBeanOperationInfo("getPreFilters", IService.class.getMethod("getPreFilters")),
-				new MBeanOperationInfo("getAfterFilters", IService.class.getMethod("getAfterFilters")),
+//				new MBeanOperationInfo("getPreFilters", IService.class.getMethod("getPreFilters")),
+//				new MBeanOperationInfo("getAfterFilters", IService.class.getMethod("getAfterFilters")),
 				
 				new MBeanOperationInfo("removePreFilter", "Remove PreFilter", new MBeanParameterInfo[]{new MBeanParameterInfo("filterClzName", "java.lang.String", "filter Full Name"), new MBeanParameterInfo("constructor params", "java.lang.String", "constructor params(json array expression)")}, "void", MBeanOperationInfo.ACTION),
 				new MBeanOperationInfo("removeAfterFilter", "Remove AfterFilter", new MBeanParameterInfo[]{new MBeanParameterInfo("filterClzName", "java.lang.String", "filter Full Name"), new MBeanParameterInfo("constructor params", "java.lang.String", "constructor params(json array expression)")}, "void", MBeanOperationInfo.ACTION),

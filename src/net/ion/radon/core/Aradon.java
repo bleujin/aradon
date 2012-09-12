@@ -100,6 +100,10 @@ public class Aradon extends Component implements IService<SectionService>, Arado
 			attach(sconfig);
 		}
 
+		for (SectionConfiguration pconfig : config.plugin().sections()){
+			attach(pconfig) ;
+		}
+
 		this.config = config;
 		config.aradon().attachService(this) ;
 		this.setContext(rootContext);
@@ -215,7 +219,7 @@ public class Aradon extends Component implements IService<SectionService>, Arado
 		try {
 			getServers().add(new Server(Protocol.RIAP));
 			super.start();
-			getGlobalConfig().plugin().loadPlugIn(this);
+//			getGlobalConfig().plugin().loadPlugIn(this);
 		} catch (Exception e) {
 			throw new AradonRuntimeException(e);
 		}
@@ -319,7 +323,7 @@ public class Aradon extends Component implements IService<SectionService>, Arado
 			onEventFire(event, (IService) child);
 		}
 	}
-
+	
 	public SectionService attach(SectionConfiguration sconfig) {
 		if (sections.containsKey(sconfig.name())) {
 			throw new IllegalArgumentException("already exist section : " + sconfig);

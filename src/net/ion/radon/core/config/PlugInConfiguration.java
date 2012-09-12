@@ -11,6 +11,7 @@ public class PlugInConfiguration {
 	
 	public static final PlugInConfiguration EMPTY = new PlugInConfiguration(null, "", PlugInApply.IGNORE, "", "", "", "", PlugInProvider.NONE);
 	
+	private AradonConfiguration aconfig ;
 	private final String id ;
 	private final String name ;
 	private final String version ;
@@ -19,6 +20,7 @@ public class PlugInConfiguration {
 	private final PlugInProvider provider ;
 	
 	private PlugInConfiguration(AradonConfiguration aconfig, String id, PlugInApply plugInApply, String name, String version, String description, String license, PlugInProvider provider) {
+		this.aconfig = aconfig ;
 		this.id = id ;
 		this.name = name ;
 		this.version = version ;
@@ -31,9 +33,8 @@ public class PlugInConfiguration {
 		XMLConfig pconfig = config.firstChild("plugin") ;
 		PlugInProvider provider = new PlugInProvider(pconfig.getString("provider.homepage"), StringUtil.join(pconfig.getList("provider.developer"), ","), pconfig.getString("provider.email")) ;
 	
-		
-		Configuration conf = ConfigurationBuilder.load(config).build() ;
-		AradonConfiguration aconfig = conf.aradon() ;
+
+		AradonConfiguration aconfig = ConfigurationBuilder.loadPlugin(config) ;
 		
 		return new PlugInConfiguration(aconfig, pconfig.getString("id"), PlugInApply.create(pconfig.getString("plugin[@apply]")) ,pconfig.getString("name"), pconfig.getString("version"), pconfig.getString("description"), pconfig.getString("license"), provider) ;
 	}
@@ -84,6 +85,10 @@ public class PlugInConfiguration {
 			this.developer = developer ;
 			this.email = email ;
 		}
+	}
+	
+	public AradonConfiguration getAradonConfig(){
+		return aconfig ;
 	}
 
 }
