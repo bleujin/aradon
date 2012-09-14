@@ -1,6 +1,5 @@
 package net.ion.nradon.handler;
 
-import static net.ion.nradon.WebServers.createWebServer;
 import static net.ion.nradon.testutil.HttpClient.contents;
 import static net.ion.nradon.testutil.HttpClient.httpGet;
 import static org.junit.Assert.assertEquals;
@@ -13,7 +12,8 @@ import java.io.IOException;
 import java.util.concurrent.Executor;
 
 import net.ion.nradon.HttpHandler;
-import net.ion.nradon.WebServer;
+import net.ion.nradon.Radon;
+import net.ion.nradon.config.RadonConfiguration;
 import net.ion.nradon.stub.StubHttpControl;
 import net.ion.nradon.stub.StubHttpRequest;
 import net.ion.nradon.stub.StubHttpResponse;
@@ -188,9 +188,9 @@ public class TestStaticFileHandler {
         mkdir("some/dir");
         writeFile("some/dir/content1.txt", "some txt");
 
-        WebServer webServer = createWebServer(59504)
+        Radon webServer = RadonConfiguration.newBuilder(59504)
                 .add(handler)
-                .start();
+                .startRadon();
         try {
             assertEquals("Hello world", contents(httpGet(webServer, "/index.html")));
             assertEquals("some js", contents(httpGet(webServer, "/foo.js?xx=y")));

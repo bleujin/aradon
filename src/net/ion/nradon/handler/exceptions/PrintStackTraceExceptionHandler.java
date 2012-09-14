@@ -5,8 +5,8 @@ import java.io.PrintStream;
 /**
  * Exception handler that dumps the stack trace.
  * 
- * @see net.ion.nradon.WebServer#connectionExceptionHandler(java.lang.Thread.UncaughtExceptionHandler)
- * @see net.ion.nradon.WebServer#uncaughtExceptionHandler(java.lang.Thread.UncaughtExceptionHandler)
+ * @see net.ion.nradon.Radon#connectionExceptionHandler(java.lang.Thread.UncaughtExceptionHandler)
+ * @see net.ion.nradon.Radon#uncaughtExceptionHandler(java.lang.Thread.UncaughtExceptionHandler)
  */
 public class PrintStackTraceExceptionHandler implements Thread.UncaughtExceptionHandler {
 

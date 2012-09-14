@@ -1,6 +1,5 @@
 package net.ion.nradon.netty;
 
-import static net.ion.nradon.WebServers.createWebServer;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
@@ -14,7 +13,8 @@ import java.util.Scanner;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import net.ion.nradon.WebServer;
+import net.ion.nradon.Radon;
+import net.ion.nradon.config.RadonConfiguration;
 import net.ion.nradon.handler.StringHttpHandler;
 
 import org.junit.Test;
@@ -24,8 +24,8 @@ public class TestFlashPolicyFile {
 	@Test
 	public void returnsCrossDomainXML() throws IOException,
 			InterruptedException {
-		WebServer webServer = createWebServer(59504).add(
-				new StringHttpHandler("text/plain", "body")).start();
+		Radon webServer = RadonConfiguration.newBuilder(59504).add(
+				new StringHttpHandler("text/plain", "body")).startRadon();
 		try {
 
 			Socket client = new Socket(InetAddress.getLocalHost(), 59504);
@@ -51,8 +51,8 @@ public class TestFlashPolicyFile {
 		InetSocketAddress address = new InetSocketAddress(59504);
 		URI publicUri = URI.create("http://localhost:800/");
 		
-		WebServer webServer = createWebServer(executor, address, publicUri).add(
-				new StringHttpHandler("text/plain", "body")).start();
+		Radon webServer = RadonConfiguration.newBuilder(executor, address, publicUri).add(
+				new StringHttpHandler("text/plain", "body")).startRadon();
 		try {
 		
 			Socket client = new Socket(InetAddress.getLocalHost(), 59504);
@@ -78,8 +78,8 @@ public class TestFlashPolicyFile {
 		InetSocketAddress address = new InetSocketAddress(59504);
 		URI publicUri = URI.create("http://localhost/");
 		
-		WebServer webServer = createWebServer(executor, address, publicUri).add(
-				new StringHttpHandler("text/plain", "body")).start();
+		Radon webServer = RadonConfiguration.newBuilder(executor, address, publicUri).add(
+				new StringHttpHandler("text/plain", "body")).startRadon();
 		try {
 		
 			Socket client = new Socket(InetAddress.getLocalHost(), 59504);
@@ -105,8 +105,8 @@ public class TestFlashPolicyFile {
 		InetSocketAddress address = new InetSocketAddress(59504);
 		URI publicUri = URI.create("https://localhost/");
 		
-		WebServer webServer = createWebServer(executor, address, publicUri).add(
-				new StringHttpHandler("text/plain", "body")).start();
+		Radon webServer = RadonConfiguration.newBuilder(executor, address, publicUri).add(
+				new StringHttpHandler("text/plain", "body")).startRadon();
 		try {
 		
 			Socket client = new Socket(InetAddress.getLocalHost(), 59504);

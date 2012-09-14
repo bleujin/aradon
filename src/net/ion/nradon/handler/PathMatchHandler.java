@@ -8,7 +8,7 @@ import net.ion.nradon.HttpControl;
 import net.ion.nradon.HttpHandler;
 import net.ion.nradon.HttpRequest;
 import net.ion.nradon.HttpResponse;
-import net.ion.nradon.WebServer;
+import net.ion.nradon.Radon;
 import net.ion.nradon.handler.event.ServerEvent.EventType;
 
 public class PathMatchHandler extends AbstractHttpHandler {
@@ -35,7 +35,7 @@ public class PathMatchHandler extends AbstractHttpHandler {
 		}
 	}
 	
-	public void onEvent(EventType etype, WebServer webserver) {
+	public void onEvent(EventType etype, Radon webserver) {
 		httpHandler.onEvent(etype, webserver) ;
 	}
 }

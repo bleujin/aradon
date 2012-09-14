@@ -8,26 +8,26 @@ import java.net.URLConnection;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-import net.ion.nradon.WebServer;
+import net.ion.nradon.Radon;
 
 public class HttpClient {
 
     private static final int BUFFER_SIZE_IF_NO_CONTENT_LENGTH_HEADER = 1024;
 
-    public static URLConnection httpGet(WebServer webServer, String path) throws IOException {
-        URL url = new URL(webServer.getUri().toURL(), path);
+    public static URLConnection httpGet(Radon webServer, String path) throws IOException {
+        URL url = new URL(webServer.getConfig().publicUri().toURL(), path);
         return url.openConnection();
     }
 
-    public static URLConnection httpGetAcceptCompressed(WebServer webServer, String path) throws IOException {
+    public static URLConnection httpGetAcceptCompressed(Radon webServer, String path) throws IOException {
         URLConnection result = httpGet(webServer, path);
         HttpURLConnection httpUrlConnection = (HttpURLConnection) result;
         httpUrlConnection.addRequestProperty("Accept-Encoding", "gzip");
         return result;
     }
 
-    public static URLConnection httpPost(WebServer webServer, String path, String body) throws IOException {
-        URL url = new URL(webServer.getUri().toURL(), path);
+    public static URLConnection httpPost(Radon webServer, String path, String body) throws IOException {
+        URL url = new URL(webServer.getConfig().publicUri().toURL(), path);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setRequestMethod("POST");
         urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
@@ -36,8 +36,8 @@ public class HttpClient {
         return urlConnection;
     }
 
-    public static URLConnection httpPostCompressed(WebServer webServer, String path, String body) throws IOException {
-        URL url = new URL(webServer.getUri().toURL(), path);
+    public static URLConnection httpPostCompressed(Radon webServer, String path, String body) throws IOException {
+        URL url = new URL(webServer.getConfig().publicUri().toURL(), path);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.addRequestProperty("Content-Encoding", "gzip");
         urlConnection.setRequestMethod("POST");

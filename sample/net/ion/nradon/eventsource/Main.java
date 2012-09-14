@@ -2,7 +2,6 @@ package net.ion.nradon.eventsource;
 
 import static java.lang.Thread.sleep;
 import static java.util.concurrent.Executors.newSingleThreadExecutor;
-import static net.ion.nradon.WebServers.createWebServer;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,7 +11,8 @@ import java.util.concurrent.ExecutorService;
 
 import net.ion.nradon.EventSourceConnection;
 import net.ion.nradon.EventSourceHandler;
-import net.ion.nradon.WebServer;
+import net.ion.nradon.Radon;
+import net.ion.nradon.config.RadonConfiguration;
 import net.ion.nradon.handler.StaticFileHandler;
 import net.ion.nradon.netty.contrib.EventSourceMessage;
 
@@ -54,7 +54,7 @@ public class Main {
         ExecutorService webThread = newSingleThreadExecutor();
         final Pusher pusher = new Pusher();
 
-        WebServer webServer = createWebServer(webThread, 9876)
+        Radon webServer = RadonConfiguration.newBuilder(webThread, 9876)
                 .add("/events/my", new EventSourceHandler() {
                     public void onOpen(EventSourceConnection conn) throws Exception {
                         pusher.addConnection(conn);
@@ -65,9 +65,9 @@ public class Main {
                     }
                 })
                 .add(new StaticFileHandler("./sample/net/ion/nradon/eventsource/content/"))
-                .start();
+                .startRadon();
 
-        System.out.println("EventSource demo running on: " + webServer.getUri());
+        System.out.println("EventSource demo running on: " + webServer.getConfig().publicUri());
 
         pusher.pushPeriodicallyOn(webThread);
     }

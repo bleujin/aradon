@@ -1,9 +1,8 @@
 package net.ion.radon.impl;
 
 import net.ion.framework.util.InfinityThread;
-import net.ion.nradon.WebServers;
+import net.ion.nradon.config.RadonConfiguration;
 import net.ion.nradon.handler.StaticFileHandler;
-import net.ion.nradon.handler.aradon.AradonHandler;
 import net.ion.nradon.handler.logging.LoggingHandler;
 import net.ion.nradon.handler.logging.SimpleLogSink;
 import net.ion.radon.core.Aradon;
@@ -28,10 +27,10 @@ public class TestDownload {
 	@Test
 	public void testStatticHandler() throws Exception {
 		Aradon aradon = AradonTester.create().register("aradon", "/{filename}", DownloadLet.class).getAradon() ;
-		WebServers.createWebServer(9200)
+		RadonConfiguration.newBuilder(9200)
 			.add(new LoggingHandler(new SimpleLogSink()))
-			.add("/aradon/.*", AradonHandler.create(aradon))
-			.add(new StaticFileHandler("C:/setup/download")).start() ;
+			.add("/aradon/.*", aradon)
+			.add(new StaticFileHandler("C:/setup/download")).startRadon() ;
 		
 		
 		new InfinityThread().startNJoin() ;

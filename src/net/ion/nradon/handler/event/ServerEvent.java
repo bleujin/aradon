@@ -1,6 +1,6 @@
 package net.ion.nradon.handler.event;
 
-import net.ion.nradon.WebServer;
+import net.ion.nradon.Radon;
 
 public class ServerEvent{
 	
@@ -8,11 +8,11 @@ public class ServerEvent{
 		START, STOP
 	}
 	
-	public ServerEvent(EventType etype, WebServer wserver){
+	public ServerEvent(EventType etype, Radon wserver){
 		
 	}
 	
-	ServerEvent startEvent(WebServer wserver){
+	ServerEvent startEvent(Radon wserver){
 		return new ServerEvent(EventType.START, wserver) ;
 	}
 }

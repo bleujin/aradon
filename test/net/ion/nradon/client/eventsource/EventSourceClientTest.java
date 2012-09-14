@@ -1,13 +1,8 @@
 package net.ion.nradon.client.eventsource;
 
-import net.ion.nradon.EventSourceConnection;
-import net.ion.nradon.WebServer;
-import net.ion.nradon.netty.contrib.EventSourceMessage;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.net.URI;
@@ -16,18 +11,23 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static net.ion.nradon.WebServers.createWebServer;
+import net.ion.nradon.EventSourceConnection;
+import net.ion.nradon.Radon;
+import net.ion.nradon.config.RadonConfiguration;
+import net.ion.nradon.netty.contrib.EventSourceMessage;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 
 public class EventSourceClientTest {
-    private WebServer webServer;
+    private Radon webServer;
     private EventSource eventSource;
 
     @Before
     public void createServer() {
-        webServer = createWebServer(59504);
+        webServer = RadonConfiguration.newBuilder(59504).createRadon();
     }
 
     @After
@@ -69,7 +69,7 @@ public class EventSourceClientTest {
         final CountDownLatch messageTwoCountdown = new CountDownLatch(1);
         final CountDownLatch errorCountdown = new CountDownLatch(1);
 
-        webServer
+        webServer.getConfig()
                 .add("/es/.*", new net.ion.nradon.EventSourceHandler() {
                     public int counter = 1;
 
@@ -79,7 +79,7 @@ public class EventSourceClientTest {
 
                     public void onClose(EventSourceConnection connection) throws Exception {
                     }
-                });
+                }) ;
         webServer.start();
 
 
@@ -145,7 +145,7 @@ public class EventSourceClientTest {
     }
 
     private void startServer(final List<String> messagesToSend) throws IOException {
-        webServer
+        webServer.getConfig()
                 .add("/es/.*", new net.ion.nradon.EventSourceHandler() {
                     public void onOpen(EventSourceConnection connection) throws Exception {
                         for (String message : messagesToSend) {
@@ -156,7 +156,7 @@ public class EventSourceClientTest {
 
                     public void onClose(EventSourceConnection connection) throws Exception {
                     }
-                })
-                .start();
+                }) ;
+        webServer.start();
     }
 }

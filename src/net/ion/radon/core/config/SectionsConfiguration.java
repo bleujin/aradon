@@ -19,7 +19,7 @@ public class SectionsConfiguration {
 		}
 		throw new IllegalArgumentException("not found section :" + name) ;
 	}
-
+	
 	public SectionsConfiguration removeSection(String sname) {
 		
 		SectionConfiguration[] scs = sconfigs.toArray(new SectionConfiguration[0]) ;

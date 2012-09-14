@@ -14,7 +14,8 @@ import java.util.concurrent.TimeUnit;
 import net.ion.nradon.HttpControl;
 import net.ion.nradon.HttpRequest;
 import net.ion.nradon.HttpResponse;
-import net.ion.nradon.WebServer;
+import net.ion.nradon.Radon;
+import net.ion.nradon.config.RadonConfiguration;
 import net.ion.nradon.handler.AbstractHttpHandler;
 
 import org.junit.Ignore;
@@ -26,7 +27,7 @@ public class TestNettyWebServer {
     @Test
     public void stopsServerCleanlyNotLeavingResourcesHanging() throws Exception {
         int threadCountStart = getCurrentThreadCount();
-        WebServer server = new NettyWebServer(Executors.newSingleThreadScheduledExecutor(), 9080).start();
+        Radon server = RadonConfiguration.newBuilder(9080).executor(Executors.newSingleThreadScheduledExecutor()).startRadon();
         assertEquals(threadCountStart + 2, getCurrentThreadCount());
         server.stop().join();
         sleep(100);
@@ -36,13 +37,15 @@ public class TestNettyWebServer {
     @Test
     public void stopsServerCleanlyAlsoWhenClientsAreConnected() throws Exception {
         final CountDownLatch stopper = new CountDownLatch(1);
-        final WebServer server = new NettyWebServer(Executors.newSingleThreadScheduledExecutor(), 9080).start();
-        server.add(new AbstractHttpHandler() {
+        final Radon server = RadonConfiguration.newBuilder(9080).executor(Executors.newSingleThreadScheduledExecutor()).startRadon();
+        server.getConfig().add(new AbstractHttpHandler() {
             public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
                 server.stop().join();
                 stopper.countDown();
             }
-        });
+        }) ;
+        
+        
         Socket client = new Socket(InetAddress.getLocalHost(), 9080);
         OutputStream http = client.getOutputStream();
         http.write(("" +
@@ -51,12 +54,12 @@ public class TestNettyWebServer {
         http.flush();
 
         assertTrue("Server should have stopped by now", stopper.await(1000, TimeUnit.MILLISECONDS));
+        server.stop() ;
     }
 
     @Test
     public void restartServerDoesNotThrowException() throws Exception {
-        WebServer server = new NettyWebServer(Executors.newSingleThreadScheduledExecutor(), 9080);
-        server.start();
+        Radon server = RadonConfiguration.newBuilder(9080).executor(Executors.newSingleThreadScheduledExecutor()).startRadon();
         server.stop().join();
         server.start();
         server.stop().join();
@@ -64,8 +67,7 @@ public class TestNettyWebServer {
 
     @Test
     public void startServerAndTestIsRunning() throws Exception {
-        NettyWebServer server = new NettyWebServer(Executors.newSingleThreadScheduledExecutor(), 9080);
-        server.start();
+        NettyWebServer server = RadonConfiguration.newBuilder(9080).executor(Executors.newSingleThreadScheduledExecutor()).startRadon();
         assertTrue("Server should be running", server.isRunning());
 
         server.stop().join();

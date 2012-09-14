@@ -1,6 +1,5 @@
 package net.ion.nradon.handler;
 
-import static net.ion.nradon.WebServers.createWebServer;
 import static net.ion.nradon.testutil.HttpClient.contents;
 import static net.ion.nradon.testutil.HttpClient.httpPost;
 import static org.junit.Assert.assertEquals;
@@ -13,15 +12,17 @@ import java.util.Collections;
 import net.ion.nradon.HttpControl;
 import net.ion.nradon.HttpRequest;
 import net.ion.nradon.HttpResponse;
-import net.ion.nradon.WebServer;
+import net.ion.nradon.Radon;
+import net.ion.nradon.config.RadonConfiguration;
+import net.ion.nradon.config.RadonConfigurationBuilder;
 
 import org.junit.After;
 import org.junit.Test;
 
 public class TestPost {
 
-    private WebServer webServer = createWebServer(59504);
-
+    private Radon webServer ;
+    private RadonConfigurationBuilder configBuilder = RadonConfiguration.newBuilder(59504) ;
     @After
     public void die() throws IOException, InterruptedException {
         webServer.stop().join();
@@ -29,22 +30,22 @@ public class TestPost {
 
     @Test
     public void exposesBodyInRequest() throws IOException, InterruptedException {
-        webServer.add(new AbstractHttpHandler() {
+    	this.webServer = configBuilder.add(new AbstractHttpHandler() {
             public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
                 response.content("Body = {" + request.body() + "}").end();
             }
-        }).start();
+        }).startRadon();
         String result = contents(httpPost(webServer, "/", "hello\n world"));
         assertEquals("Body = {hello\n world}", result);
     }
 
     @Test
     public void exposesPostBodyAsParameters() throws IOException, InterruptedException {
-        webServer.add(new AbstractHttpHandler() {
+    	this.webServer = configBuilder.add(new AbstractHttpHandler() {
             public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
                 response.content("a=" + request.postParam("a") + ", b=" + request.postParam("b")).end();
             }
-        }).start();
+        }).startRadon();
         String result = contents(httpPost(webServer, "/", "b=foo&a=hello%20world&c=d"));
         assertEquals("a=hello world, b=foo", result);
     }
@@ -52,25 +53,25 @@ public class TestPost {
 
     @Test
     public void exposesPostParamKeys() throws IOException, InterruptedException {
-        webServer.add(new AbstractHttpHandler() {
+    	this.webServer = configBuilder.add(new AbstractHttpHandler() {
             public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
                 ArrayList<String> keysList = new ArrayList<String>(request.postParamKeys());
                 Collections.sort(keysList);
 
                 response.content("keys=" + keysList.toString()).end();
             }
-        }).start();
+        }).startRadon();
         String result = contents(httpPost(webServer, "/", "b=foo&a=hello%20world&c=d&b=duplicate"));
         assertEquals("keys=[a, b, c]", result);
     }
 
     @Test
     public void exposesPostBodyAsBytes() throws IOException {
-        webServer.add(new AbstractHttpHandler() {
+    	this.webServer = configBuilder.add(new AbstractHttpHandler() {
             public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
                 response.content(Arrays.toString(request.bodyAsBytes())).end();
             }
-        }).start();
+        }).startRadon();
         byte[] byteArray = new byte[] {87, 79, 87, 46, 46, 46};
         String result = contents(httpPost(webServer, "/", new String(byteArray)));
         assertEquals(Arrays.toString(byteArray), result);

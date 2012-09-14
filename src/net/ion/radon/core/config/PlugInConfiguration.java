@@ -34,7 +34,7 @@ public class PlugInConfiguration {
 		PlugInProvider provider = new PlugInProvider(pconfig.getString("provider.homepage"), StringUtil.join(pconfig.getList("provider.developer"), ","), pconfig.getString("provider.email")) ;
 	
 
-		AradonConfiguration aconfig = ConfigurationBuilder.loadPlugin(config) ;
+		AradonConfiguration aconfig = ConfigurationBuilder.loadPluginConfig(config) ;
 		
 		return new PlugInConfiguration(aconfig, pconfig.getString("id"), PlugInApply.create(pconfig.getString("plugin[@apply]")) ,pconfig.getString("name"), pconfig.getString("version"), pconfig.getString("description"), pconfig.getString("license"), provider) ;
 	}

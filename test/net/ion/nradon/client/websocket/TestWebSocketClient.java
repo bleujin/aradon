@@ -6,31 +6,27 @@ import java.net.URI;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 
-import org.jboss.netty.buffer.ChannelBuffer;
+import net.ion.framework.util.Debug;
+import net.ion.framework.util.ListUtil;
+import net.ion.framework.util.TimeoutThread;
+import net.ion.nradon.Radon;
+import net.ion.nradon.WebSocketConnection;
+import net.ion.nradon.WebSocketHandler;
+import net.ion.nradon.config.RadonConfiguration;
+
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import junit.framework.TestCase;
-import net.ion.framework.util.Debug;
-import net.ion.framework.util.ListUtil;
-import net.ion.framework.util.TimeoutThread;
-import net.ion.nradon.WebServer;
-import net.ion.nradon.WebServers;
-import net.ion.nradon.WebSocketConnection;
-import net.ion.nradon.WebSocketHandler;
-
 
 public class TestWebSocketClient {
 
-	private WebServer wserver ;
+	private Radon wserver ;
 
 	@Before
 	public void setUp() throws Exception {
-		wserver = WebServers.createWebServer(9000) ;
-		wserver.add("/websocket", new DebugHandler()) ;
-		wserver.start() ;
+		wserver = RadonConfiguration.newBuilder(9000).add("/websocket", new DebugHandler()).startRadon() ;
 	}
 
 	@After

@@ -100,6 +100,10 @@ public class Aradon extends Component implements IService<SectionService>, Arado
 			attach(sconfig);
 		}
 
+		for (Entry<String, AttributeValue> entry : config.plugin().attributes().entrySet()){
+			rootContext.putAttribute(entry.getKey(), entry.getValue());
+		}
+		
 		for (SectionConfiguration pconfig : config.plugin().sections()){
 			attach(pconfig) ;
 		}

@@ -4,7 +4,7 @@ import net.ion.nradon.HttpControl;
 import net.ion.nradon.HttpHandler;
 import net.ion.nradon.HttpRequest;
 import net.ion.nradon.HttpResponse;
-import net.ion.nradon.WebServer;
+import net.ion.nradon.Radon;
 import net.ion.nradon.WebSocketHandler;
 import net.ion.nradon.handler.event.ServerEventHandler;
 import net.ion.nradon.handler.event.ServerEvent.EventType;
@@ -20,7 +20,7 @@ public class HttpToWebSocketHandler implements HttpHandler {
 		control.upgradeToWebSocketConnection(handler);
 	}
 
-	public void onEvent(EventType etype, WebServer webserver) {
+	public void onEvent(EventType etype, Radon webserver) {
 		if (handler instanceof ServerEventHandler){
 			((ServerEventHandler)handler).onEvent(etype, webserver) ;
 		}

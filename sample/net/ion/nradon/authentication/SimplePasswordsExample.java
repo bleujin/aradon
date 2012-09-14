@@ -1,10 +1,9 @@
 package net.ion.nradon.authentication;
 
-import static net.ion.nradon.WebServers.createWebServer;
-
 import java.io.IOException;
 
-import net.ion.nradon.WebServer;
+import net.ion.nradon.Radon;
+import net.ion.nradon.config.RadonConfiguration;
 import net.ion.nradon.handler.StaticFileHandler;
 import net.ion.nradon.handler.authentication.BasicAuthenticationHandler;
 import net.ion.nradon.handler.authentication.InMemoryPasswords;
@@ -21,14 +20,13 @@ public class SimplePasswordsExample {
                 .add("joe", "secret")
                 .add("jeff", "somepassword");
 
-        WebServer webServer = createWebServer(45453)
+        Radon webServer = RadonConfiguration.newBuilder(45453)
                 .add(new BasicAuthenticationHandler(passwords))
                 .add("/whoami", new WhoAmIHttpHandler())
                 .add("/whoami-ws", new WhoAmIWebSocketHandler())
-                .add(new StaticFileHandler("src/test/java/samples/authentication/content"))
-                .start();
+                .add(new StaticFileHandler("src/test/java/samples/authentication/content")).startRadon();
 
-        System.out.println("Running on " + webServer.getUri());
+        System.out.println("Running on " + webServer.getConfig().publicUri());
     }
 
 }

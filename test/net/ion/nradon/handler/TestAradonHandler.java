@@ -2,9 +2,8 @@ package net.ion.nradon.handler;
 
 import static org.junit.Assert.assertEquals;
 import net.ion.framework.util.Debug;
-import net.ion.nradon.WebServer;
-import net.ion.nradon.WebServers;
-import net.ion.nradon.handler.aradon.AradonHandler;
+import net.ion.nradon.Radon;
+import net.ion.nradon.config.RadonConfiguration;
 import net.ion.radon.client.AradonClient;
 import net.ion.radon.client.AradonClientFactory;
 import net.ion.radon.client.IAradonRequest;
@@ -27,10 +26,9 @@ public class TestAradonHandler {
 
 	@Test
 	public void testGet() throws Exception {
-		WebServer webServer = WebServers.createWebServer(8080);
 		Aradon aradon = AradonTester.create().register("", "/test", HelloWorldLet.class).getAradon();
-
-		webServer.add(AradonHandler.create(aradon)).start();
+		Radon webServer = RadonConfiguration.newBuilder(8080)
+			.add(aradon).startRadon();
 
 		IAradonRequest request = AradonClientFactory.create(aradon).createRequest("/test");
 		Response response = request.handle(Method.GET);
@@ -40,10 +38,8 @@ public class TestAradonHandler {
 
 	@Test
 	public void testBinaryGet() throws Exception {
-		WebServer webServer = WebServers.createWebServer(8080);
 		Aradon aradon = AradonTester.create().register("", "/param", ParameterTestLet.class).getAradon();
-
-		webServer.add(AradonHandler.create(aradon)).start();
+		Radon webServer = RadonConfiguration.newBuilder(8080).add(aradon).startRadon();
 
 		IAradonRequest request = AradonClientFactory.create(aradon).createRequest("/param");
 
@@ -59,11 +55,11 @@ public class TestAradonHandler {
 
 	@Test
 	public void clientInfo() throws Exception {
-		WebServer webServer = WebServers.createWebServer(8080);
 		Aradon aradon = AradonTester.create().register("", "/client", ClientTestLet.class).getAradon();
 		aradon.getConfig().addPreFilter(new ChallengeAuthenticator("sec")) ;
-		
-		webServer.add(AradonHandler.create(aradon)).start();
+
+		Radon webServer = RadonConfiguration.newBuilder(8080)
+			.add(aradon).startRadon();
 
 		AradonClient ac = AradonClientFactory.create("http://127.0.0.1:8080");
 		ISerialRequest request = ac.createSerialRequest("/client?name=bleujin", "bleujin", "redf");

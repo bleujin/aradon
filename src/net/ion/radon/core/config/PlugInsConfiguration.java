@@ -12,12 +12,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import net.ion.framework.util.Debug;
 import net.ion.framework.util.FileUtil;
 import net.ion.framework.util.InstanceCreationException;
 import net.ion.framework.util.ListUtil;
+import net.ion.framework.util.MapUtil;
 import net.ion.framework.util.PathMaker;
 import net.ion.framework.util.StringUtil;
 import net.ion.framework.util.ZipUtil;
@@ -190,6 +192,16 @@ public class PlugInsConfiguration {
 		public boolean accept(File file) {
 			return file.isFile() && file.getName().endsWith(".jar");
 		}
+	}
+
+	public Map<String, AttributeValue> attributes() {
+		Map<String, AttributeValue> result = MapUtil.newMap() ;
+		
+		for (PlugInConfiguration pc : pconfigs) {
+			result.putAll(pc.getAradonConfig().attributes()) ; 
+		}
+		
+		return result;
 	}
 
 

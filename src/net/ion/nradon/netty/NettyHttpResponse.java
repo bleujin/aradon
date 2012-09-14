@@ -16,7 +16,6 @@ import java.nio.charset.Charset;
 import java.util.Date;
 
 import net.ion.framework.util.IOUtil;
-import net.ion.framework.util.StringUtil;
 import net.ion.nradon.helpers.DateHelper;
 import net.ion.radon.core.RadonAttributeKey;
 import net.ion.radon.core.except.AradonRuntimeException;
@@ -304,9 +303,12 @@ public class NettyHttpResponse implements net.ion.nradon.HttpResponse {
 	private void flushResponse() {
 		try {
 			// TODO: Shouldn't have to do this, but without it we sometimes seem to get two Content-Length headers in the response.
-			if (StringUtil.isEmpty(response.getHeader(HeaderConstants.HEADER_CONTENT_LENGTH))) {
-				header(HeaderConstants.HEADER_CONTENT_LENGTH, responseBuffer.readableBytes());
-			}
+//			if (StringUtil.isEmpty(response.getHeader(HeaderConstants.HEADER_CONTENT_LENGTH))) {
+//				header(HeaderConstants.HEADER_CONTENT_LENGTH, responseBuffer.readableBytes());
+//			}
+			header("Content-Length", (String) null);
+			header("Content-Length", responseBuffer.readableBytes());
+
 			ChannelFuture future = write(responseBuffer);
 			if (!isKeepAlive) {
 				future.addListener(ChannelFutureListener.CLOSE);

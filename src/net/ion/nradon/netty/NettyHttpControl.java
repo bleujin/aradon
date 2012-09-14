@@ -57,6 +57,7 @@ public class NettyHttpControl implements HttpControl {
 		this.defaultRequest = request;
 		this.defaultResponse = response;
 		this.defaultControl = control;
+		
 		if (handlerIterator.hasNext()) {
 			HttpHandler handler = handlerIterator.next();
 			try {

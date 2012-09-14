@@ -4,7 +4,7 @@ import net.ion.nradon.HttpControl;
 import net.ion.nradon.HttpHandler;
 import net.ion.nradon.HttpRequest;
 import net.ion.nradon.HttpResponse;
-import net.ion.nradon.WebServer;
+import net.ion.nradon.Radon;
 import net.ion.nradon.handler.event.ServerEvent.EventType;
 import net.ion.radon.core.Aradon;
 
@@ -27,7 +27,7 @@ public class AradonHandler implements HttpHandler {
 		return new AradonHandler(aradon);
 	}
 
-	public void onEvent(EventType etype, WebServer wserver) {
+	public void onEvent(EventType etype, Radon wserver) {
 		if (ignoreEvent) return ;
 		try {
 			if (etype == EventType.START) {

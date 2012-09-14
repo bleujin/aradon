@@ -1,7 +1,7 @@
 package net.ion.nradon.echo;
 
-import static net.ion.nradon.WebServers.createWebServer;
-import net.ion.nradon.WebServer;
+import static net.ion.nradon.config.RadonConfiguration.newBuilder;
+import net.ion.nradon.Radon;
 import net.ion.nradon.WebSocketConnection;
 import net.ion.nradon.WebSocketHandler;
 import net.ion.nradon.handler.HttpToWebSocketHandler;
@@ -13,7 +13,7 @@ import net.ion.nradon.handler.exceptions.PrintStackTraceExceptionHandler;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        WebServer webServer = createWebServer(9001).add(new HttpToWebSocketHandler(new WebSocketHandler() {
+        Radon webServer = newBuilder(9001).add(new HttpToWebSocketHandler(new WebSocketHandler() {
             public void onOpen(WebSocketConnection connection) throws Exception {
             }
 
@@ -31,9 +31,9 @@ public class Main {
             public void onPong(WebSocketConnection connection, String msg) {
                 connection.ping(msg);
             }
-        })).connectionExceptionHandler(new PrintStackTraceExceptionHandler()).start();
+        })).connectionExceptionHandler(new PrintStackTraceExceptionHandler()).startRadon() ;
 
-        System.out.println("Echo server running on: " + webServer.getUri());
+        System.out.println("Echo server running on: " + webServer.getConfig().publicUri());
     }
 
 }

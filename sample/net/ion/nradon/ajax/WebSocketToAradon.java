@@ -14,13 +14,12 @@ import net.ion.bleujin.HelloWorldLet2;
 import net.ion.framework.util.Debug;
 import net.ion.framework.util.InfinityThread;
 import net.ion.framework.util.ObjectUtil;
-import net.ion.nradon.WebServer;
-import net.ion.nradon.WebServers;
+import net.ion.nradon.Radon;
 import net.ion.nradon.WebSocketConnection;
 import net.ion.nradon.WebSocketHandler;
 import net.ion.nradon.client.websocket.WebSocketClient;
+import net.ion.nradon.config.RadonConfiguration;
 import net.ion.nradon.handler.StaticFileHandler;
-import net.ion.nradon.handler.aradon.AradonHandler;
 import net.ion.nradon.handler.aradon.JSONMessagePacket;
 import net.ion.nradon.handler.aradon.NradonClient;
 import net.ion.radon.core.Aradon;
@@ -41,14 +40,12 @@ public class WebSocketToAradon {
 
 	@Test
 	public void helloSocket() throws Exception {
-		WebServer webServer = WebServers.createWebServer(8080) ;
-		
 		Aradon aradon = AradonTester.create().register("", "/test", HelloWorldLet2.class).getAradon() ;
-		
 		final BroadEchoWebSockets handler = new BroadEchoWebSockets();
-		webServer
+
+		Radon webServer = RadonConfiguration.newBuilder(8080)
 			.add("/a/.*/.*", handler)
-			.add("/test", AradonHandler.create(aradon))
+			.add("/test", aradon)
 			.add(new StaticFileHandler("./resource/web/client"))
 			.connectionExceptionHandler(new UncaughtExceptionHandler() {
 				public void uncaughtException(Thread t, Throwable e) {
@@ -56,13 +53,11 @@ public class WebSocketToAradon {
 					ExceptionEvent event = ((ConnectionException)e).getEvent();
 					event.getChannel().getRemoteAddress() ;
 					
-					
 					Debug.linec('#', t, e, event) ;
 				}
-			})
-			.start();
+			}).startRadon()  ;
 		
-		System.out.println("Server running at " + webServer.getUri());
+		System.out.println("Server running at " + webServer.getConfig().publicUri());
 		
 		// Desktop.getDesktop().browse(new URI("http://" + InetAddress.getLocalHost().getHostAddress() + ":8080/client/sample.html")) ;
 
@@ -117,16 +112,13 @@ public class WebSocketToAradon {
 	
 	@Test
 	public void aradonSocket() throws Exception {
-		WebServer webServer = WebServers.createWebServer(8080) ;
-		
 		Aradon aradon = AradonTester.create().register("", "/test", HelloWorldLet2.class).getAradon() ;
+		Radon webServer = RadonConfiguration.newBuilder(8080)
+			.add("/aradon", AradonTester.create().register("", "/test", HelloWorldLet2.class).getAradon())
+			.add("/test", aradon)
+			.add(new StaticFileHandler("./resource/web")).startRadon() ;
 		
-		webServer
-			.add("/aradon", new AradonWebSocket(aradon))
-			.add("/test", AradonHandler.create(aradon))
-			.add(new StaticFileHandler("./resource/web")).start();
-		
-		System.out.println("Server running at " + webServer.getUri());
+		System.out.println("Server running at " + webServer.getConfig().publicUri());
 
 		// Desktop.getDesktop().browse(new URI("http://" + InetAddress.getLocalHost().getHostAddress() + ":8080/client/aradon.html")) ;
 		

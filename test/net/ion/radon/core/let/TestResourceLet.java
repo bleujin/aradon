@@ -1,8 +1,8 @@
 package net.ion.radon.core.let;
 
-import static net.ion.nradon.WebServers.createWebServer;
 import static org.junit.Assert.assertEquals;
-import net.ion.nradon.WebServer;
+import net.ion.nradon.Radon;
+import net.ion.nradon.config.RadonConfiguration;
 import net.ion.nradon.handler.AliasHandler;
 import net.ion.nradon.handler.StringHttpHandler;
 import net.ion.radon.client.AradonClient;
@@ -42,10 +42,10 @@ public class TestResourceLet {
 	
 	@Test
 	public void newradon() throws Exception {
-		WebServer webServer = createWebServer(59504);
-		webServer.add("/tomayto", new AliasHandler("/tomato"))
+		Radon webServer = RadonConfiguration.newBuilder(59504)
+			.add("/tomayto", new AliasHandler("/tomato"))
 	        .add("/tomato", new StringHttpHandler("text/plain", "body"))
-	        .start();
+	        .startRadon();
 		AradonClient ac = AradonClientFactory.create("http://127.0.0.1:59504");
 		IAradonRequest req = ac.createRequest("/tomayto");
 		assertEquals("body", req.get().getText());

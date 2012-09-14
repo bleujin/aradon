@@ -1,8 +1,8 @@
 package net.ion.nradon.handler;
 
 import static org.junit.Assert.assertEquals;
-import net.ion.nradon.WebServer;
-import net.ion.nradon.WebServers;
+import net.ion.nradon.Radon;
+import net.ion.nradon.config.RadonConfiguration;
 import net.ion.nradon.handler.logging.LoggingHandler;
 import net.ion.nradon.handler.logging.SimpleLogSink;
 import net.ion.radon.client.AradonClient;
@@ -17,10 +17,9 @@ public class TestAradonStaticFileHandler {
 	public void initCall() throws Exception{
 		
 		String dir = "./resource";
-		WebServer server = WebServers.createWebServer(9000)
+		Radon server = RadonConfiguration.newBuilder(9000)
 			.add(new LoggingHandler(new SimpleLogSink())) 
-			.add(new AradonStaticFileHandler(dir)) ;
-		server.start() ;
+			.add(new AradonStaticFileHandler(dir)).startRadon() ;
 		
 		
 		AradonClient ac = AradonClientFactory.create("http://127.0.0.1:9000") ;
