@@ -1,16 +1,14 @@
 package net.ion.radon;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.ConnectException;
 
 import net.ion.framework.util.Debug;
 import net.ion.radon.client.AradonClient;
 import net.ion.radon.client.AradonClientFactory;
 import net.ion.radon.core.AradonServer;
 
-import org.restlet.representation.Representation;
-import org.restlet.resource.ResourceException;
+import org.restlet.Response;
+import org.restlet.data.Method;
 
 public class ServerRunner {
 
@@ -32,7 +30,7 @@ public class ServerRunner {
 		
 		AradonServer server = new AradonServer(option) ;
 		int port = server.getPort() ;
-		Debug.line("configPath", configPath, "action", action);
+		Debug.line("configPath", configPath, "action", action, "port", port);
 
 		if ("stop".equals(action)) {
 			stopServer(port);
@@ -43,23 +41,17 @@ public class ServerRunner {
 			stopServer(port);
 		}
 
-		new AradonServer(option).start() ;
+		new AradonServer(option).start(port) ;
 		// new InfinityThread().startNJoin();
 	}
 
 	private static void stopServer(int port) {
 		try {
 			AradonClient ac = AradonClientFactory.create("http://127.0.0.1:" + port);
-			Representation rep = ac.createRequest("/shutdown?timeout=100").delete();
-			Debug.line(rep.getText());
+			Response response = ac.createRequest("/shutdown?timeout=100").handle(Method.DELETE);
+			if (response.getStatus().isSuccess()) Debug.line(response.getEntityAsText());
 			Thread.sleep(1000);
-		} catch (ConnectException ignore) {
-			Debug.line(ignore);
-		} catch (IOException ignore) {
-			Debug.line(ignore);
-		} catch (ResourceException ignore) {
-			Debug.line(ignore);
-		} catch (InterruptedException ignore) {
+		} catch (Throwable ignore) {
 			Debug.line(ignore);
 		}
 	}

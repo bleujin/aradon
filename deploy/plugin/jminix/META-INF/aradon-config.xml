@@ -52,7 +52,7 @@
 			<handler class="org.jminix.console.resource.IndexHtmlLet" scope="request" />
 		</path>
 		<path name="js" >
-			<urls matchmode="STARTWITH">/js/</urls>
+			<urls matchMode="STARTWITH">/js/</urls>
 			<handler class="org.jminix.console.resource.DirLet" scope="request" />
 		</path>
 	

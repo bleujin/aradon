@@ -29,7 +29,6 @@
 	
 	
 	<server-config id="mercury">
-		<!-- System.setProperty("java.util.logging.config.file", "./resource/config/myLogging.properties") ; -->
 		<log-config-file>./resource/config/log4j.properties</log-config-file>
 		<connector-config port="9000">
 			<parameter name="minThreads" description="Minimum threads waiting to service requests." >100</parameter> 

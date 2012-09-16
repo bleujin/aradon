@@ -26,10 +26,12 @@ public class AradonServer {
 	}
 
 	public Aradon start() throws Exception {
-
 		// Now, let's start the component! Note that the HTTP server connector is also automatically started.
-		int portNum = settedPort();
+		return start(settedPort()) ;
+	}
+	
 
+	public Aradon start(int portNum) throws Exception {
 		if (portNum > 0 && useAlreadyPortNum(portNum)) {
 			Debug.warn(portNum + " port is occupied");
 			throw new IllegalArgumentException(portNum + " port is occupied");
@@ -46,6 +48,7 @@ public class AradonServer {
 		Debug.warn("AradonServer started : ");
 		return aradon;
 	}
+
 
 	private boolean useAlreadyPortNum(int portNum) {
 		Socket s = null;

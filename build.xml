@@ -57,18 +57,20 @@
 			<fileset dir="aradon_lib/aradon/embed/" includes="*.jar">
 			</fileset>
 		</copy>
-		<copy todir="deploy/" overwrite="true">
+		<copy todir="deploy/lib/" overwrite="true">
 			<fileset file="publish/aradon_${version.number}.${build.number}.jar" />
 		</copy>
 	</target>
 	
-	<target name="deploy" depends="publish, copy_for_deploy">
+	<target name="deploy" depends="publish">
+		<echo>Copy to Deployer</echo>
+		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="./deploy/lib/" />
 		
 	</target>
 	
 	<target name="copy" depends="publish">
 		<echo>Copy to Deployer</echo>
-		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="./deploy/" />
+		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="./deploy/lib/" />
 		<echo>Copy to ICSS6</echo>
 		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../../workspace/ICSS6/icss/WEB-INF/lib/" />
 		<echo>Copy to ICS6</echo>
