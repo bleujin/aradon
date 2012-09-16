@@ -1,7 +1,11 @@
 package net.ion.radon.core;
 
+import java.util.Collection;
+
 import net.ion.radon.core.config.PathConfiguration;
+import net.ion.radon.core.let.EPathService;
 import net.ion.radon.core.let.PathService;
+import net.ion.radon.core.let.WSPathService;
 
 import org.restlet.Application;
 
@@ -15,6 +19,11 @@ public abstract class SectionService extends Application implements IService<Pat
 
 	public abstract SectionService detach(String name) throws Exception;
 
+	
+	public abstract Collection<WSPathService> getWSChildren() ;
+	
+	public abstract Collection<EPathService> getEChildren() ;
+	
 	public void stop() {
 		this.destorySelf();
 	}

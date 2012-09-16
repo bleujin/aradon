@@ -15,25 +15,36 @@ public class SectionConfiguration extends LetConfiguration<SectionConfiguration>
 
 	private final String name ;
 	private final List<PathConfiguration> pconfigs ;
+	private final List<WSPathConfiguration> wsconfigs ;
+	private final List<EPathConfiguration> econfigs ;
 	
-	SectionConfiguration(String name, List<PathConfiguration> pconfigs, Map<String, AttributeValue> attributes, List<IRadonFilter> prefilters, List<IRadonFilter> afterfilters) {
+	SectionConfiguration(String name, List<PathConfiguration> pconfigs,  List<WSPathConfiguration> wsconfigs, List<EPathConfiguration> econfigs, Map<String, AttributeValue> attributes, List<IRadonFilter> prefilters, List<IRadonFilter> afterfilters) {
 		super(attributes, prefilters, afterfilters);
 		this.name = name;
 		this.pconfigs = pconfigs;
+		this.wsconfigs = wsconfigs ;
+		this.econfigs = econfigs ;
 	}
 
 	public final static SectionConfiguration createBlank(String name){
-		return new SectionConfiguration(name, ListUtil.<PathConfiguration>newList(), MapUtil.<String, AttributeValue>newMap(), ListUtil.<IRadonFilter>newList(), ListUtil.<IRadonFilter>newList()) ;
+		return new SectionConfiguration(name, ListUtil.<PathConfiguration>newList(), ListUtil.<WSPathConfiguration>newList(), ListUtil.<EPathConfiguration>newList(), MapUtil.<String, AttributeValue>newMap(), ListUtil.<IRadonFilter>newList(), ListUtil.<IRadonFilter>newList()) ;
 	}
 	
 	public final static SectionConfiguration create(String name, List<PathConfiguration> paths){
-		return new SectionConfiguration(name, paths, MapUtil.<String, AttributeValue>newMap(), ListUtil.<IRadonFilter>newList(), ListUtil.<IRadonFilter>newList()) ;
+		return new SectionConfiguration(name, paths, ListUtil.<WSPathConfiguration>newList(), ListUtil.<EPathConfiguration>newList(), MapUtil.<String, AttributeValue>newMap(), ListUtil.<IRadonFilter>newList(), ListUtil.<IRadonFilter>newList()) ;
 	}
 	
 	public List<PathConfiguration> pathConfiguration() {
 		return pconfigs;
 	}
-
+	public List<WSPathConfiguration> wspathConfiguration() {
+		return wsconfigs;
+	}
+	public List<EPathConfiguration> epathConfiguration() {
+		return econfigs ;
+	}
+	
+	
 	public String name() {
 		return name;
 	}
@@ -65,4 +76,5 @@ public class SectionConfiguration extends LetConfiguration<SectionConfiguration>
 	public String toString(){
 		return this.getClass().getName() + "[" + name() + "]" ;
 	}
+
 }

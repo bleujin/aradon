@@ -44,7 +44,9 @@ public class PathService extends Restlet implements IService {
 	}
 
 	public static PathService create(Aradon aradon, SectionService section, TreeContext context, PathConfiguration pconfig) {
-		return new PathService(aradon, section, context, pconfig);
+		PathService result = new PathService(aradon, section, context, pconfig);
+		result.setName(pconfig.name()) ;
+		return result;
 	}
 
 	public void handle(Request request, Response response) {

@@ -20,7 +20,7 @@ public class PathConfiguration extends LetConfiguration<PathConfiguration>{
 	private final Scope scope ;
 	private final List<String> urlPatterns ;
 	private final String description ;
-	private final int matchMode ; 
+	private final IMatchMode imatchMode ; 
 	
 	PathConfiguration(String name, Class<? extends ServerResource> handlerClz, Scope scope, List<String> urlPatterns, String description, IMatchMode imatchMode, Map<String, AttributeValue> attributes, List<IRadonFilter> prefilters, List<IRadonFilter> afterfilter) {
 		super(attributes, prefilters, afterfilter) ;
@@ -29,7 +29,7 @@ public class PathConfiguration extends LetConfiguration<PathConfiguration>{
 		this.scope = scope ;
 		this.urlPatterns = urlPatterns ;
 		this.description = description ;
-		this.matchMode = imatchMode.toRouterMode() ;
+		this.imatchMode = imatchMode ;
 	}
 	
 	public final static PathConfiguration testHello(){
@@ -66,8 +66,13 @@ public class PathConfiguration extends LetConfiguration<PathConfiguration>{
 	}
 
 	public int matchMode() {
-		return matchMode;
+		return imatchMode.toRouterMode();
 	}
+	
+	public IMatchMode imatchMode(){
+		return imatchMode ;
+	}
+	
 	public String toString(){
 		return this.getClass().getSimpleName() + "[" + name() + "]" ;
 	}

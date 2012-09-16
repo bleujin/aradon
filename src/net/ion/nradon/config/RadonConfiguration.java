@@ -6,12 +6,16 @@ import java.net.URI;
 import java.util.List;
 import java.util.concurrent.Executor;
 
+import net.ion.framework.util.InstanceCreationException;
 import net.ion.nradon.EventSourceHandler;
 import net.ion.nradon.HttpHandler;
 import net.ion.nradon.WebSocketHandler;
 import net.ion.nradon.handler.HttpToEventSourceHandler;
 import net.ion.nradon.handler.HttpToWebSocketHandler;
 import net.ion.nradon.handler.PathMatchHandler;
+import net.ion.radon.core.config.Configuration;
+import net.ion.radon.core.config.ConfigurationBuilder;
+import net.ion.radon.core.config.XMLConfig;
 
 
 public class RadonConfiguration {
@@ -55,6 +59,15 @@ public class RadonConfiguration {
 	public static RadonConfigurationBuilder newBuilder(Executor executor, SocketAddress socketAddress, URI publicUri) {
 		return RadonConfiguration.newBuilder(publicUri.getPort()).executor(executor).socketAddress(socketAddress).publicUri(publicUri) ;
 	}
+	
+	public static RadonConfigurationBuilder newBuilder(XMLConfig xconfig) throws InstanceCreationException {
+		Configuration config = ConfigurationBuilder.load(xconfig).build() ;
+		
+		
+		return newBuilder(config.server().connector().port()).add(config);
+	}
+
+
 	
 	public URI publicUri() {
 		return publicUri;

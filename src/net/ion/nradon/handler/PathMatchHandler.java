@@ -38,4 +38,8 @@ public class PathMatchHandler extends AbstractHttpHandler {
 	public void onEvent(EventType etype, Radon webserver) {
 		httpHandler.onEvent(etype, webserver) ;
 	}
+	
+	public String toString(){
+		return "pattern:" + pathPattern + ", handler:" + httpHandler ;  
+	}
 }
