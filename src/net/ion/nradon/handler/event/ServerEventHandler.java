@@ -6,7 +6,7 @@ import net.ion.nradon.handler.event.ServerEvent.EventType;
 
 public interface ServerEventHandler {
 
-	public void onEvent(EventType event, Radon wserver) ;
+	public void onEvent(EventType event, Radon radon) ;
 
 }
 

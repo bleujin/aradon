@@ -7,12 +7,15 @@ import java.util.Map.Entry;
 import net.ion.nradon.AbstractEventSourceResource;
 import net.ion.nradon.EventSourceConnection;
 import net.ion.nradon.HttpRequest;
+import net.ion.nradon.Radon;
+import net.ion.nradon.handler.event.ServerEventHandler;
+import net.ion.nradon.handler.event.ServerEvent.EventType;
 import net.ion.radon.core.Aradon;
 import net.ion.radon.core.HttpRestSection;
 import net.ion.radon.core.TreeContext;
 import net.ion.radon.core.config.EPathConfiguration;
 
-public class EPathService extends AbstractEventSourceResource{
+public class EPathService extends AbstractEventSourceResource implements ServerEventHandler{
 	private static final String VAR_SESSIONID = "$sessionId";
 
 	private Aradon aradon;
@@ -66,6 +69,12 @@ public class EPathService extends AbstractEventSourceResource{
 		conn.data(VAR_SESSIONID, conn.httpRequest().remoteAddress().toString());
 		
 		handler.onOpen(conn) ;
+	}
+
+	public void onEvent(EventType event, Radon radon) {
+		if (handler instanceof ServerEventHandler){
+			((ServerEventHandler)handler).onEvent(event, radon) ;
+		}
 	}
 
 }

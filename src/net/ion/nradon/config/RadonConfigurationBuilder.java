@@ -50,7 +50,8 @@ public class RadonConfigurationBuilder {
 	private int maxHeaderSize = 8192;
 	private int maxChunkSize = 8192;
 	private int maxContentLength = 65536;
-
+	private Aradon aradon = Aradon.create();
+	private boolean initializedAradon = false ;
 	RadonConfigurationBuilder() {
 		setupDefaultHandlers() ;
 	}
@@ -62,7 +63,7 @@ public class RadonConfigurationBuilder {
 		if (this.ioExceptionHandler == null) this.ioExceptionHandler = new SilentExceptionHandler() ;
 		if (this.socketAddress == null) this.socketAddress = new InetSocketAddress(publicUri.getPort()) ;
 		
-		return new RadonConfiguration(this.publicUri, this.executor, this.exceptionHandler, this.ioExceptionHandler, this.socketAddress, this.handlers, this.staleConnectionTimeout, 
+		return new RadonConfiguration(this.aradon, this.publicUri, this.executor, this.exceptionHandler, this.ioExceptionHandler, this.socketAddress, this.handlers, this.staleConnectionTimeout, 
 				this.maxInitialLineLength, this.maxHeaderSize, this.maxChunkSize, this.maxContentLength) ;
 	}
 	
@@ -78,12 +79,10 @@ public class RadonConfigurationBuilder {
 	}
 
 	public RadonConfigurationBuilder add(Aradon aradon) {
-		add(AradonHandler.create(aradon)) ;
-		return this;
-	}
-	
-	public RadonConfigurationBuilder add(Configuration aradonConfig) {
-		Aradon aradon = Aradon.create(aradonConfig) ;
+		// add(AradonHandler.create(aradon)) ;
+		if (initializedAradon) throw new IllegalStateException("already aradon setted") ;
+		this.aradon = aradon ;
+		this.initializedAradon = true ;
 		
 		for (SectionService ss : aradon.getChildren()) {
 			if (StringUtil.isBlank(ss.getName())){
@@ -91,7 +90,7 @@ public class RadonConfigurationBuilder {
 					IMatchMode matchMode = ps.getConfig().imatchMode();
 					List<String> urlPatterns = astericURLPattern(ps.getConfig().urlPatterns(), matchMode) ;
 					for (String urlPattern : urlPatterns) {
-						add(urlPattern, aradon) ;
+						add(urlPattern, AradonHandler.create(aradon)) ;
 					}
 				}
 			} else {
@@ -116,15 +115,17 @@ public class RadonConfigurationBuilder {
 					}
 				}
 				
-				
-				
-				add("/" + ss.getName() + "/.*", aradon) ;
+				add("/" + ss.getName() + "/.*", AradonHandler.create(aradon)) ;
 			}
 			
 		}
 		
-		
-		
+		return this;
+	}
+	
+	public RadonConfigurationBuilder add(Configuration aradonConfig) {
+		Aradon aradon = Aradon.create(aradonConfig) ;
+		add(aradon) ;
 		return this ;
 	}
 	

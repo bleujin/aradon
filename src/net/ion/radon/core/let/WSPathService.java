@@ -9,14 +9,17 @@ import net.ion.framework.util.MapUtil;
 import net.ion.framework.util.StringUtil;
 import net.ion.nradon.AbstractWebSocketResource;
 import net.ion.nradon.HttpRequest;
+import net.ion.nradon.Radon;
 import net.ion.nradon.WebSocketConnection;
+import net.ion.nradon.handler.event.ServerEventHandler;
+import net.ion.nradon.handler.event.ServerEvent.EventType;
 import net.ion.radon.core.Aradon;
 import net.ion.radon.core.HttpRestSection;
 import net.ion.radon.core.TreeContext;
 import net.ion.radon.core.config.WSPathConfiguration;
 
-public class WSPathService extends AbstractWebSocketResource{
-	private static final String VAR_SESSIONID = "$sessionId";
+public class WSPathService extends AbstractWebSocketResource implements ServerEventHandler{
+	public static final String VAR_SESSIONID = "$sessionId";
 
 	private HttpRestSection restSection ;
 	private AbstractWebSocketResource handler ;
@@ -79,7 +82,16 @@ public class WSPathService extends AbstractWebSocketResource{
 	public void onPong(WebSocketConnection conn, String msg) throws Throwable {
 		handler.onPong(conn, msg) ;
 	}
+
+	public void onEvent(EventType event, Radon radon) {
+		if (handler instanceof ServerEventHandler){
+			((ServerEventHandler)handler).onEvent(event, radon) ;
+		}
+	}
 	
+	public AbstractWebSocketResource websocketResource(){
+		return handler ;
+	}
 
 
 }

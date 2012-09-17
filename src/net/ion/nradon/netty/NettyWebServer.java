@@ -14,6 +14,7 @@ import net.ion.nradon.HttpHandler;
 import net.ion.nradon.Radon;
 import net.ion.nradon.config.RadonConfiguration;
 import net.ion.nradon.handler.event.ServerEvent.EventType;
+import net.ion.radon.core.config.AradonConstant;
 
 import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.Channel;
@@ -55,6 +56,9 @@ public class NettyWebServer extends Radon {
 			throw new IllegalStateException("Server already started.");
 		}
 
+		getConfig().aradon().getServiceContext().putAttribute(AradonConstant.CONFIG_PORT, getConfig().getPort()) ;
+		getConfig().aradon().getServiceContext().putAttribute(Radon.class.getCanonicalName(), this) ;
+		
 		// Configure the server.
 		bootstrap = new ServerBootstrap();
 

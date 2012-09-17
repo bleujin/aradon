@@ -13,6 +13,7 @@ import net.ion.nradon.WebSocketHandler;
 import net.ion.nradon.handler.HttpToEventSourceHandler;
 import net.ion.nradon.handler.HttpToWebSocketHandler;
 import net.ion.nradon.handler.PathMatchHandler;
+import net.ion.radon.core.Aradon;
 import net.ion.radon.core.config.Configuration;
 import net.ion.radon.core.config.ConfigurationBuilder;
 import net.ion.radon.core.config.XMLConfig;
@@ -20,6 +21,7 @@ import net.ion.radon.core.config.XMLConfig;
 
 public class RadonConfiguration {
 
+	private Aradon aradon ;
 	private URI publicUri ;
 	private Executor executor ;
 	private UncaughtExceptionHandler exceptionHandler ;
@@ -32,8 +34,9 @@ public class RadonConfiguration {
 	private int maxChunkSize ;
 	private int maxContentLength ;
 	
-	RadonConfiguration(URI publicUri, Executor executor, UncaughtExceptionHandler exceptionHandler, UncaughtExceptionHandler ioExceptionHandler, SocketAddress socketAddress, List<HttpHandler> handlers, 
+	RadonConfiguration(Aradon aradon, URI publicUri, Executor executor, UncaughtExceptionHandler exceptionHandler, UncaughtExceptionHandler ioExceptionHandler, SocketAddress socketAddress, List<HttpHandler> handlers, 
 			long staleConnectionTimeout, int maxInitialLineLength, int maxHeaderSize, int maxChunkSize, int maxContentLength) {
+		this.aradon = aradon ;
 		this.publicUri = publicUri ;
 		this.executor = executor ;
 		this.exceptionHandler = exceptionHandler ;
@@ -63,7 +66,7 @@ public class RadonConfiguration {
 	public static RadonConfigurationBuilder newBuilder(XMLConfig xconfig) throws InstanceCreationException {
 		Configuration config = ConfigurationBuilder.load(xconfig).build() ;
 
-		return newBuilder(config.server().connector().port(), xconfig).add(config);
+		return newBuilder(config.server().connector().port()).add(config);
 	}
 
 	public static RadonConfigurationBuilder newBuilder(int port, XMLConfig xconfig) throws InstanceCreationException {
@@ -72,7 +75,9 @@ public class RadonConfiguration {
 		return newBuilder(port).add(config);
 	}
 
-
+	public Aradon aradon(){
+		return aradon ;
+	}
 	
 	public URI publicUri() {
 		return publicUri;

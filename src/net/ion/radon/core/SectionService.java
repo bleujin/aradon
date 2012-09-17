@@ -24,6 +24,12 @@ public abstract class SectionService extends Application implements IService<Pat
 	
 	public abstract Collection<EPathService> getEChildren() ;
 	
+	public abstract PathService path(String childName) ;
+	
+	public abstract WSPathService wspath(String childName) ;
+
+	public abstract EPathService espath(String childName) ;
+	
 	public void stop() {
 		this.destorySelf();
 	}
