@@ -62,9 +62,14 @@ public class RadonConfiguration {
 	
 	public static RadonConfigurationBuilder newBuilder(XMLConfig xconfig) throws InstanceCreationException {
 		Configuration config = ConfigurationBuilder.load(xconfig).build() ;
-		
-		
-		return newBuilder(config.server().connector().port()).add(config);
+
+		return newBuilder(config.server().connector().port(), xconfig).add(config);
+	}
+
+	public static RadonConfigurationBuilder newBuilder(int port, XMLConfig xconfig) throws InstanceCreationException {
+		Configuration config = ConfigurationBuilder.load(xconfig).build() ;
+
+		return newBuilder(port).add(config);
 	}
 
 

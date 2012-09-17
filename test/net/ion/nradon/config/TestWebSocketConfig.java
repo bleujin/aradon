@@ -40,41 +40,41 @@ public class TestWebSocketConfig {
 	
 	@Test
 	public void loadAradonConfig() throws Exception {
-		Radon webServer = RadonConfiguration.newBuilder(9000).add(cbuilder.build()).startRadon() ;
+		Radon radon = RadonConfiguration.newBuilder(9000).add(cbuilder.build()).startRadon() ;
 		
 		AradonClient ac = AradonClientFactory.create("http://localhost:9000") ;
 		assertEquals(200, ac.createRequest("/hello2").handle(Method.GET).getStatus().getCode()) ;
 		assertEquals(200, ac.createRequest("/test/hello").handle(Method.GET).getStatus().getCode()) ;
-		webServer.stop() ;
+		radon.stop() ;
 	}
 	
 	@Test
 	public void loadFromFile() throws Exception {
-		Radon webServer = RadonConfiguration.newBuilder(XMLConfig.create("./resource/config/readonly-config.xml")).startRadon() ;
+		Radon radon = RadonConfiguration.newBuilder(XMLConfig.create("./resource/config/readonly-config.xml")).startRadon() ;
 		
 		AradonClient ac = AradonClientFactory.create("http://localhost:9000") ;
 		assertEquals(200, ac.createRequest("/").handle(Method.GET).getStatus().getCode()) ;
 		assertEquals(200, ac.createRequest("/hello").handle(Method.GET).getStatus().getCode()) ;
 		assertEquals(200, ac.createRequest("/another/hello").handle(Method.GET).getStatus().getCode()) ;
-		webServer.stop() ;
+		radon.stop() ;
 	}
 	
 	
 	@Test
 	public void loadPlugIn() throws Exception {
-		Radon webServer = RadonConfiguration.newBuilder(XMLConfig.create("./resource/config/readonly-config.xml")).startRadon() ;
+		Radon radon = RadonConfiguration.newBuilder(XMLConfig.create("./resource/config/readonly-config.xml")).startRadon() ;
 		
 		AradonClient ac = AradonClientFactory.create("http://localhost:9000") ;
 		assertEquals(200, ac.createRequest("/plugin.hello/hello").handle(Method.GET).getStatus().getCode()) ;
 		assertEquals(200, ac.createRequest("/plugin.hello/view/logo.png").handle(Method.GET).getStatus().getCode()) ;
-		webServer.stop() ;
+		radon.stop() ;
 	}
 	
 	@Test
 	public void testWsection() throws Exception {
-		Radon webServer = RadonConfiguration.newBuilder(XMLConfig.create("./resource/config/section-config.xml")).startRadon() ;
+		Radon radon = RadonConfiguration.newBuilder(XMLConfig.create("./resource/config/section-config.xml")).startRadon() ;
 		
-		webServer.stop() ;
+		radon.stop() ;
 	}
 	
 	

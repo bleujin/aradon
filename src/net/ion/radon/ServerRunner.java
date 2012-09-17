@@ -1,14 +1,16 @@
 package net.ion.radon;
 
 import java.io.File;
+import java.io.InputStream;
 
 import net.ion.framework.util.Debug;
-import net.ion.radon.client.AradonClient;
-import net.ion.radon.client.AradonClientFactory;
+import net.ion.framework.util.IOUtil;
 import net.ion.radon.core.AradonServer;
 
-import org.restlet.Response;
-import org.restlet.data.Method;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 public class ServerRunner {
 
@@ -41,18 +43,28 @@ public class ServerRunner {
 			stopServer(port);
 		}
 
-		new AradonServer(option).start(port) ;
+		server.start(port) ;
 		// new InfinityThread().startNJoin();
 	}
 
 	private static void stopServer(int port) {
+		HttpClient client = new DefaultHttpClient() ;
+		InputStream input = null;
 		try {
-			AradonClient ac = AradonClientFactory.create("http://127.0.0.1:" + port);
-			Response response = ac.createRequest("/shutdown?timeout=100").handle(Method.DELETE);
-			if (response.getStatus().isSuccess()) Debug.line(response.getEntityAsText());
-			Thread.sleep(1000);
+			HttpDelete deleteMethod = new HttpDelete("http://127.0.0.1:" + port + "/shutdown?timeout=100") ;
+			HttpResponse response = client.execute(deleteMethod);
+			input = response.getEntity().getContent();
+			Debug.line(IOUtil.toString(input)) ;
+			
+//			AradonClient ac = AradonClientFactory.create("http://127.0.0.1:" + port);
+//			Response response = ac.createRequest("/shutdown?timeout=100").handle(Method.DELETE);
+//			if (response.getStatus().isSuccess()) Debug.line(response.getEntityAsText());
+//			Thread.sleep(1000);
 		} catch (Throwable ignore) {
-			Debug.line(ignore);
+			Debug.line("stopping aradon. but " + ignore.getMessage());
+		} finally {
+			IOUtil.closeQuietly(input) ;
+			client.getConnectionManager().shutdown() ;
 		}
 	}
 }

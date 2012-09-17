@@ -10,6 +10,7 @@ add_classpath ${ARADON_HOME}/lib/iframework_2.3.jar
 add_classpath ${ARADON_HOME}/lib/jci_fat.jar
 add_classpath ${ARADON_HOME}/lib/org.simpleframework.jar
 add_classpath ${ARADON_HOME}/lib/rest_fat.jar
+add_classpath ${ARADON_HOME}/lib/netty-3.2.7.Final.jar
  
 add_jvm_args $JVM_PARAMS
 add_jvm_args '-Djava.net.preferIPv4Stack=true'
@@ -31,12 +32,14 @@ add_jvm_args '-Xmx1024m'
 # Sample JPDA settings for remote socket debugging
 # add_jvm_args "-Xrunjdwp:transport=dt_socket,address=8686,server=y,suspend=n"
  
-# Log4j configuration
+# Sample Log4j configuration
 # LOG4J_CONFIG=file:///${ARADON_HOME}/resource/config/log4j.properties
  
 add_program_args "$@"
-add_program_args -config:resource/config/server-config.xml
+add_program_args -config:resource/config/aradon-config.xml
 # add_program_args -acton:restart
+# add_program_args -port:9000
  
 echo "jmxport=$jmxport"
-start net.ion.radon.ServerRunner
+# start net.ion.radon.ServerRunner
+rem start net.ion.nradon.ServerRunner
