@@ -42,4 +42,4 @@ add_program_args -config:resource/config/aradon-config.xml
  
 echo "jmxport=$jmxport"
 # start net.ion.radon.ServerRunner
-rem start net.ion.nradon.ServerRunner
+start net.ion.nradon.ServerRunner
