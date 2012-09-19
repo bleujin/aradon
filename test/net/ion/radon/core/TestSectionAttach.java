@@ -16,6 +16,7 @@ import net.ion.radon.impl.let.HelloWorldLet;
 import net.ion.radon.util.AradonTester;
 
 import org.apache.commons.configuration.ConfigurationException;
+import org.junit.Assert;
 import org.junit.Test;
 import org.restlet.data.Method;
 import org.restlet.resource.Get;
@@ -29,9 +30,11 @@ public class TestSectionAttach {
 		aradon.attach(SectionConfiguration.createBlank("s1"));
 		try {
 			aradon.attach(SectionConfiguration.createBlank("s1"));
+			Assert.fail() ;
 		} catch (IllegalArgumentException ignore) {
 		}
 
+		Debug.line(aradon.getChildren()) ;
 		assertEquals(1, aradon.getChildren().size());
 	}
 
