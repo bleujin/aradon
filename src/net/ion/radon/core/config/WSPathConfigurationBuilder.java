@@ -9,7 +9,8 @@ import net.ion.framework.util.StringUtil;
 import net.ion.nradon.AbstractWebSocketResource;
 import net.ion.radon.core.EnumClass.IMatchMode;
 
-public class WSPathConfigurationBuilder extends AsyncConfigruationBuilder<WSPathConfigurationBuilder>{
+public class WSPathConfigurationBuilder extends AbstractLetConfigurationBuilder<WSPathConfigurationBuilder, WSPathConfiguration> {
+    //AsyncConfigruationBuilder<WSPathConfigurationBuilder>{
 
 	private SectionConfigurationBuilder sectionBuilder ;
 	private String name ;
@@ -19,6 +20,7 @@ public class WSPathConfigurationBuilder extends AsyncConfigruationBuilder<WSPath
 	private IMatchMode matchMode = IMatchMode.EQUALS ;
 	
 	WSPathConfigurationBuilder(SectionConfigurationBuilder sectionBuilder, String name) {
+		super(sectionBuilder) ;
 		this.sectionBuilder = sectionBuilder ;
 		this.name = name ;
 		this.urlPatterns = ListUtil.newList() ;
@@ -42,7 +44,7 @@ public class WSPathConfigurationBuilder extends AsyncConfigruationBuilder<WSPath
 	}
 	
 	public WSPathConfigurationBuilder fromLoad(XMLConfig pconfig) throws InstanceCreationException {
-		parseContextAttribute(pconfig.firstChild("context"));
+		super.initContextFilter(pconfig);
 
 		try {
 			for (Object url : pconfig.getList("urls")) {

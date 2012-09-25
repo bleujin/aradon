@@ -1,4 +1,4 @@
-package net.ion.nradon.handler;
+package net.ion.nradon.let;
 
 import static java.util.concurrent.Executors.newFixedThreadPool;
 
@@ -11,6 +11,9 @@ import net.ion.nradon.AbstractHttpResource;
 import net.ion.nradon.HttpControl;
 import net.ion.nradon.HttpRequest;
 import net.ion.nradon.HttpResponse;
+import net.ion.radon.core.SectionService;
+import net.ion.radon.core.TreeContext;
+import net.ion.radon.core.config.SPathConfiguration;
 
 import org.restlet.Request;
 import org.restlet.Response;
@@ -19,40 +22,31 @@ import org.restlet.data.Method;
 import org.restlet.representation.FileRepresentation;
 import org.restlet.service.MetadataService;
 
-public class AradonStaticFileHandler extends AbstractHttpResource {
+public class SampleHttpResource extends AbstractHttpResource {
+
 
 	private Executor ioThread;
-	private final File dir;
+	private File dir;
 	private MetadataService mservice ;
 
-	public AradonStaticFileHandler(File dir, Executor ioThread) throws Exception {
-		this.dir = dir;
-		this.ioThread = ioThread;
+	public SampleHttpResource(){
+	}
+	
+	@Override
+	public void init(SectionService parent, TreeContext context, SPathConfiguration econfig){
+		super.init(parent, context, econfig) ;
+		this.dir = new File(context.getAttributeObject("base.dir", "./resource/", String.class)) ;
+		this.ioThread = newFixedThreadPool(4) ;
 		this.mservice = new MetadataService() ;
 	}
 
-	public AradonStaticFileHandler(String dir, Executor ioThread) throws Exception {
-		this(new File(dir), ioThread);
-	}
-
-	public AradonStaticFileHandler(File dir) throws Exception {
-		this(dir, newFixedThreadPool(4));
-	}
-
-	public AradonStaticFileHandler(String dirName, int nThreads) throws Exception{
-		this(new File(dirName), newFixedThreadPool(nThreads)) ;
-	}
-
-	public AradonStaticFileHandler(String dir) throws Exception {
-		this(new File(dir));
-	}
 
 	@Override
 	public void handleHttpRequest(final HttpRequest request, final HttpResponse response, HttpControl control) throws Exception {
 
 		String path = withoutTrailingSlashOrQuery(request) ;
 		final File file = resolveFile(path) ;
-		if (!file.exists()) {
+		if (file == null || !file.exists()) {
 			control.nextHandler(request, response) ;
 			return ;
 		}
@@ -81,5 +75,4 @@ public class AradonStaticFileHandler extends AbstractHttpResource {
 		}
 		return result;
 	}
-
 }

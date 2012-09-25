@@ -10,6 +10,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import junit.framework.Assert;
 import net.ion.framework.util.ListUtil;
 import net.ion.nradon.Radon;
 import net.ion.nradon.client.eventsource.EventSource;
@@ -32,7 +33,7 @@ public class TestEPathConfig {
 	@Test
 	public void running() throws Exception {
 		RadonConfigurationBuilder rconfig = RadonConfiguration.newBuilder(9000).add(cbuilder.build());
-		Radon raodn = rconfig.startRadon();
+		Radon radon = rconfig.startRadon();
 
 		List<String> messages = ListUtil.toList("hello", "jin", "bye") ;
 		
@@ -40,6 +41,14 @@ public class TestEPathConfig {
 		startClient(messages, messageCountdown, new CountDownLatch(0), 5000);
 		assertTrue("Didn't get all messages", messageCountdown.await(1000, TimeUnit.MILLISECONDS));
 
+		
+		// confirm context attribute
+		String pathAttribute = radon.getConfig().aradon().getChildService("async").epath("esource").getServiceContext().getAttributeObject("path.attribute", String.class) ;
+		Assert.assertEquals("name : esource", pathAttribute) ;
+		
+		
+		
+		radon.stop() ;
 	}
 
 	private void startClient(final List<String> expectedMessages, final CountDownLatch messageCountdown, final CountDownLatch errorCountdown, long reconnectionTimeMillis) throws InterruptedException {

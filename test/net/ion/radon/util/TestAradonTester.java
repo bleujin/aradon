@@ -42,7 +42,7 @@ public class TestAradonTester {
 	public void pathName() throws Exception {
 		Aradon aradon = AradonTester.create().register("", "/{name}", "letname", IMatchMode.EQUALS, MyTestLet.class).getAradon() ;
 		
-		PathService ps = aradon.getChildService("").getChildService("letname") ;
+		PathService ps = aradon.getChildService("").path("letname") ;
 		assertEquals(true, ps != null) ;
 	}
 	

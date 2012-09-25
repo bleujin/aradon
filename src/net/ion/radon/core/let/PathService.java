@@ -24,7 +24,7 @@ import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
 import org.restlet.routing.Filter;
 
-public class PathService extends Restlet implements IService {
+public class PathService extends Restlet implements IService<PathService> {
 
 	private TreeContext context;
 	private PathConfiguration pconfig;
@@ -104,11 +104,11 @@ public class PathService extends Restlet implements IService {
 		return aradon ;
 	}
 
-	public IService getChildService(String childName) {
+	public PathService getChildService(String childName) {
 		throw new IllegalArgumentException("this is pathservice");
 	}
 
-	public Collection<? extends IService> getChildren() {
+	public Collection<PathService> getChildren() {
 		return Collections.EMPTY_LIST;
 	}
 
@@ -125,8 +125,7 @@ public class PathService extends Restlet implements IService {
 	}
 
 	public void reload() throws Exception {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	public String toString(){

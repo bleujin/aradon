@@ -72,7 +72,7 @@ public class PlugInsConfiguration {
 		List<SectionConfiguration> result = ListUtil.newList() ;
 		
 		for (PlugInConfiguration pc : pconfigs) {
-			result.addAll(pc.getAradonConfig().sections().sections()) ; 
+			result.addAll(pc.getAradonConfig().sections().restSections()) ; 
 		}
 		
 		return result;

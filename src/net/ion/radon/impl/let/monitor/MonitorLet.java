@@ -66,7 +66,7 @@ public class MonitorLet extends AbstractLet {
 	private List<MonitorItem> getTarget(){
 		SectionService section = findSection();
 		if(getInnerRequest().hasAttribute(PATH)){
-			return ListUtil.toList(MonitorItem.create(section, section.getChildService(getInnerRequest().getAttribute(PATH)).getConfig()));
+			return ListUtil.toList(MonitorItem.create(section, section.path(getInnerRequest().getAttribute(PATH)).getConfig()));
 		}
 		return getTargetSection(section);
 	}
@@ -80,7 +80,7 @@ public class MonitorLet extends AbstractLet {
 
 	private List<MonitorItem> getLetList(SectionService section) {
 		List<MonitorItem> list = ListUtil.newList();
-		for(PathService ps : section.getChildren()){
+		for(PathService ps : section.getPathChildren()){
 			list.add( MonitorItem.create(section, ps.getConfig()));
 		}
 		return list;

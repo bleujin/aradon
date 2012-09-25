@@ -35,7 +35,7 @@ public class TestContextAttribute extends TestBaseAradon {
 		TreeContext scontext = section.getServiceContext();
 		Object value = scontext.getAttributeObject("section.contact.email") ;
 		
-		PathService pservice = section.getChildService("favicon.ico") ;
+		PathService pservice = section.path("favicon.ico") ;
 		
 		assertEquals("./resource/favicon.ico", pservice.getContext().getAttributeObject("base.dir")) ;
 	}

@@ -15,27 +15,32 @@ public class SectionConfiguration extends LetConfiguration<SectionConfiguration>
 
 	private final String name ;
 	private final List<PathConfiguration> pconfigs ;
+	private final List<SPathConfiguration> sconfigs ;
 	private final List<WSPathConfiguration> wsconfigs ;
 	private final List<EPathConfiguration> econfigs ;
 	
-	SectionConfiguration(String name, List<PathConfiguration> pconfigs,  List<WSPathConfiguration> wsconfigs, List<EPathConfiguration> econfigs, Map<String, AttributeValue> attributes, List<IRadonFilter> prefilters, List<IRadonFilter> afterfilters) {
+	SectionConfiguration(String name, List<PathConfiguration> pconfigs, List<SPathConfiguration> sconfigs, List<WSPathConfiguration> wsconfigs, List<EPathConfiguration> econfigs, Map<String, AttributeValue> attributes, List<IRadonFilter> prefilters, List<IRadonFilter> afterfilters) {
 		super(attributes, prefilters, afterfilters);
 		this.name = name;
 		this.pconfigs = pconfigs;
+		this.sconfigs = sconfigs ;
 		this.wsconfigs = wsconfigs ;
 		this.econfigs = econfigs ;
 	}
 
 	public final static SectionConfiguration createBlank(String name){
-		return new SectionConfiguration(name, ListUtil.<PathConfiguration>newList(), ListUtil.<WSPathConfiguration>newList(), ListUtil.<EPathConfiguration>newList(), MapUtil.<String, AttributeValue>newMap(), ListUtil.<IRadonFilter>newList(), ListUtil.<IRadonFilter>newList()) ;
+		return new SectionConfiguration(name, ListUtil.<PathConfiguration>newList(), ListUtil.<SPathConfiguration>newList(), ListUtil.<WSPathConfiguration>newList(), ListUtil.<EPathConfiguration>newList(), MapUtil.<String, AttributeValue>newMap(), ListUtil.<IRadonFilter>newList(), ListUtil.<IRadonFilter>newList()) ;
 	}
 	
 	public final static SectionConfiguration create(String name, List<PathConfiguration> paths){
-		return new SectionConfiguration(name, paths, ListUtil.<WSPathConfiguration>newList(), ListUtil.<EPathConfiguration>newList(), MapUtil.<String, AttributeValue>newMap(), ListUtil.<IRadonFilter>newList(), ListUtil.<IRadonFilter>newList()) ;
+		return new SectionConfiguration(name, paths, ListUtil.<SPathConfiguration>newList(), ListUtil.<WSPathConfiguration>newList(), ListUtil.<EPathConfiguration>newList(), MapUtil.<String, AttributeValue>newMap(), ListUtil.<IRadonFilter>newList(), ListUtil.<IRadonFilter>newList()) ;
 	}
 	
 	public List<PathConfiguration> pathConfiguration() {
 		return pconfigs;
+	}
+	public List<SPathConfiguration> spathConfiguration() {
+		return sconfigs;
 	}
 	public List<WSPathConfiguration> wspathConfiguration() {
 		return wsconfigs;
@@ -49,11 +54,19 @@ public class SectionConfiguration extends LetConfiguration<SectionConfiguration>
 		return name;
 	}
 
+
+	public WSPathConfiguration wspath(String name) {
+		for (WSPathConfiguration wsconfig : wsconfigs) {
+			if (wsconfig.name().equalsIgnoreCase(name)) return wsconfig ;
+		}
+		throw new IllegalArgumentException("not found path :" + name) ;
+	}
+
 	public PathConfiguration path(String name) {
 		for (PathConfiguration pconfig : pconfigs) {
 			if (pconfig.name().equalsIgnoreCase(name)) return pconfig ;
 		}
-		throw new IllegalArgumentException("not found section :" + name) ;
+		throw new IllegalArgumentException("not found path :" + name) ;
 	}
 
 	SectionConfiguration addPathConfiguration(PathConfiguration pconfig){

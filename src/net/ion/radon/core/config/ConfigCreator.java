@@ -9,12 +9,9 @@ import java.util.List;
 
 import net.ion.framework.util.InstanceCreationException;
 import net.ion.framework.util.InstanceCreator;
-import net.ion.framework.util.StringUtil;
-import net.ion.radon.core.Aradon;
 
 public class ConfigCreator {
-	// 이 클래스는 생성 못해요 -,.-
-	// 전부 static class
+	// singleton
 	private ConfigCreator() {
 	}
 
@@ -29,7 +26,7 @@ public class ConfigCreator {
 		}
 
 		try {
-			// 생성자 파라미터가 존재할 때
+			// 
 			Object object = null;
 			String className = config.getString("class-name");
 			// if (className.equals("null"))
@@ -52,7 +49,6 @@ public class ConfigCreator {
 					Object paramObject = null;
 
 					if (conParam.hasChild("value.configured-object")) {
-						// value가 다시 <configured-object/> 로 구성된 object 일 경우 재귀 호출!!
 						paramObject = ConfigCreator.createConfiguredInstance(conParam.firstChild("value.configured-object"));
 					} else {
 						if (conParam.hasChild("value.null")) {
@@ -75,19 +71,19 @@ public class ConfigCreator {
 
 			List<XMLConfig> properties = config.children("property");
 
-			// property 의 set method 를 table화 시킴
+			// property set method 
 			BeanInfo beanInfo = Introspector.getBeanInfo(objectClass);
 			PropertyDescriptor[] descriptors = beanInfo.getPropertyDescriptors();
 			HashMap<String, Method> methodMap = new HashMap<String, Method>();
 			for (int i = 0; i < descriptors.length; ++i) {
-				String propertyName = descriptors[i].getName(); // .toLowerCase(); 주의!!!!!!
+				String propertyName = descriptors[i].getName(); // .toLowerCase(); 
 				Method method = descriptors[i].getWriteMethod();
 
 				methodMap.put(propertyName, method);
 			}
 
 			for (XMLConfig property : properties) {
-				String name = property.getString("[@name]"); // .toLowerCase(); 주의!!!!!!!
+				String name = property.getString("[@name]"); // .toLowerCase(); 
 
 				Method setter = (Method) methodMap.get(name);
 				if (setter == null) {

@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import net.ion.framework.util.Debug;
 import net.ion.framework.util.ListUtil;
 import net.ion.framework.util.StringUtil;
 import net.ion.nradon.EventSourceHandler;
@@ -29,9 +28,8 @@ import net.ion.radon.core.Aradon;
 import net.ion.radon.core.SectionService;
 import net.ion.radon.core.EnumClass.IMatchMode;
 import net.ion.radon.core.config.Configuration;
-import net.ion.radon.core.let.EPathService;
+import net.ion.radon.core.let.IRadonPathService;
 import net.ion.radon.core.let.PathService;
-import net.ion.radon.core.let.WSPathService;
 
 public class RadonConfigurationBuilder {
 	private static final long DEFAULT_STALE_CONNECTION_TIMEOUT = 5000;
@@ -85,33 +83,23 @@ public class RadonConfigurationBuilder {
 		this.initializedAradon = true ;
 		
 		for (SectionService ss : aradon.getChildren()) {
-			if (StringUtil.isBlank(ss.getName())){
-				for(PathService ps : ss.getChildren()){
+			if (StringUtil.isBlank(ss.getName())){ // default section
+				for(PathService ps : ss.getPathChildren()){
 					IMatchMode matchMode = ps.getConfig().imatchMode();
 					List<String> urlPatterns = astericURLPattern(ps.getConfig().urlPatterns(), matchMode) ;
 					for (String urlPattern : urlPatterns) {
 						add(urlPattern, AradonHandler.create(aradon)) ;
 					}
 				}
-			} else {
-				for(WSPathService ws : ss.getWSChildren()){
-					IMatchMode matchMode = ws.getConfig().imatchMode();
-					List<String> configUrlPatterns = ws.getConfig().urlPatterns();
-					List<String> urlPatterns = astericURLPattern(configUrlPatterns, matchMode) ;
-					for (int i = 0 ; i < urlPatterns.size() ; i++) {
-						String urlPattern = "/" + ss.getName() + urlPatterns.get(i) ;
-						add(urlPattern, ws.handlerResource()) ;
-					}
-				}
 				
-				for(EPathService ws : ss.getEChildren()){
-					IMatchMode matchMode = ws.getConfig().imatchMode();
-					List<String> configUrlPatterns = ws.getConfig().urlPatterns();
+			} else {
+				for(IRadonPathService pservice : ss.getRadonChildren()){
+					IMatchMode matchMode = pservice.getConfig().imatchMode() ;
+					List<String> configUrlPatterns = pservice.getConfig().urlPatterns();
 					List<String> urlPatterns = astericURLPattern(configUrlPatterns, matchMode) ;
 					for (int i = 0 ; i < urlPatterns.size() ; i++) {
 						String urlPattern = "/" + ss.getName() + urlPatterns.get(i) ;
-						add(urlPattern, ws.handlerResource()) ;
-						Debug.line(ss.getName(), urlPattern, configUrlPatterns.get(i)) ;
+						add(urlPattern, pservice.toHttpHandler()) ;
 					}
 				}
 				
@@ -133,7 +121,7 @@ public class RadonConfigurationBuilder {
 		List<String> result = ListUtil.newList() ;
 		for (String urlPattern : urlPattrns) {
 			String astericPattern = urlPattern.replaceAll("\\{[^\\/]*\\}", ".*");
-			if (matchMode == IMatchMode.STARTWITH) astericPattern += "/.*" ;
+			if (matchMode == IMatchMode.STARTWITH) astericPattern += urlPattern.equals("/") ? ".*" : "/.*" ;
 			result.add(astericPattern) ;
 		}
 		return result ;
@@ -188,7 +176,7 @@ public class RadonConfigurationBuilder {
 		return this ;
 	}
 	
-	private static URI localUri(int port) {
+	static URI localUri(int port) {
 		try {
 			return URI.create("http://" + InetAddress.getLocalHost().getHostName() + (port == 80 ? "" : (":" + port)) + "/");
 		} catch (UnknownHostException e) {
@@ -233,8 +221,5 @@ public class RadonConfigurationBuilder {
 	public NettyWebServer startRadon() throws IOException {
 		return createRadon().start() ;
 	}
-
-
-
 
 }

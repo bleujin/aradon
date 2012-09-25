@@ -25,7 +25,7 @@ public class TestExecuteTimeFilter extends TestBaseAradon{
 		SectionService section = aradon.attach(SectionConfiguration.createBlank("test"));
 		section.attach(PathConfiguration.create("test", "/test", HelloWorldLet2.class));
 		
-		PathService pservice =  section.getChildService("test");
+		PathService pservice =  section.path("test");
 		ExecuteTimeFilter filter = new ExecuteTimeFilter();
 		pservice.getConfig().addPreFilter(filter);
 

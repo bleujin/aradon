@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.io.File;
 import java.net.URI;
 
+import junit.framework.Assert;
 import net.ion.framework.util.Debug;
 import net.ion.framework.util.ListUtil;
 import net.ion.nradon.HttpHandler;
@@ -52,7 +53,7 @@ public class TestWPathConfig {
 	@Test
 	public void running() throws Exception {
 		RadonConfigurationBuilder rconfig = RadonConfiguration.newBuilder(9000).add(cbuilder.build());
-		Radon raodn = rconfig.startRadon() ;
+		Radon radon = rconfig.startRadon() ;
 		
 		WebSocketClient wclient = WebSocketClient.create() ;
 		wclient.connect(new URI("ws://61.250.201.157:9000/async/broadcast/123/bleujin")) ;
@@ -62,6 +63,12 @@ public class TestWPathConfig {
 		for (int i : ListUtil.rangeNum(10)) {
 			wclient.sendMessage("Message #" + i) ;
 		}
+		
+		// confirm context attribute
+		String pathAttribute = radon.getConfig().aradon().getChildService("async").wspath("broadcast").getServiceContext().getAttributeObject("path.attribute", String.class) ;
+		Assert.assertEquals("name : broadcast", pathAttribute) ;
+		
+		radon.stop() ;
 	}
 }
 

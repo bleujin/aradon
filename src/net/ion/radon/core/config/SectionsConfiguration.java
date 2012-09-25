@@ -9,7 +9,7 @@ public class SectionsConfiguration {
 		this.sconfigs = sectionConfig ;
 	}
 	
-	public List<SectionConfiguration> sections(){
+	public List<SectionConfiguration> restSections(){
 		return sconfigs ;
 	}
 

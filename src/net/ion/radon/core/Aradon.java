@@ -96,7 +96,7 @@ public class Aradon extends Component implements IService<SectionService>, Arado
 			rootContext.putAttribute(entry.getKey(), entry.getValue());
 		}
 		
-		for (SectionConfiguration sconfig : config.aradon().sections().sections()) {
+		for (SectionConfiguration sconfig : config.aradon().sections().restSections()) {
 			attach(sconfig);
 		}
 
@@ -295,18 +295,30 @@ public class Aradon extends Component implements IService<SectionService>, Arado
 		}
 	}
 
-	private void onEventFire(final AradonEvent event, IService service) {
-		TreeContext serviceContext = service.getServiceContext();
+	private void onEventFire(final AradonEvent event, IService iservice) {
+		TreeContext serviceContext = iservice.getServiceContext();
+		List<OnEventObject> temp = sortEventObject(event, serviceContext);
 		
-		List<OnEventObject> temp =  ListUtil.newList() ;
+		for (OnEventObject eventObject : temp) {
+			 eventObject.onEvent(event, iservice);
+		}
+
+		for (Object child : iservice.getChildren()) {
+			onEventFire(event, (IService)child);
+		}
+	}
+	
+
+	private List<OnEventObject> sortEventObject(final AradonEvent event, TreeContext serviceContext) {
+		List<OnEventObject> result =  ListUtil.newList() ;
 		for (Object key : serviceContext.getAttributes().keySet()) {
 			Object value = serviceContext.getAttributeObject(ObjectUtil.toString(key));
 			if (OnEventObject.class.isInstance(value)) {
-				temp.add((OnEventObject) value) ;
+				result.add((OnEventObject) value) ;
 			}
 		}
 		
-		Collections.sort(temp, new Comparator<OnEventObject>(){
+		Collections.sort(result, new Comparator<OnEventObject>(){
 			private int order(OnEventObject o){
 				if (o instanceof OnOrderEventObject){
 					return ((OnOrderEventObject)o).order() ;
@@ -317,15 +329,7 @@ public class Aradon extends Component implements IService<SectionService>, Arado
 			public int compare(OnEventObject o1, OnEventObject o2) {
 				return (order(o1) - order(o2)) * (event == AradonEvent.START ? 1 : -1);
 			}}) ;
-		
-		
-		for (OnEventObject eventObject : temp) {
-			 eventObject.onEvent(event, service);
-		}
-
-		for (Object child : service.getChildren()) {
-			onEventFire(event, (IService) child);
-		}
+		return result;
 	}
 	
 	public SectionService attach(SectionConfiguration sconfig) {

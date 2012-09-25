@@ -27,7 +27,7 @@ public class TestFilter extends TestBaseAradon {
 	public void testPathFilter() throws Exception {
 		Aradon aradon = testAradon();
 		SectionService section = aradon.getChildService("another");
-		final PathService helloService = section.getChildService("hello");
+		final PathService helloService = section.path("hello");
 		helloService.getConfig().addPreFilter(new ParamToBeanFilter("mybean", "net.ion.radon.core.filter.HelloBean")) ;
 		helloService.getConfig().addPreFilter(new HiFilter()) ;
 

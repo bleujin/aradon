@@ -3,6 +3,7 @@ package net.ion.nradon.config;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.net.SocketAddress;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.concurrent.Executor;
 
@@ -14,6 +15,7 @@ import net.ion.nradon.handler.HttpToEventSourceHandler;
 import net.ion.nradon.handler.HttpToWebSocketHandler;
 import net.ion.nradon.handler.PathMatchHandler;
 import net.ion.radon.core.Aradon;
+import net.ion.radon.core.TreeContext;
 import net.ion.radon.core.config.Configuration;
 import net.ion.radon.core.config.ConfigurationBuilder;
 import net.ion.radon.core.config.XMLConfig;
@@ -79,6 +81,10 @@ public class RadonConfiguration {
 		return aradon ;
 	}
 	
+	public TreeContext getServiceContext(){
+		return aradon.getServiceContext() ;
+	}
+	
 	public URI publicUri() {
 		return publicUri;
 	}
@@ -122,6 +128,12 @@ public class RadonConfiguration {
 	public int maxContentLength() {
 		return maxContentLength;
 	}
+	
+
+	public RadonConfiguration portNum(int portNum) throws URISyntaxException {
+		this.publicUri = new URI(publicUri.getScheme(), publicUri.getUserInfo(), publicUri.getHost(), portNum, publicUri.getPath(), publicUri.getQuery(), publicUri.getFragment()) ;
+		return this ;
+	}
 
 	public int getPort() {
 		int port = publicUri.getPort();
@@ -154,5 +166,6 @@ public class RadonConfiguration {
 	public RadonConfiguration add(String path, EventSourceHandler handler) {
 		return add(path, new HttpToEventSourceHandler(handler));
 	}
+
 
 }

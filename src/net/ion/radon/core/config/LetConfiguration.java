@@ -85,6 +85,6 @@ public abstract class LetConfiguration<T> {
 		afterfilters.remove(filter) ;
 		return (T) this ;
 	}
-
+	
 
 }

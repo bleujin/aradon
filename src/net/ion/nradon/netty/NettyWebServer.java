@@ -101,22 +101,23 @@ public class NettyWebServer extends Radon {
 		bootstrap.setFactory(new NioServerSocketChannelFactory(bossExecutor, workerExecutor, 1));
 		channel = bootstrap.bind(getConfig().socketAddress());
 		
-		for (HttpHandler handler : getConfig().handlers() ) {
-			handler.onEvent(EventType.START, this) ;
-		}
-		
+		fireEvent(EventType.START) ;
 		return this;
 	}
+	
+	public void fireEvent(EventType eventType){
+		for (HttpHandler handler : getConfig().handlers() ) {
+			handler.onEvent(eventType, this) ;
+		}
+	}
+	
 
 	public boolean isRunning() {
 		return channel != null && channel.isBound();
 	}
 
 	public synchronized NettyWebServer stop() throws IOException {
-		
-		for (HttpHandler handler : getConfig().handlers() ) {
-			handler.onEvent(EventType.STOP, this) ;
-		}
+		fireEvent(EventType.STOP) ;
 		
 		if (channel != null) {
 			channel.close();

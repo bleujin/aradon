@@ -1,20 +1,25 @@
 package net.ion.radon.core;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.ion.framework.util.ListUtil;
 import net.ion.framework.util.MapUtil;
 import net.ion.framework.util.StringUtil;
 import net.ion.radon.core.config.AttributeValue;
 import net.ion.radon.core.config.EPathConfiguration;
 import net.ion.radon.core.config.PathConfiguration;
+import net.ion.radon.core.config.SPathConfiguration;
 import net.ion.radon.core.config.SectionConfiguration;
 import net.ion.radon.core.config.WSPathConfiguration;
 import net.ion.radon.core.filter.IFilterResult;
 import net.ion.radon.core.let.EPathService;
 import net.ion.radon.core.let.FilterUtil;
+import net.ion.radon.core.let.IRadonPathService;
 import net.ion.radon.core.let.PathService;
+import net.ion.radon.core.let.SPathService;
 import net.ion.radon.core.let.WSPathService;
 import net.ion.radon.core.routing.SectionRouter;
 import net.ion.radon.impl.filter.RevokeServiceFilter;
@@ -24,13 +29,14 @@ import org.restlet.Response;
 import org.restlet.Restlet;
 import org.restlet.routing.Filter;
 
-public class HttpRestSection extends SectionService implements IService<PathService> {
+public class HttpRestSection extends SectionService  {
 
 	private Aradon aradon;
 	private TreeContext context;
 	private SectionConfiguration sconfig;
 	private SectionRouter router;
 	private Map<String, PathService> paths = MapUtil.newMap();
+	private Map<String, SPathService> spaths = MapUtil.newMap();
 	private Map<String, WSPathService> wspaths = MapUtil.newMap();
 	private Map<String, EPathService> epaths = MapUtil.newMap();
 
@@ -52,6 +58,11 @@ public class HttpRestSection extends SectionService implements IService<PathServ
 		for (PathConfiguration pconfig : sconfig.pathConfiguration()) {
 			attach(pconfig);
 		}
+
+		for (SPathConfiguration pconfig : sconfig.spathConfiguration()) {
+			attach(pconfig);
+		}
+
 
 		for (WSPathConfiguration wconfig : sconfig.wspathConfiguration()) {
 			attach(wconfig);
@@ -105,7 +116,7 @@ public class HttpRestSection extends SectionService implements IService<PathServ
 	public HttpRestSection attach(WSPathConfiguration wsconfig) {
 		try {
 			WSPathService wlet = WSPathService.create(aradon, this, context.createChildContext(), wsconfig) ;
-			wspaths.put(wsconfig.name(), wlet) ;
+			wspaths.put(wlet.getConfig().name(), wlet) ;
 			return this;
 		} catch (Throwable ex) {
 			throw new IllegalStateException(ex) ;
@@ -117,16 +128,25 @@ public class HttpRestSection extends SectionService implements IService<PathServ
 		for (String url : pconfig.urlPatterns()) {
 			router.attach(makePathPattern(url), plet, plet.getConfig().matchMode());
 		}
-		paths.put(pconfig.name(), plet);
+		paths.put(plet.getConfig().name(), plet);
+
+		return this;
+	}
+
+	
+	public HttpRestSection attach(SPathConfiguration pconfig) {
+		SPathService splet = SPathService.create(aradon, this, context.createChildContext(), pconfig);
+		spaths.put(splet.getConfig().name(), splet);
 
 		return this;
 	}
 
 
+
 	public HttpRestSection attach(EPathConfiguration econfig) {
 		try {
 			EPathService elet = EPathService.create(aradon, this, context.createChildContext(), econfig) ;
-			epaths.put(econfig.name(), elet) ;
+			epaths.put(elet.getConfig().name(), elet) ;
 			return this;
 		} catch (Throwable ex) {
 			throw new IllegalStateException(ex) ;
@@ -153,36 +173,50 @@ public class HttpRestSection extends SectionService implements IService<PathServ
 		sconfig.addPreFilter(0, RevokeServiceFilter.SELF);
 	}
 
-	public PathService getChildService(String childName) {
+	public IService getChildService(String childName) {
 		return paths.get(childName);
 	}
 
 	public PathService path(String childName){
-		return getChildService(childName) ;
+		return paths.get(childName) ;
+	}
+	
+	public SPathService spath(String childName){
+		return spaths.get(childName) ;
 	}
 	
 	public WSPathService wspath(String childName){
 		return wspaths.get(childName) ;
 	}
 
-	public EPathService espath(String childName){
+	public EPathService epath(String childName){
 		return epaths.get(childName) ;
 	}
 	
 
-	public Collection<PathService> getChildren() {
-		return paths.values();
+	public Collection<IService> getChildren() {
+		List<IService> result = ListUtil.newList() ;
+		result.addAll(paths.values()) ;
+		result.addAll(spaths.values()) ;
+		result.addAll(wspaths.values()) ;
+		result.addAll(epaths.values()) ;
+		
+		return result;
 	}
 	
-	public Collection<WSPathService> getWSChildren(){
-		return wspaths.values() ;
+	public Collection<IRadonPathService> getRadonChildren(){
+		List<IRadonPathService> result = ListUtil.newList() ;
+		result.addAll(spaths.values()) ;
+		result.addAll(wspaths.values()) ;
+		result.addAll(epaths.values()) ;
+
+		return result;
 	}
-
-	public Collection<EPathService> getEChildren(){
-		return epaths.values() ;
+	
+	public Collection<PathService> getPathChildren() {
+		return paths.values() ;
 	}
-
-
+	
 	public IService getParent() {
 		return aradon;
 	}

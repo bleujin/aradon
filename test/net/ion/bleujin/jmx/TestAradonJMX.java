@@ -32,7 +32,7 @@ public class TestAradonJMX {
 		for (SectionService sec : aradon.getChildren()) {
 			server.registerMBean(new ServiceMBean(sec), new ObjectName("net.ion.radon.section:Name=" + sec.getNamePath() + ",serverType=net.ion.radon.core.SectionService"));
 			server.registerMBean(new ContextMBean(sec, sec.getServiceContext()), new ObjectName("net.ion.radon.section:Name=" + sec.getNamePath() + "Context,serverType=net.ion.radon.core.TreeContext"));
-			for (PathService ps : sec.getChildren()) {
+			for (PathService ps : sec.getPathChildren()) {
 				server.registerMBean(new ServiceMBean(ps), new ObjectName("net.ion.radon.section." + sec.getName() + ":Name=" + ps.getNamePath() + ",serverType=net.ion.radon.core.PathService"));
 				server.registerMBean(new ContextMBean(ps, ps.getServiceContext()), new ObjectName("net.ion.radon.section." + sec.getName() + ":Name=" + ps.getNamePath() + "Context,serverType=net.ion.radon.core.TreeContext"));
 			}

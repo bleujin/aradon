@@ -8,7 +8,6 @@ import java.util.logging.Logger;
 import net.ion.framework.util.ListUtil;
 import net.ion.framework.util.StringUtil;
 import net.ion.radon.core.IService;
-import net.ion.radon.core.EnumClass.FilterLocation;
 import net.ion.radon.core.config.AttributeUtil;
 import net.ion.radon.core.config.ConfigCreator;
 import net.ion.radon.core.config.XMLConfig;
@@ -104,17 +103,6 @@ public class FilterUtil {
 	}
 
 	static final String ATTRIBUTE = "attribute";
-
-	private final static void makeFilter(IService service, FilterLocation loc, List<XMLConfig> fconfig) throws ConfigurationException {
-
-		Set<IRadonFilter> result = getFilters(fconfig);
-		for (IRadonFilter filter : result) {
-			if (loc.equals(FilterLocation.PRE))
-				service.getConfig().addPreFilter(filter);
-			else if (loc.equals(FilterLocation.AFTER))
-				service.getConfig().addAfterFilter(filter);
-		}
-	}
 
 	public static Set<IRadonFilter> getFilters(List<XMLConfig> configs)  {
 		try {

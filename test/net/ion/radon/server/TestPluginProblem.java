@@ -27,7 +27,7 @@ public class TestPluginProblem {
 
 		Aradon aradon = as.getAradon();
 
-		Debug.line(aradon.getConfig().sections().sections(), aradon.getChildren());
+		Debug.line(aradon.getConfig().sections().restSections(), aradon.getChildren());
 
 		AradonClient ac = AradonClientFactory.create(aradon);
 		Response res = ac.createRequest("/plugin.hello/hello").handle(Method.GET);

@@ -13,7 +13,7 @@ import net.ion.radon.impl.let.HelloWorldLet;
 
 import org.restlet.resource.ServerResource;
 
-public class PathConfiguration extends LetConfiguration<PathConfiguration>{
+public class PathConfiguration extends LetConfiguration<PathConfiguration> implements IPathConfiguration{
 
 	private final String name ;
 	private final Class<? extends ServerResource> handlerClz ;

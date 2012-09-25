@@ -9,7 +9,7 @@ import net.ion.framework.util.StringUtil;
 import net.ion.nradon.AbstractEventSourceResource;
 import net.ion.radon.core.EnumClass.IMatchMode;
 
-public class EPathConfigurationBuilder extends AsyncConfigruationBuilder<EPathConfigurationBuilder>{
+public class EPathConfigurationBuilder extends AbstractLetConfigurationBuilder<EPathConfigurationBuilder, EPathConfiguration>{
 
 	private SectionConfigurationBuilder sectionBuilder ;
 	private String name ;
@@ -19,6 +19,7 @@ public class EPathConfigurationBuilder extends AsyncConfigruationBuilder<EPathCo
 	private IMatchMode matchMode = IMatchMode.EQUALS ;
 	
 	EPathConfigurationBuilder(SectionConfigurationBuilder sectionBuilder, String name) {
+		super(sectionBuilder) ;
 		this.sectionBuilder = sectionBuilder ;
 		this.name = name ;
 		this.urlPatterns = ListUtil.newList() ;
@@ -42,7 +43,7 @@ public class EPathConfigurationBuilder extends AsyncConfigruationBuilder<EPathCo
 	}
 	
 	public EPathConfigurationBuilder fromLoad(XMLConfig pconfig) throws InstanceCreationException {
-		parseContextAttribute(pconfig.firstChild("context"));
+		super.initContextFilter(pconfig);
 
 		try {
 			for (Object url : pconfig.getList("urls")) {
@@ -75,4 +76,25 @@ public class EPathConfigurationBuilder extends AsyncConfigruationBuilder<EPathCo
 		this.handlerClz = handlerClz ;
 		return this;
 	}
+
+	public AradonConfigurationBuilder aradon() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Configuration build() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public ServerConfigurationBuilder server() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public ConfigurationBuilder toBuilder() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
