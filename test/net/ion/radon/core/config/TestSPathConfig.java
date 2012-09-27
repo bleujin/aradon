@@ -40,7 +40,10 @@ public class TestSPathConfig {
 		Assert.assertEquals("name : file", pathAttribute) ;
 		
 		
-		Assert.assertEquals(1, radon.getConfig().aradon().getChildService("resource").spath("file").getConfig().prefilters().size()) ;
+		// ignore filter
+		Assert.assertEquals(0, radon.getConfig().aradon().getChildService("resource").spath("file").getConfig().prefilters().size()) ;
+		Assert.assertEquals(0, radon.getConfig().aradon().getChildService("resource").spath("file").getConfig().afterfilters().size()) ;
+		Assert.assertEquals(1, radon.getConfig().aradon().getChildService("resource").spath("file").getConfig().filters().size()) ;
 		
 		radon.stop() ;
 	}

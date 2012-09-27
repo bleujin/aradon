@@ -106,7 +106,9 @@ public class NettyWebServer extends Radon {
 	}
 	
 	public void fireEvent(EventType eventType){
-		for (HttpHandler handler : getConfig().handlers() ) {
+		HttpHandler[] handlers = getConfig().handlers().toArray(new HttpHandler[0]);
+		
+		for (HttpHandler handler : handlers) {
 			handler.onEvent(eventType, this) ;
 		}
 	}

@@ -31,7 +31,7 @@ public class PathService extends Restlet implements IService<PathService> {
 
 	private final Aradon aradon ;
 	private final SectionService section ;
-	PathService(Aradon aradon, SectionService section, TreeContext context, PathConfiguration config) {
+	private PathService(Aradon aradon, SectionService section, TreeContext context, PathConfiguration config) {
 		super(context);
 		this.aradon = aradon ;
 		this.section = section ;
@@ -40,13 +40,13 @@ public class PathService extends Restlet implements IService<PathService> {
 		for (Entry<String, AttributeValue> entry : config.attributes().entrySet()) {
 			context.putAttribute(entry.getKey(), entry.getValue());
 		}
-		this.pconfig.attachService(this) ;
 	}
 
 	public static PathService create(Aradon aradon, SectionService section, TreeContext context, PathConfiguration pconfig) {
-		PathService result = new PathService(aradon, section, context, pconfig);
-		result.setName(pconfig.name()) ;
-		return result;
+		PathService newPathService = new PathService(aradon, section, context, pconfig);
+		newPathService.setName(pconfig.name()) ;
+		newPathService.pconfig.initFilter(newPathService) ;
+		return newPathService;
 	}
 
 	public void handle(Request request, Response response) {

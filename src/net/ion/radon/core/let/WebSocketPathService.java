@@ -14,6 +14,7 @@ import net.ion.nradon.HttpRequest;
 import net.ion.nradon.Radon;
 import net.ion.nradon.WebSocketConnection;
 import net.ion.nradon.WebSocketHandler;
+import net.ion.nradon.filter.XFilterUtil;
 import net.ion.nradon.handler.HttpToWebSocketHandler;
 import net.ion.nradon.handler.event.ServerEventHandler;
 import net.ion.nradon.handler.event.ServerEvent.EventType;
@@ -24,22 +25,22 @@ import net.ion.radon.core.SectionService;
 import net.ion.radon.core.TreeContext;
 import net.ion.radon.core.config.WSPathConfiguration;
 
-public class WSPathService implements ServerEventHandler, IService<WSPathService>, WebSocketHandler, IRadonPathService{
+public class WebSocketPathService implements ServerEventHandler, IService<WebSocketPathService>, WebSocketHandler, IRadonPathService{
 	public static final String VAR_SESSIONID = "$sessionId";
 
 	private AbstractWebSocketResource handler ;
 
-	WSPathService(Aradon aradon, HttpRestSection restSection, AbstractWebSocketResource handler, WSPathConfiguration wsconfig) {
+	WebSocketPathService(Aradon aradon, HttpRestSection restSection, AbstractWebSocketResource handler, WSPathConfiguration wsconfig) {
 		this.handler = handler ;
 	}
 
-	public static WSPathService create(Aradon aradon, HttpRestSection restSection, TreeContext context, WSPathConfiguration wsconfig) {
+	public static WebSocketPathService create(Aradon aradon, HttpRestSection restSection, TreeContext context, WSPathConfiguration wsconfig) {
 		try {
 			Constructor<? extends AbstractWebSocketResource> cons = wsconfig.handlerClz().getDeclaredConstructor();
 			cons.setAccessible(true);
 			AbstractWebSocketResource handler = cons.newInstance();
 
-			WSPathService result = new WSPathService(aradon, restSection, handler, wsconfig);
+			WebSocketPathService result = new WebSocketPathService(aradon, restSection, handler, wsconfig);
 			result.initService(restSection, context, wsconfig) ;
 			return result;
 		} catch (Throwable th) {
@@ -49,6 +50,7 @@ public class WSPathService implements ServerEventHandler, IService<WSPathService
 
 	private void initService(SectionService parent, TreeContext context, WSPathConfiguration econfig){
 		handler.init(parent, context, econfig) ;
+		getConfig().initFilter(this) ;
 	}
 
 	
@@ -57,14 +59,17 @@ public class WSPathService implements ServerEventHandler, IService<WSPathService
 	}
 
 	public void onClose(WebSocketConnection conn) throws Exception {
+		XFilterUtil.wsClose(this, conn) ;
 		handler.onClose(conn) ;
 	}
 
 	public void onMessage(WebSocketConnection conn, String msg) throws Throwable {
+		XFilterUtil.wsInbound(this, conn, msg) ;
 		handler.onMessage(conn, msg) ;
 	}
 
 	public void onMessage(WebSocketConnection conn, byte[] msg) throws Throwable {
+		XFilterUtil.wsInbound(this, conn, msg) ;
 		handler.onMessage(conn, msg) ;
 	}
 
@@ -81,10 +86,12 @@ public class WSPathService implements ServerEventHandler, IService<WSPathService
 
 		conn.data(VAR_SESSIONID, conn.httpRequest().remoteAddress().toString());
 		
+		XFilterUtil.wsOpen(this, conn) ;
 		handler.onOpen(conn) ;
 	}
 
 	public void onPong(WebSocketConnection conn, String msg) throws Throwable {
+		XFilterUtil.wsInboundPong(this, conn, msg) ;
 		handler.onPong(conn, msg) ;
 	}
 
@@ -105,11 +112,11 @@ public class WSPathService implements ServerEventHandler, IService<WSPathService
 		return getParent().getAradon();
 	}
 
-	public WSPathService getChildService(String childName) {
+	public WebSocketPathService getChildService(String childName) {
 		throw new IllegalArgumentException("this is pathservice");
 	}
 
-	public Collection<WSPathService> getChildren() {
+	public Collection<WebSocketPathService> getChildren() {
 		return Collections.EMPTY_LIST;
 	}
 

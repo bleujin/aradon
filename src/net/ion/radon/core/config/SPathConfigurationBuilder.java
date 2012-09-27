@@ -6,7 +6,7 @@ import net.ion.framework.util.InstanceCreationException;
 import net.ion.framework.util.ListUtil;
 import net.ion.framework.util.ObjectUtil;
 import net.ion.framework.util.StringUtil;
-import net.ion.nradon.AbstractHttpResource;
+import net.ion.nradon.AbstractSingleHttpResource;
 import net.ion.radon.core.EnumClass;
 import net.ion.radon.core.EnumClass.IMatchMode;
 import net.ion.radon.core.EnumClass.Scope;
@@ -16,7 +16,7 @@ public class SPathConfigurationBuilder extends AbstractLetConfigurationBuilder<S
 	private final String name;
 	private final List<String> urlPatterns;
 
-	private Class<? extends AbstractHttpResource> handlerClz;
+	private Class<? extends AbstractSingleHttpResource> handlerClz;
 	private EnumClass.Scope scope = Scope.Request;
 	private String description;
 	private IMatchMode matchMode = IMatchMode.EQUALS;
@@ -32,10 +32,10 @@ public class SPathConfigurationBuilder extends AbstractLetConfigurationBuilder<S
 
 	@Override
 	public SPathConfiguration create() {
-		return new SPathConfiguration(name, handlerClz, scope, urlPatterns, description, matchMode, getAttributes(), getPreFilters(), getAfterFilters());
+		return new SPathConfiguration(name, handlerClz, scope, urlPatterns, description, matchMode, getAttributes(), getFilters());
 	}
 
-	public SPathConfigurationBuilder handler(Class<? extends AbstractHttpResource> handlerClz) {
+	public SPathConfigurationBuilder handler(Class<? extends AbstractSingleHttpResource> handlerClz) {
 		this.handlerClz = handlerClz;
 
 		return this;
@@ -81,7 +81,7 @@ public class SPathConfigurationBuilder extends AbstractLetConfigurationBuilder<S
 				addUrlPattern(ObjectUtil.toString(url));
 			}
 
-			Class<? extends AbstractHttpResource> clz = (Class<? extends AbstractHttpResource>) Class.forName(pconfig.getString("handler[@class]"));
+			Class<? extends AbstractSingleHttpResource> clz = (Class<? extends AbstractSingleHttpResource>) Class.forName(pconfig.getString("handler[@class]"));
 			description(pconfig.getString("description")).scope(Scope.valueOf(StringUtil.capitalize(pconfig.getString("handler[@scope]", "request")))).handler(clz).matchMode(IMatchMode.fromString(StringUtil.upperCase(pconfig.getString("urls[@matchMode]", "equals"))));
 
 			return this;

@@ -40,7 +40,7 @@ public class WSPathConfigurationBuilder extends AbstractLetConfigurationBuilder<
 	}
 
 	public WSPathConfiguration create() {
-		return new WSPathConfiguration(sectionBuilder.name(), name, handlerClz, urlPatterns, description, matchMode, getAttributes());
+		return new WSPathConfiguration(sectionBuilder.name(), name, handlerClz, urlPatterns, description, matchMode, getAttributes(), getFilters());
 	}
 	
 	public WSPathConfigurationBuilder fromLoad(XMLConfig pconfig) throws InstanceCreationException {

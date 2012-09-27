@@ -6,6 +6,7 @@ import java.util.Map;
 import net.ion.framework.util.InstanceCreationException;
 import net.ion.framework.util.ListUtil;
 import net.ion.framework.util.MapUtil;
+import net.ion.nradon.filter.XRadonFilter;
 import net.ion.radon.core.filter.IRadonFilter;
 
 import org.apache.commons.configuration.ConfigurationException;
@@ -19,8 +20,8 @@ public class SectionConfiguration extends LetConfiguration<SectionConfiguration>
 	private final List<WSPathConfiguration> wsconfigs ;
 	private final List<EPathConfiguration> econfigs ;
 	
-	SectionConfiguration(String name, List<PathConfiguration> pconfigs, List<SPathConfiguration> sconfigs, List<WSPathConfiguration> wsconfigs, List<EPathConfiguration> econfigs, Map<String, AttributeValue> attributes, List<IRadonFilter> prefilters, List<IRadonFilter> afterfilters) {
-		super(attributes, prefilters, afterfilters);
+	SectionConfiguration(String name, List<PathConfiguration> pconfigs, List<SPathConfiguration> sconfigs, List<WSPathConfiguration> wsconfigs, List<EPathConfiguration> econfigs, Map<String, AttributeValue> attributes, List<IRadonFilter> prefilters, List<IRadonFilter> afterfilters, List<XRadonFilter> filters) {
+		super(attributes, prefilters, afterfilters, filters);
 		this.name = name;
 		this.pconfigs = pconfigs;
 		this.sconfigs = sconfigs ;
@@ -29,11 +30,11 @@ public class SectionConfiguration extends LetConfiguration<SectionConfiguration>
 	}
 
 	public final static SectionConfiguration createBlank(String name){
-		return new SectionConfiguration(name, ListUtil.<PathConfiguration>newList(), ListUtil.<SPathConfiguration>newList(), ListUtil.<WSPathConfiguration>newList(), ListUtil.<EPathConfiguration>newList(), MapUtil.<String, AttributeValue>newMap(), ListUtil.<IRadonFilter>newList(), ListUtil.<IRadonFilter>newList()) ;
+		return new SectionConfiguration(name, ListUtil.<PathConfiguration>newList(), ListUtil.<SPathConfiguration>newList(), ListUtil.<WSPathConfiguration>newList(), ListUtil.<EPathConfiguration>newList(), MapUtil.<String, AttributeValue>newMap(), ListUtil.<IRadonFilter>newList(), ListUtil.<IRadonFilter>newList(), ListUtil.<XRadonFilter>newList()) ;
 	}
 	
 	public final static SectionConfiguration create(String name, List<PathConfiguration> paths){
-		return new SectionConfiguration(name, paths, ListUtil.<SPathConfiguration>newList(), ListUtil.<WSPathConfiguration>newList(), ListUtil.<EPathConfiguration>newList(), MapUtil.<String, AttributeValue>newMap(), ListUtil.<IRadonFilter>newList(), ListUtil.<IRadonFilter>newList()) ;
+		return new SectionConfiguration(name, paths, ListUtil.<SPathConfiguration>newList(), ListUtil.<WSPathConfiguration>newList(), ListUtil.<EPathConfiguration>newList(), MapUtil.<String, AttributeValue>newMap(), ListUtil.<IRadonFilter>newList(), ListUtil.<IRadonFilter>newList(), ListUtil.<XRadonFilter>newList()) ;
 	}
 	
 	public List<PathConfiguration> pathConfiguration() {

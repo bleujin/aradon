@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.concurrent.Executor;
 
 import net.ion.framework.util.StringUtil;
-import net.ion.nradon.AbstractHttpResource;
+import net.ion.nradon.AbstractSingleHttpResource;
 import net.ion.nradon.HttpControl;
 import net.ion.nradon.HttpRequest;
 import net.ion.nradon.HttpResponse;
@@ -22,7 +22,7 @@ import org.restlet.data.Method;
 import org.restlet.representation.FileRepresentation;
 import org.restlet.service.MetadataService;
 
-public class SampleHttpResource extends AbstractHttpResource {
+public class SampleHttpResource extends AbstractSingleHttpResource {
 
 
 	private Executor ioThread;
@@ -35,6 +35,7 @@ public class SampleHttpResource extends AbstractHttpResource {
 	@Override
 	public void init(SectionService parent, TreeContext context, SPathConfiguration econfig){
 		super.init(parent, context, econfig) ;
+		
 		this.dir = new File(context.getAttributeObject("base.dir", "./resource/", String.class)) ;
 		this.ioThread = newFixedThreadPool(4) ;
 		this.mservice = new MetadataService() ;

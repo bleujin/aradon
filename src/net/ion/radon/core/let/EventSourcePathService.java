@@ -12,6 +12,7 @@ import net.ion.nradon.EventSourceHandler;
 import net.ion.nradon.HttpHandler;
 import net.ion.nradon.HttpRequest;
 import net.ion.nradon.Radon;
+import net.ion.nradon.filter.XFilterUtil;
 import net.ion.nradon.handler.HttpToEventSourceHandler;
 import net.ion.nradon.handler.event.ServerEventHandler;
 import net.ion.nradon.handler.event.ServerEvent.EventType;
@@ -22,24 +23,24 @@ import net.ion.radon.core.SectionService;
 import net.ion.radon.core.TreeContext;
 import net.ion.radon.core.config.EPathConfiguration;
 
-public class EPathService implements ServerEventHandler, IService<EPathService>, EventSourceHandler, IRadonPathService{
+public class EventSourcePathService implements ServerEventHandler, IService<EventSourcePathService>, EventSourceHandler, IRadonPathService{
 	private static final String VAR_SESSIONID = "$sessionId";
 
 	private Aradon aradon;
 	private AbstractEventSourceResource handler ;
 
-	EPathService(Aradon aradon, HttpRestSection restSection, AbstractEventSourceResource handler, EPathConfiguration econfig) {
+	EventSourcePathService(Aradon aradon, HttpRestSection restSection, AbstractEventSourceResource handler, EPathConfiguration econfig) {
 		this.aradon = aradon ;
 		this.handler = handler ;
 	}
 
-	public static EPathService create(Aradon aradon, HttpRestSection restSection, TreeContext context, EPathConfiguration econfig) {
+	public static EventSourcePathService create(Aradon aradon, HttpRestSection restSection, TreeContext context, EPathConfiguration econfig) {
 		try {
 			Constructor<? extends AbstractEventSourceResource> cons = econfig.handlerClz().getDeclaredConstructor();
 			cons.setAccessible(true);
 			AbstractEventSourceResource handler = cons.newInstance();
 
-			EPathService result = new EPathService(aradon, restSection, handler, econfig);
+			EventSourcePathService result = new EventSourcePathService(aradon, restSection, handler, econfig);
 			result.initService(restSection, context, econfig) ;
 			
 			return result;
@@ -50,9 +51,11 @@ public class EPathService implements ServerEventHandler, IService<EPathService>,
 
 	private void initService(SectionService parent, TreeContext context, EPathConfiguration econfig){
 		handler.init(parent, context, econfig) ;
+		getConfig().initFilter(this) ;
 	}
 	
 	public void onClose(EventSourceConnection conn) throws Exception {
+		XFilterUtil.esClose(this, conn) ;
 		handler.onClose(conn) ;
 	}
 
@@ -69,6 +72,7 @@ public class EPathService implements ServerEventHandler, IService<EPathService>,
 
 		conn.data(VAR_SESSIONID, conn.httpRequest().remoteAddress().toString());
 		
+		XFilterUtil.esOpen(this, conn) ;
 		handler.onOpen(conn) ;
 	}
 
@@ -82,11 +86,11 @@ public class EPathService implements ServerEventHandler, IService<EPathService>,
 		return getParent().getAradon();
 	}
 
-	public EPathService getChildService(String childName) {
+	public EventSourcePathService getChildService(String childName) {
 		throw new IllegalArgumentException("this is pathservice");
 	}
 
-	public Collection<EPathService> getChildren() {
+	public Collection<EventSourcePathService> getChildren() {
 		return Collections.EMPTY_LIST;
 	}
 

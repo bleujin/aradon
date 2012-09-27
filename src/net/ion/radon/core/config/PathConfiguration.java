@@ -6,6 +6,7 @@ import java.util.Map;
 import net.ion.framework.util.ListUtil;
 import net.ion.framework.util.MapUtil;
 import net.ion.framework.util.StringUtil;
+import net.ion.nradon.filter.XRadonFilter;
 import net.ion.radon.core.EnumClass.IMatchMode;
 import net.ion.radon.core.EnumClass.Scope;
 import net.ion.radon.core.filter.IRadonFilter;
@@ -22,8 +23,8 @@ public class PathConfiguration extends LetConfiguration<PathConfiguration> imple
 	private final String description ;
 	private final IMatchMode imatchMode ; 
 	
-	PathConfiguration(String name, Class<? extends ServerResource> handlerClz, Scope scope, List<String> urlPatterns, String description, IMatchMode imatchMode, Map<String, AttributeValue> attributes, List<IRadonFilter> prefilters, List<IRadonFilter> afterfilter) {
-		super(attributes, prefilters, afterfilter) ;
+	PathConfiguration(String name, Class<? extends ServerResource> handlerClz, Scope scope, List<String> urlPatterns, String description, IMatchMode imatchMode, Map<String, AttributeValue> attributes, List<IRadonFilter> prefilters, List<IRadonFilter> afterfilter, List<XRadonFilter> filters) {
+		super(attributes, prefilters, afterfilter, filters) ;
 		this.name = name ;
 		this.handlerClz = handlerClz ;
 		this.scope = scope ;
@@ -33,15 +34,15 @@ public class PathConfiguration extends LetConfiguration<PathConfiguration> imple
 	}
 	
 	public final static PathConfiguration testHello(){
-		return new PathConfiguration("test", HelloWorldLet.class, Scope.Request, ListUtil.toList("/test"), "test HelloLet",  IMatchMode.EQUALS, MapUtil.<String, AttributeValue>newMap(), ListUtil.<IRadonFilter>newList(), ListUtil.<IRadonFilter>newList()) ;
+		return new PathConfiguration("test", HelloWorldLet.class, Scope.Request, ListUtil.toList("/test"), "test HelloLet",  IMatchMode.EQUALS, MapUtil.<String, AttributeValue>newMap(), ListUtil.<IRadonFilter>newList(), ListUtil.<IRadonFilter>newList(), ListUtil.<XRadonFilter>newList()) ;
 	} 
 
 	public static PathConfiguration create(String name, String urls, Class<? extends ServerResource> handlerClz) {
-		return new PathConfiguration(name, handlerClz, Scope.Request, ListUtil.toList(StringUtil.split(urls, ", ")), "", IMatchMode.EQUALS, MapUtil.<String, AttributeValue>newMap(), ListUtil.<IRadonFilter>newList(), ListUtil.<IRadonFilter>newList()) ;
+		return new PathConfiguration(name, handlerClz, Scope.Request, ListUtil.toList(StringUtil.split(urls, ", ")), "", IMatchMode.EQUALS, MapUtil.<String, AttributeValue>newMap(), ListUtil.<IRadonFilter>newList(), ListUtil.<IRadonFilter>newList(), ListUtil.<XRadonFilter>newList()) ;
 	}
 
 	public static PathConfiguration create(String name, String urls, String description, IMatchMode matchMode, Class<? extends ServerResource> handlerClz) {
-		return new PathConfiguration(name, handlerClz, Scope.Request, ListUtil.toList(StringUtil.split(urls, ", ")), description, matchMode, MapUtil.<String, AttributeValue>newMap(), ListUtil.<IRadonFilter>newList(), ListUtil.<IRadonFilter>newList()) ;
+		return new PathConfiguration(name, handlerClz, Scope.Request, ListUtil.toList(StringUtil.split(urls, ", ")), description, matchMode, MapUtil.<String, AttributeValue>newMap(), ListUtil.<IRadonFilter>newList(), ListUtil.<IRadonFilter>newList(), ListUtil.<XRadonFilter>newList()) ;
 	}
 
 	

@@ -95,6 +95,11 @@ public class Aradon extends Component implements IService<SectionService>, Arado
 		for (Entry<String, AttributeValue> entry : config.aradon().attributes().entrySet()) {
 			rootContext.putAttribute(entry.getKey(), entry.getValue());
 		}
+		this.config = config;
+		config.aradon().initFilter(this) ;
+		this.setContext(rootContext);
+		setLogService(new RadonLogService());
+
 		
 		for (SectionConfiguration sconfig : config.aradon().sections().restSections()) {
 			attach(sconfig);
@@ -107,12 +112,6 @@ public class Aradon extends Component implements IService<SectionService>, Arado
 		for (SectionConfiguration pconfig : config.plugin().sections()){
 			attach(pconfig) ;
 		}
-
-		this.config = config;
-		config.aradon().attachService(this) ;
-		this.setContext(rootContext);
-		setLogService(new RadonLogService());
-
 		//start();
 	}
 

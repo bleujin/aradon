@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.concurrent.Executor;
 
 import net.ion.framework.util.StringUtil;
-import net.ion.nradon.AbstractHttpResource;
+import net.ion.nradon.AbstractSingleHttpResource;
 import net.ion.nradon.HttpControl;
 import net.ion.nradon.HttpRequest;
 import net.ion.nradon.HttpResponse;
@@ -19,7 +19,7 @@ import org.restlet.data.Method;
 import org.restlet.representation.FileRepresentation;
 import org.restlet.service.MetadataService;
 
-public class AradonStaticFileHandler extends AbstractHttpResource {
+public class AradonStaticFileHandler extends AbstractSingleHttpResource {
 
 	private Executor ioThread;
 	private final File dir;

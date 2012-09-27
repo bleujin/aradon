@@ -34,7 +34,7 @@ public class PathConfigurationBuilder extends AbstractLetConfigurationBuilder<Pa
 
 	@Override
 	public PathConfiguration create() {
-		return new PathConfiguration(name, handlerClz, scope, urlPatterns, description, matchMode, getAttributes(), getPreFilters(), getAfterFilters());
+		return new PathConfiguration(name, handlerClz, scope, urlPatterns, description, matchMode, getAttributes(), getPreFilters(), getAfterFilters(), getFilters());
 	}
 
 	public PathConfigurationBuilder handler(Class<? extends ServerResource> handlerClz) {

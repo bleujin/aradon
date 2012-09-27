@@ -15,12 +15,12 @@ import net.ion.radon.core.config.SPathConfiguration;
 import net.ion.radon.core.config.SectionConfiguration;
 import net.ion.radon.core.config.WSPathConfiguration;
 import net.ion.radon.core.filter.IFilterResult;
-import net.ion.radon.core.let.EPathService;
+import net.ion.radon.core.let.EventSourcePathService;
 import net.ion.radon.core.let.FilterUtil;
 import net.ion.radon.core.let.IRadonPathService;
 import net.ion.radon.core.let.PathService;
-import net.ion.radon.core.let.SPathService;
-import net.ion.radon.core.let.WSPathService;
+import net.ion.radon.core.let.SingleLetPathService;
+import net.ion.radon.core.let.WebSocketPathService;
 import net.ion.radon.core.routing.SectionRouter;
 import net.ion.radon.impl.filter.RevokeServiceFilter;
 
@@ -36,9 +36,9 @@ public class HttpRestSection extends SectionService  {
 	private SectionConfiguration sconfig;
 	private SectionRouter router;
 	private Map<String, PathService> paths = MapUtil.newMap();
-	private Map<String, SPathService> spaths = MapUtil.newMap();
-	private Map<String, WSPathService> wspaths = MapUtil.newMap();
-	private Map<String, EPathService> epaths = MapUtil.newMap();
+	private Map<String, SingleLetPathService> spaths = MapUtil.newMap();
+	private Map<String, WebSocketPathService> wspaths = MapUtil.newMap();
+	private Map<String, EventSourcePathService> epaths = MapUtil.newMap();
 
 	HttpRestSection(Aradon aradon, TreeContext context, SectionConfiguration sconfig) {
 		super(context);
@@ -55,6 +55,12 @@ public class HttpRestSection extends SectionService  {
 	}
 
 	private void init() {
+		for (Entry<String, AttributeValue> entry : sconfig.attributes().entrySet()) {
+			context.putAttribute(entry.getKey(), entry.getValue());
+		}
+		super.setName(sconfig.name());
+		sconfig.initFilter(this);
+
 		for (PathConfiguration pconfig : sconfig.pathConfiguration()) {
 			attach(pconfig);
 		}
@@ -73,11 +79,6 @@ public class HttpRestSection extends SectionService  {
 		}
 		
 
-		for (Entry<String, AttributeValue> entry : sconfig.attributes().entrySet()) {
-			context.putAttribute(entry.getKey(), entry.getValue());
-		}
-		super.setName(sconfig.name());
-		sconfig.attachService(this);
 	}
 
 	private String makePathPattern(String urlPattern) {
@@ -85,7 +86,13 @@ public class HttpRestSection extends SectionService  {
 	}
 
 	public static HttpRestSection create(Aradon aradon, TreeContext context, SectionConfiguration sconfig) {
-		return new HttpRestSection(aradon, context, sconfig);
+		HttpRestSection newSection = new HttpRestSection(aradon, context, sconfig);
+		
+		for( Entry<String, AttributeValue> entry : sconfig.attributes().entrySet()) {
+			context.putAttribute(entry.getKey(), entry.getValue()) ;
+		}
+		
+		return newSection;
 	}
 
 	@Override
@@ -115,7 +122,7 @@ public class HttpRestSection extends SectionService  {
 
 	public HttpRestSection attach(WSPathConfiguration wsconfig) {
 		try {
-			WSPathService wlet = WSPathService.create(aradon, this, context.createChildContext(), wsconfig) ;
+			WebSocketPathService wlet = WebSocketPathService.create(aradon, this, context.createChildContext(), wsconfig) ;
 			wspaths.put(wlet.getConfig().name(), wlet) ;
 			return this;
 		} catch (Throwable ex) {
@@ -135,7 +142,7 @@ public class HttpRestSection extends SectionService  {
 
 	
 	public HttpRestSection attach(SPathConfiguration pconfig) {
-		SPathService splet = SPathService.create(aradon, this, context.createChildContext(), pconfig);
+		SingleLetPathService splet = SingleLetPathService.create(aradon, this, context.createChildContext(), pconfig);
 		spaths.put(splet.getConfig().name(), splet);
 
 		return this;
@@ -145,7 +152,7 @@ public class HttpRestSection extends SectionService  {
 
 	public HttpRestSection attach(EPathConfiguration econfig) {
 		try {
-			EPathService elet = EPathService.create(aradon, this, context.createChildContext(), econfig) ;
+			EventSourcePathService elet = EventSourcePathService.create(aradon, this, context.createChildContext(), econfig) ;
 			epaths.put(elet.getConfig().name(), elet) ;
 			return this;
 		} catch (Throwable ex) {
@@ -181,15 +188,15 @@ public class HttpRestSection extends SectionService  {
 		return paths.get(childName) ;
 	}
 	
-	public SPathService spath(String childName){
+	public SingleLetPathService spath(String childName){
 		return spaths.get(childName) ;
 	}
 	
-	public WSPathService wspath(String childName){
+	public WebSocketPathService wspath(String childName){
 		return wspaths.get(childName) ;
 	}
 
-	public EPathService epath(String childName){
+	public EventSourcePathService epath(String childName){
 		return epaths.get(childName) ;
 	}
 	

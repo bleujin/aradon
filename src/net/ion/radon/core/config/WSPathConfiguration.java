@@ -3,8 +3,8 @@ package net.ion.radon.core.config;
 import java.util.List;
 import java.util.Map;
 
-import net.ion.framework.util.ListUtil;
 import net.ion.nradon.AbstractWebSocketResource;
+import net.ion.nradon.filter.XRadonFilter;
 import net.ion.radon.core.EnumClass.IMatchMode;
 
 public class WSPathConfiguration extends LetConfiguration<WSPathConfiguration> implements IPathConfiguration{
@@ -17,8 +17,8 @@ public class WSPathConfiguration extends LetConfiguration<WSPathConfiguration> i
 	private IMatchMode matchMode ;
 	private Map<String, AttributeValue> attributes ;
 	
-	WSPathConfiguration(String sectionName, String name, Class<? extends AbstractWebSocketResource> handlerClz, List<String> urlPatterns, String description, IMatchMode matchMode, Map<String, AttributeValue> attributes) {
-		super(attributes, ListUtil.EMPTY, ListUtil.EMPTY) ;
+	WSPathConfiguration(String sectionName, String name, Class<? extends AbstractWebSocketResource> handlerClz, List<String> urlPatterns, String description, IMatchMode matchMode, Map<String, AttributeValue> attributes, List<XRadonFilter> filters) {
+		super(attributes, filters) ;
 		this.sectionName = sectionName ;
 		this.name = name ;
 		this.handlerClz = handlerClz ;
@@ -65,6 +65,8 @@ public class WSPathConfiguration extends LetConfiguration<WSPathConfiguration> i
 	public IMatchMode imatchMode() {
 		return matchMode;
 	}
+
+
 	
 
 }

@@ -39,7 +39,7 @@ public class EPathConfigurationBuilder extends AbstractLetConfigurationBuilder<E
 	}
 
 	public EPathConfiguration create() {
-		return new EPathConfiguration(sectionBuilder.name(), name, handlerClz, urlPatterns, description, matchMode, getAttributes());
+		return new EPathConfiguration(sectionBuilder.name(), name, handlerClz, urlPatterns, description, matchMode, getAttributes(), getFilters());
 	}
 	
 	public EPathConfigurationBuilder fromLoad(XMLConfig pconfig) throws InstanceCreationException {

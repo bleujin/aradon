@@ -3,8 +3,8 @@ package net.ion.radon.core.config;
 import java.util.List;
 import java.util.Map;
 
-import net.ion.framework.util.ListUtil;
 import net.ion.nradon.AbstractEventSourceResource;
+import net.ion.nradon.filter.XRadonFilter;
 import net.ion.radon.core.EnumClass.IMatchMode;
 
 public class EPathConfiguration  extends LetConfiguration<EPathConfiguration> implements IPathConfiguration{
@@ -17,8 +17,8 @@ public class EPathConfiguration  extends LetConfiguration<EPathConfiguration> im
 	private IMatchMode matchMode ;
 	private Map<String, AttributeValue> attributes ;
 	
-	EPathConfiguration(String sectionName, String name, Class<? extends AbstractEventSourceResource> handlerClz, List<String> urlPatterns, String description, IMatchMode matchMode, Map<String, AttributeValue> attributes) {
-		super(attributes, ListUtil.EMPTY, ListUtil.EMPTY) ;
+	EPathConfiguration(String sectionName, String name, Class<? extends AbstractEventSourceResource> handlerClz, List<String> urlPatterns, String description, IMatchMode matchMode, Map<String, AttributeValue> attributes, List<XRadonFilter> filters) {
+		super(attributes, filters) ;
 		this.sectionName = sectionName ;
 		this.name = name ;
 		this.handlerClz = handlerClz ;

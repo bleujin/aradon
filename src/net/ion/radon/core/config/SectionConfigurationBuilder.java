@@ -56,7 +56,7 @@ public class SectionConfigurationBuilder extends AbstractLetConfigurationBuilder
 		}
 
 		
-		return new SectionConfiguration(name, pconfigs, sconfigs, wsconfigs, econfigs, getAttributes(), getPreFilters(), getAfterFilters());
+		return new SectionConfiguration(name, pconfigs, sconfigs, wsconfigs, econfigs, getAttributes(), getPreFilters(), getAfterFilters(), getFilters());
 	}
 
 	public PathConfigurationBuilder path(String pname) {

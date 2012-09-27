@@ -82,15 +82,19 @@ public class RadonConfigurationBuilder {
 		this.aradon = aradon ;
 		this.initializedAradon = true ;
 		
+		AradonHandler aradonHandler = AradonHandler.create(aradon) ;
+		
 		for (SectionService ss : aradon.getChildren()) {
 			if (StringUtil.isBlank(ss.getName())){ // default section
 				for(PathService ps : ss.getPathChildren()){
 					IMatchMode matchMode = ps.getConfig().imatchMode();
 					List<String> urlPatterns = astericURLPattern(ps.getConfig().urlPatterns(), matchMode) ;
 					for (String urlPattern : urlPatterns) {
-						add(urlPattern, AradonHandler.create(aradon)) ;
+						add(urlPattern, aradonHandler) ;
 					}
 				}
+				
+				
 				
 			} else {
 				for(IRadonPathService pservice : ss.getRadonChildren()){
@@ -103,7 +107,7 @@ public class RadonConfigurationBuilder {
 					}
 				}
 				
-				add("/" + ss.getName() + "/.*", AradonHandler.create(aradon)) ;
+				add("/" + ss.getName() + "/.*", aradonHandler) ;
 			}
 			
 		}

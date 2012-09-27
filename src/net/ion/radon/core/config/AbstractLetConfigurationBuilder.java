@@ -11,6 +11,8 @@ import net.ion.framework.util.ListUtil;
 import net.ion.framework.util.MapUtil;
 import net.ion.framework.util.ObjectUtil;
 import net.ion.framework.util.StringUtil;
+import net.ion.nradon.filter.XFilterUtil;
+import net.ion.nradon.filter.XRadonFilter;
 import net.ion.radon.core.EnumClass.Scope;
 import net.ion.radon.core.filter.IRadonFilter;
 import net.ion.radon.core.let.FilterUtil;
@@ -21,6 +23,8 @@ public abstract class AbstractLetConfigurationBuilder<V extends AbstractLetConfi
 	private List<IRadonFilter> prefilters = ListUtil.newList() ;
 	private List<IRadonFilter> afterfilters = ListUtil.newList() ;
 	private Map<String, AttributeValue> attributes = MapUtil.newMap() ;
+	
+	private List<XRadonFilter> filters = ListUtil.newList() ;
 	
 	protected AbstractLetConfigurationBuilder(IConfigurationChildBuilder builder){
 		super(builder) ;
@@ -53,12 +57,21 @@ public abstract class AbstractLetConfigurationBuilder<V extends AbstractLetConfi
 		for(IRadonFilter filter : FilterUtil.getFilters(config.children("afterfilter"))){
 			addAfterFilter(filter) ;
 		}
-		
+
+		for(XRadonFilter filter : XFilterUtil.getFilters(config.children("filter"))){
+			addFilter(filter) ;
+		}
+
 		parseContextAttribute(config.firstChild("context")) ;
 		return (V) this ;
 	}
 	
 
+
+	private V addFilter(XRadonFilter filter) {
+		filters.add(filter) ;
+		return (V)this ;
+	}
 
 	public V addAttribute(String id, XMLConfig config, Scope scope) throws InstanceCreationException{
 		if (StringUtil.isBlank(id)) {
@@ -92,6 +105,10 @@ public abstract class AbstractLetConfigurationBuilder<V extends AbstractLetConfi
 		return afterfilters ;
 	}
 
+	
+	public List<XRadonFilter> getFilters() {
+		return filters ;
+	}
 
 	private void parseContextAttribute(XMLConfig config) throws InstanceCreationException {
 		List<XMLConfig> objectConfig =  config.children("configured-object") ;

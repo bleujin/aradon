@@ -9,7 +9,7 @@ import net.ion.radon.core.TreeContext;
 import net.ion.radon.core.config.AttributeValue;
 import net.ion.radon.core.config.SPathConfiguration;
 
-public abstract class AbstractHttpResource extends AbstractHttpHandler{
+public abstract class AbstractSingleHttpResource extends AbstractHttpHandler{
 
 	private SectionService parent;
 	private TreeContext context;

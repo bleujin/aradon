@@ -19,7 +19,7 @@ public class AradonConfigurationBuilder extends AbstractLetConfigurationBuilder<
 	}
 
 	public AradonConfiguration create() {
-		return new AradonConfiguration(sectionsBuilder.create(), contactEmail, homeRef, getPreFilters(), getAfterFilters(), getAttributes()) ;
+		return new AradonConfiguration(sectionsBuilder.create(), contactEmail, homeRef, getAttributes(), getPreFilters(), getAfterFilters(), getFilters()) ;
 	}
 
 	public SectionsConfigurationBuilder sections() {
