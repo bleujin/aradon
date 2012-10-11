@@ -10,6 +10,8 @@ import net.ion.radon.core.let.SingleLetPathService;
 import net.ion.radon.core.let.WebSocketPathService;
 
 import org.restlet.Application;
+import org.restlet.Request;
+import org.restlet.Response;
 
 public abstract class SectionService extends Application implements IService<IService> {
 
@@ -49,6 +51,8 @@ public abstract class SectionService extends Application implements IService<ISe
 		// pservice.stop() ;
 		// }
 	}
+
+	public abstract PathService expectPathService(Request request, Response response) ;
 
 
 }

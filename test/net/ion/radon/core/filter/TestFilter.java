@@ -107,7 +107,38 @@ public class TestFilter extends TestBaseAradon {
 		assertEquals(true, filter.initialized()) ;
 	}
 	
+	@Test
+	public void testInnerRequest() throws Exception {
+		Aradon aradon = testAradon();
+		aradon.getChildService("another").getConfig().addPreFilter(new ExpectPathFilter()) ;
+		
+		AradonClient client = AradonClientFactory.create(aradon);
+		client.createRequest("/another/").get() ; // assertEquals("another_default", actual) ;
+		
+	}
+	
 }
+
+class ExpectPathFilter extends IRadonFilter {
+
+	@Override
+	public IFilterResult afterHandle(IService iservice, Request request, Response response) {
+		return IFilterResult.CONTINUE_RESULT;
+	}
+
+	@Override
+	public IFilterResult preHandle(IService iservice, Request request, Response response) {
+		InnerRequest req = (InnerRequest) request ;
+
+		SectionService ss = (SectionService) iservice ;
+		 ;
+		
+		Debug.line(ss.expectPathService(request, response).getName()) ;
+		return IFilterResult.CONTINUE_RESULT;
+	}
+	
+}
+
 
 class SampleFilter extends IRadonFilter{
 

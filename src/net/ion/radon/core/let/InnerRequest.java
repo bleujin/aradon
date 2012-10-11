@@ -71,7 +71,7 @@ public class InnerRequest extends Request {
 	
 	public final static InnerRequest create(String sectionName, Request request) {
 		final InnerRequest innerRequest = new InnerRequest(sectionName, request);
-		innerRequest.getHeaders().set("X-Aradon-Version", "0.6");
+		innerRequest.getHeaders().set("X-Aradon-Version", "0.8");
 		return innerRequest;
 	}
 	
@@ -271,16 +271,21 @@ public class InnerRequest extends Request {
 		
 		if (hasEntityBody(entity) && isMultipartRequest(entity)) {
 			try {
+				
 				DiskFileItemFactory factory = new DiskFileItemFactory();
 				factory.setSizeThreshold(MAX_THRESHOLD_BYTE);
 				factory.setRepository(SystemUtils.getJavaHome());
+				
 
 				RestletFileUpload upload = new RestletFileUpload(factory);
-				upload.setHeaderEncoding("utf-8");
+				
+				upload.setHeaderEncoding("UTF-8");
 				upload.setFileSizeMax(MAX_FILESIZE);
 
 				List<FileItem> items = upload.parseRequest(request);
+				
 				for (FileItem fitem : items) {
+					
 					if (fitem.isFormField()) {
 						params.putParameter(fitem.getFieldName(), fitem.getString());
 					} else {

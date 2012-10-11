@@ -22,6 +22,7 @@ import net.ion.radon.core.let.PathService;
 import net.ion.radon.core.let.SingleLetPathService;
 import net.ion.radon.core.let.WebSocketPathService;
 import net.ion.radon.core.routing.SectionRouter;
+import net.ion.radon.core.routing.SectionTemplateRoute;
 import net.ion.radon.impl.filter.RevokeServiceFilter;
 
 import org.restlet.Request;
@@ -243,6 +244,11 @@ public class HttpRestSection extends SectionService  {
 
 	public String toString() {
 		return this.getClass().getCanonicalName() + "[" + sconfig + "]";
+	}
+
+	public PathService expectPathService(Request request, Response response) {
+		SectionTemplateRoute srouter = (SectionTemplateRoute) router.getNext(request, response);
+		return (PathService) srouter.getNext() ;
 	}
 
 }

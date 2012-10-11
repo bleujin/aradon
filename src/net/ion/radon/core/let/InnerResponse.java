@@ -46,7 +46,7 @@ public class InnerResponse extends Response {
 
 	public static InnerResponse create(Response response, InnerRequest innerRequest) {
 		final InnerResponse innerResponse = new InnerResponse(response, innerRequest);
-		innerResponse.getHeaders().set(RadonAttributeKey.ARADON_VERSION_KEY, "0.7") ;
+		innerResponse.getHeaders().set(RadonAttributeKey.ARADON_VERSION_KEY, "0.8") ;
 		return innerResponse;
 	}
 	
