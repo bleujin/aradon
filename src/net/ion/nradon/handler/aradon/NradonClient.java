@@ -93,6 +93,7 @@ class AradonUtil {
 
 		Form form = new Form() ;
 		for ( String key : hreq.postParamKeys()){
+			if (hreq.postParam(key) == null) continue ;
 			ireq.getFormParameter().putParameter(key, hreq.postParam(key)) ;
 		}
 		ireq.setEntity(form.getWebRepresentation()) ;
