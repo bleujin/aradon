@@ -1,8 +1,13 @@
 package net.ion.nradon.config;
 
 import static org.junit.Assert.assertEquals;
+
+import javax.net.ssl.HttpsURLConnection;
+
 import net.ion.framework.util.Debug;
 import net.ion.nradon.Radon;
+import net.ion.nradon.handler.TestSsl;
+import net.ion.nradon.testutil.HttpClient;
 import net.ion.radon.client.AradonClient;
 import net.ion.radon.client.AradonClientFactory;
 import net.ion.radon.core.Aradon;
@@ -77,6 +82,20 @@ public class TestWebSocketConfig {
 		radon.stop() ;
 	}
 	
+	@Test
+	public void testSSlConfig() throws Exception {
+		Radon radon = RadonConfiguration.newBuilder(XMLConfig.create("./resource/config/ssl-readonly-config.xml")).startRadon() ;
+		
+		TestSsl.disableCertValidationSetUp() ;
+		HttpsURLConnection urlConnection = HttpClient.httpsGet(radon, "/hello");
+        assertEquals(true, HttpClient.contents(urlConnection).startsWith("Hello World"));
+		
+//		AradonClient ac = AradonClientFactory.create("https://127.0.0.1:8888", true) ;
+//		String text = ac.createRequest("/hello").get().getText();
+//		assertEquals(true, text.startsWith("Hello World")) ;
+		
+		radon.stop() ;
+	}
 	
 	
 	

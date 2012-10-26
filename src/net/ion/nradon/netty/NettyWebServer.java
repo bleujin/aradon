@@ -9,6 +9,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import javax.net.ssl.SSLEngine;
+
 import net.ion.framework.util.ListUtil;
 import net.ion.nradon.HttpHandler;
 import net.ion.nradon.Radon;
@@ -26,6 +28,7 @@ import org.jboss.netty.handler.codec.http.HttpContentCompressor;
 import org.jboss.netty.handler.codec.http.HttpContentDecompressor;
 import org.jboss.netty.handler.codec.http.HttpRequestDecoder;
 import org.jboss.netty.handler.codec.http.HttpResponseEncoder;
+import org.jboss.netty.handler.ssl.SslHandler;
 import org.jboss.netty.handler.stream.ChunkedWriteHandler;
 
 public class NettyWebServer extends Radon {
@@ -39,6 +42,7 @@ public class NettyWebServer extends Radon {
 	private StaleConnectionTrackingHandler staleConnectionTrackingHandler;
 
 	private RadonConfiguration config ;
+	
 	public NettyWebServer(RadonConfiguration config){
 		if (config.executor() instanceof ExecutorService) {
 			this.executorServices.add((ExecutorService) config.executor()) ;
@@ -69,6 +73,12 @@ public class NettyWebServer extends Radon {
 				long timestamp = timestamp();
 				Object id = nextId();
 				ChannelPipeline pipeline = pipeline();
+				if (getConfig().getSslContext() != null) {
+                    SSLEngine sslEngine = getConfig().getSslContext().createSSLEngine();
+                    sslEngine.setUseClientMode(false);
+                    pipeline.addLast("ssl", new SslHandler(sslEngine));
+                }
+				
 				pipeline.addLast("staleconnectiontracker", staleConnectionTrackingHandler);
 				pipeline.addLast("connectiontracker", connectionTrackingHandler);
 				pipeline.addLast("flashpolicydecoder", new FlashPolicyFileDecoder(getConfig().getPort()));
@@ -146,6 +156,9 @@ public class NettyWebServer extends Radon {
 		}
 		return this;
 	}
+
+
+	
 
 	protected long timestamp() {
 		return System.currentTimeMillis();

@@ -8,6 +8,8 @@ import java.net.URLConnection;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
+import javax.net.ssl.HttpsURLConnection;
+
 import net.ion.nradon.Radon;
 
 public class HttpClient {
@@ -86,5 +88,11 @@ public class HttpClient {
 
         return new String(baos.toByteArray(), "UTF-8");
     }
+
+	public static HttpsURLConnection httpsGet(Radon radon, String path) throws IOException{
+        URL wsUrl = radon.getConfig().publicUri().toURL();
+        URL url = new URL("https", "localhost", wsUrl.getPort(), path);
+        return (HttpsURLConnection) url.openConnection();
+	}
 
 }

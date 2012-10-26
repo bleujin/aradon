@@ -65,6 +65,9 @@ public class ConnectorConfiguration {
 		return protocol;
 	}
 
+	public SslParameter getSslParam(){
+		return new SslParameter(this.properties) ;
+	}
 
 	public ConnectorConfiguration port(int port) {
 		this.port = port ;

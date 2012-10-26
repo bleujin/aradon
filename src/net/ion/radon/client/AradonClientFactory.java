@@ -33,7 +33,9 @@ public class AradonClientFactory {
 		
 		if ( ! clientMap.containsKey(key)){
 			AradonHttpClient newClient = AradonHttpClient.create(hostAddress);
-			if (reliable) newClient.setReliable() ;
+			if (reliable) {
+				newClient.setReliable() ;
+			}
 			clientMap.put(key, newClient) ;
 		} 
 		return clientMap.get(key) ;

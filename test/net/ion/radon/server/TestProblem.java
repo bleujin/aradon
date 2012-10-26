@@ -22,7 +22,7 @@ public class TestProblem {
 
 	@Test
 	public void onNetty() throws Exception {
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 100; i++) {
 			Aradon aradon = Aradon.create(createConfig(EngineType.Netty)).startServer(9000) ;
 			for (int loop = 0; loop < 10; loop++) {
 				AradonClient ac = AradonClientFactory.create("http://127.0.0.1:9000");
@@ -35,7 +35,7 @@ public class TestProblem {
 
 	@Test
 	public void onSimple() throws Exception {
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 500; i++) {
 			Aradon aradon = Aradon.create(createConfig(EngineType.Simple)).startServer(9000) ;
 			for (int loop = 0; loop < 10; loop++) {
 				AradonClient ac = AradonClientFactory.create("http://127.0.0.1:9000");
@@ -49,7 +49,7 @@ public class TestProblem {
 
 	@Test
 	public void onRest() throws Exception {
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 100; i++) {
 			Aradon aradon = Aradon.create(createConfig(EngineType.Unknown)).startServer(9000) ;
 			for (int loop = 0; loop < 10; loop++) {
 				AradonClient ac = AradonClientFactory.create("http://127.0.0.1:9000");
@@ -63,7 +63,7 @@ public class TestProblem {
 
 	@Test
 	public void onJetty() throws Exception {
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 100; i++) {
 			Aradon aradon = Aradon.create(createConfig(EngineType.Jetty)).startServer(9000) ;
 			for (int loop = 0; loop < 10; loop++) {
 				AradonClient ac = AradonClientFactory.create("http://127.0.0.1:9000");

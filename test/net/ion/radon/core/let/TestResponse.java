@@ -65,7 +65,7 @@ public class TestResponse {
 		assertEquals(200, response.getStatus().getCode());
 		Series<Header> headers = (Series<Header>) response.getAttributes().get(RadonAttributeKey.ATTRIBUTE_HEADERS);
 
-		assertEquals("0.7", headers.getFirstValue("X-Aradon-Version"));
+		assertEquals("0.8", headers.getFirstValue("X-Aradon-Version"));
 	}
 
 	@Test
