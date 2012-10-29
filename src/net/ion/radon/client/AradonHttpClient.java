@@ -51,7 +51,7 @@ public class AradonHttpClient implements AradonClient, Closeable {
 		
 		if (client.getHelped().getContext() == null){
 			Context context = new Context();
-			context.getParameters().add(new Parameter("socketTimeout","3000")) ;
+			context.getParameters().add(new Parameter("socketTimeout","4000")) ;
 			this.client.getHelped().setContext(context);
 		}
 
@@ -170,7 +170,12 @@ public class AradonHttpClient implements AradonClient, Closeable {
 					request.getCookies().add(c);
 				}
 			}
+			
 			Response response = client.getHelped().handle(request);
+			
+//			Response response = new Response(request) ;
+//			client.handle(request, response);
+
 			
 //			Response response ;
 //			if (request.getProtocol().equals(Protocol.CLAP)) {
@@ -207,7 +212,7 @@ public class AradonHttpClient implements AradonClient, Closeable {
 		return host;
 	}
 
-	void setReliable() {
+	void setReliable()  {
 
 		final SSLContext sslClientContext = getCustomSSLContext();
 
@@ -215,7 +220,8 @@ public class AradonHttpClient implements AradonClient, Closeable {
 		if (client.getHelped().getContext() == null){
 			client.getHelped().setContext(new Context());
 		}
-		client.getHelped().getContext().getAttributes().put("hostnameVerifier", org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER) ;
+
+		// new SSLSocketFactory(sslClientContext.getInstance("TLS"), SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER) ;
 		client.getHelped().getContext().getAttributes().put("sslContextFactory", new SslContextFactory() {
 			@Override
 			public void init(Series<Parameter> param) {
@@ -226,6 +232,8 @@ public class AradonHttpClient implements AradonClient, Closeable {
 				return sslClientContext;
 			}
 		});
+		client.getHelped().getContext().getAttributes().put("hostnameVerifier", org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER) ;
+		
 		
 	}
 

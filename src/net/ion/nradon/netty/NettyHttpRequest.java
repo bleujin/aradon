@@ -93,7 +93,7 @@ public class NettyHttpRequest implements net.ion.nradon.HttpRequest {
 
 	private QueryParameters parsedQueryParams() {
 		if (queryParameters == null) {
-			queryParameters = new QueryParameters(URI.create(uri()).getQuery());
+			queryParameters = new QueryParameters(URI.create(uri()).getRawQuery());
 		}
 		return queryParameters;
 	}

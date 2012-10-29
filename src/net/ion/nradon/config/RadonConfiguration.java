@@ -7,6 +7,8 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.concurrent.Executor;
 
+import javax.net.ssl.SSLContext;
+
 import net.ion.framework.util.InstanceCreationException;
 import net.ion.nradon.EventSourceHandler;
 import net.ion.nradon.HttpHandler;
@@ -18,7 +20,10 @@ import net.ion.radon.core.Aradon;
 import net.ion.radon.core.TreeContext;
 import net.ion.radon.core.config.Configuration;
 import net.ion.radon.core.config.ConfigurationBuilder;
+import net.ion.radon.core.config.ConnectorConfiguration;
 import net.ion.radon.core.config.XMLConfig;
+
+import org.restlet.data.Protocol;
 
 
 public class RadonConfiguration {
@@ -35,8 +40,9 @@ public class RadonConfiguration {
 	private int maxHeaderSize ;
 	private int maxChunkSize ;
 	private int maxContentLength ;
+	private SSLContext sslContext;
 	
-	RadonConfiguration(Aradon aradon, URI publicUri, Executor executor, UncaughtExceptionHandler exceptionHandler, UncaughtExceptionHandler ioExceptionHandler, SocketAddress socketAddress, List<HttpHandler> handlers, 
+	RadonConfiguration(Aradon aradon, URI publicUri, Executor executor, UncaughtExceptionHandler exceptionHandler, UncaughtExceptionHandler ioExceptionHandler, SocketAddress socketAddress, List<HttpHandler> handlers, SSLContext sslContext,  
 			long staleConnectionTimeout, int maxInitialLineLength, int maxHeaderSize, int maxChunkSize, int maxContentLength) {
 		this.aradon = aradon ;
 		this.publicUri = publicUri ;
@@ -45,6 +51,7 @@ public class RadonConfiguration {
 		this.ioExceptionHandler = ioExceptionHandler ;
 		this.socketAddress = socketAddress ;
 		this.handlers = handlers ;
+		this.sslContext = sslContext ;
 		
 		this.staleConnectionTimeout = staleConnectionTimeout ;
 		this.maxInitialLineLength = maxInitialLineLength ;
@@ -68,7 +75,14 @@ public class RadonConfiguration {
 	public static RadonConfigurationBuilder newBuilder(XMLConfig xconfig) throws InstanceCreationException {
 		Configuration config = ConfigurationBuilder.load(xconfig).build() ;
 
-		return newBuilder(config.server().connector().port()).add(config);
+		final ConnectorConfiguration connector = config.server().connector();
+		final RadonConfigurationBuilder result = newBuilder(connector.port()).add(config) ;
+		
+		Protocol protocol = connector.protocol();
+		if (protocol.HTTPS.equals(protocol)){
+			result.protocol(connector.protocol()).setupSsl(connector.getSslParam()) ;
+		}
+		return result;
 	}
 
 	public static RadonConfigurationBuilder newBuilder(int port, XMLConfig xconfig) throws InstanceCreationException {
@@ -165,6 +179,10 @@ public class RadonConfiguration {
 
 	public RadonConfiguration add(String path, EventSourceHandler handler) {
 		return add(path, new HttpToEventSourceHandler(handler));
+	}
+
+	public SSLContext getSslContext() {
+		return sslContext;
 	}
 
 
