@@ -1,0 +1,669 @@
+<!doctype html>  
+<html lang="en">
+	
+	<head>
+		<meta charset="utf-8">
+		
+		<title>Elasticsearch - Search made easy for (web) developers</title>
+
+		<meta name="description" content="Elasticsearch - Search made easy for (web) developers">
+		<meta name="author" content="Alexander Reelsen">
+		
+		<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+		
+		<link rel="stylesheet" href="reveal.js/css/reset.css">
+		<link rel="stylesheet" href="reveal.js/css/main.css">
+
+		<link rel="stylesheet" href="reveal.js/lib/zenburn.css">
+	</head>
+	
+	<body>
+		
+		<div id="reveal">
+			
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<img src="img-jugm/logo.png" style="border:0">
+					<h3 class="inverted" style="padding-top: 1em">Search made easy for (web) developers</h3>
+					<script>
+						// Delicously hacky. Look away.
+						if( navigator.userAgent.match( /(iPhone|iPad|iPod|Android)/i ) )
+						document.write( '<p style="color: rgba(0,0,0,0.3); text-shadow: none;">('+'Tap to navigate'+')</p>' );
+					</script>
+					
+					<div style="padding-top: 2em">
+					Alexander Reelsen<br />
+					alexander@reelsen.net<br />
+					@spinscale<br />
+					</div>
+				</section>
+				
+				<section>
+					<h2>Agenda</h2>
+				    <ul>
+				      <li>What is so important about search?</li>
+				      <li>Scalability, Sharding &amp; Replication</li>
+				      <li>Configuration, Mapping &amp; Analyzers</li>
+				      <li>Querying, Facetting, Percolation</li>
+				      <li>Modules, Plugins, Rivers &amp; Tools</li>
+				      <li>Production setup &amp; living in the trenches</li>
+				    </ul>
+				</section>
+				
+				<section>
+					<h2>About me - Alexander Reelsen</h2>
+				    <ul>
+				      <li>Studied information systems</li>
+				      <li>10 years linux system engineering, converted to software engineering</li>
+				      <li>Web framework enthusiast, fed up with complex java environment for simple webapps</li>
+				      <li>Other interests: Scaling web architectures, Web 2.0 (nosql, search)</li>
+				      <li>Author of <a href="http://www.packtpub.com/play-framework-cookbook/book">Play framework cookbook</a></li>
+				      <li>Working at <a href="http://www.lusini.de">Lusini GmbH</a>, building a b2b ecommerce platform</li>
+				      <li>Streetball/Basketball</li>
+				    </ul>
+				</section>
+
+				<section>
+					<h2>What is so important about search?</h2>
+					<ul>
+						<li>No search, no google, no bing, no twitter, no amazon, no ebay, ...</li>
+						<li>Functional requirements: Relevance (finds the <i>right</i> stuff)</li>
+						<li>Non-functional requirements: Scalability, performance, concurrent updates</li>
+						<li>Solutions: <a href="http://www.google.com/commercesearch/">Google commerce search</a>, <a href="http://sphinxsearch.com/">Sphinx</a>, <a href="http://www.searchblox.com/">SearchBlox</a>, <a href="http://lucene.apache.org/solr/">Solr</a>, <a href="http://www.elasticsearch.org">elasticsearch</a>, <a href="https://github.com/linkedin/indextank-engine">IndexTank</a>, <a href="http://www.senseidb.com">Sensei DB</a></li>
+					</ul>
+				</section>
+
+				<section>
+					<section>
+						<h2>Search is more than text search</h2>
+
+						<a><img src="img-jugm/sample-search-basic.png" style="border: 0"></a>
+					</section>
+					<section>
+						<h2>Search must search for ids</h2>
+
+						<img src="img-jugm/sample-search-lucid.png">
+					</section>
+					<section>
+						<h2>Search must search for colors</h2>
+						
+						<img src="img-jugm/sample-search-color.png">
+					</section>
+					<section>
+						<h2>Search must search for brands</h2>
+
+						<img src="img-jugm/sample-search-brand.png">
+					</section>
+					<section>
+						<h2>Search must advice</h2>
+
+						<img src="img-jugm/sample-search-suggest.png">
+					</section>
+					<section>
+						<h2>Search must be intelligent</h2>
+
+						<img src="img-jugm/sample-search-typo.png">
+					</section>
+					<section>
+						<h2>Search must aggregate</h2>
+
+						<img src="img-jugm/sample-search-facet-1.png">
+						<img src="img-jugm/sample-search-facet-2.png">
+						<img src="img-jugm/sample-search-facet-3.png">
+						<img src="img-jugm/sample-search-facet-4.png">
+					</section>
+				</section>
+
+				<section>
+					<h2>Why an own search engine?</h2>
+					<ul>
+						<li>Because you can - telling this your CTO doesn't work.</li>
+						<li>Your data, your search - noone spying...</li>
+						<li>Customize your search - Rank your own style</li>
+						<li>Customize your data - Extend your search?!</li>
+						<li>Best support and in-sourced know-how - Lower TCO</li>
+						<li>No blackbox - Lower TCO</li>
+					</ul>
+				</section>
+					
+				<section>
+				 <h2>elasticsearch in ten seconds</h2>
+				 <ul>
+				   <li>Java, based on Apache Lucene</li>
+				   <li>Scales out, replicates, shards, fail-over</li>
+				   <li>Schema-free</li>
+				   <li>Document-based</li>
+				   <li>Every interaction can be done via HTTP & JSON</li>
+				   <li>References: Mozilla, StumbleUpon, Sony, Infochimps, Assistly, Klout</li>
+				 </ul>
+				</section>
+
+				<section>
+				  <h2>Standing on the shoulders of giants</h2>
+				  <ul>
+				    <li>Lucene, JBoss Netty, Jackson, log4j</li>
+				    <li>Google Guice, Google Guava, MVEL, Groovy</li>
+				    <li>Jodatime, JLine, snakeyaml</li>
+				    <li>hamcrest, testng</li>
+				    <li>sigar via JNA</li>
+				  </ul>
+				</section>
+
+
+				<section>
+					<section>
+						<h2>Elasticsearch architecture</h2>
+
+						    <img src="img-jugm/es-what-its-more-like.png" style="border: 0">
+					</section>
+					<section>
+						<h2>Single node setup</h2>
+						
+						<img src="img-jugm/es-scaling-single-node.png" style="border: 0">
+					</section>
+					<section>
+						<h2>Replication</h2>
+
+						<img src="img-jugm/es-scaling-replication.png" style="border: 0">
+					</section>
+					<section>
+						<h2>Sharding</h2>
+
+						<img src="img-jugm/es-scaling-sharding.png" style="border: 0">
+					</section>
+					<section>
+						<h2>Replication & sharding</h2>
+
+						<img src="img-jugm/es-scaling-replication-sharding.png" style="border: 0" height="70%">
+					</section>
+				</section>
+
+
+  <section>
+      <h2>Installation - takes two minutes</h2>
+    <ul>
+      <li>Download from github or <a href="http://www.elasticsearch.org">elasticsearch.org</a><br /><a href="https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.19.1.zip">zip file</a></li>
+      <li>Unzip<br /><code>unzip elasticsearch-0.19.1.zip</code></li>
+      <li>Run<br /><code>elasticsearch/bin/elasticsearch -f</code></li>
+      <li>Check by connecting with your browser to <a href="http://localhost:9200">http://localhost:9200</a></li>
+    </ul>
+  </section>
+
+  <section>
+      <h2>Configuration</h2>
+    <ul>
+      <li><code>config/elasticsearch.yml</code> or <code>config/elasticsearch.json</code></li>
+      <li>Application-wide settings (zen discovery, available analyzers)</li>
+      <li>index default configurations (number of shards)</li>
+      <li>Seperate logging file: <code>config/logging.yml</code> (simplified log4)</li>
+    </ul>
+  </section>
+
+
+  <section>
+      <h2>Configuration</h2>
+<pre><code class="yaml">
+discovery:
+  zen:
+    multicast.enabled: false
+
+http:
+  max_content_length: 100000
+
+index:
+  number_of_shards: 1
+
+  analysis:
+    analyzer:
+      default:
+        type: standard
+
+      lowercase_analyzer:
+        type: custom
+        tokenizer: standard
+        filter: [standard, lowercase]
+</code></pre>
+  </section>
+
+
+  <section>
+      <h2>Data representation in JSON</h2>
+<pre><code class="javascript">
+{
+	"id": "1",
+	"name" : "MacBook Air",
+	"price": 1099,
+	"descr" : "Some lengthy never-read description", 
+	"attributes" : {
+		"color" : "silver",
+		"display" : 13.3,
+		"ram" : 4
+	}
+}</code></pre>
+  </section>
+
+  <section>
+      <h2>Index your product</h2>
+<pre><code>curl -X PUT localhost:9200/<mark class="green">products</mark>/<mark class="blue">product</mark>/<mark class="red">1</mark> -d '{
+	<mark class="red">"id": "1"</mark>,
+	"name" : "MacBook Air",
+	"price": 1099,
+	"descr" : "Some lengthy never-read description", 
+	"attributes" : {
+		"color" : "silver",
+		"display" : 13.3,
+		"ram" : 4
+	}
+}'</code></pre>
+
+<code>http://localhost:9200/products/product/1</code>
+
+ </section>
+
+  <section>
+      <h2>JSON as query language</h2>
+		<code>http://host:9200/products/product/_search</code>
+		
+		<pre><code class="javascript">{ "query" : { "term" : { "name": "MacBook Air" }}}</code></pre>
+		<pre><code class="javascript">{ "query" : { "prefix" : { "name": "Mac" }}}</code></pre>
+		<pre><code class="javascript">{ "query" : { "range" : { "price" : { "from" : 1000, "to": 2000 } } } }</code></pre>
+		<pre><code class="javascript">{ "from": 0, "size": 10, "query" : { "term" : { "name": "MacBook Air" }}}</code></pre>
+		<pre><code class="javascript">{ "sort" : { "name" :  { "order": "asc" } }, "query" : { "term" : { "name": "MacBook Air" }}}</code></pre>
+		
+  </section>
+
+<section>
+      <h2>JSON as query language</h2>
+		<code>http://host:9200/products/product/_search</code>
+		
+<pre><code class="javascript">
+{ "took":206,"timed_out":false,
+"_shards":{"total":1,"successful":1,"failed":0},
+"hits":{ "total":1,"max_score":2.098612,
+  "hits":[ {
+    "_index":"products1","_type":"product","_id":"1",
+    "_score":2.098612, "_source" : {
+      "id": "1",
+      "name" : "MacBook Air",
+      "price": 1099,
+      "descr" : "Some lengthy never-read description", 
+      "attributes" : {
+        "color" : "silver",
+        "display" : 13.3,
+        "ram" : 4
+      }
+}}]}}
+</code></pre>
+</section>
+
+  <section>
+      <h2>Configuration - Mapping</h2>
+    <ul>
+      <li>On indexing the JSON document is parsed and all data types are extracted</li>
+      <li>Mapping fields to datatypes is done automatically on first indexing</li>
+      <li>Can be configured on a per-type basis</li>
+      <li>Strings can have their own analyzer</li>
+      <li>Sample types: float, long, boolean, date (+formatting), object</li>
+      <li>One field can have multiple fields analyzed differently (lowercase, query)</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Sample mapping</h2>
+    <pre><code class="javascript">
+{
+    "product": {
+        "properties": {
+            "ProductId":            { "type": "string", "index": "not_analyzed" },
+
+            "ProductEnabled":       { "type": "boolean" },
+            "PiecesIncluded":       { "type": "long" },
+            "LastModified":         { "type": "date", "format": "yyyy-MM-dd HH:mm:ss.SSS" },
+
+            "AvailableInventory":   { "type": "float" },
+            "Price":                { "type": "float" },
+
+            "LongDescription":      { "type": "string", "include_in_all" : true },
+            
+            "ProductName" : {
+                "type" : "multi_field",
+                "include_in_all" : true,
+                "fields" : {
+                    "ProductName":  { "type": "string", "index": "not_analyzed" },
+                    "lowercase":    { "type": "string", "analyzer": "lowercase_analyzer" },
+                    "suggest" :     { "type": "string", "analyzer": "suggest_analyzer" }
+                }
+            }
+        }
+    }
+}    
+    </code></pre>
+  </section>
+
+  <section>
+      <h2>Configuration - Analyzers</h2>
+    <ul>
+      <li>An analyzer consists of a Tokenizer and an arbitrary amount of filters</li>
+      <li>Example: </li>
+      <pre><code>suggest_analyzer:
+  type: custom
+  tokenizer: whitespace
+  filter: [standard, lowercase, shingle]</pre></code>
+      <li>Stripping html code: <pre><code>char_filter: html_strip</code></pre></li>
+    </ul>
+  </section>
+
+  <section>
+      <h2>Java API - Creating a client</h2>
+<pre><code class="java">Settings settings = ImmutableSettings.settingsBuilder().
+    put("cluster.name", clusterName).build();
+
+InetSocketTransportAddress addr = 
+    new InetSocketTransportAddress(host, port)
+
+Client client = new TransportClient(settings).
+    addTransportAddress(addr);</code></pre>
+  </section>
+
+  <section>
+      <h2>Starting an embedded server</h2>
+<pre><code class="java">File config = new File("elasticsearch-local.yml");
+String config = FileUtils.readFileToString(config);
+
+Builder settingsBuilder = ImmutableSettings.settingsBuilder().
+    loadFromSource(config);
+
+Node node = NodeBuilder.nodeBuilder().
+    settings(settingsBuilder).node();
+
+Client client = node.client();</code></pre>
+  </section>
+
+  <section>
+      <h2>Executing a query</h2>
+<pre><code class="java">CountRequestBuilder countRequestBuilder =
+    new CountRequestBuilder(client)
+        .setQuery(QueryBuilders.termQuery("foo", "bar"))
+        .setIndices("products")
+        .setTypes("product");
+        
+CountResponse response = 
+    countRequestBuilder.execute().actionGet();
+long count = response.count();</code></pre>
+  </section>
+
+  <section>
+      <h2>Search API overview</h2>
+    <ul>
+      <li>Index, Delete, Delete-By-Query, Get, Multiget, Bulk</li>
+      <li>Search/Count queries (term query, prefix query, id, fuzzy…)</li>
+      <li>Geo-based queries, TTL</li>
+      <li>More like this, Highlighting</li>
+      <li>Facetting, Percolation, Scripting</li>
+    </ul>
+  </section>
+
+  <section>
+      <h2>Search - Facetting</h2>
+    <ul>
+      <li>Facetting adds aggregated information to a standard search query</li>
+      <li>Term: Group results by a term</li>
+      <li>Range: Group by price or date ranges</li>
+      <li>Histogram: Group results in equally sized buckets, also as date histogram</li>
+      <li>Statistical: Include statistical data like min, max, sum, avg &amp; some more</li>
+      <li>Geo distance: Group results around a coordinate</li>
+    </ul>
+  </section>
+
+  <section>
+      <h2>Facet query</h2>
+<pre><code class="java">
+SearchRequestBuilder searchRequestBuilder = new SearchRequestBuilder(client)
+    .setIndices("products")
+    .setTypes("product");
+
+searchRequestBuilder.setQuery(QueryBuilders.prefixQuery("ProductName.suggest", "macbook"));
+
+searchRequestBuilder.addFacet(FacetBuilders.termsFacet("categoryFacet").field("CategoryId"));
+
+SearchResponse searchResponse = searchRequestBuilder.execute().actionGet();
+
+TermsFacet facet = searchResponse.getFacets().facet(TermsFacet.class, "categoryFacet");
+List<TermsFacet> entries = facet.entries();
+String term = entries.get(0).term();
+int count = entries.get(0).count();
+        </code></pre>
+  </section>
+
+
+  <section>
+      <h2>Search - Scripting</h2>
+      <h4>This is where your own integration beats all others</h4>
+    <ul>
+      <li>Score down all your products without an image</li>
+      <li>Dont include them in your results</li>
+      <li>Score up products by an attribute like its product quality or stock</li>
+      <li>Apply math operations on fields to change score</li>
+    </ul>
+  </section>
+
+  <section>
+      <h2>Search API - Percolation</h2>
+      <h3>Implement a price agent for free!</h3>
+    <pre><code>curl -X PUT localhost:9200/_percolator/products/pricecheck -d '{
+"query" : { 
+  "bool" : {
+    "must" : { "term" : { "name" : "MacBook Air" } }, 
+    "must" : { "range" : { "price" : { "from" : 200, "to" : 999 } } }
+    }
+  }
+}'
+{"ok":true,"_index":"_percolator","_type":"products","_id":"pricecheck","_version":1}
+
+curl -X PUT 'localhost:9200/products/product/1?<mark class="red">percolate=*</mark>' -d '{ "price": 1000, "name" : "MacBook Air" }'
+{"ok":true,"_index":"products","_type":"product","_id":"1","_version":1,<mark class="red">"matches":[ ]</mark>}
+
+curl -X PUT 'localhost:9200/products/product/2?<mark class="red">percolate=*</mark>' -d '{ "price": 999, "name" : "MacBook Air" }'
+{"ok":true,"_index":"products","_type":"product","_id":"2","_version":1,<mark class="red">"matches":["pricecheck"]</mark>}
+</code></pre>    
+  </section>
+
+  <section>
+      <h2>Indices API</h2>
+    <ul>
+      <li>Aliases, Analyze</li>
+      <li>Create, Delete, Exists, Open, Close, Optimize, Refresh, Flush, Settings</li>
+      <li>Get, Put, Delete Mapping</li>
+      <li>Get, update settings</li>
+      <li>Snapshot</li>
+      <li>Index templates (mappings + settings)</li>
+      <li>Stats, Status</li>
+      <li>Segments, Clear cache</li>
+    </ul>
+  </section>
+
+  <section>
+      <h2>Cluster API</h2>
+    <ul>
+      <li>Health, State, Settings</li>
+      <li>Nodes Info, Nodes Stats, Nodes Shutdown</li>
+    </ul>
+  </section>
+
+  <section>
+      <h2>Modules</h2>
+    <ul>
+      <li>REST, Thrift, Memcached, ZeroMQ</li>
+      <li>JMX</li>
+      <li>Scripting (MVEL, javascript, groovy, python, native)</li>
+      <li>Discovery: EC2, Zen</li>
+      <li>Cluster, Indices, Network, Transport</li>
+    </ul>
+  </section>
+
+  <section>
+      <h2>Plugins</h2>
+    <ul>
+      <li>Analysis: Smart Chinese, ICU, IK, Mmseg, Hunspell</li>
+      <li>Transport: Memcached, Thrift, ZeroMQ, Servlet</li>
+      <li>Scripting: javascript, groovy, python</li>
+      <li>Site plugins: BigDesk, Elasticsearch Head</li>
+      <li>Misc: Mapper attachments, Hadoop, AWS cloud, Mock Solr, Suggester, PartialUpdate</li>
+    </ul>
+  </section>
+
+  <section>
+      <h2>Rivers</h2>
+    <ul>
+      <li>Interface to import data into elasticsearch</li>
+      <li>CouchDB, Wikipedia, Twitter, RabbitMQ</li>
+      <li>RSS, MongoDB</li>
+      <li>Hint: When writing your own river, make sure you are implementing streaming</li>
+    </ul>
+  </section>
+
+  <section>
+    <section>
+      <h2>Tools</h2>
+    <ul>
+      <li>BigDesk, Elasticsearch Head</li>
+      <li>Chef, puppet</li>
+      <li>RPMs and debian packages</li>
+      <li>daikon CLI</li>
+    </ul>
+    </section>
+	<section>
+		<h2>BigDesk Screenshot</h2>
+	    <img src="img-jugm/screenshot-bigdesk.png" style="border: 0" height="100%">
+	</section>
+	<section>
+		<h2>Elasticsearch-head Screenshot</h2>
+	    <img src="img-jugm/screenshot-elasticsearch-head.png" style="border: 0" height="100%">
+	</section>
+  </section>
+
+  <section>
+      <h2>Language support &amp; software</h2>
+    <ul>
+      <li>java, groovy, python, perl, <a href="https://github.com/karmi/tire">ruby</a>, erlang, .net, <a href="https://github.com/clojurewerkz/elastisch">clojure</a></li>
+      <li>Integrations: grails, django, rails, catalyst, flume, terrastore, hadoop, symfony2, drupal, couchdb, play framework, node.js</li>
+      <li>Software: <a href="https://github.com/Graylog2/">Graylog2</a></li>
+      <li>Elasticsearch as SaaS: <a href="http://www.bonsai.io">bonsai.io</a></li>
+    </ul>
+  </section>
+
+  <section>
+      <h2>Running in production</h2>
+    <ul>
+      <li>220k products, one index, one shard (due to result grouping)</li>
+      <li>Almost all queries have a big facetting query part (with filters)</li>
+      <li>Don't expose your search engine to the internet!</li>
+      <li>Write your own river</li>
+      <li>Be prepared to upgrade every now and then</li>
+    </ul>
+  </section>
+
+  <section>
+      <h2>Thanks for listening!</h2>
+      <h3>Questions?</h3>
+
+     <div  style="padding-top: 1em">
+     Slides available at<br />
+     <b><a href="http://spinscale.github.com/" style="font-size: bigger">http://spinscale.github.com/</a></b>
+     </div>
+     
+     <h5 style="padding-top: 2em">alexander@reelsen.net</h5>
+     <h5>@spinscale</h5>
+  </section>
+
+  <section>
+      <h2>Documentation &amp; Credits</h2>
+      
+      <ul>
+        <li><a href="http://www.elasticsearch.org">elasticsearch.org</a></li>
+        <li><a href="http://twitter.com/elasticsearch">@elasticsearch</a></li>
+        <li><a href="http://groups.google.com/a/elasticsearch.com/group/users">Elasticsearch google group</a></li>
+      	<li style="padding-top: 1em">Presentation done with <a href="https://github.com/hakimel/reveal.js">reveal.js</a></li>
+      	<li>Cool zooming done with <a href="https://github.com/hakimel/zoom.js">zoom.js</a></li>
+      </ul>
+      
+  </section>
+
+			</div>
+
+			<!-- The navigational controls UI -->
+			<aside class="controls">
+				<a class="left" href="#">&#x25C4;</a>
+				<a class="right" href="#">&#x25BA;</a>
+				<a class="up" href="#">&#x25B2;</a>
+				<a class="down" href="#">&#x25BC;</a>
+			</aside>
+
+			<!-- Displays presentation progress, max value changes via JS to reflect # of slides -->
+			<div class="progress"><span></span></div>
+			
+		</div>
+		
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		<script src="reveal.js/js/reveal.js"></script>
+		<script src="reveal.js/lib/highlight.js"></script>
+		<script src="zoom.js/js/zoom.js"></script>
+		<script>
+		$(document).ready(function() {
+			$('pre').click(function(event) {
+				event.preventDefault();
+				zoom.in( { element: event.target } );
+//				updateProgress()
+			})
+			$('img').click(function(event) {
+				event.preventDefault();
+				zoom.in( { element: event.target } );
+//				updateProgress();
+			})
+//			$(document).keypress(updateProgress)
+		})
+		function updateProgress() {
+			var slides = $("#reveal .slides > section")
+			var currentSlide = $("#reveal .slides .present")
+			var currentPosition = $(slides).index(currentSlide)
+			// dom.progressbar.style.width = ( indexh / ( document.querySelectorAll( HORIZONTAL_SLIDES_SELECTOR ).length - 1 ) ) * window.innerWidth + 'px';
+			console.log(" GOT " + slides.length + " pos " + currentPosition + " and innerWidth " + window.innerWidth);
+			$(".progress span").css("width", (currentPosition / (slides.length - 1) * window.innerWidth) + 'px' )
+		}
+		</script>
+		<script>
+			// Parse the query string into a key/value object
+			var query = {};
+			location.search.replace( /[A-Z0-9]+?=(\w*)/gi, function(a) {
+				query[ a.split( '=' ).shift() ] = a.split( '=' ).pop();
+			} );
+
+			Reveal.initialize({
+				// Display controls in the bottom right corner
+				controls: true,
+
+				// Display a presentation progress bar
+				progress: false,
+
+				// If true; each slide will be pushed to the browser history
+				history: true,
+
+				// Flags if mouse wheel navigation should be enabled
+				mouseWheel: true,
+
+				// Apply a 3D roll to links on hover
+				rollingLinks: true,
+
+				// UI style
+				theme: query.theme || 'default', // default/neon
+
+				// Transition style
+				transition: query.transition || 'default' // default/cube/page/concave/linear(2d)
+			});
+
+			hljs.initHighlightingOnLoad();
+		</script>
+
+	</body>
+</html>
