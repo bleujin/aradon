@@ -23,11 +23,14 @@ import org.restlet.data.ChallengeScheme;
 import org.restlet.data.ClientInfo;
 import org.restlet.data.Cookie;
 import org.restlet.data.Form;
+import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.data.Reference;
 import org.restlet.engine.header.ExpectationReader;
 import org.restlet.engine.header.HeaderConstants;
 import org.restlet.engine.header.PreferenceReader;
+import org.restlet.representation.Representation;
+import org.restlet.resource.ResourceException;
 import org.restlet.security.User;
 import org.restlet.util.Series;
 
@@ -49,8 +52,7 @@ public class NradonClient {
 		Request req = AradonUtil.toAradonRequest(request);
 		Response res = aradon.handle(req);
 		AradonUtil.writeResponse(res, response);
-		
-		
+
 	}
 
 	public Response handle(Request request) {
@@ -81,51 +83,61 @@ class Headers {
 class AradonUtil {
 
 	final static Request toAradonRequest(HttpRequest hreq) {
-		Request request = new Request(Method.valueOf(hreq.method()), "http://" + hreq.header(HttpHeaders.HOST) + hreq.uri());
+		try {
+			Request request = new Request(Method.valueOf(hreq.method()), "http://" + hreq.header(HttpHeaders.HOST) + hreq.uri());
 
-		request.setOriginalRef(new Reference(hreq.uri()));
+			request.setOriginalRef(new Reference(hreq.uri()));
+			request.setDate(GregorianCalendar.getInstance().getTime());
+			String contentType = hreq.header("content-type"); // multipart/form-data; boundary=4sK2IY2JkQ1fB9hb37JlZdFjyXLAH_sVX
+			if (contentType != null && contentType.startsWith("multipart/form-data")) {
+				Representation entity = hreq.bodyAsRepresentation(MediaType.valueOf(contentType));
+				request.setEntity(entity);
+			} else {
+				Form form = new Form();
+				for (String key : hreq.postParamKeys()) {
+					if (hreq.postParam(key) == null)
+						continue;
+					form.add(key, hreq.postParam(key));
+				}
+				request.setEntity(form.getWebRepresentation());
+			}
 
-		request.setDate(GregorianCalendar.getInstance().getTime());
-		InnerRequest ireq = InnerRequest.create(request);
+			InnerRequest ireq = InnerRequest.create(request);
 
-		ClientInfo clientInfo = getClientInfo(hreq);
-		ireq.setClientInfo(clientInfo);
+			ClientInfo clientInfo = getClientInfo(hreq);
+			ireq.setClientInfo(clientInfo);
 
-		Form form = new Form() ;
-		for ( String key : hreq.postParamKeys()){
-			if (hreq.postParam(key) == null) continue ;
-			ireq.getFormParameter().putParameter(key, hreq.postParam(key)) ;
+			Series<Cookie> cookies = ireq.getCookies();
+			for (Cookie hc : hreq.cookies()) {
+				cookies.add(hc);
+			}
+
+			Series headers = ireq.getHeaders();
+			for (Entry<String, String> entry : hreq.allHeaders()) {
+				headers.add(entry.getKey(), entry.getValue());
+			}
+
+			setChallenge(request, headers.getFirstValue("Authorization"));
+			return ireq;
+		} catch (IOException ex) {
+			throw new ResourceException(ex);
 		}
-		ireq.setEntity(form.getWebRepresentation()) ;
-
-		Series<Cookie> cookies = ireq.getCookies();
-		for (Cookie hc : hreq.cookies()) {
-			cookies.add(hc);
-		}
-
-		Series headers = ireq.getHeaders();
-		for (Entry<String, String> entry : hreq.allHeaders()) {
-			headers.add(entry.getKey(), entry.getValue());
-		}
-		
-		setChallenge(request, headers.getFirstValue("Authorization"));
-		return ireq;
 	}
 
-//	private static void setMediaType(InnerRequest ireq, ClientInfo clientInfo) {
-//		
-//		float maxQuality = 0f ;
-//		MediaType maxMediaType = MediaType.ALL ;
-//		for (Preference<MediaType> mtype : clientInfo.getAcceptedMediaTypes()){
-//			if (mtype.getQuality() > maxQuality){
-//				maxMediaType = mtype.getMetadata() ;
-//			}
-//		} 
-//		ireq.getEntity().getMediaType() ;
-//		// TODO Auto-generated method stub
-//		Debug.line('#', ireq.getEntity().getMediaType(), clientInfo.getAcceptedMediaTypes()) ;
-//		
-//	}
+	// private static void setMediaType(InnerRequest ireq, ClientInfo clientInfo) {
+	//		
+	// float maxQuality = 0f ;
+	// MediaType maxMediaType = MediaType.ALL ;
+	// for (Preference<MediaType> mtype : clientInfo.getAcceptedMediaTypes()){
+	// if (mtype.getQuality() > maxQuality){
+	// maxMediaType = mtype.getMetadata() ;
+	// }
+	// }
+	// ireq.getEntity().getMediaType() ;
+	// // TODO Auto-generated method stub
+	// Debug.line('#', ireq.getEntity().getMediaType(), clientInfo.getAcceptedMediaTypes()) ;
+	//		
+	// }
 
 	private static void setChallenge(Request request, String authValue) {
 		if (StringUtil.isNotBlank(authValue)) {

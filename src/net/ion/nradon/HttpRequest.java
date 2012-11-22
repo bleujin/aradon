@@ -1,11 +1,14 @@
 package net.ion.nradon;
 
+import java.io.IOException;
 import java.net.SocketAddress;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.restlet.data.Cookie;
+import org.restlet.data.MediaType;
+import org.restlet.representation.Representation;
 
 public interface HttpRequest extends DataHolder {
 
@@ -46,6 +49,8 @@ public interface HttpRequest extends DataHolder {
 	String body();
 
 	byte[] bodyAsBytes();
+	
+	Representation bodyAsRepresentation(MediaType mtype) throws IOException ;
 
 	HttpRequest data(String key, Object value); // Override DataHolder to provide more specific return type.
 

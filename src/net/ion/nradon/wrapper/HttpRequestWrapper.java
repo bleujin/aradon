@@ -1,5 +1,6 @@
 package net.ion.nradon.wrapper;
 
+import java.io.IOException;
 import java.net.SocketAddress;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +9,8 @@ import java.util.Set;
 import net.ion.nradon.HttpRequest;
 
 import org.restlet.data.Cookie;
+import org.restlet.data.MediaType;
+import org.restlet.representation.Representation;
 
 public class HttpRequestWrapper implements HttpRequest {
 
@@ -108,6 +111,10 @@ public class HttpRequestWrapper implements HttpRequest {
 		return request.bodyAsBytes();
 	}
 
+	public Representation bodyAsRepresentation(MediaType mtype) throws IOException {
+		return request.bodyAsRepresentation(mtype) ;
+	}
+	
 	public Map<String, Object> data() {
 		return request.data();
 	}
