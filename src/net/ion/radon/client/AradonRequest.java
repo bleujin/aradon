@@ -53,7 +53,7 @@ public class AradonRequest implements IAradonRequest{
 			return new AradonRequest(aclient, es, path, new User(id, pwd), new Form());
 		} else {
 			Form form = new Form(getPath[1], CharacterSet.UTF_8);
-			return new AradonRequest(aclient, es, getPath[0], new User(id, pwd), form);
+			return new AradonRequest(aclient, es, path, new User(id, pwd), form);
 		}
 	}
 	

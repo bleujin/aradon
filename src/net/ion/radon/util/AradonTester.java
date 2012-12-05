@@ -27,7 +27,7 @@ public class AradonTester {
 
 	public final static AradonTester create() throws Exception {
 		Aradon aradon = Aradon.create(ConfigurationBuilder.newBuilder().build()) ;
-		aradon.start();
+//		aradon.start();
 		return new AradonTester(aradon);
 	}
 
@@ -77,6 +77,7 @@ public class AradonTester {
 	}
 
 	public Aradon getAradon() {
+		aradon.start() ;
 		return aradon;
 	}
 
@@ -91,6 +92,10 @@ public class AradonTester {
 
 	public FakeSection mergeSection(String sectionName) {
 		return FakeSection.load(sectionName, this) ;
+	}
+	public AradonTester putAttribute(String key, Object value) {
+		aradon.getServiceContext().putAttribute(key, value) ;
+		return this;
 	}
 
 }
