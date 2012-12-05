@@ -7,6 +7,7 @@ import net.ion.radon.core.Aradon;
 import net.ion.radon.core.let.AbstractServerResource;
 import net.ion.radon.util.AradonTester;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.restlet.Response;
@@ -16,15 +17,24 @@ import org.restlet.resource.Post;
 
 public class TestAnnotation {
 
+	private Aradon aradon ;
 	private AradonClient ac ;
 	
 	@Before
 	public void setUp() throws Exception {
-		Aradon aradon = AradonTester.create()
-		.putAttribute("akey", "avalue")
-		.putAttribute("akeyobj", new StringBuffer("hello"))
-		.register("", "/test, /test/{pkey}", TestLet.class).getAradon() ;
+		this.aradon = AradonTester.create()
+			.putAttribute("akey", "avalue")
+			.putAttribute("akeyobj", new StringBuffer("hello"))
+			.register("", "/test, /test/{pkey}", TestLet.class).getAradon() ;
 		this.ac = AradonClientFactory.create(aradon);
+//		aradon.startServer(9000) ;
+//		this.ac = AradonClientFactory.create("http://localhost:9000") ;
+	}
+	
+	@After
+	public void tearDown() throws Exception {
+		ac.stop() ;
+		aradon.stop() ;
 	}
 	
 	@Test
@@ -72,6 +82,7 @@ public class TestAnnotation {
 		Response res = ac.createRequest("/test?m=default").handle(Method.GET);
 		assertEquals(200, res.getStatus().getCode()) ;
 		assertEquals("hello0", res.getEntityAsText()) ;
+
 	}
 	
 	@Test

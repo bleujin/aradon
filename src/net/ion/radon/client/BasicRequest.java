@@ -100,9 +100,9 @@ public class BasicRequest implements IAradonRequest {
 	private Request makeRequest(Method method) {
 		Request request = null;
 		if (method == Method.GET || method == Method.DELETE) {
-			request = new Request(method, fullPath + "?" + form.getQueryString());
+			request = new Request(method, getFullPath() + form.getQueryString());
 		} else {
-			request = new Request(method, fullPath);
+			request = new Request(method, getFullPath());
 			if (directEntity != null) request.setEntity(directEntity) ; 
 			else request.setEntity(form.getWebRepresentation());
 		}
@@ -118,7 +118,8 @@ public class BasicRequest implements IAradonRequest {
 	}
 
 	public String getFullPath() {
-		return fullPath;
+		String pathString = (StringUtil.contains(fullPath, '?')) ? fullPath + "&" : fullPath + "?" ;
+		return pathString;
 	}
 
 	public User getUser() {
