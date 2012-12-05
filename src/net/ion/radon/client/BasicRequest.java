@@ -48,7 +48,7 @@ public class BasicRequest implements IAradonRequest {
 			return new BasicRequest(client, path, id, pwd, new Form());
 		} else {
 			Form form = new Form(getPath[1], CharacterSet.UTF_8);
-			return new BasicRequest(client, getPath[0], id, pwd, form);
+			return new BasicRequest(client, path, id, pwd, form);
 		}
 	}
 
