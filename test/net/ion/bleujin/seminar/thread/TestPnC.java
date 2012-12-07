@@ -2,8 +2,8 @@ package net.ion.bleujin.seminar.thread;
 
 import java.util.Random;
 
-import net.ion.framework.util.InfinityThread;
 import junit.framework.TestCase;
+import net.ion.framework.util.InfinityThread;
 
 public class TestPnC extends TestCase {
 	
@@ -89,7 +89,7 @@ class Table {
         this.count = 0;
     }
    
-    // ����ũ�� ���̺? �÷��д�.
+    // 
     public synchronized void put(String cake) throws InterruptedException {
         System.out.println(Thread.currentThread().getName() + " puts " + cake);
    
@@ -103,7 +103,7 @@ class Table {
         notifyAll();
     }
    
-    // ����ũ�� ���̺?�� ��������.
+    // 
     public synchronized String take() throws InterruptedException {
         while (count <= 0) {
             wait();

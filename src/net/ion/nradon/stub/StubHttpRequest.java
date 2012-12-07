@@ -1,5 +1,6 @@
 package net.ion.nradon.stub;
 
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.net.URI;
@@ -14,6 +15,9 @@ import net.ion.nradon.helpers.QueryParameters;
 
 import org.apache.commons.collections.DefaultMapEntry;
 import org.restlet.data.Cookie;
+import org.restlet.data.MediaType;
+import org.restlet.representation.Representation;
+import org.restlet.representation.StringRepresentation;
 
 /**
  * Implementation of HttpRequest that is easy to construct manually and populate. Useful for testing.
@@ -129,6 +133,13 @@ public class StubHttpRequest extends StubDataHolder implements HttpRequest {
 	public byte[] bodyAsBytes() {
 		return body.getBytes();
 	}
+	
+	public Representation bodyAsRepresentation(MediaType mtype) throws IOException {
+		Representation result = new StringRepresentation(body) ;
+		result.setMediaType(mtype) ;
+		return result ;
+	}
+	
 
 	public StubHttpRequest body(String body) {
 		this.body = body;

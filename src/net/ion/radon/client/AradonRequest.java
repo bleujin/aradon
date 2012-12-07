@@ -53,7 +53,7 @@ public class AradonRequest implements IAradonRequest{
 			return new AradonRequest(aclient, es, path, new User(id, pwd), new Form());
 		} else {
 			Form form = new Form(getPath[1], CharacterSet.UTF_8);
-			return new AradonRequest(aclient, es, getPath[0], new User(id, pwd), form);
+			return new AradonRequest(aclient, es, path, new User(id, pwd), form);
 		}
 	}
 	
@@ -119,7 +119,7 @@ public class AradonRequest implements IAradonRequest{
 	private Request makeRequest(Method method) {
 		Request request = null;
 		if (method == Method.GET || method == Method.DELETE) {
-			request = new Request(method, getFullPath() + "?" + form.getQueryString()) ;
+			request = new Request(method, getFullPath() + form.getQueryString()) ;
 		} else {
 			request = new Request(method, getFullPath());
 			if (directEntity != null) request.setEntity(directEntity) ; 
@@ -142,7 +142,8 @@ public class AradonRequest implements IAradonRequest{
 	}
 	
 	public String getFullPath() {
-		return "riap://component" + (path.startsWith("/") ? "" : "/") + path;
+		String pathString = (StringUtil.contains(path, '?')) ? path + "&" : path + "?" ;
+		return "riap://component" + (path.startsWith("/") ? "" : "/") + pathString;
 	}
 
 	public User getUser() {

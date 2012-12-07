@@ -1,7 +1,7 @@
 package net.ion.bleujin.seminar.thread;
 
-import net.ion.framework.util.InfinityThread;
 import junit.framework.TestCase;
+import net.ion.framework.util.InfinityThread;
 
 public class TestGate extends TestCase{
 	
@@ -62,24 +62,3 @@ class Gate {
 }
 
 
-/**
- * �����ι�
- *   - Shared Resource
- *     safeMethod
- *     unsafeMethod
- * 
- * �����
- *   - ��Ƽ ������
- *   - ������ �����尡 �����Ҷ�
- *   - ���°� ��ȭ�� ���ɼ��� ������.
- *   - ������ ���� �ʿ䰡 ������
- *   
- * 
- * ��Ӱ� ��Ƽ ������
- *   - ��ӿ� ���� �ı��ɼ� �ִ�. 
- * 
- * Cretical Section
- *    - ���� ��濡 �ð��� �ɸ���. 
- *    - �������� conflict�� ���� ��ٸ���. 
- *    
- */

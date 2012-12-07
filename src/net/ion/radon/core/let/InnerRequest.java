@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentMap;
 
 import net.ion.framework.parse.gson.JsonObject;
+import net.ion.framework.util.Debug;
 import net.ion.framework.util.ObjectUtil;
 import net.ion.framework.util.StringUtil;
 import net.ion.radon.core.PageBean;
@@ -52,7 +53,7 @@ import org.restlet.util.Series;
 
 public class InnerRequest extends Request {
 
-	private final static int MAX_THRESHOLD_BYTE = 1024 * 1024 * 1; // 1M
+	private final static int MAX_THRESHOLD_BYTE = 1024 * 1024 * 20; // 1M
 	private final static long MAX_FILESIZE = MAX_THRESHOLD_BYTE * 100; // 100M
 
 	private String sectionName ;
@@ -267,7 +268,9 @@ public class InnerRequest extends Request {
 		}
 
 		Representation entity = request.getEntity();
-		if (entity == null) return params ;
+		if (entity == null) {
+			return params ;
+		}
 		
 		if (hasEntityBody(entity) && isMultipartRequest(entity)) {
 			try {
@@ -282,6 +285,8 @@ public class InnerRequest extends Request {
 				upload.setHeaderEncoding("UTF-8");
 				upload.setFileSizeMax(MAX_FILESIZE);
 
+				Debug.line(request.getEntity().getSize(), request) ;
+				
 				List<FileItem> items = upload.parseRequest(request);
 				
 				for (FileItem fitem : items) {
@@ -333,7 +338,7 @@ public class InnerRequest extends Request {
 	}
 
 	private static boolean hasEntityBody(Representation entity) {
-		return entity != null && entity.getSize() >= 1;
+		return entity != null && (entity.getSize() == -1L || entity.getSize() >= 1);
 	}
 
 	private static boolean isMultipartRequest(Representation entity) {

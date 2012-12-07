@@ -33,6 +33,12 @@ import org.restlet.util.Series;
 
 public abstract class ServerResource extends UniformResource {
 
+	private volatile boolean annotated;
+	private volatile boolean conditional;
+	private volatile boolean existing;
+	private volatile boolean negotiated;
+	private volatile List variants;
+
 	public ServerResource() {
 		annotated = true;
 		conditional = true;
@@ -646,11 +652,6 @@ public abstract class ServerResource extends UniformResource {
 		 getRequestAttributes().put(name, value);
 	}
 
-	private volatile boolean annotated;
-	private volatile boolean conditional;
-	private volatile boolean existing;
-	private volatile boolean negotiated;
-	private volatile List variants;
 }
 
 /*

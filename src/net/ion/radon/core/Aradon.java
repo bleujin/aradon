@@ -112,6 +112,8 @@ public class Aradon extends Component implements IService<SectionService>, Arado
 		for (SectionConfiguration pconfig : config.plugin().sections()){
 			attach(pconfig) ;
 		}
+		rootContext.putAttribute(CONFIG_PORT, config.server().connector().port());
+		
 		//start();
 	}
 

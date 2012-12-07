@@ -1,7 +1,9 @@
 package net.ion.nradon.netty;
 
+import java.io.IOException;
 import java.net.SocketAddress;
 import java.net.URI;
+import java.nio.channels.WritableByteChannel;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,10 +12,14 @@ import java.util.Set;
 import net.ion.nradon.InboundCookieParser;
 import net.ion.nradon.helpers.QueryParameters;
 
+import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.channel.MessageEvent;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.util.CharsetUtil;
 import org.restlet.data.Cookie;
+import org.restlet.data.MediaType;
+import org.restlet.representation.Representation;
+import org.restlet.representation.WritableRepresentation;
 
 public class NettyHttpRequest implements net.ion.nradon.HttpRequest {
 
@@ -123,9 +129,58 @@ public class NettyHttpRequest implements net.ion.nradon.HttpRequest {
 	}
 
 	public byte[] bodyAsBytes() {
-		return httpRequest.getContent().array();
+		
+        ChannelBuffer buffer = httpRequest.getContent();
+        byte[] body = new byte[buffer.readableBytes()];
+        buffer.getBytes(buffer.readerIndex(), body);
+        
+        return body;		
+//		return httpRequest.getContent().array();
 	}
 
+	public Representation bodyAsRepresentation(MediaType mtype) throws IOException{
+		ChannelBuffer buffer = httpRequest.getContent();
+		
+		return toRepresentation(buffer, mtype) ;
+	}
+	
+	private Representation toRepresentation(final ChannelBuffer buffer, MediaType mtype) throws IOException{
+
+		WritableRepresentation woutput = new WritableRepresentation(mtype) {
+			@Override
+			public void write(WritableByteChannel writable) throws IOException {
+				writable.write(buffer.toByteBuffer()) ;
+			}
+		};
+		return woutput ;
+		
+//		final int readable = buffer.readableBytes() ;
+//		OutputRepresentation output = new OutputRepresentation(mtype) {
+//			@Override
+//			public void write(OutputStream outputstream) throws IOException {
+//				buffer.readBytes(outputstream, readable) ;
+//			}
+//			
+//			@Override
+//			public long getSize(){
+//				return (long)readable ;
+//			}
+//		};
+//		return output ;
+		
+//		File file = File.createTempFile("req", "upx") ;
+//		FileOutputStream outputStream = new FileOutputStream(file);
+//	    FileChannel localfileChannel = outputStream.getChannel();
+//	    ByteBuffer byteBuffer = buffer.toByteBuffer();
+//	    int written = localfileChannel.write(byteBuffer);
+//	    buffer.readerIndex(buffer.readerIndex() + written);
+//	    localfileChannel.force(false);
+//	    localfileChannel.close();
+//	    InputRepresentation result = new InputRepresentation(new FileInputStream(file), mtype) ;
+//	    result.setSize(file.length()) ;
+//	    return result ; 
+	}
+	
 	public Map<String, Object> data() {
 		return data;
 	}

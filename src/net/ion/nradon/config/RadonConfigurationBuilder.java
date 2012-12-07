@@ -55,7 +55,7 @@ public class RadonConfigurationBuilder {
 	private int maxInitialLineLength = 4096;
 	private int maxHeaderSize = 8192;
 	private int maxChunkSize = 8192;
-	private int maxContentLength = 65536;
+	private int maxContentLength = 1024 * 1024 * 20; // 20M
 	private Aradon aradon = Aradon.create();
 	private boolean initializedAradon = false ;
 	
