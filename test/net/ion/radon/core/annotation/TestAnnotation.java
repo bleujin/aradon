@@ -83,6 +83,10 @@ public class TestAnnotation {
 		assertEquals(200, res.getStatus().getCode()) ;
 		assertEquals("hello0", res.getEntityAsText()) ;
 
+		res = ac.createRequest("/test?m=default").addParameter("fkey", "").handle(Method.GET);
+		assertEquals(200, res.getStatus().getCode()) ;
+		assertEquals("0", res.getEntityAsText()) ;
+
 	}
 	
 	@Test
@@ -133,8 +137,8 @@ class TestLet extends AbstractServerResource {
 	}
 	
 	@Get("?m=default")
-	public String defaultValue(@DefaultValue("hello") @PathParam("pkey") String pathValue, @DefaultValue("0") @PathParam("pkey") int dft){
-		return pathValue + dft;
+	public String defaultValue(@DefaultValue("hello") @FormParam("fkey") String formValue, @DefaultValue("0") @PathParam("pkey") int dft){
+		return formValue + dft;
 	}
 	
 	@Post("?m=formbean")

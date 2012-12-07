@@ -1,6 +1,7 @@
 package net.ion.radon.core.let;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,12 +14,15 @@ import net.ion.radon.core.annotation.ContextParam;
 import net.ion.radon.core.annotation.CookieParam;
 import net.ion.radon.core.annotation.DefaultValue;
 import net.ion.radon.core.annotation.FormBean;
+import net.ion.radon.core.annotation.FormDataParam;
 import net.ion.radon.core.annotation.FormParam;
+import net.ion.radon.core.annotation.FormParams;
 import net.ion.radon.core.annotation.HeaderParam;
 import net.ion.radon.core.annotation.MatrixParam;
 import net.ion.radon.core.annotation.PathParam;
 import net.ion.radon.core.config.PathConfiguration;
 
+import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang.reflect.MethodUtils;
 import org.restlet.Context;
 import org.restlet.data.Cookie;
@@ -349,11 +353,22 @@ class ParamAnnotation {
 			if (an instanceof PathParam) {
 				resultValue = requestAttributes.get(((PathParam) an).value());
 			} else if (an instanceof FormParam) {
-				resultValue = form.get(((FormParam) an).value());
+				resultValue = form.getFirstValue(((FormParam) an).value());
+			} else if (an instanceof FormParams) {
+				List values = form.getAsList(((FormParams) an).value());
+				Object oarray = Array.newInstance(parameterType.getComponentType(), values.size()) ;
+				int i = 0 ;
+				for (Object v : values) {
+					Array.set(oarray, i++, stringToPrimitiveBoxType(parameterType.getComponentType(), ObjectUtil.toString(v)));
+				}
+				resultValue = oarray;
 			} else if (an instanceof HeaderParam) {
 				resultValue = headers.getFirstValue(((HeaderParam)an).value()) ;
 			} else if (an instanceof CookieParam) {
 				resultValue = cookies.getValues(((CookieParam)an).value(), (String)null, true) ;
+			} else if (an instanceof FormDataParam) {
+				FileItem fitem = (FileItem) form.getFirstValue(((FormDataParam) an).value()) ;
+				resultValue = fitem;
 			} else if (an instanceof MatrixParam) {
 				resultValue = matrix.getValues(((MatrixParam)an).value(), (String)null, true) ;
 			} else if (an instanceof ContextParam){
