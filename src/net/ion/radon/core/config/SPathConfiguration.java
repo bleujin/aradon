@@ -5,8 +5,12 @@ import java.util.Map;
 
 import net.ion.nradon.AbstractSingleHttpResource;
 import net.ion.nradon.filter.XRadonFilter;
+import net.ion.radon.core.Aradon;
+import net.ion.radon.core.SectionService;
+import net.ion.radon.core.TreeContext;
 import net.ion.radon.core.EnumClass.IMatchMode;
 import net.ion.radon.core.EnumClass.Scope;
+import net.ion.radon.core.let.SingleLetPathService;
 
 public class SPathConfiguration extends LetConfiguration<SPathConfiguration>  implements IPathConfiguration{
 
@@ -28,6 +32,11 @@ public class SPathConfiguration extends LetConfiguration<SPathConfiguration>  im
 		this.imatchMode = imatchMode;
 	}
 
+	public SingleLetPathService createOuterLet(Aradon aradon, SectionService section, TreeContext sectionContext){
+		return SingleLetPathService.create(aradon, section, sectionContext.createChildContext(), this);
+	}
+	
+	
 	public String name() {
 		return name;
 	}

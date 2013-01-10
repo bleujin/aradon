@@ -75,9 +75,8 @@ class JsonLet extends AbstractServerResource {
 		return new NoSerialUser("jin", 20) ;
 	}
 	
-	
 	@Post
-	public NoSerialUser modUser(Representation entity) throws JsonSyntaxException, IOException{
+	public NoSerialUser postUser(Representation entity) throws JsonSyntaxException, IOException{
 		NoSerialUser user = JsonParser.fromString(entity.getText()).getAsJsonObject().getAsObject(NoSerialUser.class);
 		return user.oneYearAfter() ;
 	}

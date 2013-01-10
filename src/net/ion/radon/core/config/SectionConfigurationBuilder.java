@@ -8,6 +8,8 @@ import net.ion.nradon.AbstractEventSourceResource;
 import net.ion.nradon.AbstractWebSocketResource;
 import net.ion.nradon.handler.AbstractHttpHandler;
 
+import org.restlet.resource.ServerResource;
+
 public class SectionConfigurationBuilder extends AbstractLetConfigurationBuilder<SectionConfigurationBuilder, SectionConfiguration> implements IConfigurationChildBuilder {
 
 	private SectionsConfigurationBuilder parent;
@@ -130,9 +132,11 @@ public class SectionConfigurationBuilder extends AbstractLetConfigurationBuilder
 					epath(pconfig.getAttributeValue("name")).fromLoad(pconfig);
 				} else if (AbstractHttpHandler.class.isAssignableFrom(clz)){
 					spath(pconfig.getAttributeValue("name")).fromLoad(pconfig);
-				} else {
+				} else if (ServerResource.class.isAssignableFrom(clz)){
 					path(pconfig.getAttributeValue("name")).fromLoad(pconfig);	
-				} 
+				} else {
+					throw new IllegalArgumentException("not supported let type") ;
+				}
 			}
 			for (XMLConfig pconfig : sconfig.children("wspath")) {
 				wspath(pconfig.getAttributeValue("name")).fromLoad(pconfig);

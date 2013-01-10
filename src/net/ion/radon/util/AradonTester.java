@@ -2,17 +2,17 @@ package net.ion.radon.util;
 
 import net.ion.framework.util.InfinityThread;
 import net.ion.framework.util.ObjectId;
+import net.ion.nradon.let.IServiceLet;
 import net.ion.radon.core.Aradon;
 import net.ion.radon.core.SectionService;
 import net.ion.radon.core.EnumClass.IMatchMode;
 import net.ion.radon.core.config.ConfigurationBuilder;
-import net.ion.radon.core.config.PathConfiguration;
+import net.ion.radon.core.config.IPathConfigFactory;
 import net.ion.radon.core.config.SectionConfiguration;
 
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.Method;
-import org.restlet.resource.ServerResource;
 
 public class AradonTester {
 
@@ -31,27 +31,27 @@ public class AradonTester {
 		return new AradonTester(aradon);
 	}
 
-	public AradonTester register(String sectionName, String urls, Class<? extends ServerResource> handlerClz) throws Exception {
+	public AradonTester register(String sectionName, String urls, Class<? extends IServiceLet> handlerClz) throws Exception {
 		register(sectionName, urls, IMatchMode.EQUALS, "", handlerClz);
 		return this;
 	}
 
-	public AradonTester register(String sectionName, String urls, IMatchMode matchMode, Class<? extends ServerResource> handlerClz) throws Exception {
+	public AradonTester register(String sectionName, String urls, IMatchMode matchMode, Class<? extends IServiceLet> handlerClz) throws Exception {
 		register(sectionName, urls, matchMode, "", handlerClz);
 		return this;
 	}
 
-	public AradonTester register(String sectionName, String urls, String name, IMatchMode matchMode, Class<? extends ServerResource> handlerClz) throws Exception {
+	public AradonTester register(String sectionName, String urls, String name, IMatchMode matchMode, Class<? extends IServiceLet> handlerClz) throws Exception {
 		SectionService ss = aradon.containsSection(sectionName) ? aradon.getChildService(sectionName) : aradon.attach(SectionConfiguration.createBlank(sectionName));
-		ss.attach(PathConfiguration.create(name, urls, "", matchMode, handlerClz));
+		ss.attach(IPathConfigFactory.create(name, urls, "", matchMode, handlerClz));
 		return this;
 	}
 
 	
 	@Deprecated
-	public AradonTester register(String sectionName, String urls, IMatchMode matchMode, String description, Class<? extends ServerResource> handlerClz) throws Exception {
+	public AradonTester register(String sectionName, String urls, IMatchMode matchMode, String description, Class<? extends IServiceLet> handlerClz) throws Exception {
 		SectionService ss = aradon.containsSection(sectionName) ? aradon.getChildService(sectionName) : aradon.attach(SectionConfiguration.createBlank(sectionName));
-		ss.attach(PathConfiguration.create(new ObjectId().toString(), urls, description, matchMode, handlerClz));
+		ss.attach(IPathConfigFactory.create(new ObjectId().toString(), urls, description, matchMode, handlerClz));
 		return this;
 	}
 

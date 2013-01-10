@@ -10,6 +10,8 @@ import net.ion.framework.util.MapUtil;
 import net.ion.framework.util.StringUtil;
 import net.ion.radon.core.config.AttributeValue;
 import net.ion.radon.core.config.EPathConfiguration;
+import net.ion.radon.core.config.IPathConfiguration;
+import net.ion.radon.core.config.LetPathConfiguration;
 import net.ion.radon.core.config.PathConfiguration;
 import net.ion.radon.core.config.SPathConfiguration;
 import net.ion.radon.core.config.SectionConfiguration;
@@ -63,20 +65,20 @@ public class HttpRestSection extends SectionService  {
 		sconfig.initFilter(this);
 
 		for (PathConfiguration pconfig : sconfig.pathConfiguration()) {
-			attach(pconfig);
+			attachPath(pconfig);
 		}
 
 		for (SPathConfiguration pconfig : sconfig.spathConfiguration()) {
-			attach(pconfig);
+			attachSPath(pconfig);
 		}
 
 
 		for (WSPathConfiguration wconfig : sconfig.wspathConfiguration()) {
-			attach(wconfig);
+			attachWSPath(wconfig);
 		}
 		
 		for(EPathConfiguration econfig : sconfig.epathConfiguration()){
-			attach(econfig) ;
+			attachEPath(econfig) ;
 		}
 		
 
@@ -121,7 +123,26 @@ public class HttpRestSection extends SectionService  {
 		return sconfig;
 	}
 
-	public HttpRestSection attach(WSPathConfiguration wsconfig) {
+
+	@Override
+	public SectionService attach(IPathConfiguration pconfig) {
+		if (pconfig instanceof PathConfiguration){
+			return attachPath((PathConfiguration)pconfig) ;
+		} else if (pconfig instanceof WSPathConfiguration){
+			return attachWSPath((WSPathConfiguration)pconfig) ;
+		} else if (pconfig instanceof EPathConfiguration){
+			return attachEPath((EPathConfiguration)pconfig) ;
+		} else if (pconfig instanceof SPathConfiguration){
+			return attachSPath((SPathConfiguration)pconfig) ;
+		} else if (pconfig instanceof LetPathConfiguration){
+			return attachPath( ((LetPathConfiguration)pconfig).toPathConfig()) ;
+		} else {
+			throw new IllegalArgumentException("exception.config.notsupport.config") ;
+		}
+		
+	}
+	
+	private HttpRestSection attachWSPath(WSPathConfiguration wsconfig) {
 		try {
 			WebSocketPathService wlet = WebSocketPathService.create(aradon, this, context.createChildContext(), wsconfig) ;
 			wspaths.put(wlet.getConfig().name(), wlet) ;
@@ -131,7 +152,7 @@ public class HttpRestSection extends SectionService  {
 		}
 	}
 
-	public HttpRestSection attach(PathConfiguration pconfig) {
+	private HttpRestSection attachPath(PathConfiguration pconfig) {
 		PathService plet = PathService.create(aradon, this, context.createChildContext(), pconfig);
 		for (String url : pconfig.urlPatterns()) {
 			router.attach(makePathPattern(url), plet, plet.getConfig().matchMode());
@@ -142,16 +163,14 @@ public class HttpRestSection extends SectionService  {
 	}
 
 	
-	public HttpRestSection attach(SPathConfiguration pconfig) {
-		SingleLetPathService splet = SingleLetPathService.create(aradon, this, context.createChildContext(), pconfig);
+	private HttpRestSection attachSPath(SPathConfiguration pconfig) {
+		SingleLetPathService splet = pconfig.createOuterLet(aradon, this, context) ;  
 		spaths.put(splet.getConfig().name(), splet);
 
 		return this;
 	}
 
-
-
-	public HttpRestSection attach(EPathConfiguration econfig) {
+	private HttpRestSection attachEPath(EPathConfiguration econfig) {
 		try {
 			EventSourcePathService elet = EventSourcePathService.create(aradon, this, context.createChildContext(), econfig) ;
 			epaths.put(elet.getConfig().name(), elet) ;
@@ -250,5 +269,6 @@ public class HttpRestSection extends SectionService  {
 		SectionTemplateRoute srouter = (SectionTemplateRoute) router.getNext(request, response);
 		return (PathService) srouter.getNext() ;
 	}
+
 
 }

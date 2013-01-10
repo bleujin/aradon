@@ -13,6 +13,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
+import net.ion.nradon.let.IServiceLet;
+
 import org.restlet.Uniform;
 import org.restlet.data.Dimension;
 import org.restlet.data.Form;
@@ -31,7 +33,7 @@ import org.restlet.util.Series;
 // Referenced classes of package org.restlet.resource:
 //            UniformResource, ResourceException
 
-public abstract class ServerResource extends UniformResource {
+public abstract class ServerResource extends UniformResource implements IServiceLet {
 
 	private volatile boolean annotated;
 	private volatile boolean conditional;

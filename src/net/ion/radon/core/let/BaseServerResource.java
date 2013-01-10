@@ -95,6 +95,10 @@ public abstract class BaseServerResource extends ServerResource {
 	}
 
 	private Representation doHandle(AnnotationInfo annotationInfo, Variant variant) throws ResourceException {
+		return doHandle(annotationInfo, variant, this) ;
+	}
+	
+	protected Representation doHandle(AnnotationInfo annotationInfo, Variant variant, Object target) throws ResourceException {
 		Representation result = null;
 		Class<?>[] parameterTypes = annotationInfo.getJavaInputTypes();
 
@@ -104,7 +108,7 @@ public abstract class BaseServerResource extends ServerResource {
 			java.lang.reflect.Method mtd = annotationInfo.getJavaMethod();
 			mtd.setAccessible(true);
 
-			if (mtd.getParameterAnnotations().length > 0) {
+			if (mtd.getParameterAnnotations().length > 0 && mtd.getParameterAnnotations()[0].length > 0) {
 				int idx = 0;
 				List<Object> parameters = new ArrayList<Object>();
 				for (Annotation[] paramAnnos : mtd.getParameterAnnotations()) {
@@ -113,11 +117,11 @@ public abstract class BaseServerResource extends ServerResource {
 				}
 				
 				
-				resultObject = MethodUtils.invokeMethod(this, mtd.getName(), parameters.toArray(), parameterTypes) ;
+				resultObject = MethodUtils.invokeMethod(target, mtd.getName(), parameters.toArray(), parameterTypes) ;
 				
 //				resultObject = mtd.invoke(this, parameters.toArray());
 
-			} else if (mtd.getParameterAnnotations().length == 0) { // old
+			} else { // old
 				if (parameterTypes.length > 0) {
 					List<Object> parameters = new ArrayList<Object>();
 					Object parameter = null;
@@ -338,7 +342,7 @@ class ParamAnnotation {
 		return new ParamAnnotation(requestAttributes, matrix, cookies, (TreeContext)context, paramAnnos, parameterType);
 	}
 
-	public Object paramValue() {
+	public Object paramValue() throws IllegalArgumentException, SecurityException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 
 		MultiValueMap form = (MultiValueMap) requestAttributes.get(Form.class.getCanonicalName());
 		PathConfiguration pconfig = (PathConfiguration) requestAttributes.get(PathConfiguration.class.getCanonicalName());
@@ -350,29 +354,30 @@ class ParamAnnotation {
 		
 
 		for (Annotation an : paramAnnos) {
+			final String valueName = an.getClass().getMethod("value").invoke(an).toString();
 			if (an instanceof PathParam) {
-				resultValue = requestAttributes.get(((PathParam) an).value());
-			} else if (an instanceof FormParam) {
-				resultValue = form.getFirstValue(((FormParam) an).value());
-			} else if (an instanceof FormParams) {
-				List values = form.getAsList(((FormParams) an).value());
+				resultValue = requestAttributes.get(valueName);
+			} else if (parameterType.isArray() || an instanceof FormParams) {
+//				List values = form.getAsList(((FormParams) an).value());
+				List values = form.getAsList(valueName);
 				Object oarray = Array.newInstance(parameterType.getComponentType(), values.size()) ;
 				int i = 0 ;
 				for (Object v : values) {
 					Array.set(oarray, i++, stringToPrimitiveBoxType(parameterType.getComponentType(), ObjectUtil.toString(v)));
 				}
 				resultValue = oarray;
+			} else if (parameterType.isAssignableFrom(FileItem.class) || an instanceof FormDataParam) {
+				return (FileItem) form.getFirstValue(valueName) ;
+			} else if (an instanceof FormParam) {
+				resultValue = form.getFirstValue(valueName);
 			} else if (an instanceof HeaderParam) {
-				resultValue = headers.getFirstValue(((HeaderParam)an).value()) ;
+				resultValue = headers.getFirstValue(valueName) ;
 			} else if (an instanceof CookieParam) {
-				resultValue = cookies.getValues(((CookieParam)an).value(), (String)null, true) ;
-			} else if (an instanceof FormDataParam) {
-				FileItem fitem = (FileItem) form.getFirstValue(((FormDataParam) an).value()) ;
-				resultValue = fitem;
+				resultValue = cookies.getValues(valueName, (String)null, true) ;
 			} else if (an instanceof MatrixParam) {
-				resultValue = matrix.getValues(((MatrixParam)an).value(), (String)null, true) ;
+				resultValue = matrix.getValues(valueName, (String)null, true) ;
 			} else if (an instanceof ContextParam){
-				resultValue = context.getAttributeObject(((ContextParam)an).value()) ;
+				resultValue = context.getAttributeObject(valueName) ;
 			} else if (an instanceof FormBean) {
 				resultValue = JsonParser.fromMap(form).getAsObject(parameterType) ;
 			} else {
@@ -386,9 +391,7 @@ class ParamAnnotation {
 
 		resultValue = ObjectUtil.coalesce(resultValue, defaultValue);
 		
-		if (parameterType.isPrimitive()) {
-			return stringToPrimitiveBoxType(parameterType, (resultValue == null) ? null : resultValue.toString()) ;
-		}
+
 		return resultValue;
 	}
 

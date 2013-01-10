@@ -2,13 +2,11 @@ package net.ion.radon.core.except;
 
 public class ConfigurationException extends RuntimeException{
 
-	private Exception cause ;
-	private ConfigurationException(Exception cause) {
+	private ConfigurationException(Throwable cause) {
 		super(cause) ;
-		this.cause = cause ;
 	}
 
-	public static ConfigurationException throwIt(Exception cause) {
+	public static ConfigurationException throwIt(Throwable cause) {
 		return new ConfigurationException(cause);
 	}
 
