@@ -84,8 +84,25 @@ public class TestFormAnnotation {
 		assertEquals("favicon.ico/application/octet-stream/25214", res.getEntityAsText()) ;
 	}
 	
-	
+	@Test
+	public void formParamArray2() throws Exception {
+		Response res = ac.createRequest("/form?m=array2").addParameter("a", "v1").addParameter("a", "v2").handle(Method.POST);
+		assertEquals(200, res.getStatus().getCode()) ;
+		assertEquals("v1,v2", res.getEntityAsText()) ;
+	}
 
+
+	@Test
+	public void formFormData2() throws Exception {
+		HttpMultipartEntity rf = new HttpMultipartEntity() ;
+		rf.addParameter("name", "bleujin") ;
+		rf.addParameter("uploadfile", new File("./resource/favicon.ico")) ;
+		Response res = ac.createRequest("/form?m=formdata2").setEntity(rf.makeRepresentation()).handle(Method.POST) ;
+		
+		assertEquals(200, res.getStatus().getCode()) ;
+		assertEquals("favicon.ico/application/octet-stream/25214", res.getEntityAsText()) ;
+	}
+	
 
 }
 
@@ -102,6 +119,12 @@ class FormLet extends AbstractServerResource{
 		return StringUtil.join(array, ",") ;
 	}
 
+	@Post("?m=array2")
+	public String array2(@FormParam("a") String[] array){
+		return StringUtil.join(array, ",") ;
+	}
+
+
 	@Post("?m=arrayint")
 	public String arrayInt(@FormParams("a") int[] array){
 		return StringUtil.join(array, ',') ;
@@ -114,6 +137,14 @@ class FormLet extends AbstractServerResource{
 
 	@Post("?m=formdata")
 	public String formData(@FormDataParam("uploadfile") FileItem file) throws IOException{
+		String contentType = file.getContentType() ;
+		long size = file.getSize() ;
+		file.getInputStream().close() ;
+		return file.getName() + "/"+ contentType + "/" + size ;
+	}
+
+	@Post("?m=formdata2")
+	public String formData2(@FormParam("uploadfile") FileItem file) throws IOException{
 		String contentType = file.getContentType() ;
 		long size = file.getSize() ;
 		file.getInputStream().close() ;

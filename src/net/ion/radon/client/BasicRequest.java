@@ -43,6 +43,8 @@ public class BasicRequest implements IAradonRequest {
 	}
 
 	public final static BasicRequest create(AradonHttpClient client, String path, String id, String pwd) {
+//		return new BasicRequest(client, path, id, pwd, new Form());
+		
 		String[] getPath = StringUtil.split(path, '?');
 		if (getPath.length == 1) {
 			return new BasicRequest(client, path, id, pwd, new Form());
@@ -100,7 +102,7 @@ public class BasicRequest implements IAradonRequest {
 	private Request makeRequest(Method method) {
 		Request request = null;
 		if (method == Method.GET || method == Method.DELETE) {
-			request = new Request(method, getFullPath() + form.getQueryString());
+			request = new Request(method, getFullPath());
 		} else {
 			request = new Request(method, getFullPath());
 			if (directEntity != null) request.setEntity(directEntity) ; 

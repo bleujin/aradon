@@ -12,7 +12,6 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentMap;
 
 import net.ion.framework.parse.gson.JsonObject;
-import net.ion.framework.util.Debug;
 import net.ion.framework.util.ObjectUtil;
 import net.ion.framework.util.StringUtil;
 import net.ion.radon.core.PageBean;
@@ -285,8 +284,6 @@ public class InnerRequest extends Request {
 				upload.setHeaderEncoding("UTF-8");
 				upload.setFileSizeMax(MAX_FILESIZE);
 
-				Debug.line(request.getEntity().getSize(), request) ;
-				
 				List<FileItem> items = upload.parseRequest(request);
 				
 				for (FileItem fitem : items) {

@@ -59,7 +59,7 @@ public class SampleHttpResource extends AbstractSingleHttpResource {
 				MediaType mtype = mservice.getMediaType(StringUtil.substringAfterLast(file.getName(), "."));
 				if (mtype == null) mtype = MediaType.ALL ;
 				res.setEntity(new FileRepresentation(file, mtype));
-				response.write(res);
+				response.write(res).end() ;
 			}
 		});
 	}

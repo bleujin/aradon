@@ -31,19 +31,19 @@ public class PathService extends Restlet implements IService<PathService> {
 
 	private final Aradon aradon ;
 	private final SectionService section ;
-	private PathService(Aradon aradon, SectionService section, TreeContext context, PathConfiguration config) {
+	protected PathService(Aradon aradon, SectionService section, TreeContext context) {
 		super(context);
 		this.aradon = aradon ;
 		this.section = section ;
 		this.context = context ;
-		this.pconfig = config ;
-		for (Entry<String, AttributeValue> entry : config.attributes().entrySet()) {
-			context.putAttribute(entry.getKey(), entry.getValue());
-		}
 	}
 
 	public static PathService create(Aradon aradon, SectionService section, TreeContext context, PathConfiguration pconfig) {
-		PathService newPathService = new PathService(aradon, section, context, pconfig);
+		PathService newPathService = new PathService(aradon, section, context);
+		newPathService.pconfig = pconfig ;
+		for (Entry<String, AttributeValue> entry : pconfig.attributes().entrySet()) {
+			newPathService.context.putAttribute(entry.getKey(), entry.getValue());
+		}
 		newPathService.setName(pconfig.name()) ;
 		newPathService.pconfig.initFilter(newPathService) ;
 		return newPathService;

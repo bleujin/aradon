@@ -46,8 +46,7 @@ public class TestSerialRequest {
 		at.startServer(9000);
 
 		AradonClient ac = AradonClientFactory.create("http://127.0.0.1:9000");
-		IAradonRequest pr = ac.createRequest("/test");
-		pr.addParameter("name", "hero");
+		IAradonRequest pr = ac.createRequest("/test?name=hero");
 
 		ObjectInputStream ois = new ObjectInputStream(pr.get().getStream());
 		MyUser m = (MyUser) ois.readObject();

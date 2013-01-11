@@ -2,7 +2,7 @@ package net.ion.radon.core;
 
 import java.util.Collection;
 
-import net.ion.radon.core.config.PathConfiguration;
+import net.ion.radon.core.config.IPathConfiguration;
 import net.ion.radon.core.let.EventSourcePathService;
 import net.ion.radon.core.let.IRadonPathService;
 import net.ion.radon.core.let.PathService;
@@ -19,7 +19,7 @@ public abstract class SectionService extends Application implements IService<ISe
 		super(scontext);
 	}
 
-	public abstract SectionService attach(PathConfiguration pconfig);
+	public abstract SectionService attach(IPathConfiguration pconfig);
 
 	public abstract SectionService detach(String name) throws Exception;
 
