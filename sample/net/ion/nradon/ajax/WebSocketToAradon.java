@@ -173,7 +173,9 @@ class AradonWebSocket implements WebSocketHandler {
 		Debug.line(conn + " open") ;
 	}
 
-	public void onPong(WebSocketConnection conn, String msg) throws Throwable {
+	public void onPong(WebSocketConnection conn, byte[] msg) throws Throwable {
+	}
+	public void onPing(WebSocketConnection conn, byte[] msg) throws Throwable {
 	}
 }
 
@@ -207,7 +209,9 @@ class BroadEchoWebSockets implements WebSocketHandler {
 	public void onMessage(WebSocketConnection connection, byte[] message) {
 	}
 
-	public void onPong(WebSocketConnection connection, String message) {
+	public void onPong(WebSocketConnection connection, byte[] message) {
+	}
+	public void onPing(WebSocketConnection connection, byte[] message) {
 	}
 
 	List<WebSocketConnection> getConnList(){

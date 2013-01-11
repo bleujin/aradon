@@ -45,7 +45,11 @@ public class DefaultXRadonFilter implements XRadonFilter{
 		
 	}
 
-	public void wsInboundPong(IService iservice, WebSocketConnection conn, String message) {
+	public void wsInboundPong(IService iservice, WebSocketConnection conn, byte[] message) {
+		
+	}
+
+	public void wsInboundPing(IService iservice, WebSocketConnection conn, byte[] message) {
 		
 	}
 

@@ -63,8 +63,12 @@ public class SimpleLogSink implements LogSink {
 		custom(connection.httpRequest(), "WEB-SOCKET-" + connection.version() + "-IN-HEX", toHex(data));
 	}
 
-	public void webSocketInboundPong(WebSocketConnection connection, String message) {
-		custom(connection.httpRequest(), "WEB-SOCKET-" + connection.version() + "-IN-PONG", message);
+	public void webSocketInboundPing(WebSocketConnection connection, byte[] message) {
+		custom(connection.httpRequest(), "WEB-SOCKET-" + connection.version() + "-IN-PONG", toHex(message));
+	}
+
+	public void webSocketInboundPong(WebSocketConnection connection, byte[] message) {
+		custom(connection.httpRequest(), "WEB-SOCKET-" + connection.version() + "-IN-PONG", toHex(message));
 	}
 
 	public void webSocketOutboundData(WebSocketConnection connection, String data) {
@@ -75,8 +79,12 @@ public class SimpleLogSink implements LogSink {
 		custom(connection.httpRequest(), "WEB-SOCKET-" + connection.version() + "-OUT-HEX", toHex(data));
 	}
 
-	public void webSocketOutboundPing(WebSocketConnection connection, String message) {
-		custom(connection.httpRequest(), "WEB-SOCKET-" + connection.version() + "-PING", message);
+	public void webSocketOutboundPing(WebSocketConnection connection, byte[] message) {
+		custom(connection.httpRequest(), "WEB-SOCKET-" + connection.version() + "-OUT-PING", toHex(message));
+	}
+
+	public void webSocketOutboundPong(WebSocketConnection connection, byte[] message) {
+		custom(connection.httpRequest(), "WEB-SOCKET-" + connection.version() + "-OUT-PING", toHex(message));
 	}
 
 	public void error(HttpRequest request, Throwable error) {

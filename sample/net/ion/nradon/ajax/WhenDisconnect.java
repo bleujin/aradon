@@ -18,8 +18,9 @@ public class WhenDisconnect {
 		Radon server = RadonConfiguration.newBuilder(9000)
 			.add("/echo", new WebSocketHandler() {
 			
-			public void onPong(WebSocketConnection websocketconnection, String s) throws Throwable {
-				
+			public void onPong(WebSocketConnection websocketconnection, byte[] s) throws Throwable {
+			}
+			public void onPing(WebSocketConnection websocketconnection, byte[] s) throws Throwable {
 			}
 			
 			public void onOpen(WebSocketConnection websocketconnection) throws Exception {

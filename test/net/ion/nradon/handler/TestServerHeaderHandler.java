@@ -7,6 +7,7 @@ import static org.junit.Assert.assertFalse;
 
 import java.io.IOException;
 import java.net.URLConnection;
+import java.util.concurrent.ExecutionException;
 
 import net.ion.nradon.Radon;
 import net.ion.nradon.config.RadonConfiguration;
@@ -16,7 +17,7 @@ import org.junit.Test;
 public class TestServerHeaderHandler {
 
     @Test
-    public void setsHttpServerHeader() throws IOException, InterruptedException {
+    public void setsHttpServerHeader() throws IOException, InterruptedException, ExecutionException {
         Radon webServer = RadonConfiguration.newBuilder(59504)
                 .add(new ServerHeaderHandler("My Server"))
                 .add(new StringHttpHandler("text/plain", "body"))
@@ -26,12 +27,12 @@ public class TestServerHeaderHandler {
             assertEquals("My Server", urlConnection.getHeaderField("Server"));
             assertEquals("body", contents(urlConnection));
         } finally {
-            webServer.stop().join();
+            webServer.stop().get();
         }
     }
 
     @Test
-    public void canBeOverriddenByOtherHandlers() throws IOException, InterruptedException {
+    public void canBeOverriddenByOtherHandlers() throws IOException, InterruptedException, ExecutionException {
         Radon webServer = RadonConfiguration.newBuilder(59504)
                 .add(new ServerHeaderHandler("My Server"))
                 .add(new ServerHeaderHandler("No actually, this is My Server"))
@@ -42,12 +43,12 @@ public class TestServerHeaderHandler {
             assertEquals("No actually, this is My Server", urlConnection.getHeaderField("Server"));
             assertEquals("body", contents(urlConnection));
         } finally {
-            webServer.stop().join();
+            webServer.stop().get();
         }
     }
 
     @Test
-    public void canBeClearedByOtherHandlers() throws IOException, InterruptedException {
+    public void canBeClearedByOtherHandlers() throws IOException, InterruptedException, ExecutionException {
         Radon webServer = RadonConfiguration.newBuilder(59504)
                 .add(new ServerHeaderHandler("My Server"))
                 .add(new ServerHeaderHandler(null))
@@ -58,7 +59,7 @@ public class TestServerHeaderHandler {
             assertFalse(urlConnection.getHeaderFields().containsKey("Server"));
             assertEquals("body", contents(urlConnection));
         } finally {
-            webServer.stop().join();
+            webServer.stop().get();
         }
     }
 }

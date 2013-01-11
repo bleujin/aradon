@@ -11,10 +11,10 @@ import java.util.concurrent.ExecutorService;
 
 import net.ion.nradon.EventSourceConnection;
 import net.ion.nradon.EventSourceHandler;
+import net.ion.nradon.EventSourceMessage;
 import net.ion.nradon.Radon;
 import net.ion.nradon.config.RadonConfiguration;
 import net.ion.nradon.handler.StaticFileHandler;
-import net.ion.nradon.netty.contrib.EventSourceMessage;
 
 public class Main {
     public static class Pusher {

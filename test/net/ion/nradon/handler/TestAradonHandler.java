@@ -33,7 +33,7 @@ public class TestAradonHandler {
 		IAradonRequest request = AradonClientFactory.create(aradon).createRequest("/test");
 		Response response = request.handle(Method.GET);
 		assertEquals(200, response.getStatus().getCode());
-		webServer.stop().join();
+		webServer.stop().get();
 	}
 
 	@Test
@@ -50,7 +50,7 @@ public class TestAradonHandler {
 
 		MyUser myuser = srequest.get(MyUser.class);
 		assertEquals("bleujin", myuser.getName());
-		webServer.stop().join();
+		webServer.stop().get();
 	}
 
 	@Test
@@ -73,7 +73,7 @@ public class TestAradonHandler {
 
 		// new InfinityThread().startNJoin() ;
 		ac.stop() ;
-		webServer.stop().join();
+		webServer.stop().get();
 	}
 
 }

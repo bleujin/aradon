@@ -1,6 +1,7 @@
 package net.ion.nradon.authentication;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -19,7 +20,7 @@ public class AsyncPasswordsExample {
 
     static Executor backgroundAuthenticatorThread = Executors.newSingleThreadExecutor();
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException, ExecutionException {
         Radon webServer = RadonConfiguration.newBuilder(45454)
                 .add(new BasicAuthenticationHandler(new SlowPasswordAuthenticator()))
                 .add("/whoami", new WhoAmIHttpHandler())

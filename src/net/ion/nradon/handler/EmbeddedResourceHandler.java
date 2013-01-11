@@ -2,30 +2,55 @@ package net.ion.nradon.handler;
 
 import static java.util.concurrent.Executors.newFixedThreadPool;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.ByteBuffer;
 import java.util.concurrent.Executor;
 
 import net.ion.nradon.HttpControl;
 import net.ion.nradon.HttpRequest;
 import net.ion.nradon.HttpResponse;
+import net.ion.nradon.helpers.ClassloaderResourceHelper;
 
 // Maybe http://www.uofr.net/~greg/java/get-resource-listing.html
 public class EmbeddedResourceHandler extends AbstractResourceHandler {
-	// We're using File because it's good at dealing with path concatenation and slashes. Not actually opening the file.
-	private final File root;
+    // We're using File because it's good at dealing with path concatenation and slashes. Not actually opening the file.
+    private final File root;
+    private Class<?> clazz;
 
-	public EmbeddedResourceHandler(String root, Executor ioThread) {
-		super(ioThread);
-		this.root = new File(root);
-	}
+    public EmbeddedResourceHandler(String root, Executor ioThread, Class<?> clazz, TemplateEngine templateEngine) {
+        super(ioThread, templateEngine);
+        this.root = new File(root);
+        this.clazz = clazz;
+    }
 
-	public EmbeddedResourceHandler(String root) {
-		this(root, newFixedThreadPool(4));
-	}
+    public EmbeddedResourceHandler(String root, Executor ioThread, Class<?> clazz) {
+        this(root, ioThread, clazz, new StaticFile());
+    }
+
+    public EmbeddedResourceHandler(String root, Executor ioThread, TemplateEngine templateEngine) {
+        this(root, ioThread, EmbeddedResourceHandler.class, templateEngine);
+    }
+
+    public EmbeddedResourceHandler(String root, Executor ioThread) {
+        this(root, ioThread, EmbeddedResourceHandler.class);
+    }
+
+    public EmbeddedResourceHandler(String root, Class<?> clazz, TemplateEngine templateEngine) {
+        this(root, newFixedThreadPool(4), clazz, templateEngine);
+    }
+
+    public EmbeddedResourceHandler(String root, Class<?> clazz) {
+        this(root, newFixedThreadPool(4), clazz);
+    }
+
+    public EmbeddedResourceHandler(String root, TemplateEngine templateEngine) {
+        this(root, EmbeddedResourceHandler.class, templateEngine);
+    }
+
+    public EmbeddedResourceHandler(String root) {
+        this(root, EmbeddedResourceHandler.class);
+    }
 
 	@Override
 	protected IOWorker createIOWorker(HttpRequest request, HttpResponse response, HttpControl control) {
@@ -34,11 +59,14 @@ public class EmbeddedResourceHandler extends AbstractResourceHandler {
 
 	protected class ResourceWorker extends IOWorker {
 		private InputStream resource;
-		private InputStream content;
 		private File file;
+        private final String pathWithoutTrailingSlash;
+        private final boolean isDirectory;
 
 		protected ResourceWorker(HttpRequest request, HttpResponse response, HttpControl control) {
 			super(request.uri(), request, response, control);
+            isDirectory = path.endsWith("/");
+            pathWithoutTrailingSlash = withoutQuery(isDirectory ? path.substring(0, path.length() - 1) : path);
 		}
 
 		@Override
@@ -48,24 +76,35 @@ public class EmbeddedResourceHandler extends AbstractResourceHandler {
 			return resource != null;
 		}
 
-		@Override
-		protected ByteBuffer fileBytes() throws IOException {
-			content = resource;
-			if (content == null || (content instanceof ByteArrayInputStream)) {
-				// It seems that directory listings are reported as BAOS, while files are not. Seems fragile, but works...
-				return null;
-			} else {
-				return read(content);
-			}
-		}
+        @Override
+        protected boolean isDirectory() throws IOException {
+            return isDirectory;
+        }
 
-		@Override
-		protected ByteBuffer welcomeBytes() throws IOException {
-			InputStream resourceStream = getResource(new File(file, welcomeFileName));
-			return resourceStream == null ? null : read(resourceStream);
-		}
+        @Override
+        protected byte[] fileBytes() throws IOException {
+            if (resource == null || isDirectory()) {
+                return null;
+            } else {
+                return read(resource);
+            }
+        }
 
-		private ByteBuffer read(InputStream content) throws IOException {
+        @Override
+        protected byte[] welcomeBytes() throws IOException {
+            File welcomeFile = new File(file, welcomeFileName);
+            InputStream resourceStream = getResource(welcomeFile);
+            return resourceStream == null ? null : read(resourceStream);
+        }
+
+        @Override
+        protected byte[] directoryListingBytes() throws IOException {
+            String subdirectory = file.getPath();
+            Iterable<FileEntry> files = ClassloaderResourceHelper.listFilesRelativeToClass(clazz, subdirectory);
+            return isDirectory() ? directoryListingFormatter.formatFileListAsHtml(files) : null;
+        }
+
+		private byte[] read(InputStream content) throws IOException {
 			try {
 				return read(content.available(), content);
 			} catch (NullPointerException happensWhenReadingDirectoryPathInJar) {

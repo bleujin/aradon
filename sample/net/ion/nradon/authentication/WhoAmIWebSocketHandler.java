@@ -41,7 +41,10 @@ public class WhoAmIWebSocketHandler implements WebSocketHandler {
         // Do nothing
     }
 
-    public void onPong(WebSocketConnection connection, String msg) {
+    public void onPong(WebSocketConnection connection, byte[] msg) {
+        // Do nothing
+    }
+    public void onPing(WebSocketConnection connection, byte[] msg) {
         // Do nothing
     }
 }

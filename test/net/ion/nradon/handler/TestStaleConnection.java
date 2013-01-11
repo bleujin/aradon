@@ -5,6 +5,7 @@ import static net.ion.nradon.testutil.HttpClient.httpPost;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 import net.ion.nradon.HttpControl;
 import net.ion.nradon.HttpRequest;
@@ -17,7 +18,7 @@ import org.junit.Test;
 public class TestStaleConnection {
 
 	@Test
-	public void closesConnectionAfterTimeoutIfClientKeepsConnectioOpen() throws IOException, InterruptedException {
+	public void closesConnectionAfterTimeoutIfClientKeepsConnectioOpen() throws IOException, InterruptedException, ExecutionException {
 		Radon radon = RadonConfiguration.newBuilder(59504).staleConnectionTimeout(100)
 			.add(new AbstractHttpHandler() {
 			public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
@@ -29,6 +30,6 @@ public class TestStaleConnection {
 		String result = contents(httpPost(radon, "/", "hello\n world"));
 		assertEquals("Body = {hello\n world}", result);
 
-		radon.stop().join();
+		radon.stop().get();
 	}
 }

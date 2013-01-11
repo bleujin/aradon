@@ -4,13 +4,12 @@ import static org.jboss.netty.handler.codec.http.HttpHeaders.isKeepAlive;
 import static org.jboss.netty.handler.codec.http.HttpResponseStatus.OK;
 import static org.jboss.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 
-import java.nio.channels.ClosedChannelException;
 import java.util.List;
 import java.util.concurrent.Executor;
 
 import net.ion.nradon.HttpControl;
 import net.ion.nradon.HttpHandler;
-import net.ion.radon.core.except.AradonRuntimeException;
+import net.ion.nradon.helpers.RadonException;
 
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.channel.ExceptionEvent;
@@ -21,59 +20,65 @@ import org.jboss.netty.handler.codec.http.HttpRequest;
 
 public class NettyHttpChannelHandler extends SimpleChannelUpstreamHandler {
 
-	private final Executor executor;
-	private final List<HttpHandler> httpHandlers;
-	private final Object id;
-	private final long timestamp;
-	private final Thread.UncaughtExceptionHandler exceptionHandler;
-	private final Thread.UncaughtExceptionHandler ioExceptionHandler;
+    private final Executor executor;
+    private final List<HttpHandler> httpHandlers;
+    private final Object id;
+    private final long timestamp;
+    private final Thread.UncaughtExceptionHandler exceptionHandler;
+    private final Thread.UncaughtExceptionHandler ioExceptionHandler;
+    private final ConnectionHelper connectionHelper;
 
-	public NettyHttpChannelHandler(Executor executor, List<HttpHandler> httpHandlers, Object id, long timestamp, Thread.UncaughtExceptionHandler exceptionHandler, Thread.UncaughtExceptionHandler ioExceptionHandler) {
-		this.executor = executor;
-		this.httpHandlers = httpHandlers;
-		this.id = id;
-		this.timestamp = timestamp;
-		this.exceptionHandler = exceptionHandler;
-		this.ioExceptionHandler = ioExceptionHandler;
-	}
+    public NettyHttpChannelHandler(Executor executor,
+                                   List<HttpHandler> httpHandlers,
+                                   Object id,
+                                   long timestamp,
+                                   Thread.UncaughtExceptionHandler exceptionHandler,
+                                   Thread.UncaughtExceptionHandler ioExceptionHandler) {
+        this.executor = executor;
+        this.httpHandlers = httpHandlers;
+        this.id = id;
+        this.timestamp = timestamp;
+        this.exceptionHandler = exceptionHandler;
+        this.ioExceptionHandler = ioExceptionHandler;
 
-	@Override
-	public void messageReceived(final ChannelHandlerContext ctx, MessageEvent messageEvent) throws Exception {
-		if (messageEvent.getMessage() instanceof HttpRequest) {
-			handleHttpRequest(ctx, messageEvent, (HttpRequest) messageEvent.getMessage());
-		} else {
-			super.messageReceived(ctx, messageEvent);
-		}
-	}
+        connectionHelper = new ConnectionHelper(executor, exceptionHandler, ioExceptionHandler) {
+            @Override
+            protected void fireOnClose() throws Exception {
+                throw new UnsupportedOperationException();
+            }
+        };
+    }
 
-	private void handleHttpRequest(final ChannelHandlerContext ctx, MessageEvent messageEvent, HttpRequest httpRequest) {
-		final NettyHttpRequest nettyHttpRequest = new NettyHttpRequest(messageEvent, httpRequest, id, timestamp);
-		final NettyHttpResponse nettyHttpResponse = new NettyHttpResponse(ctx, new DefaultHttpResponse(HTTP_1_1, OK), isKeepAlive(httpRequest), exceptionHandler, ioExceptionHandler);
-		
-		final HttpControl control = new NettyHttpControl(httpHandlers.iterator(), executor, ctx, nettyHttpRequest, nettyHttpResponse, httpRequest, new DefaultHttpResponse(HTTP_1_1, OK), exceptionHandler, ioExceptionHandler);
-		executor.execute(new Runnable() {
-			public void run() {
-				try {
-					control.nextHandler(nettyHttpRequest, nettyHttpResponse);
-				} catch (Exception exception) {
-					exceptionHandler.uncaughtException(Thread.currentThread(), AradonRuntimeException.fromException(exception, ctx.getChannel()));
-				}
-			}
-		});
-	}
+    @Override
+    public void messageReceived(final ChannelHandlerContext ctx, MessageEvent messageEvent) throws Exception {
+        if (messageEvent.getMessage() instanceof HttpRequest) {
+            handleHttpRequest(ctx, messageEvent, (HttpRequest) messageEvent.getMessage());
+        } else {
+            super.messageReceived(ctx, messageEvent);
+        }
+    }
 
-	@Override
-	public void exceptionCaught(ChannelHandlerContext ctx, final ExceptionEvent e) throws Exception {
-		if (e.getCause() instanceof ClosedChannelException) {
-			e.getChannel().close();
-		} else {
-			final Thread thread = Thread.currentThread();
-			executor.execute(new Runnable() {
-				public void run() {
-					ioExceptionHandler.uncaughtException(thread, AradonRuntimeException.fromExceptionEvent(e));
-				}
-			});
-		}
-	}
+    private void handleHttpRequest(final ChannelHandlerContext ctx, MessageEvent messageEvent, HttpRequest httpRequest) {
+        final NettyHttpRequest nettyHttpRequest = new NettyHttpRequest(messageEvent, httpRequest, id, timestamp);
+        final NettyHttpResponse nettyHttpResponse = new NettyHttpResponse( ctx, new DefaultHttpResponse(HTTP_1_1, OK), isKeepAlive(httpRequest), exceptionHandler);
+        final HttpControl control = new NettyHttpControl(httpHandlers.iterator(), executor, ctx,
+                nettyHttpRequest, nettyHttpResponse, httpRequest, new DefaultHttpResponse(HTTP_1_1, OK),
+                exceptionHandler, ioExceptionHandler);
+
+        executor.execute(new Runnable() {
+            public void run() {
+                try {
+                    control.nextHandler(nettyHttpRequest, nettyHttpResponse);
+                } catch (Exception exception) {
+                    exceptionHandler.uncaughtException(Thread.currentThread(), RadonException.fromException(exception, ctx.getChannel()));
+                }
+            }
+        });
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, final ExceptionEvent e) {
+        connectionHelper.fireConnectionException(e);
+    }
 
 }

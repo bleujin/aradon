@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.concurrent.ExecutionException;
 
 import net.ion.nradon.HttpControl;
 import net.ion.nradon.HttpRequest;
@@ -24,12 +25,12 @@ public class TestPost {
     private Radon webServer ;
     private RadonConfigurationBuilder configBuilder = RadonConfiguration.newBuilder(59504) ;
     @After
-    public void die() throws IOException, InterruptedException {
-        webServer.stop().join();
+    public void die() throws IOException, InterruptedException, ExecutionException {
+        webServer.stop().get();
     }
 
     @Test
-    public void exposesBodyInRequest() throws IOException, InterruptedException {
+    public void exposesBodyInRequest() throws IOException, InterruptedException, ExecutionException {
     	this.webServer = configBuilder.add(new AbstractHttpHandler() {
             public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
                 response.content("Body = {" + request.body() + "}").end();
@@ -40,7 +41,7 @@ public class TestPost {
     }
 
     @Test
-    public void exposesPostBodyAsParameters() throws IOException, InterruptedException {
+    public void exposesPostBodyAsParameters() throws IOException, InterruptedException, ExecutionException {
     	this.webServer = configBuilder.add(new AbstractHttpHandler() {
             public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
                 response.content("a=" + request.postParam("a") + ", b=" + request.postParam("b")).end();
@@ -52,7 +53,7 @@ public class TestPost {
 
 
     @Test
-    public void exposesPostParamKeys() throws IOException, InterruptedException {
+    public void exposesPostParamKeys() throws IOException, InterruptedException, ExecutionException {
     	this.webServer = configBuilder.add(new AbstractHttpHandler() {
             public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
                 ArrayList<String> keysList = new ArrayList<String>(request.postParamKeys());
@@ -66,7 +67,7 @@ public class TestPost {
     }
 
     @Test
-    public void exposesPostBodyAsBytes() throws IOException {
+    public void exposesPostBodyAsBytes() throws IOException, InterruptedException, ExecutionException {
     	this.webServer = configBuilder.add(new AbstractHttpHandler() {
             public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
                 response.content(Arrays.toString(request.bodyAsBytes())).end();

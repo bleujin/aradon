@@ -1,15 +1,19 @@
 package net.ion.nradon.config;
 
 import java.io.File;
-import java.io.IOException;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.net.URI;
 import java.net.UnknownHostException;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import javax.net.ssl.SSLContext;
 
@@ -17,6 +21,7 @@ import net.ion.framework.util.ListUtil;
 import net.ion.framework.util.StringUtil;
 import net.ion.nradon.EventSourceHandler;
 import net.ion.nradon.HttpHandler;
+import net.ion.nradon.Radon;
 import net.ion.nradon.WebSocketHandler;
 import net.ion.nradon.handler.DateHeaderHandler;
 import net.ion.nradon.handler.HttpToEventSourceHandler;
@@ -237,25 +242,31 @@ public class RadonConfigurationBuilder {
 		return new NettyWebServer(build());
 	}
 
-	public NettyWebServer startRadon() throws IOException {
+	public Future<Radon> start() {
 		return createRadon().start() ;
 	}
+
+	public Radon startRadon() throws InterruptedException, ExecutionException {
+		return start().get() ;
+	}
+
 
 	public SSLContext getSslContext(){
 		return sslContext ;
 	}
 	
-    public RadonConfigurationBuilder setupSsl(File keyStorePath, String pass) throws RadonException {
+    public RadonConfigurationBuilder setupSsl(InputStream keyStorePath, String pass) throws RadonException {
         return this.setupSsl(keyStorePath, pass, pass);
     }
 
-    public RadonConfigurationBuilder setupSsl(File keyStorePath, String keyStorePass, String keyPass) throws RadonException {
+    public RadonConfigurationBuilder setupSsl(InputStream keyStorePath, String keyStorePass, String keyPass) throws RadonException {
         this.sslContext = new SslFactory(keyStorePath, keyStorePass).getServerContext(keyPass);
         return this;
     }
 
-	public RadonConfigurationBuilder setupSsl(SslParameter sslParam) {
-		this.sslContext = new SslFactory(new File(sslParam.keystorePath()), sslParam.keystorePassword()).getServerContext(sslParam.keyPassword()) ;
+	public RadonConfigurationBuilder setupSsl(SslParameter sslParam) throws FileNotFoundException {
+		final InputStream fis = new FileInputStream(new File(sslParam.keystorePath()));
+		this.sslContext = new SslFactory(fis, sslParam.keystorePassword()).getServerContext(sslParam.keyPassword()) ;
 		return this ;
 	}
 

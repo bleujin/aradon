@@ -1,7 +1,5 @@
 package net.ion.nradon.helpers;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.Security;
@@ -11,24 +9,18 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 
-import net.ion.framework.util.IOUtil;
-
 public class SslFactory {
     private static final String PROTOCOL = "TLS";
     private final KeyStore ks;
 
-    public SslFactory(File keyStore, String storePass) {
+    public SslFactory(InputStream keyStore, String storePass) {
     	
-    	InputStream keyInput = null ;
         try {
-        	keyInput = new FileInputStream(keyStore) ;
             // Create and load keystore file
             ks = KeyStore.getInstance(KeyStore.getDefaultType());
-            ks.load(keyInput, storePass.toCharArray());
+            ks.load(keyStore, storePass.toCharArray());
         } catch (Exception e) {
             throw new RadonException(e);
-        } finally {
-        	IOUtil.closeQuietly(keyInput) ;
         }
         
     }

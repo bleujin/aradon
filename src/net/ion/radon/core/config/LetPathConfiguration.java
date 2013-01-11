@@ -41,7 +41,7 @@ public class LetPathConfiguration extends LetConfiguration<PathConfiguration> im
 	}
 
 	public PathConfiguration toPathConfig() {
-		attributes().put(OuterServerResource.class.getCanonicalName(), new ApplicationAttributeValue(XMLConfig.BLANK, handlerClz)) ;
+		attributes().put(IServiceLet.class.getCanonicalName(), new ApplicationAttributeValue(XMLConfig.BLANK, handlerClz)) ;
 		return new PathConfiguration(this.name, OuterServerResource.class, scope, urlPatterns, description, imatchMode, attributes(), prefilters(), afterfilters(), filters()) ;
 	}
 

@@ -10,6 +10,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.URI;
 import java.util.Scanner;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -23,7 +24,7 @@ public class TestFlashPolicyFile {
 
 	@Test
 	public void returnsCrossDomainXML() throws IOException,
-			InterruptedException {
+			InterruptedException, ExecutionException {
 		Radon webServer = RadonConfiguration.newBuilder(59504).add(
 				new StringHttpHandler("text/plain", "body")).startRadon();
 		try {
@@ -39,13 +40,13 @@ public class TestFlashPolicyFile {
 			assertEquals(getPolicyFile("59504"), result);
 
 		} finally {
-			webServer.stop().join();
+			webServer.stop().get();
 		}
 	}
 	
 	@Test
 	public void returnsCrossDomainXMLWithPublicPort() throws IOException,
-			InterruptedException {
+			InterruptedException, ExecutionException {
 		
 		Executor executor = Executors.newSingleThreadScheduledExecutor();
 		InetSocketAddress address = new InetSocketAddress(59504);
@@ -66,13 +67,13 @@ public class TestFlashPolicyFile {
 			assertEquals(getPolicyFile("800"), result);
 		
 		} finally {
-			webServer.stop().join();
+			webServer.stop().get();
 		}
 	}
 	
 	@Test
 	public void returnsCrossDomainXMLWithDefaultHTTPPublicPort() throws IOException,
-			InterruptedException {
+			InterruptedException, ExecutionException {
 		
 		Executor executor = Executors.newSingleThreadScheduledExecutor();
 		InetSocketAddress address = new InetSocketAddress(59504);
@@ -93,13 +94,13 @@ public class TestFlashPolicyFile {
 			assertEquals(getPolicyFile("80"), result);
 		
 		} finally {
-			webServer.stop().join();
+			webServer.stop().get();
 		}
 	}
 	
 	@Test
 	public void returnsCrossDomainXMLWithDefaultHTTPSPublicPort() throws IOException,
-			InterruptedException {
+			InterruptedException, ExecutionException {
 		
 		Executor executor = Executors.newSingleThreadScheduledExecutor();
 		InetSocketAddress address = new InetSocketAddress(59504);
@@ -120,7 +121,7 @@ public class TestFlashPolicyFile {
 			assertEquals(getPolicyFile("443"), result);
 		
 		} finally {
-			webServer.stop().join();
+			webServer.stop().get();
 		}
 	}
 	

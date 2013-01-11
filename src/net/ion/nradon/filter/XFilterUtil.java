@@ -84,12 +84,23 @@ public class XFilterUtil {
 		}
 	}
 
-	public final static void wsInboundPong(IService iservice, WebSocketConnection conn, String message){
+	public final static void wsInboundPong(IService iservice, WebSocketConnection conn, byte[] message){
 		IService current = iservice;
 		while (current == null || current != IService.ROOT) {
 			List<XRadonFilter> prefilters = current.getConfig().filters();
 			for (XRadonFilter filter : prefilters) {
 				filter.wsInboundPong(current, conn, message) ;
+			}
+			current = current.getParent();
+		}
+	}
+
+	public final static void wsInboundPing(IService iservice, WebSocketConnection conn, byte[] message){
+		IService current = iservice;
+		while (current == null || current != IService.ROOT) {
+			List<XRadonFilter> prefilters = current.getConfig().filters();
+			for (XRadonFilter filter : prefilters) {
+				filter.wsInboundPing(current, conn, message) ;
 			}
 			current = current.getParent();
 		}

@@ -47,12 +47,21 @@ public abstract class AbstractResourceHandler extends AbstractHttpHandler {
 	protected final Executor ioThread;
 	protected final Map<String, String> mimeTypes;
 	protected String welcomeFileName;
-
-	public AbstractResourceHandler(Executor ioThread) {
+    protected DirectoryListingFormatter directoryListingFormatter;
+    protected final TemplateEngine templateEngine;
+    private boolean isDirectoryListingEnabled = false;
+    
+	public AbstractResourceHandler(Executor ioThread, TemplateEngine templateEngine) {
 		this.ioThread = ioThread;
+		this.templateEngine = templateEngine ;
 		this.mimeTypes = new HashMap<String, String>(DEFAULT_MIME_TYPES);
 		this.welcomeFileName = DEFAULT_WELCOME_FILE_NAME;
 	}
+	
+    public AbstractResourceHandler(Executor ioThread) {
+        this(ioThread, StaticFile.SELF);
+    }
+	
 
 	public AbstractResourceHandler addMimeType(String extension, String mimeType) {
 		mimeTypes.put(extension, mimeType);
@@ -63,25 +72,39 @@ public abstract class AbstractResourceHandler extends AbstractHttpHandler {
 		this.welcomeFileName = welcomeFile;
 		return this;
 	}
+	
+    public AbstractResourceHandler enableDirectoryListing(boolean isDirectoryListingEnabled) {
+        return enableDirectoryListing(isDirectoryListingEnabled, new DefaultDirectoryListingFormatter());
+    }
+
+    public AbstractResourceHandler enableDirectoryListing(boolean isDirectoryListingEnabled, DirectoryListingFormatter directoryListingFormatter) {
+        this.isDirectoryListingEnabled = isDirectoryListingEnabled;
+        this.directoryListingFormatter = directoryListingFormatter;
+        return this;
+    }
+
 
 	public void handleHttpRequest(final HttpRequest request, final HttpResponse response, final HttpControl control) throws Exception {
 		// Switch from web thead to IO thread, so we don't block web server when we access the filesystem.
 		ioThread.execute(createIOWorker(request, response, control));
 	}
 
-	protected void serve(final String mimeType, final ByteBuffer contents, HttpControl control, final HttpResponse response, final HttpRequest request) {
+	protected void serve(final String mimeType, final byte[] staticContents, HttpControl control, final HttpResponse response, final HttpRequest request, final String path) {
 		// Switch back from IO thread to web thread.
 		control.execute(new Runnable() {
 			public void run() {
 				// TODO: Check bytes read match expected encoding of mime-type
 				response.header("Content-Type", mimeType);
 
-				if (maybeServeRange(request, contents, response)) {
-					return;
-				}
+				byte[] dynamicContents = templateEngine.process(staticContents, path, request.data(TemplateEngine.TEMPLATE_CONTEXT));
+                ByteBuffer contents = ByteBuffer.wrap(dynamicContents);
 
-				// TODO: Don't read all into memory, instead use zero-copy.
-				response.header("Content-Length", contents.remaining()).content(contents).end();
+                if (maybeServeRange(request, contents, response)) {
+                    return;
+                }
+
+                // TODO: Don't read all into memory, instead use zero-copy.
+                response.header("Content-Length", contents.remaining()).content(contents).end();
 			}
 		});
 	}
@@ -170,35 +193,54 @@ public abstract class AbstractResourceHandler extends AbstractHttpHandler {
 		}
 
 		public void run() {
-			path = withoutTrailingSlashOrQuery(path);
+			String pathWithQuery = path ;
+			path = withoutQuery(path);
 
 			// TODO: Cache
-			// TODO: If serving directory and trailing slash omitted, perform redirect
-			try {
-				ByteBuffer content = null;
-				if (!exists()) {
-					notFound();
-				} else if ((content = fileBytes()) != null) {
-					serve(guessMimeType(path), content, control, response, request);
-				} else {
-					if ((content = welcomeBytes()) != null) {
-						serve(guessMimeType(welcomeFileName), content, control, response, request);
-					} else {
-						notFound();
-					}
-				}
-			} catch (IOException e) {
-				error(e);
-			}
+            try {
+                byte[] content = null;
+                if (!exists()) {
+                    notFound();
+                    return;
+                }
+                if (isDirectory()) {
+                    // Assumes if path has been changed since the original request,
+                    // its current value with a trailing slash will still resolve properly
+                    if (!path.endsWith("/")) {
+                        response.status(301).header("Location", path + "/" + extractQuery(pathWithQuery)).end();
+                        return;
+                    } else if ((content = welcomeBytes()) != null) {
+                        serve(guessMimeType(welcomeFileName), content, control, response, request, path);
+                        return;
+                    } else if (isDirectoryListingEnabled && (content = directoryListingBytes()) != null) {
+                        serve(guessMimeType(".html"), content, control, response, request, path);
+                        return;
+                    }
+                    // TODO: Do something other than 404 if directory listing is disabled
+                } else if ((content = fileBytes()) != null) {
+                    serve(guessMimeType(path), content, control, response, request, path);
+                    return;
+                } else if ((content = welcomeBytes()) != null) {
+                    serve(guessMimeType(welcomeFileName), content, control, response, request, path);
+                    return;
+                }
+                notFound();
+            } catch (IOException e) {
+                error(e);
+            }
 		}
 
 		protected abstract boolean exists() throws IOException;
 
-		protected abstract ByteBuffer fileBytes() throws IOException;
+        protected abstract boolean isDirectory() throws IOException;
 
-		protected abstract ByteBuffer welcomeBytes() throws IOException;
+        protected abstract byte[] fileBytes() throws IOException;
 
-		protected ByteBuffer read(int length, InputStream in) throws IOException {
+        protected abstract byte[] welcomeBytes() throws IOException;
+
+        protected abstract byte[] directoryListingBytes() throws IOException;
+
+		protected byte[] read(int length, InputStream in) throws IOException {
 			byte[] data = new byte[length];
 			try {
 				int read = 0;
@@ -213,7 +255,7 @@ public abstract class AbstractResourceHandler extends AbstractHttpHandler {
 			} finally {
 				in.close();
 			}
-			return ByteBuffer.wrap(data);
+			return data;
 		}
 
 		// TODO: Don't respond with a mime type that violates the request's Accept header
@@ -233,16 +275,21 @@ public abstract class AbstractResourceHandler extends AbstractHttpHandler {
 			return mimeType;
 		}
 
-		protected String withoutTrailingSlashOrQuery(String path) {
+		protected String withoutQuery(String path) {
 			int queryStart = path.indexOf('?');
 			if (queryStart > -1) {
 				path = path.substring(0, queryStart);
 			}
-			if (path.endsWith("/")) {
-				path = path.substring(0, path.length() - 1);
-			}
 			return path;
 		}
+		
+        protected String extractQuery(String path) {
+            int queryStart = path.indexOf('?');
+            if (queryStart > -1) {
+                return path.substring(queryStart);
+            }
+            return "";
+        }
 
 	}
 }

@@ -1,6 +1,6 @@
 package net.ion.nradon.ranges;
 
-import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 import net.ion.nradon.Radon;
 import net.ion.nradon.config.RadonConfiguration;
@@ -12,7 +12,7 @@ import net.ion.nradon.handler.StaticFileHandler;
  */
 public class AudioTagUsesRangesExample {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws InterruptedException, ExecutionException {
         Radon webServer = RadonConfiguration.newBuilder(45453)
                 .add(new StaticFileHandler("sample/net/ion/nradon/ranges/content"))
                 .startRadon();

@@ -1,6 +1,7 @@
 package net.ion.nradon.authentication;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 import net.ion.nradon.Radon;
 import net.ion.nradon.config.RadonConfiguration;
@@ -15,7 +16,7 @@ import net.ion.nradon.handler.authentication.InMemoryPasswords;
  */
 public class SimplePasswordsExample {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException, ExecutionException {
         InMemoryPasswords passwords = new InMemoryPasswords()
                 .add("joe", "secret")
                 .add("jeff", "somepassword");

@@ -58,7 +58,7 @@ public class WebSocketPathService implements ServerEventHandler, IService<WebSoc
 		return handler.getConfig();
 	}
 
-	public void onClose(WebSocketConnection conn) throws Exception {
+	public void onClose(WebSocketConnection conn) throws Throwable {
 		XFilterUtil.wsClose(this, conn) ;
 		handler.onClose(conn) ;
 	}
@@ -73,7 +73,7 @@ public class WebSocketPathService implements ServerEventHandler, IService<WebSoc
 		handler.onMessage(conn, msg) ;
 	}
 
-	public void onOpen(WebSocketConnection conn) throws Exception {
+	public void onOpen(WebSocketConnection conn) throws Throwable {
 		HttpRequest req = conn.httpRequest();
 		Map<String, String> patternValues = URIParser.parse(req.uri(), getConfig().fullURLPattern());
 
@@ -90,10 +90,16 @@ public class WebSocketPathService implements ServerEventHandler, IService<WebSoc
 		handler.onOpen(conn) ;
 	}
 
-	public void onPong(WebSocketConnection conn, String msg) throws Throwable {
+	public void onPong(WebSocketConnection conn, byte[] msg) throws Throwable {
 		XFilterUtil.wsInboundPong(this, conn, msg) ;
 		handler.onPong(conn, msg) ;
 	}
+
+	public void onPing(WebSocketConnection conn, byte[] msg) throws Throwable {
+		XFilterUtil.wsInboundPing(this, conn, msg) ;
+		handler.onPong(conn, msg) ;
+	}
+
 
 	public void onEvent(EventType event, Radon radon) {
 		if (handler instanceof ServerEventHandler){

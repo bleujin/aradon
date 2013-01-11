@@ -1,5 +1,7 @@
 package net.ion.nradon.config;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.net.SocketAddress;
 import java.net.URI;
@@ -16,6 +18,7 @@ import net.ion.nradon.WebSocketHandler;
 import net.ion.nradon.handler.HttpToEventSourceHandler;
 import net.ion.nradon.handler.HttpToWebSocketHandler;
 import net.ion.nradon.handler.PathMatchHandler;
+import net.ion.nradon.helpers.SslFactory;
 import net.ion.radon.core.Aradon;
 import net.ion.radon.core.TreeContext;
 import net.ion.radon.core.config.Configuration;
@@ -72,7 +75,7 @@ public class RadonConfiguration {
 		return RadonConfiguration.newBuilder(publicUri.getPort()).executor(executor).socketAddress(socketAddress).publicUri(publicUri) ;
 	}
 	
-	public static RadonConfigurationBuilder newBuilder(XMLConfig xconfig) throws InstanceCreationException {
+	public static RadonConfigurationBuilder newBuilder(XMLConfig xconfig) throws InstanceCreationException, FileNotFoundException {
 		Configuration config = ConfigurationBuilder.load(xconfig).build() ;
 
 		final ConnectorConfiguration connector = config.server().connector();
@@ -159,7 +162,12 @@ public class RadonConfiguration {
 	}
 	
 
-	public RadonConfiguration connectionExceptionHandler(UncaughtExceptionHandler ioExceptionHandler) {
+	public RadonConfiguration exceptionHandler(UncaughtExceptionHandler exceptionHandler) {
+		this.exceptionHandler = exceptionHandler ;
+		return this;
+	}
+
+	public RadonConfiguration ioExceptionHandler(UncaughtExceptionHandler ioExceptionHandler) {
 		this.ioExceptionHandler = ioExceptionHandler ;
 		return this;
 	}
@@ -183,6 +191,14 @@ public class RadonConfiguration {
 
 	public SSLContext getSslContext() {
 		return sslContext;
+	}
+	public RadonConfiguration setUpSsl(InputStream keyStore, String pass) {
+		return setUpSsl(keyStore, pass, pass) ;
+	}
+
+	public RadonConfiguration setUpSsl(InputStream keyStore, String pass, String keyPass) {
+		this.sslContext = new SslFactory(keyStore, pass).getServerContext(keyPass) ;
+		return this ;
 	}
 
 

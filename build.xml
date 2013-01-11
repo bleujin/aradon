@@ -29,7 +29,7 @@
 	<property name="manifest.main.class" value="net.ion.radon.ServerRunner" />
 	<property name="manifest.classpath" value="lib/ant.fat lib/rest_fat.jar lib/jetty_fat_745.jar lib/jci_fat.jar lib/iframework_2.3.jar lib/apache_extend_fat.jar lib/servlet-api.jar" />
 	<property name="version.number" value="0" />
-	<property name="build.number" value="8" />
+	<property name="build.number" value="9" />
 	
 
 	<target name="publish"  depends="test_aradon">

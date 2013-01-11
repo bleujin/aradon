@@ -4,8 +4,9 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.Date;
 
+import net.ion.nradon.helpers.HttpCookie;
+
 import org.restlet.Response;
-import org.restlet.data.Cookie;
 
 public interface HttpResponse {
 	String SET_COOKIE_HEADER = "Set-Cookie";
@@ -26,7 +27,7 @@ public interface HttpResponse {
 
 	boolean containsHeader(String name);
 
-	HttpResponse cookie(Cookie httpCookie);
+	HttpResponse cookie(HttpCookie httpCookie);
 
 	HttpResponse content(String content);
 

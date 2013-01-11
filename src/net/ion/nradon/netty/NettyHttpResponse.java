@@ -17,6 +17,7 @@ import java.util.Date;
 
 import net.ion.framework.util.IOUtil;
 import net.ion.nradon.helpers.DateHelper;
+import net.ion.nradon.helpers.HttpCookie;
 import net.ion.radon.core.RadonAttributeKey;
 import net.ion.radon.core.except.AradonRuntimeException;
 
@@ -29,9 +30,7 @@ import org.jboss.netty.handler.codec.http.HttpResponse;
 import org.jboss.netty.handler.codec.http.HttpResponseStatus;
 import org.jboss.netty.util.CharsetUtil;
 import org.restlet.Response;
-import org.restlet.data.Cookie;
 import org.restlet.data.CookieSetting;
-import org.restlet.engine.header.CookieWriter;
 import org.restlet.engine.header.Header;
 import org.restlet.engine.header.HeaderConstants;
 import org.restlet.representation.FileRepresentation;
@@ -46,16 +45,14 @@ public class NettyHttpResponse implements net.ion.nradon.HttpResponse {
 	private final HttpResponse response;
 	private final boolean isKeepAlive;
 	private final Thread.UncaughtExceptionHandler exceptionHandler;
-	private final Thread.UncaughtExceptionHandler ioExceptionHandler;
 	private final ChannelBuffer responseBuffer;
 	private Charset charset;
 
-	public NettyHttpResponse(ChannelHandlerContext ctx, HttpResponse response, boolean isKeepAlive, Thread.UncaughtExceptionHandler exceptionHandler, Thread.UncaughtExceptionHandler ioExceptionHandler) {
+	public NettyHttpResponse(ChannelHandlerContext ctx, HttpResponse response, boolean isKeepAlive, Thread.UncaughtExceptionHandler exceptionHandler) {
 		this.ctx = ctx;
 		this.response = response;
 		this.isKeepAlive = isKeepAlive;
 		this.exceptionHandler = exceptionHandler;
-		this.ioExceptionHandler = ioExceptionHandler;
 		this.charset = DEFAULT_CHARSET;
 		responseBuffer = ChannelBuffers.dynamicBuffer();
 	}
@@ -101,8 +98,8 @@ public class NettyHttpResponse implements net.ion.nradon.HttpResponse {
 		return response.containsHeader(name);
 	}
 
-	public NettyHttpResponse cookie(Cookie httpCookie) {
-		return header(SET_COOKIE_HEADER, CookieWriter.write(httpCookie));
+	public NettyHttpResponse cookie(HttpCookie httpCookie) {
+		return header(SET_COOKIE_HEADER, httpCookie.toString());
 	}
 
 	public NettyHttpResponse content(String content) {
@@ -143,7 +140,7 @@ public class NettyHttpResponse implements net.ion.nradon.HttpResponse {
 			MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, file.length());
 			content(bb);
 		} catch (IOException ex) {
-			ioExceptionHandler.uncaughtException(Thread.currentThread(), AradonRuntimeException.fromException(ex, ctx.getChannel())) ;
+			exceptionHandler.uncaughtException(Thread.currentThread(), AradonRuntimeException.fromException(ex, ctx.getChannel())) ;
 			error(ex);
 		} finally {
 			end();
@@ -255,7 +252,11 @@ public class NettyHttpResponse implements net.ion.nradon.HttpResponse {
 
 		Series<CookieSetting> cookies = ares.getCookieSettings();
 		for (CookieSetting c : cookies) {
-			cookie(new Cookie(c.getVersion(), c.getName(), c.getValue(), c.getPath(), c.getDomain()));
+			HttpCookie hc = new HttpCookie(c.getName(), c.getValue());
+			hc.setVersion(c.getVersion()) ;
+			hc.setPath(c.getPath()) ;
+			hc.setDomain(c.getDomain()) ;
+			cookie(hc);
 		}
 
 		status(ares.getStatus().getCode());

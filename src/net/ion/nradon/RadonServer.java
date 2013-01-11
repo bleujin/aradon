@@ -1,5 +1,6 @@
 package net.ion.nradon;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -45,7 +46,7 @@ public class RadonServer {
 
 	}
 	
-	private Radon createRadon(int portNum) throws InstanceCreationException{
+	private Radon createRadon(int portNum) throws InstanceCreationException, FileNotFoundException{
 		XMLConfig xmlConfig = XMLConfig.create(options.getString("config", AradonConstant.DEFAULT_CONFIG_PATH));
 		if (portNum <= 1024) {
 			return RadonConfiguration.newBuilder(xmlConfig).createRadon() ;
@@ -74,11 +75,7 @@ public class RadonServer {
 
 	public void stop() {
 		if (radon != null) {
-			try {
-				radon.stop() ;
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			radon.stop() ;
 		}
 	}
 

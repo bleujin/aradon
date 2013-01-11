@@ -1,9 +1,9 @@
 package net.ion.nradon.handler.authentication;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executor;
 
+import net.ion.framework.util.MapUtil;
 import net.ion.nradon.HttpRequest;
 
 /**
@@ -11,7 +11,7 @@ import net.ion.nradon.HttpRequest;
  */
 public class InMemoryPasswords implements PasswordAuthenticator {
 
-	private final Map<String, String> usernameToPasswords = new HashMap<String, String>();
+	private final Map<String, String> usernameToPasswords = MapUtil.newMap() ;
 
 	public InMemoryPasswords add(String username, String password) {
 		usernameToPasswords.put(username, password);

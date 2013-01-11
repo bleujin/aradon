@@ -50,7 +50,7 @@ public class TestResourceLet {
 		IAradonRequest req = ac.createRequest("/tomayto");
 		assertEquals("body", req.get().getText());
 		ac.stop() ;
-		webServer.stop().join() ;
+		webServer.stop().get() ;
 	}
 	
 

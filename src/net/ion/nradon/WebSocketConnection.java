@@ -18,7 +18,11 @@ public interface WebSocketConnection extends Executor, DataHolder {
 
 	WebSocketConnection send(byte[] message);
 
-	WebSocketConnection ping(String message);
+	WebSocketConnection send(byte[] message, int offset, int length);
+
+	WebSocketConnection ping(byte[] message);
+	
+	WebSocketConnection pong(byte[] message);
 
 	WebSocketConnection close();
 

@@ -2,14 +2,18 @@ package net.ion.nradon.helpers;
 
 public class Hex {
 	public static String toHex(byte[] bytes) {
-		StringBuilder sb = new StringBuilder(bytes.length * 2);
-		for (byte b : bytes) {
-			int v = b & 0xff;
-			if (v < 16) {
-				sb.append('0');
-			}
-			sb.append(Integer.toHexString(v));
-		}
-		return sb.toString().toUpperCase();
-	}
+        StringBuilder sb = new StringBuilder(bytes.length * 2);
+        for (byte b : bytes) {
+            sb.append(String.format("%02x", b));
+        }
+        return sb.toString().toUpperCase();
+    }
+
+    public static byte[] fromHex(String string) {
+        byte[] result = new byte[string.length() / 2];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = (byte) Integer.parseInt(string.substring(i * 2, (i * 2) + 2), 16);
+        }
+        return result;
+    }
 }

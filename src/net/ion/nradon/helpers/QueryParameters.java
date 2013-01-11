@@ -2,16 +2,17 @@ package net.ion.nradon.helpers;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import net.ion.framework.util.ListUtil;
+import net.ion.framework.util.MapUtil;
+
 public class QueryParameters {
-	private final Map<String, List<String>> params = new HashMap<String, List<String>>();
+	private final Map<String, List<String>> params = MapUtil.newMap() ;
 	private static final List<String> EMPTY = Collections.emptyList();
 
 	public QueryParameters(String query) {
@@ -30,7 +31,7 @@ public class QueryParameters {
 				String value = pair.length == 1 ? null : URLDecoder.decode(pair[1], "UTF-8");
 				List<String> values = params.get(key);
 				if (values == null) {
-					values = new ArrayList<String>();
+					values = ListUtil.newList() ;
 					params.put(key, values);
 				}
 				values.add(value);

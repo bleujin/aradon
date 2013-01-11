@@ -15,9 +15,9 @@ import java.util.Map;
 import net.ion.framework.util.IOUtil;
 import net.ion.nradon.HttpResponse;
 import net.ion.nradon.helpers.DateHelper;
+import net.ion.nradon.helpers.HttpCookie;
 
 import org.restlet.Response;
-import org.restlet.data.Cookie;
 
 /**
  * Implementation of HttpResponse that is easy to construct manually, and inspect results. Useful for testing.
@@ -30,7 +30,7 @@ public class StubHttpResponse implements HttpResponse {
 	private Throwable error;
 	private boolean ended;
 	private ByteArrayOutputStream contents = new ByteArrayOutputStream();
-	private List<Cookie> cookies = new ArrayList<Cookie>();
+	private List<HttpCookie> cookies = new ArrayList<HttpCookie>();
 
 	public StubHttpResponse charset(Charset charset) {
 		this.charset = charset;
@@ -67,13 +67,13 @@ public class StubHttpResponse implements HttpResponse {
 		return header(name, DateHelper.rfc1123Format(value));
 	}
 
-	public StubHttpResponse cookie(Cookie httpCookie) {
+	public StubHttpResponse cookie(HttpCookie httpCookie) {
 		cookies.add(httpCookie);
 		return this;
 	}
 
 	public StubHttpResponse cookie(String name, String value) {
-		return cookie(new Cookie(name, value));
+		return cookie(new HttpCookie(name, value));
 	}
 
 	public String header(String name) {
@@ -161,7 +161,7 @@ public class StubHttpResponse implements HttpResponse {
 		return ended;
 	}
 
-	public List<Cookie> cookies() {
+	public List<HttpCookie> cookies() {
 		return cookies;
 	}
 

@@ -5,9 +5,9 @@ import java.nio.charset.Charset;
 import java.util.Date;
 
 import net.ion.nradon.HttpResponse;
+import net.ion.nradon.helpers.HttpCookie;
 
 import org.restlet.Response;
-import org.restlet.data.Cookie;
 
 public class HttpResponseWrapper implements HttpResponse {
 
@@ -63,7 +63,7 @@ public class HttpResponseWrapper implements HttpResponse {
 		return this;
 	}
 
-	public HttpResponseWrapper cookie(Cookie httpCookie) {
+	public HttpResponseWrapper cookie(HttpCookie httpCookie) {
 		response.cookie(httpCookie);
 		return this;
 	}
