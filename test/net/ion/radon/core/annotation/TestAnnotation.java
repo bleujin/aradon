@@ -64,11 +64,8 @@ public class TestAnnotation {
 		assertEquals(200, res.getStatus().getCode()) ;
 		assertEquals("avalue/pvalue", res.getEntityAsText()) ;
 
-		res = ac.createRequest("/test/123?m=type").addParameter("fkey", "123").addHeader("hkey", "hvalue").addHeader("Cookie", "ckey=cvalue;ckey2=cvalue2").handle(Method.GET);
-		assertEquals(200, res.getStatus().getCode()) ;
-		assertEquals("246", res.getEntityAsText()) ;
 	}
-	
+
 	@Test 
 	public void contextObj() throws Exception {
 		Response res = ac.createRequest("/test/pvalue?m=context2").addParameter("fkey", "fvalue").addHeader("hkey", "hvalue").addHeader("Cookie", "ckey=cvalue;ckey2=cvalue2").handle(Method.GET);
@@ -81,11 +78,11 @@ public class TestAnnotation {
 	public void defaultValue() throws Exception {
 		Response res = ac.createRequest("/test?m=default").handle(Method.GET);
 		assertEquals(200, res.getStatus().getCode()) ;
-		assertEquals("hello0", res.getEntityAsText()) ;
+		assertEquals("hello-1", res.getEntityAsText()) ;
 
 		res = ac.createRequest("/test?m=default").addParameter("fkey", "").handle(Method.GET);
 		assertEquals(200, res.getStatus().getCode()) ;
-		assertEquals("0", res.getEntityAsText()) ;
+		assertEquals("-1", res.getEntityAsText()) ;
 
 	}
 	
@@ -94,6 +91,14 @@ public class TestAnnotation {
 		Response res = ac.createRequest("/test?m=formbean").addParameter("name", "bleujin").addParameter("age", "20").handle(Method.POST);
 		assertEquals(200, res.getStatus().getCode()) ;
 		assertEquals("bleujin20bleujin", res.getEntityAsText()) ;
+	}
+
+	
+	@Test
+	public void typeParam(){
+		Response res = ac.createRequest("/test/123?m=type").addParameter("fkey", "123").addHeader("hkey", "hvalue").addHeader("Cookie", "ckey=cvalue;ckey2=cvalue2").handle(Method.GET);
+		assertEquals(200, res.getStatus().getCode()) ;
+		assertEquals("246", res.getEntityAsText()) ;
 	}
 	
 }
@@ -132,12 +137,12 @@ class TestLet extends AbstractServerResource {
 	}
 	
 	@Get("?m=type")
-	public String type(@PathParam("pkey") int pathValue, @FormParam("fkey") long formValue){
+	public String type(@PathParam("pkey") long pathValue, @FormParam("fkey") long formValue){
 		return String.valueOf(pathValue + formValue);
 	}
 	
 	@Get("?m=default")
-	public String defaultValue(@DefaultValue("hello") @FormParam("fkey") String formValue, @DefaultValue("0") @PathParam("pkey") int dft){
+	public String defaultValue(@DefaultValue("hello") @FormParam("fkey") String formValue, @DefaultValue("-1") @PathParam("pkey") int dft){
 		return formValue + dft;
 	}
 	
