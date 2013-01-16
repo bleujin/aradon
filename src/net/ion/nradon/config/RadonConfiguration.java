@@ -1,6 +1,5 @@
 package net.ion.nradon.config;
 
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.net.SocketAddress;
@@ -11,7 +10,6 @@ import java.util.concurrent.Executor;
 
 import javax.net.ssl.SSLContext;
 
-import net.ion.framework.util.InstanceCreationException;
 import net.ion.nradon.EventSourceHandler;
 import net.ion.nradon.HttpHandler;
 import net.ion.nradon.WebSocketHandler;
@@ -19,19 +17,12 @@ import net.ion.nradon.handler.HttpToEventSourceHandler;
 import net.ion.nradon.handler.HttpToWebSocketHandler;
 import net.ion.nradon.handler.PathMatchHandler;
 import net.ion.nradon.helpers.SslFactory;
-import net.ion.radon.core.Aradon;
 import net.ion.radon.core.TreeContext;
-import net.ion.radon.core.config.Configuration;
-import net.ion.radon.core.config.ConfigurationBuilder;
-import net.ion.radon.core.config.ConnectorConfiguration;
-import net.ion.radon.core.config.XMLConfig;
-
-import org.restlet.data.Protocol;
 
 
 public class RadonConfiguration {
 
-	private Aradon aradon ;
+	private TreeContext rootContext ;
 	private URI publicUri ;
 	private Executor executor ;
 	private UncaughtExceptionHandler exceptionHandler ;
@@ -45,9 +36,9 @@ public class RadonConfiguration {
 	private int maxContentLength ;
 	private SSLContext sslContext;
 	
-	RadonConfiguration(Aradon aradon, URI publicUri, Executor executor, UncaughtExceptionHandler exceptionHandler, UncaughtExceptionHandler ioExceptionHandler, SocketAddress socketAddress, List<HttpHandler> handlers, SSLContext sslContext,  
+	RadonConfiguration(TreeContext rootContext, URI publicUri, Executor executor, UncaughtExceptionHandler exceptionHandler, UncaughtExceptionHandler ioExceptionHandler, SocketAddress socketAddress, List<HttpHandler> handlers, SSLContext sslContext,  
 			long staleConnectionTimeout, int maxInitialLineLength, int maxHeaderSize, int maxChunkSize, int maxContentLength) {
-		this.aradon = aradon ;
+		this.rootContext = rootContext ;
 		this.publicUri = publicUri ;
 		this.executor = executor ;
 		this.exceptionHandler = exceptionHandler ;
@@ -75,31 +66,31 @@ public class RadonConfiguration {
 		return RadonConfiguration.newBuilder(publicUri.getPort()).executor(executor).socketAddress(socketAddress).publicUri(publicUri) ;
 	}
 	
-	public static RadonConfigurationBuilder newBuilder(XMLConfig xconfig) throws InstanceCreationException, FileNotFoundException {
-		Configuration config = ConfigurationBuilder.load(xconfig).build() ;
+//	public static RadonConfigurationBuilder newBuilder(XMLConfig xconfig) throws InstanceCreationException, FileNotFoundException {
+//		Configuration config = ConfigurationBuilder.load(xconfig).build() ;
+//
+//		final ConnectorConfiguration connector = config.server().connector();
+//		final RadonConfigurationBuilder result = newBuilder(connector.port()).add(config) ;
+//		
+//		Protocol protocol = connector.protocol();
+//		if (protocol.HTTPS.equals(protocol)){
+//			result.protocol(connector.protocol()).setupSsl(connector.getSslParam()) ;
+//		}
+//		return result;
+//	}
+//
+//	public static RadonConfigurationBuilder newBuilder(int port, XMLConfig xconfig) throws InstanceCreationException {
+//		Configuration config = ConfigurationBuilder.load(xconfig).build() ;
+//
+//		return newBuilder(port).add(config);
+//	}
 
-		final ConnectorConfiguration connector = config.server().connector();
-		final RadonConfigurationBuilder result = newBuilder(connector.port()).add(config) ;
-		
-		Protocol protocol = connector.protocol();
-		if (protocol.HTTPS.equals(protocol)){
-			result.protocol(connector.protocol()).setupSsl(connector.getSslParam()) ;
-		}
-		return result;
-	}
-
-	public static RadonConfigurationBuilder newBuilder(int port, XMLConfig xconfig) throws InstanceCreationException {
-		Configuration config = ConfigurationBuilder.load(xconfig).build() ;
-
-		return newBuilder(port).add(config);
-	}
-
-	public Aradon aradon(){
-		return aradon ;
-	}
+//	public Aradon aradon(){
+//		return aradon ;
+//	}
 	
 	public TreeContext getServiceContext(){
-		return aradon.getServiceContext() ;
+		return rootContext ;
 	}
 	
 	public URI publicUri() {

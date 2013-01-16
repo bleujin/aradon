@@ -15,8 +15,7 @@ import net.ion.framework.util.ListUtil;
 import net.ion.nradon.Radon;
 import net.ion.nradon.client.eventsource.EventSource;
 import net.ion.nradon.client.eventsource.EventSourceHandler;
-import net.ion.nradon.config.RadonConfiguration;
-import net.ion.nradon.config.RadonConfigurationBuilder;
+import net.ion.radon.core.Aradon;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -32,8 +31,8 @@ public class TestEPathConfig {
 
 	@Test
 	public void running() throws Exception {
-		RadonConfigurationBuilder rconfig = RadonConfiguration.newBuilder(9000).add(cbuilder.build());
-		Radon radon = rconfig.startRadon();
+		final Aradon aradon = Aradon.create(cbuilder.build());
+		Radon radon = aradon.toRadon(9000).start().get();
 
 		List<String> messages = ListUtil.toList("hello", "jin", "bye") ;
 		
@@ -43,7 +42,7 @@ public class TestEPathConfig {
 
 		
 		// confirm context attribute
-		String pathAttribute = radon.getConfig().aradon().getChildService("async").epath("esource").getServiceContext().getAttributeObject("path.attribute", String.class) ;
+		String pathAttribute = aradon.getChildService("async").epath("esource").getServiceContext().getAttributeObject("path.attribute", String.class) ;
 		Assert.assertEquals("name : esource", pathAttribute) ;
 		
 		

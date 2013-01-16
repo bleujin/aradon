@@ -4,10 +4,9 @@ import java.io.File;
 
 import junit.framework.Assert;
 import net.ion.nradon.Radon;
-import net.ion.nradon.config.RadonConfiguration;
-import net.ion.nradon.config.RadonConfigurationBuilder;
 import net.ion.radon.client.AradonClient;
 import net.ion.radon.client.AradonClientFactory;
+import net.ion.radon.core.Aradon;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -26,8 +25,8 @@ public class TestSPathConfig {
 
 	@Test
 	public void running() throws Exception {
-		RadonConfigurationBuilder rconfig = RadonConfiguration.newBuilder(9000).add(cbuilder.build());
-		Radon radon = rconfig.startRadon();
+		final Aradon aradon = Aradon.create(cbuilder.build());
+		Radon radon = aradon.toRadon(9000).start().get() ;
 		
 		
 		AradonClient ac = AradonClientFactory.create("http://127.0.0.1:9000") ;
@@ -36,14 +35,14 @@ public class TestSPathConfig {
 		Assert.assertEquals(200, res.getStatus().getCode()) ;
 		
 		// confirm context attribute
-		String pathAttribute = radon.getConfig().aradon().getChildService("resource").spath("file").getServiceContext().getAttributeObject("path.attribute", String.class) ;
+		String pathAttribute = aradon.getChildService("resource").spath("file").getServiceContext().getAttributeObject("path.attribute", String.class) ;
 		Assert.assertEquals("name : file", pathAttribute) ;
 		
 		
 		// ignore filter
-		Assert.assertEquals(0, radon.getConfig().aradon().getChildService("resource").spath("file").getConfig().prefilters().size()) ;
-		Assert.assertEquals(0, radon.getConfig().aradon().getChildService("resource").spath("file").getConfig().afterfilters().size()) ;
-		Assert.assertEquals(1, radon.getConfig().aradon().getChildService("resource").spath("file").getConfig().filters().size()) ;
+		Assert.assertEquals(0, aradon.getChildService("resource").spath("file").getConfig().prefilters().size()) ;
+		Assert.assertEquals(0, aradon.getChildService("resource").spath("file").getConfig().afterfilters().size()) ;
+		Assert.assertEquals(1, aradon.getChildService("resource").spath("file").getConfig().filters().size()) ;
 		
 		radon.stop() ;
 	}

@@ -54,14 +54,14 @@ public class TestNettyWebServer {
         http.flush();
 
         assertTrue("Server should have stopped by now", stopper.await(1000, TimeUnit.MILLISECONDS));
-        server.stop() ;
+        server.stop().get() ;
     }
 
     @Test
     public void restartServerDoesNotThrowException() throws Exception {
         Radon server = RadonConfiguration.newBuilder(9080).executor(Executors.newSingleThreadScheduledExecutor()).startRadon();
         server.stop().get();
-        server.start();
+        server.start().get();
         server.stop().get();
     }
 

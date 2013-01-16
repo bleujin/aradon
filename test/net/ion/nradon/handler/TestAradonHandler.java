@@ -3,7 +3,6 @@ package net.ion.nradon.handler;
 import static org.junit.Assert.assertEquals;
 import net.ion.framework.util.Debug;
 import net.ion.nradon.Radon;
-import net.ion.nradon.config.RadonConfiguration;
 import net.ion.radon.client.AradonClient;
 import net.ion.radon.client.AradonClientFactory;
 import net.ion.radon.client.IAradonRequest;
@@ -27,8 +26,8 @@ public class TestAradonHandler {
 	@Test
 	public void testGet() throws Exception {
 		Aradon aradon = AradonTester.create().register("", "/test", HelloWorldLet.class).getAradon();
-		Radon webServer = RadonConfiguration.newBuilder(8080)
-			.add(aradon).startRadon();
+		
+		Radon webServer = aradon.toRadon(8080).start().get() ;
 
 		IAradonRequest request = AradonClientFactory.create(aradon).createRequest("/test");
 		Response response = request.handle(Method.GET);
@@ -39,7 +38,7 @@ public class TestAradonHandler {
 	@Test
 	public void testBinaryGet() throws Exception {
 		Aradon aradon = AradonTester.create().register("", "/param", ParameterTestLet.class).getAradon();
-		Radon webServer = RadonConfiguration.newBuilder(8080).add(aradon).startRadon();
+		Radon webServer = aradon.toRadon(8080).start().get();
 
 		IAradonRequest request = AradonClientFactory.create(aradon).createRequest("/param");
 
@@ -58,8 +57,7 @@ public class TestAradonHandler {
 		Aradon aradon = AradonTester.create().register("", "/client", ClientTestLet.class).getAradon();
 		aradon.getConfig().addPreFilter(new ChallengeAuthenticator("sec")) ;
 
-		Radon webServer = RadonConfiguration.newBuilder(8080)
-			.add(aradon).startRadon();
+		Radon webServer = aradon.toRadon(8080).start().get();
 
 		AradonClient ac = AradonClientFactory.create("http://127.0.0.1:8080");
 		ISerialRequest request = ac.createSerialRequest("/client?name=bleujin", "bleujin", "redf");

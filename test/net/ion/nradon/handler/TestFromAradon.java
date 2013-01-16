@@ -10,25 +10,27 @@ import java.util.concurrent.ExecutionException;
 import net.ion.nradon.Radon;
 import net.ion.nradon.config.RadonConfiguration;
 import net.ion.nradon.config.RadonConfigurationBuilder;
+import net.ion.radon.core.Aradon;
 
 import org.junit.After;
 import org.junit.Test;
 
-public class TestAliasHandler {
+public class TestFromAradon {
     private Radon radon = null;
-    private RadonConfigurationBuilder configBuilder = RadonConfiguration.newBuilder(59504) ;
     
     @After
     public void die() throws IOException, InterruptedException, ExecutionException {
-        radon.stop().get();
+        if (radon != null) radon.stop().get();
     }
 
     @Test
     public void forwardsAliasedPath() throws Exception {
-        this.radon = configBuilder
-                .add("/tomayto", new AliasHandler("/tomato"))
-                .add("/tomato", new StringHttpHandler("text/plain", "body"))
-                .startRadon();
+        RadonConfigurationBuilder rbuilder = RadonConfiguration.newBuilder(59504) ;
+        
+        this.radon = Aradon.create().toRadon() ;
+        radon.getConfig().add(new PathMatchHandler("/tomayto", new AliasHandler("/tomato"))).add(new PathMatchHandler("/tomato", new StringHttpHandler("text/plain", "body"))) ;
+        
+        radon.start().get() ;
         assertEquals("body", contents(httpGet(radon, "/tomayto")));
     }
 }

@@ -2,8 +2,6 @@ package net.ion.radon.impl.let;
 
 import static org.junit.Assert.assertEquals;
 import net.ion.nradon.Radon;
-import net.ion.nradon.config.RadonConfiguration;
-import net.ion.nradon.config.RadonConfigurationBuilder;
 import net.ion.nradon.let.IServiceLet;
 import net.ion.radon.client.AradonClient;
 import net.ion.radon.client.AradonClientFactory;
@@ -48,15 +46,13 @@ public class TestIServiceLet {
 	
 	@Test
 	public void whenRadon() throws Exception {
-		final RadonConfigurationBuilder rc = RadonConfiguration.newBuilder(9000).add(aradon);
-		
-		Radon radon = rc.startRadon();
+		Radon radon =  aradon.toRadon(9000).start().get();
 		
 		final AradonClient ac = AradonClientFactory.create("http://localhost:9000");
 		final IAradonRequest request = ac.createRequest("/hi?name=bleujin&m=form");
 		assertEquals("hi bleujin", request.handle(Method.GET).getEntity().getText()) ;
 		
-		radon.stop() ;
+		radon.stop().get() ;
 	}
 	
 	@Test

@@ -25,7 +25,7 @@ public class TestAradonMethod extends TestBaseAradon {
 		Request request = new Request(Method.GET, "riap://component/another/test");
 
 		SectionService another = aradon.getChildService("another");
-		assertEquals(3, another.getChildren().size());
+		assertEquals(4, another.getChildren().size());
 
 		try {
 			Response response = aradon.handle(request);
@@ -37,7 +37,7 @@ public class TestAradonMethod extends TestBaseAradon {
 		Response response = aradon.handle(request);
 		assertEquals(200, response.getStatus().getCode());
 
-		assertEquals(4, another.getChildren().size());
+		assertEquals(5, another.getChildren().size());
 	}
 
 	@Test
@@ -47,7 +47,7 @@ public class TestAradonMethod extends TestBaseAradon {
 		Request request = new Request(Method.GET, "riap://component/another/hello");
 
 		SectionService another = aradon.getChildService("another");
-		assertEquals(3, another.getChildren().size());
+		assertEquals(4, another.getChildren().size());
 		Response response = aradon.handle(request);
 		assertEquals(200, response.getStatus().getCode());
 
@@ -66,10 +66,10 @@ public class TestAradonMethod extends TestBaseAradon {
 
 		SectionService another = aradon.getChildService("another");
 
-		assertEquals(3, another.getChildren().size());
+		assertEquals(4, another.getChildren().size());
 		another.detach("hello");
 		
-		assertEquals(2, another.getChildren().size());
+		assertEquals(3, another.getChildren().size());
 
 		Request request = new Request(Method.GET, "riap://component/another/hello");
 		Response response = new Response(request);

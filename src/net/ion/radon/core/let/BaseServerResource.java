@@ -23,8 +23,8 @@ import net.ion.radon.core.annotation.MatrixParam;
 import net.ion.radon.core.annotation.PathParam;
 import net.ion.radon.core.config.PathConfiguration;
 
+import org.apache.commons.beanutils.MethodUtils;
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.lang.reflect.MethodUtils;
 import org.restlet.Context;
 import org.restlet.data.Cookie;
 import org.restlet.data.Form;
@@ -99,7 +99,7 @@ public abstract class BaseServerResource extends ServerResource {
 		return doHandle(annotationInfo, variant, this);
 	}
 
-	protected Representation doHandle(AnnotationInfo annotationInfo, Variant variant, Object target) throws ResourceException {
+	protected Representation doHandle(AnnotationInfo annotationInfo, Variant variant, Object target) throws ResourceException{
 		Representation result = null;
 		Class<?>[] parameterTypes = annotationInfo.getJavaInputTypes();
 
@@ -163,8 +163,9 @@ public abstract class BaseServerResource extends ServerResource {
 
 			throw new ResourceException(e.getTargetException());
 		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new ResourceException(e);
+		} catch (Throwable e) {
+			throw new ResourceException(e);
 		}
 
 		if (resultObject != null) {
@@ -342,7 +343,7 @@ class ParamAnnotation {
 		return new ParamAnnotation(requestAttributes, matrix, cookies, (TreeContext) context, paramAnnos, parameterType);
 	}
 
-	public Object paramValue() throws IllegalArgumentException, SecurityException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+	public Object paramValue() throws IllegalArgumentException, SecurityException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, InstantiationException {
 
 		MultiValueMap form = (MultiValueMap) requestAttributes.get(Form.class.getCanonicalName());
 		PathConfiguration pconfig = (PathConfiguration) requestAttributes.get(PathConfiguration.class.getCanonicalName());

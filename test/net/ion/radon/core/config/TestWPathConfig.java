@@ -12,7 +12,7 @@ import net.ion.nradon.HttpHandler;
 import net.ion.nradon.Radon;
 import net.ion.nradon.client.websocket.WebSocketClient;
 import net.ion.nradon.config.RadonConfiguration;
-import net.ion.nradon.config.RadonConfigurationBuilder;
+import net.ion.radon.core.Aradon;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -42,8 +42,8 @@ public class TestWPathConfig {
 	@Test
 	public void build() throws Exception {
 
-		RadonConfigurationBuilder rconfig = RadonConfiguration.newBuilder(9000).add(cbuilder.build());
-		for (HttpHandler handler : rconfig.build().handlers()) {
+		RadonConfiguration rconfig = Aradon.create(cbuilder.build()).toRadon(9000).getConfig();
+		for (HttpHandler handler : rconfig.handlers()) {
 			Debug.line(handler) ;
 		}  
 		// Assert.fail() ;
@@ -52,8 +52,8 @@ public class TestWPathConfig {
 	
 	@Test
 	public void running() throws Exception {
-		RadonConfigurationBuilder rconfig = RadonConfiguration.newBuilder(9000).add(cbuilder.build());
-		Radon radon = rconfig.startRadon() ;
+		final Aradon aradon = Aradon.create(cbuilder.build());
+		Radon radon = aradon.toRadon(9000).start().get() ;
 		
 		WebSocketClient wclient = WebSocketClient.create() ;
 		wclient.connect(new URI("ws://61.250.201.157:9000/async/broadcast/123/bleujin")) ;
@@ -65,7 +65,7 @@ public class TestWPathConfig {
 		}
 		
 		// confirm context attribute
-		String pathAttribute = radon.getConfig().aradon().getChildService("async").wspath("broadcast").getServiceContext().getAttributeObject("path.attribute", String.class) ;
+		String pathAttribute = aradon.getChildService("async").wspath("broadcast").getServiceContext().getAttributeObject("path.attribute", String.class) ;
 		Assert.assertEquals("name : broadcast", pathAttribute) ;
 		
 		radon.stop() ;

@@ -90,8 +90,8 @@ public class NettyWebServer extends Radon {
 					throw new IllegalStateException("Server already started.");
 				}
 
-				getConfig().aradon().getServiceContext().putAttribute(AradonConstant.CONFIG_PORT, getConfig().getPort());
-				getConfig().aradon().getServiceContext().putAttribute(Radon.class.getCanonicalName(), this);
+				getConfig().getServiceContext().putAttribute(AradonConstant.CONFIG_PORT, getConfig().getPort());
+				getConfig().getServiceContext().putAttribute(Radon.class.getCanonicalName(), this);
 
 				// Configure the server.
 				bootstrap = new ServerBootstrap();

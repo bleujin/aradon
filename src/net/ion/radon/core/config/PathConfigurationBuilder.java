@@ -6,6 +6,7 @@ import net.ion.framework.util.InstanceCreationException;
 import net.ion.framework.util.ListUtil;
 import net.ion.framework.util.ObjectUtil;
 import net.ion.framework.util.StringUtil;
+import net.ion.nradon.let.IServiceLet;
 import net.ion.radon.core.EnumClass;
 import net.ion.radon.core.EnumClass.IMatchMode;
 import net.ion.radon.core.EnumClass.Scope;
@@ -18,7 +19,7 @@ public class PathConfigurationBuilder extends AbstractLetConfigurationBuilder<Pa
 	private final String name;
 	private final List<String> urlPatterns;
 
-	private Class<? extends ServerResource> handlerClz;
+	private Class<? extends IServiceLet> handlerClz;
 	private EnumClass.Scope scope = Scope.Request;
 	private String description;
 	private IMatchMode matchMode = IMatchMode.EQUALS ;
@@ -34,10 +35,15 @@ public class PathConfigurationBuilder extends AbstractLetConfigurationBuilder<Pa
 
 	@Override
 	public PathConfiguration create() {
-		return new PathConfiguration(name, handlerClz, scope, urlPatterns, description, matchMode, getAttributes(), getPreFilters(), getAfterFilters(), getFilters());
+		if (ServerResource.class.isAssignableFrom(handlerClz)){
+			return new PathConfiguration(name, (Class<? extends ServerResource>)handlerClz, scope, urlPatterns, description, matchMode, getAttributes(), getPreFilters(), getAfterFilters(), getFilters());
+		} else if (IServiceLet.class.isAssignableFrom(handlerClz)) {
+			return new LetPathConfiguration(name, handlerClz, scope, urlPatterns, description, matchMode, getAttributes(), getPreFilters(), getAfterFilters(), getFilters()).toPathConfig() ;
+		}
+		throw new IllegalArgumentException("not supported service type ") ;
 	}
 
-	public PathConfigurationBuilder handler(Class<? extends ServerResource> handlerClz) {
+	public PathConfigurationBuilder handler(Class<? extends IServiceLet> handlerClz) {
 		this.handlerClz = handlerClz;
 
 		return this;
@@ -83,7 +89,7 @@ public class PathConfigurationBuilder extends AbstractLetConfigurationBuilder<Pa
 				addUrlPattern(ObjectUtil.toString(url));
 			}
 
-			Class<? extends ServerResource> clz = (Class<? extends ServerResource>) Class.forName(pconfig.getString("handler[@class]"));
+			Class<? extends IServiceLet> clz = (Class<? extends IServiceLet>) Class.forName(pconfig.getString("handler[@class]"));
 			description(pconfig.getString("description"))
 				.scope(Scope.valueOf(StringUtil.capitalize(pconfig.getString("handler[@scope]", "request"))))
 				.handler(clz)
