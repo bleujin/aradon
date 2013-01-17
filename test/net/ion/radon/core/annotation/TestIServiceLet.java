@@ -63,11 +63,11 @@ public class TestIServiceLet {
 		
 	}
 	
-	
 }
 
 
 class SimpleLet implements IServiceLet {
+	
 	@Get
 	public String hello(@FormParam("name") String name){
 		return "hello " + name ; 

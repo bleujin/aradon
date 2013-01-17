@@ -8,8 +8,6 @@ import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 import net.ion.nradon.Radon;
-import net.ion.nradon.config.RadonConfiguration;
-import net.ion.nradon.config.RadonConfigurationBuilder;
 import net.ion.radon.core.Aradon;
 
 import org.junit.After;
@@ -25,12 +23,15 @@ public class TestFromAradon {
 
     @Test
     public void forwardsAliasedPath() throws Exception {
-        RadonConfigurationBuilder rbuilder = RadonConfiguration.newBuilder(59504) ;
-        
-        this.radon = Aradon.create().toRadon() ;
+        this.radon = Aradon.create().toRadon(59504) ;
         radon.getConfig().add(new PathMatchHandler("/tomayto", new AliasHandler("/tomato"))).add(new PathMatchHandler("/tomato", new StringHttpHandler("text/plain", "body"))) ;
         
         radon.start().get() ;
         assertEquals("body", contents(httpGet(radon, "/tomayto")));
     }
+    
+    
+    // context... let... filter...
+    
+    
 }
