@@ -51,7 +51,9 @@ public class Chatroom implements WebSocketHandler {
     public void onMessage(WebSocketConnection connection, byte[] msg) {
     }
 
-    public void onPong(WebSocketConnection connection, String msg) {
+    public void onPong(WebSocketConnection connection, byte[] msg) {
+    }
+    public void onPing(WebSocketConnection connection, byte[] msg) {
     }
 
     private void login(WebSocketConnection connection, String username) {

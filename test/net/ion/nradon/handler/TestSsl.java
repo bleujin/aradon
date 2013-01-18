@@ -2,7 +2,7 @@ package net.ion.nradon.handler;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.KeyManagementException;
@@ -74,7 +74,7 @@ public class TestSsl {
 
 	private NettyWebServer startHttps() throws FileNotFoundException, IOException {
         NettyWebServer radon = RadonConfiguration.newBuilder(10443)
-                .setupSsl(new File("resource/keystore/webbit.keystore"), "webbit")
+                .setupSsl(new FileInputStream("resource/keystore/webbit.keystore"), "webbit")
                 .add(new ServerHeaderHandler("My Server"))
                 .add(new StringHttpHandler("text/plain", "body")).createRadon();
 

@@ -28,8 +28,10 @@ public class Main {
                 connection.send(msg);
             }
 
-            public void onPong(WebSocketConnection connection, String msg) {
-                connection.ping(msg);
+            public void onPong(WebSocketConnection connection, byte[] msg) {
+            }
+            public void onPing(WebSocketConnection connection, byte[] msg) {
+                connection.pong(msg);
             }
         })).connectionExceptionHandler(new PrintStackTraceExceptionHandler()).startRadon() ;
 

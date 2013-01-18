@@ -13,6 +13,7 @@ import net.ion.nradon.stub.StubHttpResponse;
 
 import org.junit.Test;
 
+@Deprecated
 public class TestPathMatchHandler {
     @Test
     public void matchesRequestWithFullUri() throws Exception {
@@ -54,6 +55,5 @@ public class TestPathMatchHandler {
         verifyZeroInteractions(handler);
         verify(ctl).nextHandler();
     }
-
 }
 

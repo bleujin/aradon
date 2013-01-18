@@ -54,10 +54,21 @@ public class WebSocketConnectionWrapper implements WebSocketConnection {
 		return this;
 	}
 
-	public WebSocketConnectionWrapper ping(String message) {
+	public WebSocketConnectionWrapper ping(byte[] message) {
 		connection.ping(message);
 		return this;
 	}
+	
+    public WebSocketConnectionWrapper send(byte[] message, int offset, int length) {
+        connection.send(message, offset, length);
+        return this;
+    }
+
+    public WebSocketConnectionWrapper pong(byte[] msg) {
+        connection.pong(msg);
+        return this;
+    }
+	
 
 	public WebSocketConnectionWrapper close() {
 		connection.close();
@@ -92,6 +103,7 @@ public class WebSocketConnectionWrapper implements WebSocketConnection {
 	public void execute(Runnable command) {
 		connection.execute(command);
 	}
+	
 	public String getString(String key) {
 		return connection.getString(key);
 	}

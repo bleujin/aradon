@@ -29,7 +29,7 @@
 	<property name="manifest.main.class" value="net.ion.radon.ServerRunner" />
 	<property name="manifest.classpath" value="lib/ant.fat lib/rest_fat.jar lib/jetty_fat_745.jar lib/jci_fat.jar lib/iframework_2.3.jar lib/apache_extend_fat.jar lib/servlet-api.jar" />
 	<property name="version.number" value="0" />
-	<property name="build.number" value="8" />
+	<property name="build.number" value="9" />
 	
 
 	<target name="publish"  depends="test_aradon">
@@ -81,6 +81,8 @@
 		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../../workspace/ToonServer/alone/lib/" />
 		<echo>Copy to Fluffy</echo>
 		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../../workspace/fluffy/trunk/fluffy/lib/common/" />
+		<echo>Copy to CrakenSearch</echo>
+		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../../workspace/crakenSearch/lib/craken/" />
 
 		
 		<echo>Copy to AradonClient</echo>
@@ -93,6 +95,8 @@
 		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../mongoSearch/lib/" />
 		<echo>Copy to Craken</echo>
 		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../craken/lib/" />
+		<echo>Copy to NeoNode</echo>
+		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../neoNode/lib/aradon/" />
 	</target>
 
 	<target name="copy_novision" depends="publish">

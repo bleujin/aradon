@@ -1,6 +1,7 @@
 package net.ion.radon.core;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -11,6 +12,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.ExecutionException;
 
 import net.ion.framework.util.Debug;
 import net.ion.framework.util.IOUtil;
@@ -18,6 +20,12 @@ import net.ion.framework.util.InstanceCreationException;
 import net.ion.framework.util.ListUtil;
 import net.ion.framework.util.MapUtil;
 import net.ion.framework.util.ObjectUtil;
+import net.ion.framework.util.StringUtil;
+import net.ion.nradon.Radon;
+import net.ion.nradon.config.RadonConfiguration;
+import net.ion.nradon.config.RadonConfigurationBuilder;
+import net.ion.nradon.handler.aradon.AradonHandler;
+import net.ion.radon.core.EnumClass.IMatchMode;
 import net.ion.radon.core.EnumClass.PlugInApply;
 import net.ion.radon.core.config.AradonConfiguration;
 import net.ion.radon.core.config.AradonConstant;
@@ -35,8 +43,10 @@ import net.ion.radon.core.except.AradonRuntimeException;
 import net.ion.radon.core.filter.IFilterResult;
 import net.ion.radon.core.filter.IRadonFilter;
 import net.ion.radon.core.let.FilterUtil;
+import net.ion.radon.core.let.IRadonPathService;
 import net.ion.radon.core.let.InnerRequest;
 import net.ion.radon.core.let.InnerResponse;
+import net.ion.radon.core.let.PathService;
 import net.ion.radon.core.server.AradonServerHelper;
 import net.ion.radon.core.server.ServerFactory;
 import net.ion.radon.impl.filter.RevokeServiceFilter;
@@ -479,5 +489,65 @@ public class Aradon extends Component implements IService<SectionService>, Arado
 	public Engine getEngine() {
 		return Engine.getInstance();
 	}
+
+	public Radon toRadon() throws InterruptedException, ExecutionException, FileNotFoundException{
+		return toRadon(config.server().connector().port()) ;
+	}
+	
+	public Radon toRadon(int port) throws InterruptedException, ExecutionException, FileNotFoundException {
+		RadonConfigurationBuilder rbuilder = RadonConfiguration.newBuilder(port);
+		rbuilder.rootContext(this.getServiceContext()) ;
+		AradonHandler aradonHandler = AradonHandler.create(this) ;
+		
+		for (SectionService ss : this.getChildren()) {
+			if (StringUtil.isBlank(ss.getName())){ // default section
+				for(PathService ps : ss.getPathChildren()){
+					IMatchMode matchMode = ps.getConfig().imatchMode();
+					
+					for (String pattern : ps.getConfig().urlPatterns()) {
+						rbuilder.add(coimpatibleStartWith(matchMode, pattern), aradonHandler) ;
+					}
+				}
+			} else {
+				
+				for(IRadonPathService pservice : ss.getRadonChildren()){ // except path
+					IMatchMode matchMode = pservice.getConfig().imatchMode() ;
+					
+					for (String pattern : pservice.getConfig().urlPatterns()) {
+						rbuilder.add(coimpatibleStartWith(matchMode, "/" + ss.getName() + pattern), pservice.toHttpHandler()) ;
+					}
+				}
+				
+				rbuilder.add("/" + ss.getName() + "/{aradon_remainpath__}*", aradonHandler) ;
+			}
+			
+		}
+		
+		Protocol protocol = config.server().connector().protocol();
+		if (protocol.HTTPS.equals(protocol)){
+			rbuilder.protocol(protocol).setupSsl(config.server().connector().getSslParam()) ;
+		}
+		
+		return rbuilder.createRadon() ;
+	}
+
+	private String coimpatibleStartWith(IMatchMode matchMode, String pattern) {
+		String newPattern = pattern ;
+		if (matchMode == IMatchMode.STARTWITH && (!(pattern.endsWith("*")))){
+			newPattern += "*" ;
+		}
+		return newPattern;
+	}
+	
+	private List<String> astericURLPattern(List<String> urlPattrns, IMatchMode matchMode){
+		List<String> result = ListUtil.newList() ;
+		for (String urlPattern : urlPattrns) {
+			String astericPattern = urlPattern.replaceAll("\\{[^\\/]*\\}", ".*");
+			if (matchMode == IMatchMode.STARTWITH) astericPattern += urlPattern.equals("/") ? ".*" : "/.*" ;
+			result.add(astericPattern) ;
+		}
+		return result ;
+	}
+
 
 }

@@ -1,43 +1,44 @@
 package net.ion.nradon.config;
 
 import java.io.File;
-import java.io.IOException;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.net.URI;
 import java.net.UnknownHostException;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import javax.net.ssl.SSLContext;
 
 import net.ion.framework.util.ListUtil;
-import net.ion.framework.util.StringUtil;
 import net.ion.nradon.EventSourceHandler;
 import net.ion.nradon.HttpHandler;
+import net.ion.nradon.Radon;
 import net.ion.nradon.WebSocketHandler;
 import net.ion.nradon.handler.DateHeaderHandler;
 import net.ion.nradon.handler.HttpToEventSourceHandler;
 import net.ion.nradon.handler.HttpToWebSocketHandler;
-import net.ion.nradon.handler.PathMatchHandler;
 import net.ion.nradon.handler.ServerHeaderHandler;
-import net.ion.nradon.handler.aradon.AradonHandler;
+import net.ion.nradon.handler.URIPathMatchHandler;
 import net.ion.nradon.handler.exceptions.PrintStackTraceExceptionHandler;
 import net.ion.nradon.handler.exceptions.SilentExceptionHandler;
 import net.ion.nradon.helpers.RadonException;
 import net.ion.nradon.helpers.SslFactory;
 import net.ion.nradon.netty.NettyWebServer;
-import net.ion.radon.core.Aradon;
-import net.ion.radon.core.SectionService;
+import net.ion.radon.core.TreeContext;
 import net.ion.radon.core.EnumClass.IMatchMode;
-import net.ion.radon.core.config.Configuration;
 import net.ion.radon.core.config.SslParameter;
-import net.ion.radon.core.let.IRadonPathService;
-import net.ion.radon.core.let.PathService;
 
+import org.restlet.Context;
 import org.restlet.data.Protocol;
+import org.restlet.routing.VirtualHost;
 
 public class RadonConfigurationBuilder {
 	private static final long DEFAULT_STALE_CONNECTION_TIMEOUT = 5000;
@@ -56,9 +57,7 @@ public class RadonConfigurationBuilder {
 	private int maxHeaderSize = 8192;
 	private int maxChunkSize = 8192;
 	private int maxContentLength = 1024 * 1024 * 20; // 20M
-	private Aradon aradon = Aradon.create();
-	private boolean initializedAradon = false ;
-	
+	private TreeContext rootContext = null;
 	
     private SSLContext sslContext;
     
@@ -70,13 +69,14 @@ public class RadonConfigurationBuilder {
 	}
 
 	public RadonConfiguration build() {
+		if (this.rootContext == null) this.rootContext = TreeContext.createRootContext(new VirtualHost(new Context()));
 		if (this.publicUri == null) this.publicUri = localUri(this.protocol, this.portNum) ;
 		if (this.executor == null) this.executor = Executors.newSingleThreadScheduledExecutor() ;
 		if (this.exceptionHandler == null) this.exceptionHandler = new PrintStackTraceExceptionHandler() ;
 		if (this.ioExceptionHandler == null) this.ioExceptionHandler = new SilentExceptionHandler() ;
 		if (this.socketAddress == null) this.socketAddress = new InetSocketAddress(publicUri.getPort()) ;
 		
-		return new RadonConfiguration(this.aradon, this.publicUri, this.executor, this.exceptionHandler, this.ioExceptionHandler, this.socketAddress, this.handlers, this.sslContext, 
+		return new RadonConfiguration(this.rootContext, this.publicUri, this.executor, this.exceptionHandler, this.ioExceptionHandler, this.socketAddress, this.handlers, this.sslContext, 
 				this.staleConnectionTimeout, this.maxInitialLineLength, this.maxHeaderSize, this.maxChunkSize, this.maxContentLength) ;
 	}
 	
@@ -91,51 +91,6 @@ public class RadonConfigurationBuilder {
 		return this ;
 	}
 
-	public RadonConfigurationBuilder add(Aradon aradon) {
-		// add(AradonHandler.create(aradon)) ;
-		if (initializedAradon) throw new IllegalStateException("already aradon setted") ;
-		this.aradon = aradon ;
-		this.initializedAradon = true ;
-		
-		AradonHandler aradonHandler = AradonHandler.create(aradon) ;
-		
-		for (SectionService ss : aradon.getChildren()) {
-			if (StringUtil.isBlank(ss.getName())){ // default section
-				for(PathService ps : ss.getPathChildren()){
-					IMatchMode matchMode = ps.getConfig().imatchMode();
-					List<String> urlPatterns = astericURLPattern(ps.getConfig().urlPatterns(), matchMode) ;
-					for (String urlPattern : urlPatterns) {
-						add(urlPattern, aradonHandler) ;
-					}
-				}
-				
-				
-				
-			} else {
-				for(IRadonPathService pservice : ss.getRadonChildren()){
-					IMatchMode matchMode = pservice.getConfig().imatchMode() ;
-					List<String> configUrlPatterns = pservice.getConfig().urlPatterns();
-					List<String> urlPatterns = astericURLPattern(configUrlPatterns, matchMode) ;
-					for (int i = 0 ; i < urlPatterns.size() ; i++) {
-						String urlPattern = "/" + ss.getName() + urlPatterns.get(i) ;
-						add(urlPattern, pservice.toHttpHandler()) ;
-					}
-				}
-				
-				add("/" + ss.getName() + "/.*", aradonHandler) ;
-			}
-			
-		}
-		
-		return this;
-	}
-	
-	public RadonConfigurationBuilder add(Configuration aradonConfig) {
-		Aradon aradon = Aradon.create(aradonConfig) ;
-		add(aradon) ;
-		return this ;
-	}
-	
 	public List<String> astericURLPattern(List<String> urlPattrns, IMatchMode matchMode){
 		List<String> result = ListUtil.newList() ;
 		for (String urlPattern : urlPattrns) {
@@ -148,7 +103,7 @@ public class RadonConfigurationBuilder {
 	
 
 	public RadonConfigurationBuilder add(String pathPattern, HttpHandler handler){
-		add(new PathMatchHandler(pathPattern, handler));
+		add(new URIPathMatchHandler(pathPattern, handler));
 		return this ;
 	}
 
@@ -162,14 +117,6 @@ public class RadonConfigurationBuilder {
 		return this ;
 	}
 	
-
-	public RadonConfigurationBuilder add(String pathPattern, Aradon aradon) {
-		add(pathPattern, AradonHandler.create(aradon));
-		return this ;
-	}
-
-	
-
 	public RadonConfigurationBuilder uncaughtExceptionHandler(Thread.UncaughtExceptionHandler exceptionHandler){
 		this.exceptionHandler = exceptionHandler;
 		return this ;
@@ -237,31 +184,42 @@ public class RadonConfigurationBuilder {
 		return new NettyWebServer(build());
 	}
 
-	public NettyWebServer startRadon() throws IOException {
+	public Future<Radon> start() {
 		return createRadon().start() ;
 	}
+
+	public Radon startRadon() throws InterruptedException, ExecutionException {
+		return start().get() ;
+	}
+
 
 	public SSLContext getSslContext(){
 		return sslContext ;
 	}
 	
-    public RadonConfigurationBuilder setupSsl(File keyStorePath, String pass) throws RadonException {
+    public RadonConfigurationBuilder setupSsl(InputStream keyStorePath, String pass) throws RadonException {
         return this.setupSsl(keyStorePath, pass, pass);
     }
 
-    public RadonConfigurationBuilder setupSsl(File keyStorePath, String keyStorePass, String keyPass) throws RadonException {
+    public RadonConfigurationBuilder setupSsl(InputStream keyStorePath, String keyStorePass, String keyPass) throws RadonException {
         this.sslContext = new SslFactory(keyStorePath, keyStorePass).getServerContext(keyPass);
         return this;
     }
 
-	public RadonConfigurationBuilder setupSsl(SslParameter sslParam) {
-		this.sslContext = new SslFactory(new File(sslParam.keystorePath()), sslParam.keystorePassword()).getServerContext(sslParam.keyPassword()) ;
+	public RadonConfigurationBuilder setupSsl(SslParameter sslParam) throws FileNotFoundException {
+		final InputStream fis = new FileInputStream(new File(sslParam.keystorePath()));
+		this.sslContext = new SslFactory(fis, sslParam.keystorePassword()).getServerContext(sslParam.keyPassword()) ;
 		return this ;
 	}
 
 	public RadonConfigurationBuilder protocol(Protocol protocol) {
 		this.protocol = protocol ;
 		return this;
+	}
+
+	public RadonConfigurationBuilder rootContext(TreeContext rootContext) {
+		this.rootContext = rootContext ;
+		return this ;
 	}
 
 }

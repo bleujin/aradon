@@ -3,7 +3,6 @@ package net.ion.nradon.handler;
 import static org.junit.Assert.assertEquals;
 import net.ion.framework.util.Debug;
 import net.ion.nradon.Radon;
-import net.ion.nradon.config.RadonConfiguration;
 import net.ion.radon.client.AradonClient;
 import net.ion.radon.client.AradonClientFactory;
 import net.ion.radon.client.IAradonRequest;
@@ -27,19 +26,19 @@ public class TestAradonHandler {
 	@Test
 	public void testGet() throws Exception {
 		Aradon aradon = AradonTester.create().register("", "/test", HelloWorldLet.class).getAradon();
-		Radon webServer = RadonConfiguration.newBuilder(8080)
-			.add(aradon).startRadon();
+		
+		Radon webServer = aradon.toRadon(8080).start().get() ;
 
 		IAradonRequest request = AradonClientFactory.create(aradon).createRequest("/test");
 		Response response = request.handle(Method.GET);
 		assertEquals(200, response.getStatus().getCode());
-		webServer.stop().join();
+		webServer.stop().get();
 	}
 
 	@Test
 	public void testBinaryGet() throws Exception {
 		Aradon aradon = AradonTester.create().register("", "/param", ParameterTestLet.class).getAradon();
-		Radon webServer = RadonConfiguration.newBuilder(8080).add(aradon).startRadon();
+		Radon webServer = aradon.toRadon(8080).start().get();
 
 		IAradonRequest request = AradonClientFactory.create(aradon).createRequest("/param");
 
@@ -50,7 +49,7 @@ public class TestAradonHandler {
 
 		MyUser myuser = srequest.get(MyUser.class);
 		assertEquals("bleujin", myuser.getName());
-		webServer.stop().join();
+		webServer.stop().get();
 	}
 
 	@Test
@@ -58,8 +57,7 @@ public class TestAradonHandler {
 		Aradon aradon = AradonTester.create().register("", "/client", ClientTestLet.class).getAradon();
 		aradon.getConfig().addPreFilter(new ChallengeAuthenticator("sec")) ;
 
-		Radon webServer = RadonConfiguration.newBuilder(8080)
-			.add(aradon).startRadon();
+		Radon webServer = aradon.toRadon(8080).start().get();
 
 		AradonClient ac = AradonClientFactory.create("http://127.0.0.1:8080");
 		ISerialRequest request = ac.createSerialRequest("/client?name=bleujin", "bleujin", "redf");
@@ -73,7 +71,7 @@ public class TestAradonHandler {
 
 		// new InfinityThread().startNJoin() ;
 		ac.stop() ;
-		webServer.stop().join();
+		webServer.stop().get();
 	}
 
 }

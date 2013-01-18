@@ -22,7 +22,9 @@ public interface XRadonFilter {
 
 	public abstract void wsInbound(IService iservice, WebSocketConnection conn, byte[] msg);
 
-	public abstract void wsInboundPong(IService iservice, WebSocketConnection conn, String msg);
+	public abstract void wsInboundPong(IService iservice, WebSocketConnection conn, byte[] msg);
+
+	public abstract void wsInboundPing(IService iservice, WebSocketConnection conn, byte[] msg);
 
 //	public abstract void error(HttpRequest request, Throwable error);
 //	public abstract void custom(HttpRequest request, String action, String data);

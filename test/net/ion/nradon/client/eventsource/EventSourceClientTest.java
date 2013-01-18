@@ -8,13 +8,14 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import net.ion.nradon.EventSourceConnection;
+import net.ion.nradon.EventSourceMessage;
 import net.ion.nradon.Radon;
 import net.ion.nradon.config.RadonConfiguration;
-import net.ion.nradon.netty.contrib.EventSourceMessage;
 
 import org.junit.After;
 import org.junit.Before;
@@ -31,9 +32,9 @@ public class EventSourceClientTest {
     }
 
     @After
-    public void die() throws IOException, InterruptedException {
+    public void die() throws IOException, InterruptedException, ExecutionException {
         eventSource.close().join();
-        webServer.stop().join();
+        webServer.stop().get() ;
     }
 
     @Test
@@ -107,7 +108,7 @@ public class EventSourceClientTest {
         assertTrue("Didn't get 1st message", messageOneCountdown.await(1000, TimeUnit.MILLISECONDS));
 
         System.out.println("Stopping server..");
-        webServer.stop().join();
+        webServer.stop().get() ;
         System.out.println("Stopped");
         System.out.println("KILLED");
 

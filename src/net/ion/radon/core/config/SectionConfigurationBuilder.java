@@ -7,6 +7,7 @@ import net.ion.framework.util.ListUtil;
 import net.ion.nradon.AbstractEventSourceResource;
 import net.ion.nradon.AbstractWebSocketResource;
 import net.ion.nradon.handler.AbstractHttpHandler;
+import net.ion.nradon.let.IServiceLet;
 
 import org.restlet.resource.ServerResource;
 
@@ -133,7 +134,9 @@ public class SectionConfigurationBuilder extends AbstractLetConfigurationBuilder
 				} else if (AbstractHttpHandler.class.isAssignableFrom(clz)){
 					spath(pconfig.getAttributeValue("name")).fromLoad(pconfig);
 				} else if (ServerResource.class.isAssignableFrom(clz)){
-					path(pconfig.getAttributeValue("name")).fromLoad(pconfig);	
+					path(pconfig.getAttributeValue("name")).fromLoad(pconfig);
+				} else if (IServiceLet.class.isAssignableFrom(clz)) {
+					path(pconfig.getAttributeValue("name")).fromLoad(pconfig);
 				} else {
 					throw new IllegalArgumentException("not supported let type") ;
 				}

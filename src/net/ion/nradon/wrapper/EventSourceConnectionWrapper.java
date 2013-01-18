@@ -5,8 +5,8 @@ import java.util.Set;
 import java.util.concurrent.Executor;
 
 import net.ion.nradon.EventSourceConnection;
+import net.ion.nradon.EventSourceMessage;
 import net.ion.nradon.HttpRequest;
-import net.ion.nradon.netty.contrib.EventSourceMessage;
 
 public class EventSourceConnectionWrapper implements EventSourceConnection {
 
@@ -39,11 +39,6 @@ public class EventSourceConnectionWrapper implements EventSourceConnection {
 	}
 
 	public EventSourceConnectionWrapper send(EventSourceMessage message) {
-		connection.send(message);
-		return this;
-	}
-
-	public EventSourceConnectionWrapper send(String message) {
 		connection.send(message);
 		return this;
 	}

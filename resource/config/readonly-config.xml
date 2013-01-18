@@ -39,6 +39,13 @@
 			<description>Default</description>
 			<handler class="net.ion.radon.impl.let.HelloWorldLet" scope="request" />
 		</path>
+
+		<path name="hi">
+			<urls>/hi, /hi/{greeting}</urls>
+			<description>Default</description>
+			<handler class="net.ion.radon.impl.let.HiLet" scope="request" />
+		</path>
+
 		
 		<path name="ghello">
 			<urls>/ghello, /ghello/{greeting}</urls>

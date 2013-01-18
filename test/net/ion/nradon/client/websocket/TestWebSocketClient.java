@@ -87,7 +87,11 @@ class DebugHandler implements WebSocketHandler {
 		Debug.line(conn + " onOpen)") ;
 	}
 
-	public void onPong(WebSocketConnection conn, String msg) throws Throwable {
+	public void onPong(WebSocketConnection conn, byte[] msg) throws Throwable {
 		Debug.line(conn + " onPong") ;
+	}
+
+	public void onPing(WebSocketConnection conn, byte[] msg) throws Throwable {
+		Debug.line(conn + " onPing") ;
 	}
 }

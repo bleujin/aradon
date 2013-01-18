@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import net.ion.framework.util.ListUtil;
 import net.ion.nradon.HttpControl;
@@ -19,6 +20,7 @@ import net.ion.nradon.HttpResponse;
 import net.ion.nradon.Radon;
 import net.ion.nradon.config.RadonConfiguration;
 import net.ion.nradon.config.RadonConfigurationBuilder;
+import net.ion.nradon.helpers.HttpCookie;
 
 import org.junit.After;
 import org.junit.Test;
@@ -30,15 +32,15 @@ public class TestCookie {
 	private Radon webServer ;
 	private RadonConfigurationBuilder configBuilder = RadonConfiguration.newBuilder(59504) ;
 	@After
-	public void die() throws IOException, InterruptedException {
-		webServer.stop().join();
+	public void die() throws IOException, InterruptedException, ExecutionException {
+		webServer.stop().get();
 	}
 
 	@Test
-	public void setsOneOutboundCookie() throws IOException, InterruptedException {
+	public void setsOneOutboundCookie() throws IOException, InterruptedException, ExecutionException {
 		this.webServer = configBuilder.add(new AbstractHttpHandler() {
 			public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
-				response.cookie(new Cookie("a", "b")).end();
+				response.cookie(new HttpCookie("a", "b")).end();
 			}
 		}).startRadon();
 		URLConnection urlConnection = httpGet(webServer, "/");
@@ -49,10 +51,10 @@ public class TestCookie {
 	}
 
 	@Test
-	public void setsTwoOutboundCookies() throws IOException, InterruptedException {
+	public void setsTwoOutboundCookies() throws IOException, InterruptedException, ExecutionException {
 		this.webServer = configBuilder.add(new AbstractHttpHandler() {
 			public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
-				response.cookie(new Cookie("a", "b")).cookie(new Cookie("c", "d")).end();
+				response.cookie(new HttpCookie("a", "b")).cookie(new HttpCookie("c", "d")).end();
 			}
 		}).startRadon();
 		URLConnection urlConnection = httpGet(webServer, "/");
@@ -65,7 +67,7 @@ public class TestCookie {
 	}
 
 	@Test
-	public void parsesOneInboundCookie() throws IOException, InterruptedException {
+	public void parsesOneInboundCookie() throws IOException, InterruptedException, ExecutionException {
 		this.webServer = configBuilder.add(new AbstractHttpHandler() {
 			public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
 				String body = "Your cookie value: " + request.cookieValue("someName");
@@ -78,7 +80,7 @@ public class TestCookie {
 	}
 
 	@Test
-	public void parsesThreeInboundCookiesInTwoHeaders() throws IOException, InterruptedException {
+	public void parsesThreeInboundCookiesInTwoHeaders() throws IOException, InterruptedException, ExecutionException {
 		this.webServer = configBuilder.add(new AbstractHttpHandler() {
 			public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
 				String body = "Your cookies:";
@@ -96,7 +98,7 @@ public class TestCookie {
 	}
 
 	@Test
-	public void behavesWellWhenThereAreNoInboundCookies() throws IOException {
+	public void behavesWellWhenThereAreNoInboundCookies() throws IOException, InterruptedException, ExecutionException {
 		this.webServer = configBuilder.add(new AbstractHttpHandler() {
 			public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
 				String body = "Cookie count:" + request.cookies().size();

@@ -1,7 +1,7 @@
 package net.ion.nradon.handler.logging;
 
 import net.ion.nradon.EventSourceConnection;
-import net.ion.nradon.netty.contrib.EventSourceMessage;
+import net.ion.nradon.EventSourceMessage;
 import net.ion.nradon.wrapper.EventSourceConnectionWrapper;
 
 class LoggingEventSourceConnection extends EventSourceConnectionWrapper {
@@ -14,14 +14,8 @@ class LoggingEventSourceConnection extends EventSourceConnectionWrapper {
 	}
 
 	@Override
-	public EventSourceConnectionWrapper send(String message) {
-		logSink.eventSourceOutboundData(this, message);
-		return super.send(message);
-	}
-
-	@Override
 	public EventSourceConnectionWrapper send(EventSourceMessage message) {
-		logSink.eventSourceOutboundData(this, message.build() + "\n");
+		logSink.eventSourceOutboundData(this, message.build());
 		return super.send(message);
 	}
 }

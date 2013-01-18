@@ -4,13 +4,11 @@ import java.lang.reflect.Constructor;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import net.ion.framework.util.MapUtil;
 import net.ion.framework.util.StringUtil;
 import net.ion.nradon.AbstractWebSocketResource;
 import net.ion.nradon.HttpHandler;
-import net.ion.nradon.HttpRequest;
 import net.ion.nradon.Radon;
 import net.ion.nradon.WebSocketConnection;
 import net.ion.nradon.WebSocketHandler;
@@ -58,7 +56,7 @@ public class WebSocketPathService implements ServerEventHandler, IService<WebSoc
 		return handler.getConfig();
 	}
 
-	public void onClose(WebSocketConnection conn) throws Exception {
+	public void onClose(WebSocketConnection conn) throws Throwable {
 		XFilterUtil.wsClose(this, conn) ;
 		handler.onClose(conn) ;
 	}
@@ -73,16 +71,15 @@ public class WebSocketPathService implements ServerEventHandler, IService<WebSoc
 		handler.onMessage(conn, msg) ;
 	}
 
-	public void onOpen(WebSocketConnection conn) throws Exception {
-		HttpRequest req = conn.httpRequest();
-		Map<String, String> patternValues = URIParser.parse(req.uri(), getConfig().fullURLPattern());
-
-		for (Entry<String, String> pvalue : patternValues.entrySet()) {
-			conn.data(pvalue.getKey(), pvalue.getValue());
-		}
-		for (String key : req.queryParamKeys()) {
-			conn.data(key, req.queryParam(key));
-		}
+	public void onOpen(WebSocketConnection conn) throws Throwable {
+//		HttpRequest req = conn.httpRequest();
+//		Map<String, String> patternValues = URIParser.parse(req.uri(), getConfig().fullURLPattern());
+//		for (Entry<String, String> pvalue : patternValues.entrySet()) {
+//			conn.data(pvalue.getKey(), pvalue.getValue());
+//		}
+//		for (String key : req.queryParamKeys()) {
+//			conn.data(key, req.queryParam(key));
+//		}
 
 		conn.data(VAR_SESSIONID, conn.httpRequest().remoteAddress().toString());
 		
@@ -90,10 +87,16 @@ public class WebSocketPathService implements ServerEventHandler, IService<WebSoc
 		handler.onOpen(conn) ;
 	}
 
-	public void onPong(WebSocketConnection conn, String msg) throws Throwable {
+	public void onPong(WebSocketConnection conn, byte[] msg) throws Throwable {
 		XFilterUtil.wsInboundPong(this, conn, msg) ;
 		handler.onPong(conn, msg) ;
 	}
+
+	public void onPing(WebSocketConnection conn, byte[] msg) throws Throwable {
+		XFilterUtil.wsInboundPing(this, conn, msg) ;
+		handler.onPong(conn, msg) ;
+	}
+
 
 	public void onEvent(EventType event, Radon radon) {
 		if (handler instanceof ServerEventHandler){
@@ -160,7 +163,7 @@ public class WebSocketPathService implements ServerEventHandler, IService<WebSoc
 }
 
 
-
+@Deprecated
 class URIParser {
 
 	static String FIND_PATTERN =  "\\{[^/]+\\}";
@@ -168,7 +171,7 @@ class URIParser {
 	static String SPLIT_CHAR = "/?";
 	
 	
-	@SuppressWarnings("unchecked")
+	@Deprecated
 	public static Map<String, String> parse(String _url, String _pattern) {
 		String[] urls = StringUtil.split(_url, SPLIT_CHAR);
 		String[] urlPatterns = StringUtil.split(_pattern, SPLIT_CHAR);

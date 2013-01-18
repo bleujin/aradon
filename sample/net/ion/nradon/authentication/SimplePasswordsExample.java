@@ -1,10 +1,11 @@
 package net.ion.nradon.authentication;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 import net.ion.nradon.Radon;
 import net.ion.nradon.config.RadonConfiguration;
-import net.ion.nradon.handler.StaticFileHandler;
+import net.ion.nradon.handler.SimpleStaticFileHandler;
 import net.ion.nradon.handler.authentication.BasicAuthenticationHandler;
 import net.ion.nradon.handler.authentication.InMemoryPasswords;
 
@@ -15,7 +16,7 @@ import net.ion.nradon.handler.authentication.InMemoryPasswords;
  */
 public class SimplePasswordsExample {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException, ExecutionException {
         InMemoryPasswords passwords = new InMemoryPasswords()
                 .add("joe", "secret")
                 .add("jeff", "somepassword");
@@ -24,7 +25,7 @@ public class SimplePasswordsExample {
                 .add(new BasicAuthenticationHandler(passwords))
                 .add("/whoami", new WhoAmIHttpHandler())
                 .add("/whoami-ws", new WhoAmIWebSocketHandler())
-                .add(new StaticFileHandler("src/test/java/samples/authentication/content")).startRadon();
+                .add(new SimpleStaticFileHandler("src/test/java/samples/authentication/content")).startRadon();
 
         System.out.println("Running on " + webServer.getConfig().publicUri());
     }

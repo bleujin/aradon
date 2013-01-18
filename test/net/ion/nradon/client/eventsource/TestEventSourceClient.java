@@ -3,7 +3,6 @@ package net.ion.nradon.client.eventsource;
 import static java.lang.Thread.sleep;
 import static java.util.concurrent.Executors.newSingleThreadExecutor;
 
-import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.Date;
@@ -15,6 +14,7 @@ import java.util.concurrent.ExecutorService;
 import net.ion.framework.util.Debug;
 import net.ion.framework.util.TimeoutThread;
 import net.ion.nradon.EventSourceConnection;
+import net.ion.nradon.EventSourceMessage;
 import net.ion.nradon.HttpControl;
 import net.ion.nradon.HttpHandler;
 import net.ion.nradon.HttpRequest;
@@ -22,7 +22,6 @@ import net.ion.nradon.HttpResponse;
 import net.ion.nradon.Radon;
 import net.ion.nradon.config.RadonConfiguration;
 import net.ion.nradon.handler.event.ServerEvent.EventType;
-import net.ion.nradon.netty.contrib.EventSourceMessage;
 
 import org.junit.Test;
 
@@ -39,10 +38,8 @@ public class TestEventSourceClient {
 					Radon ws = RadonConfiguration.newBuilder(webThread, 8090).add("/", new HtmlHandler()).add("/es", timeHandler).startRadon();
 					Debug.debug("Server running on http://localhost:8090");
 					timeHandler.start();
-				} catch (IOException ex) {
-					ex.printStackTrace();
 				} catch (InterruptedException ex) {
-					// ex.printStackTrace();
+					ex.printStackTrace();
 				} catch (ExecutionException ex) {
 					ex.printStackTrace();
 				}

@@ -26,8 +26,11 @@ public class SampleWebSocket extends AbstractWebSocketResource {
 		conns.remove(conn) ;
 	}
 
-	public void onPong(WebSocketConnection conn, String msg) throws Throwable {
-		// TODO Auto-generated method stub
+	public void onPong(WebSocketConnection conn, byte[] msg) throws Throwable {
+		
+	}
+
+	public void onPing(WebSocketConnection conn, byte[] msg) throws Throwable {
 		
 	}
 }

@@ -10,6 +10,7 @@ import net.ion.framework.rest.IRequest;
 import net.ion.framework.rest.IResponse;
 import net.ion.framework.util.ListUtil;
 import net.ion.framework.util.StringUtil;
+import net.ion.nradon.let.IServiceLet;
 import net.ion.radon.core.RadonAttributeKey;
 import net.ion.radon.core.SectionService;
 import net.ion.radon.core.TreeContext;
@@ -28,7 +29,7 @@ import org.restlet.resource.ServerResource;
 import org.restlet.util.Series;
 
 @Deprecated
-public abstract class AbstractLet extends ServerResource implements RadonAttributeKey {
+public abstract class AbstractLet extends ServerResource implements RadonAttributeKey, IServiceLet {
 	public final static Representation EMPTY_REPRESENTATION = new EmptyRepresentation();
 	public final static List<Map<String, ? extends Object>> EMPTY_DATAS = ListUtil.EMPTY_LIST;
 

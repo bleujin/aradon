@@ -72,29 +72,9 @@ public class EPathConfigurationBuilder extends AbstractLetConfigurationBuilder<E
 		return this;
 	}
 	
-	private EPathConfigurationBuilder handler(Class<? extends AbstractEventSourceResource> handlerClz) {
+	public EPathConfigurationBuilder handler(Class<? extends AbstractEventSourceResource> handlerClz) {
 		this.handlerClz = handlerClz ;
 		return this;
-	}
-
-	public AradonConfigurationBuilder aradon() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Configuration build() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public ServerConfigurationBuilder server() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public ConfigurationBuilder toBuilder() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

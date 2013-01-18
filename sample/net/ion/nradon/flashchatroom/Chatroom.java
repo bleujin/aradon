@@ -51,9 +51,15 @@ public class Chatroom implements WebSocketHandler {
     public void onMessage(WebSocketConnection connection, byte[] msg) {
     }
 
-    public void onPong(WebSocketConnection connection, String msg) {
+    public void onPong(WebSocketConnection connection, byte[] msg) {
     }
 
+    public void onPing(WebSocketConnection connection, byte[] msg) {
+    	connection.pong(msg) ;
+    }
+
+
+    
     private void login(WebSocketConnection connection, String username) {
         connection.data(USERNAME_KEY, username); // associate username with connection
 

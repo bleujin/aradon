@@ -2,8 +2,6 @@ package net.ion.nradon.handler.aradon;
 
 import java.util.Map;
 
-import net.ion.framework.parse.gson.JsonArray;
-import net.ion.framework.parse.gson.JsonElement;
 import net.ion.framework.parse.gson.JsonObject;
 import net.ion.framework.parse.gson.JsonParser;
 import net.ion.framework.parse.gson.JsonUtil;
@@ -64,20 +62,6 @@ public class JSONMessagePacket {
 		return childMap.get(newPath) ;
 	}
 
-	// public JSONMessagePacket[] child(String path) {
-	// try {
-	// JSONArray array = (JSONArray) (get(path));
-	//
-	// List<JSONMessagePacket> result = ListUtil.newList();
-	// for (int i = 0; i < array.length(); i++) {
-	// result.add(new JSONMessagePacket(this, ValueObject.create(array.getJSONObject(i))));
-	// }
-	// return result.toArray(new JSONMessagePacket[0]);
-	// } catch (JSONException e) {
-	// throw new IllegalArgumentException(e.getMessage());
-	// }
-	// }
-
 	public Object get(String _path) {
 		return get(this.current, _path) ;
 	}
@@ -127,15 +111,6 @@ public class JSONMessagePacket {
 	public JSONMessagePacket array(String key, Object[] values) {
 		return put(key, values);
 	}
-
-	// public JSONMessagePacket append(String key, Object value) {
-	// try {
-	// vo.append(key, value);
-	// return this;
-	// } catch (JSONException e) {
-	// throw new IllegalArgumentException(e.getMessage());
-	// }
-	// }
 
 
 	public Map<String, ? extends Object> toMap() {

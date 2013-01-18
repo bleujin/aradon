@@ -15,12 +15,12 @@ class LoggingWebSocketHandler implements WebSocketHandler {
 		this.handler = handler;
 	}
 
-	public void onOpen(WebSocketConnection connection) throws Exception {
+	public void onOpen(WebSocketConnection connection) throws Throwable {
 		logSink.webSocketConnectionOpen(connection);
 		handler.onOpen(loggingConnection);
 	}
 
-	public void onClose(WebSocketConnection connection) throws Exception {
+	public void onClose(WebSocketConnection connection) throws Throwable {
 		logSink.webSocketConnectionClose(connection);
 		logSink.httpEnd(connection.httpRequest());
 		handler.onClose(loggingConnection);
@@ -36,7 +36,12 @@ class LoggingWebSocketHandler implements WebSocketHandler {
 		handler.onMessage(loggingConnection, message);
 	}
 
-	public void onPong(WebSocketConnection connection, String message) throws Throwable {
+	public void onPing(WebSocketConnection connection, byte[] message) throws Throwable {
+		logSink.webSocketInboundPing(connection, message);
+		handler.onPing(loggingConnection, message);
+	}
+
+	public void onPong(WebSocketConnection connection, byte[] message) throws Throwable {
 		logSink.webSocketInboundPong(connection, message);
 		handler.onPong(loggingConnection, message);
 	}

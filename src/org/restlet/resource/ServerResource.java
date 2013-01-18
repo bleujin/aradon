@@ -33,7 +33,7 @@ import org.restlet.util.Series;
 // Referenced classes of package org.restlet.resource:
 //            UniformResource, ResourceException
 
-public abstract class ServerResource extends UniformResource implements IServiceLet {
+public abstract class ServerResource extends UniformResource  implements IServiceLet{
 
 	private volatile boolean annotated;
 	private volatile boolean conditional;

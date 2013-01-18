@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.util.List;
 
 import net.ion.nradon.let.IServiceLet;
+import net.ion.nradon.let.IServiceLetWithInit;
 import net.ion.radon.core.TreeContext;
 import net.ion.radon.core.except.ConfigurationException;
 
@@ -24,17 +25,25 @@ public class OuterServerResource extends AbstractServerResource {
 	public void init(Context context, Request request, Response response) {
 		super.init(context, request, response);
 
-		TreeContext tc = (TreeContext) context;
-		Class<IServiceLet> innerClz = tc.getAttributeObject(OuterServerResource.class.getCanonicalName(), Class.class);
-		this.inner = newInstance(innerClz);
+		TreeContext treecontext = (TreeContext) context;
+		if (treecontext.contains(OuterServerResource.class.getCanonicalName())){
+			this.inner = treecontext.getSelfAttributeObject(OuterServerResource.class.getCanonicalName(), IServiceLet.class) ;
+		} else {
+			Class<? extends IServiceLet> innerClz = treecontext.getAttributeObject(IServiceLet.class.getCanonicalName(), Class.class);
+			this.inner = newInstance(innerClz);
+			treecontext.putAttribute(OuterServerResource.class.getCanonicalName(), this.inner) ;
+			if (IServiceLetWithInit.class.isAssignableFrom(innerClz)) {
+				((IServiceLetWithInit)inner).init(treecontext) ;
+			}
+		}
 	}
 
-	private IServiceLet newInstance(Class<IServiceLet> clz) {
+	private IServiceLet newInstance(Class<? extends IServiceLet> clz) {
 		try {
 			List<AnnotationInfo> list = AnnotationUtils.getAnnotations(clz);
 			if (list == null || list.size() == 0) ConfigurationException.throwIt(new RuntimeException("exception.let.notsupported"));
 			
-			Constructor<IServiceLet> con = clz.getDeclaredConstructor();
+			Constructor<? extends IServiceLet> con = clz.getDeclaredConstructor();
 			con.setAccessible(true);
 			return con.newInstance();
 		} catch (Throwable ex) {
@@ -42,6 +51,7 @@ public class OuterServerResource extends AbstractServerResource {
 		}
 	}
 
+	@Override
 	protected Representation doHandle() throws ResourceException {
 		Method method = getMethod();
 		final AnnotationInfo ainfo = getAnnotation(method, getQuery(), null);

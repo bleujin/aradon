@@ -6,6 +6,7 @@ import java.util.Map;
 import net.ion.framework.rest.IMapListRepresentationHandler;
 import net.ion.framework.rest.IRequest;
 import net.ion.framework.rest.IResponse;
+import net.ion.nradon.let.IServiceLet;
 import net.ion.radon.core.Aradon;
 import net.ion.radon.core.SectionService;
 import net.ion.radon.core.TreeContext;
@@ -17,7 +18,7 @@ import org.restlet.data.Status;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ResourceException;
 
-public class AbstractServerResource extends BaseServerResource {
+public class AbstractServerResource extends BaseServerResource implements IServiceLet{
 
 	public TreeContext getContext() {
 		return (TreeContext) super.getContext() ;

@@ -29,7 +29,7 @@ public class TestNettyWebServer {
         int threadCountStart = getCurrentThreadCount();
         Radon server = RadonConfiguration.newBuilder(9080).executor(Executors.newSingleThreadScheduledExecutor()).startRadon();
         assertEquals(threadCountStart + 2, getCurrentThreadCount());
-        server.stop().join();
+        server.stop().get();
         sleep(100);
         assertEquals(threadCountStart, getCurrentThreadCount());
     }
@@ -40,7 +40,7 @@ public class TestNettyWebServer {
         final Radon server = RadonConfiguration.newBuilder(9080).executor(Executors.newSingleThreadScheduledExecutor()).startRadon();
         server.getConfig().add(new AbstractHttpHandler() {
             public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
-                server.stop().join();
+                server.stop().get();
                 stopper.countDown();
             }
         }) ;
@@ -54,23 +54,23 @@ public class TestNettyWebServer {
         http.flush();
 
         assertTrue("Server should have stopped by now", stopper.await(1000, TimeUnit.MILLISECONDS));
-        server.stop() ;
+        server.stop().get() ;
     }
 
     @Test
     public void restartServerDoesNotThrowException() throws Exception {
         Radon server = RadonConfiguration.newBuilder(9080).executor(Executors.newSingleThreadScheduledExecutor()).startRadon();
-        server.stop().join();
-        server.start();
-        server.stop().join();
+        server.stop().get();
+        server.start().get();
+        server.stop().get();
     }
 
     @Test
     public void startServerAndTestIsRunning() throws Exception {
-        NettyWebServer server = RadonConfiguration.newBuilder(9080).executor(Executors.newSingleThreadScheduledExecutor()).startRadon();
+        NettyWebServer server = (NettyWebServer) RadonConfiguration.newBuilder(9080).executor(Executors.newSingleThreadScheduledExecutor()).startRadon();
         assertTrue("Server should be running", server.isRunning());
 
-        server.stop().join();
+        server.stop().get();
         assertTrue("Server should not be running", !server.isRunning());
     }
 

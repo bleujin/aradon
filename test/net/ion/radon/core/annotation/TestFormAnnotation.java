@@ -103,6 +103,11 @@ public class TestFormAnnotation {
 		assertEquals("favicon.ico/application/octet-stream/25214", res.getEntityAsText()) ;
 	}
 	
+	
+	@Test
+	public void formMultipartBean() throws Exception {
+		
+	}
 
 }
 

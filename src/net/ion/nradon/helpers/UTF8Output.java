@@ -20,44 +20,69 @@
 package net.ion.nradon.helpers;
 
 public class UTF8Output {
-	private static final int UTF8_ACCEPT = 0;
-	private static final int UTF8_REJECT = 12;
+    private static final int UTF8_ACCEPT = 0;
+    private static final int UTF8_REJECT = 12;
 
-	private static final byte[] TYPES = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
-			7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 8, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 10, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 3, 3, 11, 6, 6, 6, 5, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8 };
+    private static final byte[] TYPES = {
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
+            7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+            8, 8, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+            10, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 3, 3, 11, 6, 6, 6, 5, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8
+    };
 
-	private static final byte[] STATES = { 0, 12, 24, 36, 60, 96, 84, 12, 12, 12, 48, 72, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 0, 12, 12, 12, 12, 12, 0, 12, 0, 12, 12, 12, 24, 12, 12, 12, 12, 12, 24, 12, 24, 12, 12, 12, 12, 12, 12, 12, 12, 12, 24, 12, 12, 12, 12, 12, 24, 12, 12, 12,
-			12, 12, 12, 12, 24, 12, 12, 12, 12, 12, 12, 12, 12, 12, 36, 12, 36, 12, 12, 12, 36, 12, 12, 12, 12, 12, 36, 12, 36, 12, 12, 12, 36, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12 };
+    private static final byte[] STATES = {
+            0, 12, 24, 36, 60, 96, 84, 12, 12, 12, 48, 72, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12,
+            12, 0, 12, 12, 12, 12, 12, 0, 12, 0, 12, 12, 12, 24, 12, 12, 12, 12, 12, 24, 12, 24, 12, 12,
+            12, 12, 12, 12, 12, 12, 12, 24, 12, 12, 12, 12, 12, 24, 12, 12, 12, 12, 12, 12, 12, 24, 12, 12,
+            12, 12, 12, 12, 12, 12, 12, 36, 12, 36, 12, 12, 12, 36, 12, 12, 12, 12, 12, 36, 12, 36, 12, 12,
+            12, 36, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12
+    };
 
-	private int state = UTF8_ACCEPT;
-	private int codep = 0;
+    private int state = UTF8_ACCEPT;
+    private int codep = 0;
 
-	private final StringBuilder stringBuilder = new StringBuilder();
+    private final StringBuilder stringBuilder = new StringBuilder();
 
-	public void write(byte[] bytes) {
-		for (byte b : bytes) {
-			write(b);
-		}
-	}
+    public void write(byte[] bytes) throws UTF8Exception {
+        for (byte b : bytes) {
+            write(b);
+        }
+    }
 
-	public void write(int b) {
-		byte type = TYPES[b & 0xFF];
+    public void write(int b) throws UTF8Exception {
+        byte type = TYPES[b & 0xFF];
 
-		codep = (state != UTF8_ACCEPT) ? (b & 0x3f) | (codep << 6) : (0xff >> type) & (b);
+        codep = (state != UTF8_ACCEPT) ?
+                (b & 0x3f) | (codep << 6) :
+                (0xff >> type) & (b);
 
-		state = STATES[state + type];
+        state = STATES[state + type];
 
-		if (state == UTF8_ACCEPT) {
-			stringBuilder.append((char) codep);
-		} else if (state == UTF8_REJECT) {
-			throw new UTF8Exception("bytes are not UTF-8");
-		}
-	}
+        if (state == UTF8_ACCEPT) {
+            // https://github.com/eclipse/jetty.project/blob/cacc5aefa214fc3eae05eb93d964863bb71198a0/jetty-util/src/main/java/org/eclipse/jetty/util/Utf8Appendable.java#L152-160
+            if (codep < Character.MIN_HIGH_SURROGATE) {
+                stringBuilder.append((char) codep);
+            } else {
+                for (char c : Character.toChars(codep)) {
+                    stringBuilder.append(c);
+                }
+            }
+        } else if (state == UTF8_REJECT) {
+            throw new UTF8Exception("bytes are not UTF-8");
+        }
+    }
 
-	public String getStringAndRecycle() {
-		String string = stringBuilder.toString();
-		stringBuilder.setLength(0);
-		return string;
-	}
+    public String getStringAndRecycle() throws UTF8Exception {
+        if (state == UTF8_ACCEPT) {
+            String string = stringBuilder.toString();
+            stringBuilder.setLength(0);
+            return string;
+        } else {
+            throw new UTF8Exception("bytes are not UTF-8");
+        }
+    }
 }

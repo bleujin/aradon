@@ -73,7 +73,7 @@ public class WSPathConfigurationBuilder extends AbstractLetConfigurationBuilder<
 		return this;
 	}
 	
-	private WSPathConfigurationBuilder handler(Class<? extends AbstractWebSocketResource> handlerClz) {
+	public WSPathConfigurationBuilder handler(Class<? extends AbstractWebSocketResource> handlerClz) {
 		this.handlerClz = handlerClz ;
 		return this;
 	}

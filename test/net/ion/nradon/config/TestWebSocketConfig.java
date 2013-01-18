@@ -45,7 +45,7 @@ public class TestWebSocketConfig {
 	
 	@Test
 	public void loadAradonConfig() throws Exception {
-		Radon radon = RadonConfiguration.newBuilder(9000).add(cbuilder.build()).startRadon() ;
+		Radon radon = Aradon.create(cbuilder.build()).toRadon(9000).start().get() ;
 		
 		AradonClient ac = AradonClientFactory.create("http://localhost:9000") ;
 		assertEquals(200, ac.createRequest("/hello2").handle(Method.GET).getStatus().getCode()) ;
@@ -55,7 +55,7 @@ public class TestWebSocketConfig {
 	
 	@Test
 	public void loadFromFile() throws Exception {
-		Radon radon = RadonConfiguration.newBuilder(XMLConfig.create("./resource/config/readonly-config.xml")).startRadon() ;
+		Radon radon = Aradon.create(XMLConfig.create("./resource/config/readonly-config.xml")).toRadon().start().get();
 		
 		AradonClient ac = AradonClientFactory.create("http://localhost:9000") ;
 		assertEquals(200, ac.createRequest("/").handle(Method.GET).getStatus().getCode()) ;
@@ -67,7 +67,7 @@ public class TestWebSocketConfig {
 	
 	@Test
 	public void loadPlugIn() throws Exception {
-		Radon radon = RadonConfiguration.newBuilder(XMLConfig.create("./resource/config/readonly-config.xml")).startRadon() ;
+		Radon radon = Aradon.create(XMLConfig.create("./resource/config/readonly-config.xml")).toRadon().start().get() ;
 		
 		AradonClient ac = AradonClientFactory.create("http://localhost:9000") ;
 		assertEquals(200, ac.createRequest("/plugin.hello/hello").handle(Method.GET).getStatus().getCode()) ;
@@ -77,14 +77,14 @@ public class TestWebSocketConfig {
 	
 	@Test
 	public void testWsection() throws Exception {
-		Radon radon = RadonConfiguration.newBuilder(XMLConfig.create("./resource/config/section-config.xml")).startRadon() ;
+		Radon radon = Aradon.create(XMLConfig.create("./resource/config/section-config.xml")).toRadon().start().get() ;
 		
 		radon.stop() ;
 	}
 	
 	@Test
 	public void testSSlConfig() throws Exception {
-		Radon radon = RadonConfiguration.newBuilder(XMLConfig.create("./resource/config/ssl-readonly-config.xml")).startRadon() ;
+		Radon radon = Aradon.create(XMLConfig.create("./resource/config/ssl-readonly-config.xml")).toRadon().start().get();
 		
 		TestSsl.disableCertValidationSetUp() ;
 		HttpsURLConnection urlConnection = HttpClient.httpsGet(radon, "/hello");

@@ -1,4 +1,4 @@
-package net.ion.nradon.netty.contrib;
+package net.ion.nradon;
 
 import java.util.regex.Pattern;
 
@@ -53,7 +53,7 @@ public class EventSourceMessage {
 	}
 
 	public String build() {
-		return payload.toString();
+		return payload.toString() + "\n";
 	}
 
 	private void appendFieldValue(String field, String value) {

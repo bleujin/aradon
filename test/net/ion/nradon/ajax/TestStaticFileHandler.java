@@ -12,6 +12,7 @@ import net.ion.nradon.config.RadonConfiguration;
 import net.ion.nradon.handler.AbstractHttpHandler;
 import net.ion.radon.client.AradonClient;
 import net.ion.radon.client.AradonClientFactory;
+import net.ion.radon.core.Aradon;
 import net.ion.radon.core.let.AbstractServerResource;
 import net.ion.radon.util.AradonTester;
 
@@ -44,10 +45,11 @@ public class TestStaticFileHandler {
 	
 	@Test
 	public void aradonRepresentation() throws Exception {
-		Radon radon = RadonConfiguration.newBuilder(9000)
-		.add("/aradon/*", AradonTester.create().register("aradon", "/", LongFileLet.class).getAradon())
-		.add(new ContiniusHttpHandler(MediaType.TEXT_ALL.toString()))
-		.startRadon();
+		
+		final Aradon aradon = AradonTester.create().register("aradon", "/", LongFileLet.class).getAradon();
+		Radon radon = aradon.toRadon(9000);
+		radon.getConfig().add(new ContiniusHttpHandler(MediaType.TEXT_ALL.toString())) ;
+		radon.start().get() ;
 		
 		AradonClient ac = AradonClientFactory.create("http://localhost:9000") ;
 		Response res = ac.createRequest("/aradon/").handle(Method.GET) ;

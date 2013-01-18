@@ -1,6 +1,7 @@
 package net.ion.radon.util;
 
 import net.ion.framework.util.InstanceCreationException;
+import net.ion.nradon.let.IServiceLet;
 import net.ion.radon.core.Aradon;
 import net.ion.radon.core.SectionService;
 import net.ion.radon.core.EnumClass.ILocation;
@@ -9,7 +10,6 @@ import net.ion.radon.core.config.SectionConfiguration;
 import net.ion.radon.core.filter.IRadonFilter;
 
 import org.apache.commons.configuration.ConfigurationException;
-import org.restlet.resource.ServerResource;
 
 public class FakeSection {
 
@@ -25,12 +25,12 @@ public class FakeSection {
 		return new FakeSection(sectionName, at);
 	}
 
-	public FakeSection addLet(String urls, String letName, Class<? extends ServerResource> handlerClz) throws Exception {
+	public FakeSection addLet(String urls, String letName, Class<? extends IServiceLet> handlerClz) throws Exception {
 		at.register(sectionName, urls, letName, IMatchMode.EQUALS, handlerClz) ;
 		return this ;
 	}
 
-	public FakeSection addLet(String urls, String letName, IMatchMode mmode, Class<? extends ServerResource> handlerClz) throws Exception {
+	public FakeSection addLet(String urls, String letName, IMatchMode mmode, Class<? extends IServiceLet> handlerClz) throws Exception {
 		at.register(sectionName, urls, letName, mmode, handlerClz) ;
 		return this ;
 	}

@@ -3,7 +3,7 @@ package net.ion.nradon.let;
 import net.ion.framework.util.ListUtil;
 import net.ion.nradon.AbstractEventSourceResource;
 import net.ion.nradon.EventSourceConnection;
-import net.ion.nradon.netty.contrib.EventSourceMessage;
+import net.ion.nradon.EventSourceMessage;
 
 public class SampleEventSource extends AbstractEventSourceResource{
 
