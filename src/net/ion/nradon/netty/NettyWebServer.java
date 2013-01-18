@@ -229,7 +229,7 @@ public class NettyWebServer extends Radon {
 	}
 
 	public Radon uncaughtExceptionHandler(UncaughtExceptionHandler handler) {
-		getConfig().exceptionHandler(handler) ;
+		getConfig().uncaughtExceptionHandler(handler) ;
 		return this ;
 	}
 

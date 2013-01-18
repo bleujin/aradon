@@ -155,7 +155,7 @@ public abstract class AbstractResourceHandler extends AbstractHttpHandler {
 		response.content(contents).end();
 	}
 
-	protected abstract StaticFileHandler.IOWorker createIOWorker(HttpRequest request, HttpResponse response, HttpControl control);
+	protected abstract SimpleStaticFileHandler.IOWorker createIOWorker(HttpRequest request, HttpResponse response, HttpControl control);
 
 	/**
 	 * All IO is performed by this worker on a separate thread, so we never block the HttpHandler.

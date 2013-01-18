@@ -19,12 +19,12 @@ public class TestAradonStaticFileHandler {
 		String dir = "./resource";
 		Radon server = RadonConfiguration.newBuilder(9000)
 			.add(new LoggingHandler(new SimpleLogSink())) 
-			.add(new AradonStaticFileHandler(dir)).startRadon() ;
+			.add("/web/.*", new AradonStaticFileHandler(dir)).startRadon() ;
 		
 		
 		AradonClient ac = AradonClientFactory.create("http://127.0.0.1:9000") ;
 
-		assertEquals(200, ac.createRequest("/ptest.prop").handle(Method.GET).getStatus().getCode()) ;
+		assertEquals(200, ac.createRequest("/web/webadmin.js").handle(Method.GET).getStatus().getCode()) ;
 		assertEquals(200, ac.createRequest("/web/index.html").handle(Method.GET).getStatus().getCode()) ;
 		//assertEquals(MediaType.TEXT_PLAIN, res.getEntity().getMediaType()) ;
 		ac.stop() ;

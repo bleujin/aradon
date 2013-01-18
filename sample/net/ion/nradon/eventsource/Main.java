@@ -14,7 +14,7 @@ import net.ion.nradon.EventSourceHandler;
 import net.ion.nradon.EventSourceMessage;
 import net.ion.nradon.Radon;
 import net.ion.nradon.config.RadonConfiguration;
-import net.ion.nradon.handler.StaticFileHandler;
+import net.ion.nradon.handler.SimpleStaticFileHandler;
 
 public class Main {
     public static class Pusher {
@@ -64,7 +64,7 @@ public class Main {
                         pusher.removeConnection(conn);
                     }
                 })
-                .add(new StaticFileHandler("./sample/net/ion/nradon/eventsource/content/"))
+                .add(new SimpleStaticFileHandler("./sample/net/ion/nradon/eventsource/content/"))
                 .startRadon();
 
         System.out.println("EventSource demo running on: " + webServer.getConfig().publicUri());

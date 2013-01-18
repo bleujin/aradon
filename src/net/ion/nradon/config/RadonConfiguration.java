@@ -15,7 +15,7 @@ import net.ion.nradon.HttpHandler;
 import net.ion.nradon.WebSocketHandler;
 import net.ion.nradon.handler.HttpToEventSourceHandler;
 import net.ion.nradon.handler.HttpToWebSocketHandler;
-import net.ion.nradon.handler.PathMatchHandler;
+import net.ion.nradon.handler.URIPathMatchHandler;
 import net.ion.nradon.helpers.SslFactory;
 import net.ion.radon.core.TreeContext;
 
@@ -65,29 +65,6 @@ public class RadonConfiguration {
 	public static RadonConfigurationBuilder newBuilder(Executor executor, SocketAddress socketAddress, URI publicUri) {
 		return RadonConfiguration.newBuilder(publicUri.getPort()).executor(executor).socketAddress(socketAddress).publicUri(publicUri) ;
 	}
-	
-//	public static RadonConfigurationBuilder newBuilder(XMLConfig xconfig) throws InstanceCreationException, FileNotFoundException {
-//		Configuration config = ConfigurationBuilder.load(xconfig).build() ;
-//
-//		final ConnectorConfiguration connector = config.server().connector();
-//		final RadonConfigurationBuilder result = newBuilder(connector.port()).add(config) ;
-//		
-//		Protocol protocol = connector.protocol();
-//		if (protocol.HTTPS.equals(protocol)){
-//			result.protocol(connector.protocol()).setupSsl(connector.getSslParam()) ;
-//		}
-//		return result;
-//	}
-//
-//	public static RadonConfigurationBuilder newBuilder(int port, XMLConfig xconfig) throws InstanceCreationException {
-//		Configuration config = ConfigurationBuilder.load(xconfig).build() ;
-//
-//		return newBuilder(port).add(config);
-//	}
-
-//	public Aradon aradon(){
-//		return aradon ;
-//	}
 	
 	public TreeContext getServiceContext(){
 		return rootContext ;
@@ -153,7 +130,7 @@ public class RadonConfiguration {
 	}
 	
 
-	public RadonConfiguration exceptionHandler(UncaughtExceptionHandler exceptionHandler) {
+	public RadonConfiguration uncaughtExceptionHandler(UncaughtExceptionHandler exceptionHandler) {
 		this.exceptionHandler = exceptionHandler ;
 		return this;
 	}
@@ -169,7 +146,7 @@ public class RadonConfiguration {
 	}
 
 	public RadonConfiguration add(String path, HttpHandler handler) {
-		return add(new PathMatchHandler(path, handler));
+		return add(new URIPathMatchHandler(path, handler));
 	}
 
 	public RadonConfiguration add(String path, WebSocketHandler handler) {

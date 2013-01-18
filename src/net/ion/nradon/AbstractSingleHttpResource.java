@@ -40,7 +40,7 @@ public abstract class AbstractSingleHttpResource extends AbstractHttpHandler{
 	}
 	
 	protected String withoutTrailingSlashOrQuery(HttpRequest request) {
-		String remainPath = StringUtil.substring(request.uri(), parent.getName().length() + 1) ;
+		String remainPath = StringUtil.substring(request.uri(), (parent == null ? 0 : parent.getName().length()) + 1) ;
 		return withoutTrailingSlashOrQuery(remainPath) ;
 	}
 

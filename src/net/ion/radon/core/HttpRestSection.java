@@ -108,7 +108,7 @@ public class HttpRestSection extends SectionService  {
 		}
 		try {
 			if (preResult.getResult() != Filter.SKIP) {
-				super.handle(request, response);
+				router.handle(request, response);
 			}
 		} finally {
 			FilterUtil.afterHandle(this, sconfig.afterfilters(), request, response);

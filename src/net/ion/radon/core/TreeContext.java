@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 import java.util.logging.Logger;
 
+import net.ion.framework.util.Debug;
 import net.ion.framework.util.IOUtil;
 import net.ion.framework.util.InstanceCreationException;
 import net.ion.framework.util.ObjectUtil;
@@ -105,6 +106,9 @@ public final class TreeContext extends Context {
 	}
 
 	public ConcurrentMap getAttributes() {
+		if (context == null){
+			Debug.line() ;
+		}
 		return context.getAttributes() ;
 	}
 

@@ -2,7 +2,7 @@ package net.ion.nradon.chatroom;
 
 import net.ion.nradon.Radon;
 import net.ion.nradon.config.RadonConfiguration;
-import net.ion.nradon.handler.StaticFileHandler;
+import net.ion.nradon.handler.SimpleStaticFileHandler;
 import net.ion.nradon.handler.logging.LoggingHandler;
 import net.ion.nradon.handler.logging.SimpleLogSink;
 
@@ -12,7 +12,7 @@ public class Main {
         Radon webServer = RadonConfiguration.newBuilder(9876)
                 .add(new LoggingHandler(new SimpleLogSink(Chatroom.USERNAME_KEY)))
                 .add("/chatsocket", new Chatroom())
-                .add(new StaticFileHandler("./sample/net/ion/nradon/chatroom/content"))
+                .add(new SimpleStaticFileHandler("./sample/net/ion/nradon/chatroom/content"))
                 .startRadon();
 
         System.out.println("Chat room running on: " + webServer.getConfig().publicUri());

@@ -116,6 +116,10 @@ class AradonUtil {
 			for (Entry<String, String> entry : hreq.allHeaders()) {
 				headers.add(entry.getKey(), entry.getValue());
 			}
+			
+			for (Entry<String, Object> entry : hreq.data().entrySet()) {
+				ireq.putAttribute(entry.getKey(), entry.getValue());
+			}
 
 			setChallenge(request, headers.getFirstValue("Authorization"));
 			return ireq;

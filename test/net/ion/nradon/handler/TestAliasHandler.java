@@ -31,4 +31,14 @@ public class TestAliasHandler {
                 .startRadon();
         assertEquals("body", contents(httpGet(radon, "/tomayto")));
     }
+
+    @Test
+    public void forwardsAliasedPath2() throws Exception {
+        this.radon = configBuilder
+                .add("/tomayto", new AliasHandler("/tomato/304"))
+                .add("/tomato/{num}", new StringHttpHandler("text/plain", "body"))
+                .startRadon();
+        assertEquals("body", contents(httpGet(radon, "/tomayto")));
+    }
+
 }

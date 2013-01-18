@@ -26,7 +26,7 @@ import org.junit.Test;
 
 public class TestStaticFileHandler {
     private File dir;
-    private StaticFileHandler handler;
+    private SimpleStaticFileHandler handler;
 
     @Test
     public void should404ForMissingFiles() throws Exception {
@@ -272,7 +272,7 @@ public class TestStaticFileHandler {
                 command.run();
             }
         };
-        handler = new StaticFileHandler(dir, immediateExecutor);
+        handler = new SimpleStaticFileHandler(dir, immediateExecutor);
     }
 
     /**

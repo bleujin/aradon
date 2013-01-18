@@ -21,11 +21,11 @@ public class TestStubHttpRequest {
 		StubHttpRequest target = new StubHttpRequest();
 		assertEquals("/", target.uri());
 
-		target.uri("https://github.com/joewalnes/webbit");
-		assertEquals("https://github.com/joewalnes/webbit", target.uri());
+		target.uri("https://github.com/bleujin/aradon");
+		assertEquals("https://github.com/bleujin/aradon", target.uri());
 
-		StubHttpRequest targetUri = new StubHttpRequest("https://github.com/joewalnes/webbit");
-		assertEquals("https://github.com/joewalnes/webbit", targetUri.uri());
+		StubHttpRequest targetUri = new StubHttpRequest("https://github.com/bleujin/aradon");
+		assertEquals("https://github.com/bleujin/aradon", targetUri.uri());
 	}
 
 	@Test

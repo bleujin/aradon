@@ -25,20 +25,20 @@ import net.ion.nradon.WebSocketHandler;
 import net.ion.nradon.handler.DateHeaderHandler;
 import net.ion.nradon.handler.HttpToEventSourceHandler;
 import net.ion.nradon.handler.HttpToWebSocketHandler;
-import net.ion.nradon.handler.PathMatchHandler;
 import net.ion.nradon.handler.ServerHeaderHandler;
-import net.ion.nradon.handler.aradon.AradonHandler;
+import net.ion.nradon.handler.URIPathMatchHandler;
 import net.ion.nradon.handler.exceptions.PrintStackTraceExceptionHandler;
 import net.ion.nradon.handler.exceptions.SilentExceptionHandler;
 import net.ion.nradon.helpers.RadonException;
 import net.ion.nradon.helpers.SslFactory;
 import net.ion.nradon.netty.NettyWebServer;
-import net.ion.radon.core.Aradon;
 import net.ion.radon.core.TreeContext;
 import net.ion.radon.core.EnumClass.IMatchMode;
 import net.ion.radon.core.config.SslParameter;
 
+import org.restlet.Context;
 import org.restlet.data.Protocol;
+import org.restlet.routing.VirtualHost;
 
 public class RadonConfigurationBuilder {
 	private static final long DEFAULT_STALE_CONNECTION_TIMEOUT = 5000;
@@ -69,7 +69,7 @@ public class RadonConfigurationBuilder {
 	}
 
 	public RadonConfiguration build() {
-		if (this.rootContext == null) this.rootContext = Aradon.create().getServiceContext() ;
+		if (this.rootContext == null) this.rootContext = TreeContext.createRootContext(new VirtualHost(new Context()));
 		if (this.publicUri == null) this.publicUri = localUri(this.protocol, this.portNum) ;
 		if (this.executor == null) this.executor = Executors.newSingleThreadScheduledExecutor() ;
 		if (this.exceptionHandler == null) this.exceptionHandler = new PrintStackTraceExceptionHandler() ;
@@ -103,7 +103,7 @@ public class RadonConfigurationBuilder {
 	
 
 	public RadonConfigurationBuilder add(String pathPattern, HttpHandler handler){
-		add(new PathMatchHandler(pathPattern, handler));
+		add(new URIPathMatchHandler(pathPattern, handler));
 		return this ;
 	}
 
@@ -117,14 +117,6 @@ public class RadonConfigurationBuilder {
 		return this ;
 	}
 	
-
-	public RadonConfigurationBuilder add(String pathPattern, Aradon aradon) {
-		add(pathPattern, AradonHandler.create(aradon));
-		return this ;
-	}
-
-	
-
 	public RadonConfigurationBuilder uncaughtExceptionHandler(Thread.UncaughtExceptionHandler exceptionHandler){
 		this.exceptionHandler = exceptionHandler;
 		return this ;

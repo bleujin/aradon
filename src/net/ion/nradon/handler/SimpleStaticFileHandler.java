@@ -12,46 +12,46 @@ import net.ion.nradon.HttpRequest;
 import net.ion.nradon.HttpResponse;
 import net.ion.nradon.helpers.ClassloaderResourceHelper;
 
-public class StaticFileHandler extends AbstractResourceHandler {
+public class SimpleStaticFileHandler extends AbstractResourceHandler {
 
 	private final File dir;
 
-    public StaticFileHandler(File dir, Executor ioThread, TemplateEngine templateEngine) {
+    public SimpleStaticFileHandler(File dir, Executor ioThread, TemplateEngine templateEngine) {
         super(ioThread, templateEngine);
         this.dir = dir;
     }
 
-    public StaticFileHandler(File dir, Executor ioThread) {
+    public SimpleStaticFileHandler(File dir, Executor ioThread) {
         this(dir, ioThread, new StaticFile());
     }
 
-    public StaticFileHandler(String dir, Executor ioThread, TemplateEngine templateEngine) {
+    public SimpleStaticFileHandler(String dir, Executor ioThread, TemplateEngine templateEngine) {
         this(new File(dir), ioThread, templateEngine);
     }
 
-    public StaticFileHandler(String dir, Executor ioThread) {
+    public SimpleStaticFileHandler(String dir, Executor ioThread) {
         this(dir, ioThread, new StaticFile());
     }
 
-    public StaticFileHandler(File dir, TemplateEngine templateEngine) {
+    public SimpleStaticFileHandler(File dir, TemplateEngine templateEngine) {
         this(dir, newFixedThreadPool(4), templateEngine);
     }
-    public StaticFileHandler(File dir) {
+    public SimpleStaticFileHandler(File dir) {
         this(dir, new StaticFile());
     }
 
-    public StaticFileHandler(String dir, TemplateEngine templateEngine) {
+    public SimpleStaticFileHandler(String dir, TemplateEngine templateEngine) {
         this(new File(dir), templateEngine);
     }
 
-    public StaticFileHandler(String dir) {
+    public SimpleStaticFileHandler(String dir) {
         this(new File(dir));
     }
     
 
 	@Override
-	protected StaticFileHandler.IOWorker createIOWorker(HttpRequest request, HttpResponse response, HttpControl control) {
-		return new StaticFileHandler.FileWorker(request, response, control);
+	protected SimpleStaticFileHandler.IOWorker createIOWorker(HttpRequest request, HttpResponse response, HttpControl control) {
+		return new SimpleStaticFileHandler.FileWorker(request, response, control);
 	}
 
 	protected class FileWorker extends IOWorker {

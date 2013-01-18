@@ -503,26 +503,22 @@ public class Aradon extends Component implements IService<SectionService>, Arado
 			if (StringUtil.isBlank(ss.getName())){ // default section
 				for(PathService ps : ss.getPathChildren()){
 					IMatchMode matchMode = ps.getConfig().imatchMode();
-					List<String> urlPatterns = astericURLPattern(ps.getConfig().urlPatterns(), matchMode) ;
-					for (String urlPattern : urlPatterns) {
-						rbuilder.add(urlPattern, aradonHandler) ;
+					
+					for (String pattern : ps.getConfig().urlPatterns()) {
+						rbuilder.add(coimpatibleStartWith(matchMode, pattern), aradonHandler) ;
 					}
 				}
-				
-				
-				
 			} else {
-				for(IRadonPathService pservice : ss.getRadonChildren()){
+				
+				for(IRadonPathService pservice : ss.getRadonChildren()){ // except path
 					IMatchMode matchMode = pservice.getConfig().imatchMode() ;
-					List<String> configUrlPatterns = pservice.getConfig().urlPatterns();
-					List<String> urlPatterns = astericURLPattern(configUrlPatterns, matchMode) ;
-					for (int i = 0 ; i < urlPatterns.size() ; i++) {
-						String urlPattern = "/" + ss.getName() + urlPatterns.get(i) ;
-						rbuilder.add(urlPattern, pservice.toHttpHandler()) ;
+					
+					for (String pattern : pservice.getConfig().urlPatterns()) {
+						rbuilder.add(coimpatibleStartWith(matchMode, "/" + ss.getName() + pattern), pservice.toHttpHandler()) ;
 					}
 				}
 				
-				rbuilder.add("/" + ss.getName() + "/.*", aradonHandler) ;
+				rbuilder.add("/" + ss.getName() + "/{aradon_remainpath__}*", aradonHandler) ;
 			}
 			
 		}
@@ -533,6 +529,14 @@ public class Aradon extends Component implements IService<SectionService>, Arado
 		}
 		
 		return rbuilder.createRadon() ;
+	}
+
+	private String coimpatibleStartWith(IMatchMode matchMode, String pattern) {
+		String newPattern = pattern ;
+		if (matchMode == IMatchMode.STARTWITH && (!(pattern.endsWith("*")))){
+			newPattern += "*" ;
+		}
+		return newPattern;
 	}
 	
 	private List<String> astericURLPattern(List<String> urlPattrns, IMatchMode matchMode){

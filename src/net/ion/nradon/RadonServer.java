@@ -6,6 +6,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 import net.ion.framework.util.Debug;
 import net.ion.framework.util.IOUtil;
@@ -33,26 +34,30 @@ public class RadonServer {
 			throw new IllegalArgumentException(settedPort + " port is occupied");
 		}
 
-		radon.start();
+		Future<Radon> future = radon.start();
 
 		final RadonServer as = this;
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			public void run() {
-				as.stop();
+				try {
+					as.stop();
+				} catch (Throwable e) {
+					e.printStackTrace();
+				}
 			}
 		});
 
 		Debug.warn("RadonServer started : " + getPort());
-		return radon;
+		return future.get() ;
 
 	}
 	
 	private Radon createRadon(int portNum) throws InstanceCreationException, FileNotFoundException, InterruptedException, ExecutionException{
 		XMLConfig xmlConfig = XMLConfig.create(options.getString("config", AradonConstant.DEFAULT_CONFIG_PATH));
 		if (portNum <= 1024) {
-			return Aradon.create(xmlConfig).toRadon().start().get();
+			return Aradon.create(xmlConfig).toRadon();
 		} else {
-			return Aradon.create(xmlConfig).toRadon(portNum).start().get();
+			return Aradon.create(xmlConfig).toRadon(portNum);
 		}
 	}
 	
@@ -74,9 +79,9 @@ public class RadonServer {
 		}
 	}
 
-	public void stop() {
+	public void stop() throws InterruptedException, ExecutionException {
 		if (radon != null) {
-			radon.stop() ;
+			radon.stop().get() ;
 		}
 	}
 

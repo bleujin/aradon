@@ -34,7 +34,7 @@ public class TestEmbeddedResourceHandler {
                 command.run();
             }
         };
-        handler = new StaticFileHandler("./resource/web", immediateExecutor);
+        handler = new SimpleStaticFileHandler("./resource/web", immediateExecutor);
     }
 
     @After
@@ -76,7 +76,7 @@ public class TestEmbeddedResourceHandler {
 
     @Test
     public void shouldWorkWithBiggerFilesUsingFileHandler() throws IOException, InterruptedException, ExecutionException {
-        handler = new StaticFileHandler("./resource/web");
+        handler = new SimpleStaticFileHandler("./resource/web");
         this.webServer = configBuilder.add(handler).startRadon();
 
         String jquery = contents(httpGet(webServer, "/jquery-1.5.2.js"));

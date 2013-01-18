@@ -4,8 +4,6 @@ import net.ion.framework.util.Debug;
 import net.ion.nradon.netty.codec.http.websocketx.BinaryWebSocketFrame;
 import net.ion.nradon.netty.codec.http.websocketx.TextWebSocketFrame;
 
-import org.jboss.netty.buffer.ChannelBuffer;
-
 public interface IResponseMessageHandler {
 	public final static IResponseMessageHandler DEBUG = new DebugMessageHandler() ;
 
@@ -21,6 +19,23 @@ public interface IResponseMessageHandler {
 
 	void onDisconnected();
 	
+	
+	public abstract class OnTextMessageHander implements IResponseMessageHandler{
+		public void onBinMessage(BinaryWebSocketFrame bframe) {
+		}
+
+		public void onClosed() {
+		}
+
+		public void onOpen() {
+		}
+
+		public void onPong() {
+		}
+
+		public void onDisconnected() {
+		}
+	};
 }
 
 
