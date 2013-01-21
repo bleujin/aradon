@@ -1,15 +1,12 @@
-package net.ion.nradon.handler;
+package net.ion.radon.util.uriparser;
 
 import static org.junit.Assert.assertEquals;
 
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.Assert;
-import net.ion.framework.util.ListUtil;
-import net.ion.uriparser.URIPattern;
-import net.ion.uriparser.URIResolveResult;
-import net.ion.uriparser.URIResolver;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 public class TestURLPattern {
@@ -31,6 +28,26 @@ public class TestURLPattern {
 
 	}
 	
+	@Test
+	public void simpleUTFExpr() throws Exception {
+		final URIPattern uriPattern = new URIPattern("/users/{user}");
+		final String url = "/users/" + URLEncoder.encode("한글", "UTF-8");
+		
+		Assert.assertEquals(true, uriPattern.match(url)) ;
+		URIResolveResult result = new URIResolver(url).resolve(uriPattern);
+		
+		assertEquals(1, result.names().size()) ;
+		assertEquals("한글", result.get("user")) ;
+	}
+	
+	
+	@Test
+	public void encode() throws Exception {
+		final String url = "/users/한글";
+		assertEquals(URICoder.encode(url, '/'), URICoder.minimalEncode(url)) ;
+		assertEquals(URICoder.encode(url, '/'),"/users/" + URLEncoder.encode("한글", "UTF-8")) ; 
+		
+	}
 
 	@Test
 	public void asterkExpr() throws Exception {
@@ -44,7 +61,6 @@ public class TestURLPattern {
 		assertEquals("bleujin", result.get("user")) ;
 		assertEquals("/a/b/c", result.get("*")) ;
 	}
-	
 	
 	@Test
 	public void plusExpr() throws Exception {
@@ -86,8 +102,15 @@ public class TestURLPattern {
 		assertEquals(0, result.names().size()) ;
 	}
 	
+	
 	private List<URIPattern> createSamplePatterns(){
-		return ListUtil.toList(new URIPattern("/users/{user}"), new URIPattern("/groups/{group}*"), new URIPattern("/users/{user}/name"), new URIPattern("/users/{user}/{age}")) ;
+		List<URIPattern> list = new ArrayList<URIPattern>() ;
+		list.add(new URIPattern("/users/{user}")) ;
+		list.add(new URIPattern("/groups/{group}*")) ;
+		list.add(new URIPattern("/users/{user}/name")) ;
+		list.add(new URIPattern("/users/{user}/{age}")) ;
+		
+		return list ;
 	}
 	
 }
