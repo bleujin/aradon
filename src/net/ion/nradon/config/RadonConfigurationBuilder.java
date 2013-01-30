@@ -33,7 +33,6 @@ import net.ion.nradon.helpers.RadonException;
 import net.ion.nradon.helpers.SslFactory;
 import net.ion.nradon.netty.NettyWebServer;
 import net.ion.radon.core.TreeContext;
-import net.ion.radon.core.EnumClass.IMatchMode;
 import net.ion.radon.core.config.SslParameter;
 
 import org.restlet.Context;
@@ -91,15 +90,15 @@ public class RadonConfigurationBuilder {
 		return this ;
 	}
 
-	public List<String> astericURLPattern(List<String> urlPattrns, IMatchMode matchMode){
-		List<String> result = ListUtil.newList() ;
-		for (String urlPattern : urlPattrns) {
-			String astericPattern = urlPattern.replaceAll("\\{[^\\/]*\\}", ".*");
-			if (matchMode == IMatchMode.STARTWITH) astericPattern += urlPattern.equals("/") ? ".*" : "/.*" ;
-			result.add(astericPattern) ;
-		}
-		return result ;
-	}
+//	public List<String> astericURLPattern(List<String> urlPattrns, IMatchMode matchMode){
+//		List<String> result = ListUtil.newList() ;
+//		for (String urlPattern : urlPattrns) {
+//			String astericPattern = urlPattern.replaceAll("\\{[^\\/]*\\}", ".*");
+//			if (matchMode == IMatchMode.STARTWITH) astericPattern += urlPattern.equals("/") ? ".*" : "/.*" ;
+//			result.add(astericPattern) ;
+//		}
+//		return result ;
+//	}
 	
 
 	public RadonConfigurationBuilder add(String pathPattern, HttpHandler handler){

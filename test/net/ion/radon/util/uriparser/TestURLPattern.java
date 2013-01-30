@@ -48,7 +48,7 @@ public class TestURLPattern {
 		assertEquals(URICoder.encode(url, '/'),"/users/" + URLEncoder.encode("한글", "UTF-8")) ; 
 		
 	}
-
+	
 	@Test
 	public void asterkExpr() throws Exception {
 		final URIPattern uriPattern = new URIPattern("/users/{user}*");

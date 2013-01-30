@@ -9,6 +9,7 @@ import net.ion.framework.util.MapUtil;
 import net.ion.framework.util.StringUtil;
 import net.ion.nradon.AbstractWebSocketResource;
 import net.ion.nradon.HttpHandler;
+import net.ion.nradon.HttpRequest;
 import net.ion.nradon.Radon;
 import net.ion.nradon.WebSocketConnection;
 import net.ion.nradon.WebSocketHandler;
@@ -72,14 +73,14 @@ public class WebSocketPathService implements ServerEventHandler, IService<WebSoc
 	}
 
 	public void onOpen(WebSocketConnection conn) throws Throwable {
-//		HttpRequest req = conn.httpRequest();
+		HttpRequest req = conn.httpRequest();
 //		Map<String, String> patternValues = URIParser.parse(req.uri(), getConfig().fullURLPattern());
 //		for (Entry<String, String> pvalue : patternValues.entrySet()) {
 //			conn.data(pvalue.getKey(), pvalue.getValue());
 //		}
-//		for (String key : req.queryParamKeys()) {
-//			conn.data(key, req.queryParam(key));
-//		}
+		for (String key : req.queryParamKeys()) {
+			conn.data(key, req.queryParam(key));
+		}
 
 		conn.data(VAR_SESSIONID, conn.httpRequest().remoteAddress().toString());
 		

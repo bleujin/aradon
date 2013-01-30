@@ -8,6 +8,7 @@ import net.ion.nradon.AbstractEventSourceResource;
 import net.ion.nradon.EventSourceConnection;
 import net.ion.nradon.EventSourceHandler;
 import net.ion.nradon.HttpHandler;
+import net.ion.nradon.HttpRequest;
 import net.ion.nradon.Radon;
 import net.ion.nradon.filter.XFilterUtil;
 import net.ion.nradon.handler.HttpToEventSourceHandler;
@@ -57,7 +58,12 @@ public class EventSourcePathService implements ServerEventHandler, IService<Even
 	}
 
 	public void onOpen(EventSourceConnection conn) throws Exception {
-		conn.data(VAR_SESSIONID, conn.httpRequest().remoteAddress().toString());
+		HttpRequest req = conn.httpRequest();
+		for (String key : req.queryParamKeys()) {
+			conn.data(key, req.queryParam(key));
+		}
+		
+		conn.data(VAR_SESSIONID, req.remoteAddress().toString());
 		
 		XFilterUtil.esOpen(this, conn) ;
 		handler.onOpen(conn) ;

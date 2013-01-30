@@ -48,8 +48,6 @@ public class TestURIPathMatchHander {
 		Assert.assertEquals("/hero/jin", req.data("*")) ;
 	}
 	
-
-	
 	
 	
 	

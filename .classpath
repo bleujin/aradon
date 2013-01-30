@@ -8,7 +8,6 @@
 	<classpathentry kind="lib" path="aradon_lib/aradon/embed/rest_fat.jar"/>
 	<classpathentry kind="lib" path="aradon_lib/aradon/embed/jci_fat.jar"/>
 	<classpathentry kind="lib" path="aradon_lib/aradon/imsi/commons-cli-1.2.jar"/>
-	<classpathentry kind="lib" path="aradon_lib/aradon/imsi/ojdbc14.jar"/>
 	<classpathentry kind="lib" path="aradon_lib/imsi/jmxtools-1.2.jar"/>
 	<classpathentry kind="lib" path="aradon_lib/aradon/imsi/mockito-all-1.9.0-rc1.jar"/>
 	<classpathentry kind="lib" path="aradon_lib/aradon/embed/iframework_2.3.jar"/>
@@ -20,6 +19,7 @@
 	<classpathentry kind="lib" path="aradon_lib/aradon/embed/org.simpleframework.jar"/>
 	<classpathentry kind="lib" path="aradon_lib/aradon/option/jetty_fat_745.jar"/>
 	<classpathentry kind="lib" path="aradon_lib/aradon/embed/netty-3.2.7.Final.jar"/>
+	<classpathentry kind="lib" path="aradon_lib/aradon/imsi/ojdbc5_11g.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk5_22"/>
 	<classpathentry kind="output" path="bin"/>
