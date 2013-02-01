@@ -518,7 +518,7 @@ public class Aradon extends Component implements IService<SectionService>, Arado
 					}
 				}
 				
-				rbuilder.add("/" + ss.getName() + "/{aradon_remainpath__}*", aradonHandler) ;
+				rbuilder.add("/" + ss.getName() + "/*", aradonHandler) ; // {aradon_remainpath__}
 			}
 			
 		}
