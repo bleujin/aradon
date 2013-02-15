@@ -12,6 +12,8 @@ import net.ion.framework.util.ObjectUtil;
 import net.ion.framework.util.StringUtil;
 import net.ion.radon.core.TreeContext;
 import net.ion.radon.core.annotation.AnContext;
+import net.ion.radon.core.annotation.AnRequest;
+import net.ion.radon.core.annotation.AnResponse;
 import net.ion.radon.core.annotation.ContextParam;
 import net.ion.radon.core.annotation.CookieParam;
 import net.ion.radon.core.annotation.DefaultValue;
@@ -22,14 +24,13 @@ import net.ion.radon.core.annotation.FormParams;
 import net.ion.radon.core.annotation.HeaderParam;
 import net.ion.radon.core.annotation.MatrixParam;
 import net.ion.radon.core.annotation.PathParam;
-import net.ion.radon.core.annotation.AnRequest;
-import net.ion.radon.core.annotation.AnResponse;
 import net.ion.radon.core.config.PathConfiguration;
 
 import org.apache.commons.beanutils.MethodUtils;
 import org.apache.commons.fileupload.FileItem;
 import org.restlet.data.Cookie;
 import org.restlet.data.Form;
+import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.data.Status;
 import org.restlet.engine.resource.AnnotationInfo;
@@ -45,6 +46,9 @@ import org.restlet.util.Series;
 public abstract class BaseServerResource extends ServerResource {
 
 	public BaseServerResource() {
+		getVariants().add(new Variant(MediaType.ALL));
+		setConditional(false);
+		setNegotiated(false);
 	}
 
 	protected Representation delete() throws ResourceException {
@@ -148,9 +152,9 @@ public abstract class BaseServerResource extends ServerResource {
 						}
 					}
 
-					resultObject = mtd.invoke(this, parameters.toArray());
+					resultObject = mtd.invoke(target, parameters.toArray());
 				} else {
-					resultObject = mtd.invoke(this);
+					resultObject = mtd.invoke(target, new Object[0]);
 				}
 			}
 		} catch (IllegalArgumentException e) {

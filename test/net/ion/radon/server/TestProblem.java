@@ -3,6 +3,7 @@ package net.ion.radon.server;
 import java.io.Serializable;
 
 import net.ion.framework.util.Debug;
+import net.ion.nradon.let.IServiceLet;
 import net.ion.radon.client.AradonClient;
 import net.ion.radon.client.AradonClientFactory;
 import net.ion.radon.core.Aradon;
@@ -83,6 +84,11 @@ public class TestProblem {
 
 	
 
+}
+
+class ResourceLet implements IServiceLet {
+	
+	
 }
 
 class MySerialLet extends AbstractServerResource {

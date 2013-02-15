@@ -33,6 +33,7 @@ import org.restlet.Response;
 import org.restlet.data.CookieSetting;
 import org.restlet.engine.header.Header;
 import org.restlet.engine.header.HeaderConstants;
+import org.restlet.engine.header.HeaderUtils;
 import org.restlet.representation.FileRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.util.Series;
@@ -149,11 +150,12 @@ public class NettyHttpResponse implements net.ion.nradon.HttpResponse {
 	}
 	
 	private void setFileHeader(Response ares, FileRepresentation fentity){
-		setHeader(ares);
 		// TODO: Shouldn't have to do this, but without it we sometimes seem to get two Content-Length headers in the response.
 		header("Content-Length", (String) null);
 		header("Content-Length", fentity.getSize());
 		header("Content-Type", fentity.getMediaType().getName());
+		
+		setHeader(ares);
 	}
 
 	private NettyHttpResponse writeBigFile(Response ares, FileRepresentation fentity) {
@@ -244,6 +246,7 @@ public class NettyHttpResponse implements net.ion.nradon.HttpResponse {
 
 	private void setHeader(Response ares) {
 		Series<Header> headers = (Series<Header>) ares.getAttributes().get(RadonAttributeKey.ATTRIBUTE_HEADERS);
+		HeaderUtils.addEntityHeaders(ares.getEntity(), headers) ;
 		if (headers != null) {
 			for (Header header : headers) {
 				header(header.getName(), header.getValue());
