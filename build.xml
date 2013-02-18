@@ -101,12 +101,12 @@
 
 	<target name="copy_novision" depends="publish">
 		<echo>Copy to ICSS6</echo>
-		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../ICSS6/icss/WEB-INF/lib/" />
+		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../../workspace/ICSS6/icss/WEB-INF/lib/" />
 		<echo>Copy to ICSS6 Extend</echo>
-		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../ICSS6Extend/lib/common/" />		
+		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../../workspace/ICSS6Extend/lib/common/" />		
 		<echo>Copy to ICS6</echo>
-		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../ICS6/ics/WEB-INF/lib/" />
+		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../../workspace/ICS6/ics/WEB-INF/lib/" />
 		<echo>Copy to ICS6 Extend</echo>
-		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../ICS6Extend/lib/common/" />
+		<copy file="publish/aradon_${version.number}.${build.number}.jar" todir="../../workspace/ICS6Extend/lib/common/" />
 	</target>
 </project>
