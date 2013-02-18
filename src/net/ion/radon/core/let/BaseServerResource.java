@@ -11,6 +11,9 @@ import net.ion.framework.parse.gson.JsonParser;
 import net.ion.framework.util.ObjectUtil;
 import net.ion.framework.util.StringUtil;
 import net.ion.radon.core.TreeContext;
+import net.ion.radon.core.annotation.AnContext;
+import net.ion.radon.core.annotation.AnRequest;
+import net.ion.radon.core.annotation.AnResponse;
 import net.ion.radon.core.annotation.ContextParam;
 import net.ion.radon.core.annotation.CookieParam;
 import net.ion.radon.core.annotation.DefaultValue;
@@ -25,9 +28,9 @@ import net.ion.radon.core.config.PathConfiguration;
 
 import org.apache.commons.beanutils.MethodUtils;
 import org.apache.commons.fileupload.FileItem;
-import org.restlet.Context;
 import org.restlet.data.Cookie;
 import org.restlet.data.Form;
+import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.data.Status;
 import org.restlet.engine.resource.AnnotationInfo;
@@ -43,6 +46,9 @@ import org.restlet.util.Series;
 public abstract class BaseServerResource extends ServerResource {
 
 	public BaseServerResource() {
+		getVariants().add(new Variant(MediaType.ALL));
+		setConditional(false);
+		setNegotiated(false);
 	}
 
 	protected Representation delete() throws ResourceException {
@@ -114,7 +120,7 @@ public abstract class BaseServerResource extends ServerResource {
 				List<Object> parameters = new ArrayList<Object>();
 				for (Annotation[] paramAnnos : mtd.getParameterAnnotations()) {
 					final Class<?> parameterType = parameterTypes[idx++];
-					parameters.add(ParamAnnotation.create(getRequestAttributes(), getMatrix(), getCookies(), getContext(), paramAnnos, parameterType).paramValue());
+					parameters.add(ParamAnnotation.create(getRequestAttributes(), getMatrix(), getCookies(), (TreeContext)getContext(), (InnerRequest)getRequest(), (InnerResponse)getResponse(), paramAnnos, parameterType).paramValue());
 				}
 
 				resultObject = MethodUtils.invokeMethod(target, mtd.getName(), parameters.toArray(), parameterTypes);
@@ -146,9 +152,9 @@ public abstract class BaseServerResource extends ServerResource {
 						}
 					}
 
-					resultObject = mtd.invoke(this, parameters.toArray());
+					resultObject = mtd.invoke(target, parameters.toArray());
 				} else {
-					resultObject = mtd.invoke(this);
+					resultObject = mtd.invoke(target, new Object[0]);
 				}
 			}
 		} catch (IllegalArgumentException e) {
@@ -329,18 +335,22 @@ class ParamAnnotation {
 	private final Form matrix;
 	private final Series<Cookie> cookies;
 	private final TreeContext context;
+	private final InnerRequest request ;
+	private final InnerResponse response ;
 
-	private ParamAnnotation(Map<String, Object> requestAttributes, Form matrix, Series<Cookie> cookies, TreeContext context, Annotation[] paramAnnos, Class<?> parameterType) {
+	private ParamAnnotation(Map<String, Object> requestAttributes, Form matrix, Series<Cookie> cookies, TreeContext context, InnerRequest irequest, InnerResponse iresponse, Annotation[] paramAnnos, Class<?> parameterType) {
 		this.requestAttributes = requestAttributes;
 		this.matrix = matrix;
 		this.cookies = cookies;
 		this.context = context;
+		this.request = irequest ;
+		this.response = iresponse ;
 		this.paramAnnos = paramAnnos;
 		this.parameterType = parameterType;
 	}
 
-	public static ParamAnnotation create(Map<String, Object> requestAttributes, Form matrix, Series<Cookie> cookies, Context context, Annotation[] paramAnnos, Class<?> parameterType) {
-		return new ParamAnnotation(requestAttributes, matrix, cookies, (TreeContext) context, paramAnnos, parameterType);
+	public static ParamAnnotation create(Map<String, Object> requestAttributes, Form matrix, Series<Cookie> cookies, TreeContext context, InnerRequest irequest, InnerResponse iresponse, Annotation[] paramAnnos, Class<?> parameterType) {
+		return new ParamAnnotation(requestAttributes, matrix, cookies, context, irequest, iresponse, paramAnnos, parameterType);
 	}
 
 	public Object paramValue() throws IllegalArgumentException, SecurityException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, InstantiationException {
@@ -353,7 +363,13 @@ class ParamAnnotation {
 		Object resultValue = null;
 
 		for (Annotation an : paramAnnos) {
-			if (an instanceof FormBean) {
+			if (an instanceof AnContext) {
+				resultValue = context ;
+			} else if (an instanceof AnRequest) {
+				resultValue = request ;
+			} else if (an instanceof AnResponse) {
+				resultValue = response ;
+			} else if (an instanceof FormBean) {
 				resultValue = JsonParser.fromMap(form).getAsObject(parameterType);
 			} else {
 				final String valueName = an.getClass().getMethod("value").invoke(an).toString();

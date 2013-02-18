@@ -148,7 +148,7 @@ class TestLet extends AbstractServerResource {
 	
 	@Post("?m=formbean")
 	public String formValue(@FormBean User user, @FormBean  Another ano ){
-		return user.getName() + user.getAge() + ano.getName();
+		return user.name() + user.age() + ano.getName();
 	}
 }
 
@@ -157,16 +157,16 @@ class User {
 	private int age ;
 	private String name;
 	
-	public void setAge(int age) {
+	public void age(int age) {
 		this.age = age;
 	}
-	public int getAge() {
+	public int age() {
 		return age;
 	}
-	public void setName(String name) {
+	public void name(String name) {
 		this.name = name;
 	}
-	public String getName() {
+	public String name() {
 		return name;
 	}
 }

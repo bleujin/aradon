@@ -8,9 +8,9 @@ import net.ion.nradon.HttpRequest;
 import net.ion.nradon.HttpResponse;
 import net.ion.nradon.Radon;
 import net.ion.nradon.handler.event.ServerEvent.EventType;
-import net.ion.uriparser.URIPattern;
-import net.ion.uriparser.URIResolveResult;
-import net.ion.uriparser.URIResolver;
+import net.ion.radon.util.uriparser.URIPattern;
+import net.ion.radon.util.uriparser.URIResolveResult;
+import net.ion.radon.util.uriparser.URIResolver;
 
 public class URIPathMatchHandler extends AbstractHttpHandler {
 

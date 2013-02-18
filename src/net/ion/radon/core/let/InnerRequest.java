@@ -71,7 +71,7 @@ public class InnerRequest extends Request {
 	
 	public final static InnerRequest create(String sectionName, Request request) {
 		final InnerRequest innerRequest = new InnerRequest(sectionName, request);
-		innerRequest.getHeaders().set("X-Aradon-Version", "0.8");
+		innerRequest.getHeaders().set("X-Aradon-Version", "0.9");
 		return innerRequest;
 	}
 	

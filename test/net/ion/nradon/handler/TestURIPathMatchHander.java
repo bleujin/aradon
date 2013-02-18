@@ -16,6 +16,18 @@ import org.junit.Test;
 
 public class TestURIPathMatchHander {
 
+	@Test
+	public void rootPattern() throws Exception {
+		HttpHandler handler = mock(HttpHandler.class);
+		URIPathMatchHandler pmh = new URIPathMatchHandler("/", handler);
+		
+		HttpRequest req = new StubHttpRequest("http://host.com:8080/");
+		HttpResponse res = new StubHttpResponse();
+		HttpControl ctl = new StubHttpControl();
+
+		pmh.handleHttpRequest(req, res, ctl);
+		verify(handler).handleHttpRequest(req, res, ctl);
+	}
 	
 	@Test
 	public void simplePattern() throws Exception {
@@ -32,6 +44,7 @@ public class TestURIPathMatchHander {
 		Assert.assertEquals("bleujin", req.data("user")) ;
 	}
 	
+	
 	@Test
 	public void asterkPattern() throws Exception {
 		HttpHandler handler = mock(HttpHandler.class);
@@ -47,8 +60,6 @@ public class TestURIPathMatchHander {
 		Assert.assertEquals("bleujin", req.data("user")) ;
 		Assert.assertEquals("/hero/jin", req.data("*")) ;
 	}
-	
-
 	
 	
 	

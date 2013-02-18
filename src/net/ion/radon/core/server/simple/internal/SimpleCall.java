@@ -79,7 +79,7 @@ public class SimpleCall extends ServerCall {
 	private final String version;
 
 	/**
-	 * Constructs this class with the specified {@link simple.http.Request} and {@link simple.http.Response}.
+	 * Constructs this class with the specified {@link AnRequest.http.Request} and {@link AnResponse.http.Response}.
 	 * 
 	 * @param server
 	 *            The parent server.

@@ -40,6 +40,11 @@ public abstract class AbstractLetConfigurationBuilder<V extends AbstractLetConfi
 		return (V) this ;
 	}
 
+	public V addFilter(XRadonFilter filter) {
+		filters.add(filter) ;
+		return (V)this ;
+	}
+	
 	public V addAttribute(String id, Object value){
 		return addAttribute(id, XMLConfig.BLANK, value);
 	}
@@ -67,11 +72,6 @@ public abstract class AbstractLetConfigurationBuilder<V extends AbstractLetConfi
 	}
 	
 
-
-	private V addFilter(XRadonFilter filter) {
-		filters.add(filter) ;
-		return (V)this ;
-	}
 
 	public V addAttribute(String id, XMLConfig config, Scope scope) throws InstanceCreationException{
 		if (StringUtil.isBlank(id)) {

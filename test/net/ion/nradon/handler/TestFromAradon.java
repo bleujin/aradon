@@ -11,6 +11,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicReference;
 
+import net.ion.framework.util.Debug;
 import net.ion.nradon.HttpControl;
 import net.ion.nradon.HttpRequest;
 import net.ion.nradon.HttpResponse;
@@ -19,11 +20,13 @@ import net.ion.nradon.WebSocketConnection;
 import net.ion.nradon.ajax.EchoWebSocketResource;
 import net.ion.nradon.client.websocket.IResponseMessageHandler;
 import net.ion.nradon.client.websocket.WebSocketClient;
+import net.ion.nradon.filter.XRadonFilter;
 import net.ion.nradon.let.IServiceLet;
 import net.ion.nradon.netty.codec.http.websocketx.TextWebSocketFrame;
 import net.ion.radon.client.AradonClient;
 import net.ion.radon.client.AradonClientFactory;
 import net.ion.radon.core.Aradon;
+import net.ion.radon.core.IService;
 import net.ion.radon.core.annotation.PathParam;
 import net.ion.radon.core.config.ConfigurationBuilder;
 
@@ -107,6 +110,42 @@ public class TestFromAradon {
 			client.disconnect();
 		}
 	}
+	
+	@Test
+	public void filter() throws Exception {
+		final Aradon aradon = Aradon.create(ConfigurationBuilder.newBuilder().aradon().sections()
+				.restSection("").path("hello").addUrlPattern("/hello/{name}").handler(SimpleLet.class).parentSection().addFilter(new XRadonFilter.DefaultFilter(){
+					public void httpEnd(IService iservice, HttpRequest hreq, HttpResponse hres) {
+						Debug.line("end") ;
+					}
+					public void httpStart(IService iservice, HttpRequest hreq, HttpResponse hres) {
+						Debug.line("end") ;
+					}
+				}).build()) ;
+		
+//		final Aradon aradon = Aradon.create(ConfigurationBuilder.newBuilder().aradon().sections()
+//				.restSection("").path("hello").addUrlPattern("/hello/{name}").handler(SimpleLet.class).parentSection().addPreFilter(new IRadonFilter(){
+//					@Override
+//					public IFilterResult afterHandle(IService iservice, Request request, Response response) {
+//						Debug.line("end") ;
+//						return IFilterResult.CONTINUE_RESULT;
+//					}
+//					@Override
+//					public IFilterResult preHandle(IService iservice, Request request, Response response) {
+//						Debug.line("pre") ;
+//						return IFilterResult.CONTINUE_RESULT;
+//					}
+//					
+//				}).build()) ;
+
+		this.radon = aradon.toRadon(8080).start().get();
+		AradonClient ac = AradonClientFactory.create("http://localhost:8080");
+		Response res = ac.createRequest("/hello/bleujin").handle(Method.GET);
+		
+	}
+	
+	
+	
 
 	// context... let... filter...
 

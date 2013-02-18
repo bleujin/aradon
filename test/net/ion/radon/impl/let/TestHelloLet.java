@@ -50,4 +50,10 @@ public class TestHelloLet {
 
 	}
 
+//	@Test
+//	public void xtestRun() throws Exception {
+//		at.getAradon().startServer(9000);
+//		at.getAradon().toRadon(9000).start().get() ;
+//		new InfinityThread().startNJoin() ;
+//	}
 }

@@ -73,6 +73,10 @@ public class PathConfigurationBuilder extends AbstractLetConfigurationBuilder<Pa
 		return this ;
 	}
 	
+	public SectionConfigurationBuilder parentSection(){
+		return sectionBuilder ;
+	}
+	
 	public SectionConfigurationBuilder restSection(String name) {
 		return sectionBuilder.restSection(name);
 	}
