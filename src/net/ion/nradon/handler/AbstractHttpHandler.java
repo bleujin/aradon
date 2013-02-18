@@ -8,4 +8,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	public void onEvent(EventType event, Radon wserver) {
 		
 	}
+	public int order() {
+		return 4;
+	}
 }

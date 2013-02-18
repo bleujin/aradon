@@ -116,4 +116,8 @@ public class SingleLetPathService implements IService<SingleLetPathService>, Htt
 	public void onEvent(EventType event, Radon radon) {
 		resource.onEvent(event, radon) ;
 	}
+
+	public int order() {
+		return 7;
+	}
 }

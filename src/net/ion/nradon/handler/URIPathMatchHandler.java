@@ -47,4 +47,8 @@ public class URIPathMatchHandler extends AbstractHttpHandler {
 	public String toString(){
 		return "pattern:" + uriPattern + ", handler:" + httpHandler ;  
 	}
+	
+	public int order(){
+		return httpHandler.order() ;
+	}
 }

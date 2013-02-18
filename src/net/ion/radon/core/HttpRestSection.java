@@ -8,6 +8,9 @@ import java.util.Map.Entry;
 import net.ion.framework.util.ListUtil;
 import net.ion.framework.util.MapUtil;
 import net.ion.framework.util.StringUtil;
+import net.ion.nradon.config.RadonConfigurationBuilder;
+import net.ion.nradon.handler.aradon.AradonHandler;
+import net.ion.radon.core.EnumClass.IMatchMode;
 import net.ion.radon.core.config.AttributeValue;
 import net.ion.radon.core.config.EPathConfiguration;
 import net.ion.radon.core.config.IPathConfiguration;
@@ -231,15 +234,6 @@ public class HttpRestSection extends SectionService  {
 		return result;
 	}
 	
-	public Collection<IRadonPathService> getRadonChildren(){
-		List<IRadonPathService> result = ListUtil.newList() ;
-		result.addAll(spaths.values()) ;
-		result.addAll(wspaths.values()) ;
-		result.addAll(epaths.values()) ;
-
-		return result;
-	}
-	
 	public Collection<PathService> getPathChildren() {
 		return paths.values() ;
 	}
@@ -269,6 +263,41 @@ public class HttpRestSection extends SectionService  {
 		SectionTemplateRoute srouter = (SectionTemplateRoute) router.getNext(request, response);
 		return (PathService) srouter.getNext() ;
 	}
+	
+	private Collection<IRadonPathService> getRadonChildren(){
+		List<IRadonPathService> result = ListUtil.newList() ;
+		result.addAll(spaths.values()) ;
+		result.addAll(wspaths.values()) ;
+		result.addAll(epaths.values()) ;
+
+		return result;
+	}
+	
+
+	public void addToRadonBuilder(RadonConfigurationBuilder rbuilder, AradonHandler ahandler) {
+		for (PathService pservice : paths.values()) {
+			for (String pattern : pservice.getConfig().urlPatterns()) {
+				String cpattern = compatibleStartWith(pservice.getConfig().imatchMode(), pattern) ;
+				rbuilder.add(cpattern, ahandler) ;
+			}
+		}
+		
+		for (IRadonPathService pservice : getRadonChildren()) {
+			for (String pattern : pservice.getConfig().urlPatterns()) {
+				String cpattern = compatibleStartWith(pservice.getConfig().imatchMode(), pattern) ;
+				rbuilder.add(cpattern, pservice.toHttpHandler()) ;
+			}
+		}
+	}
+
+	private String compatibleStartWith(IMatchMode matchMode, String pattern) {
+		String newPattern = (StringUtil.isBlank(sconfig.name()) ? "" : ("/" + sconfig.name())) + pattern ;
+		if (matchMode == IMatchMode.STARTWITH && (!(pattern.endsWith("*")))){
+			newPattern += "*" ;
+		}
+		return newPattern;
+	}
+
 
 
 }

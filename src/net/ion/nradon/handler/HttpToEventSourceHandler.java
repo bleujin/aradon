@@ -25,4 +25,8 @@ public class HttpToEventSourceHandler implements HttpHandler {
 			((ServerEventHandler)handler).onEvent(etype, webserver) ;
 		}
 	}
+
+	public int order() {
+		return 7;
+	}
 }

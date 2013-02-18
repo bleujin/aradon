@@ -2,9 +2,10 @@ package net.ion.radon.core;
 
 import java.util.Collection;
 
+import net.ion.nradon.config.RadonConfigurationBuilder;
+import net.ion.nradon.handler.aradon.AradonHandler;
 import net.ion.radon.core.config.IPathConfiguration;
 import net.ion.radon.core.let.EventSourcePathService;
-import net.ion.radon.core.let.IRadonPathService;
 import net.ion.radon.core.let.PathService;
 import net.ion.radon.core.let.SingleLetPathService;
 import net.ion.radon.core.let.WebSocketPathService;
@@ -25,7 +26,7 @@ public abstract class SectionService extends Application implements IService<ISe
 
 	public abstract Collection<PathService> getPathChildren()  ;
 
-	public abstract Collection<IRadonPathService> getRadonChildren() ;
+//	public abstract Collection<IRadonPathService> getRadonChildren() ;
 	
 	public abstract PathService path(String childName) ;
 	
@@ -53,6 +54,8 @@ public abstract class SectionService extends Application implements IService<ISe
 	}
 
 	public abstract PathService expectPathService(Request request, Response response) ;
+
+	public abstract void addToRadonBuilder(RadonConfigurationBuilder rbuilder, AradonHandler aradonHandler) ;
 
 
 }

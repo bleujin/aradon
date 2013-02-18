@@ -43,4 +43,8 @@ public class AradonHandler implements HttpHandler {
 	public void ignoreEvent(boolean ignoreEvent) {
 		this.ignoreEvent = ignoreEvent ;
 	}
+	
+	public int order() {
+		return 1;
+	}
 }

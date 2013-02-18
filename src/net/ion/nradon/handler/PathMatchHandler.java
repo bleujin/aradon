@@ -42,4 +42,8 @@ public class PathMatchHandler extends AbstractHttpHandler {
 	public String toString(){
 		return "pattern:" + pathPattern + ", handler:" + httpHandler ;  
 	}
+
+	public int order() {
+		return httpHandler.order();
+	}
 }

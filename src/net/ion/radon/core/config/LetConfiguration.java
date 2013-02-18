@@ -111,6 +111,5 @@ public abstract class LetConfiguration<T> {
 	public List<XRadonFilter> filters(){
 		return filters ;
 	}
-	
 
 }

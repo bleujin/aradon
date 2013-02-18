@@ -25,4 +25,9 @@ public class HttpToWebSocketHandler implements HttpHandler {
 			((ServerEventHandler)handler).onEvent(etype, webserver) ;
 		}
 	}
+	
+	public int order() {
+		return 8;
+	}
+
 }

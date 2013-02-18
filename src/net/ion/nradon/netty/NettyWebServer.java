@@ -5,6 +5,8 @@ import static org.jboss.netty.channel.Channels.pipeline;
 import java.io.InputStream;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.net.URI;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executor;
@@ -65,7 +67,7 @@ public class NettyWebServer extends Radon {
 
 		uncaughtExceptionHandler(new PrintStackTraceExceptionHandler());
 		connectionExceptionHandler(new SilentExceptionHandler());
-		setupDefaultHandlers();
+//		setupDefaultHandlers();
 	}
 
 	public RadonConfiguration getConfig() {
@@ -151,10 +153,16 @@ public class NettyWebServer extends Radon {
 	}
 
 	public void fireEvent(EventType eventType) {
-		HttpHandler[] handlers = getConfig().handlers().toArray(new HttpHandler[0]);
-
+		List<HttpHandler> handlers = getConfig().handlers() ;
+		
+		Collections.sort(handlers, new Comparator<HttpHandler>() {
+			public int compare(HttpHandler o1, HttpHandler o2) {
+				return o1.order() - o2.order() ;
+			}
+		}) ;
+		
 		for (HttpHandler handler : handlers) {
-			handler.onEvent(eventType, this);
+			handler.onEvent(eventType, this) ;
 		}
 	}
 

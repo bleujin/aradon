@@ -126,5 +126,9 @@ public class EventSourcePathService implements ServerEventHandler, IService<Even
 	public HttpHandler toHttpHandler() {
 		return new HttpToEventSourceHandler(this);
 	}
+
+	public int order() {
+		return 8;
+	}
 }
 

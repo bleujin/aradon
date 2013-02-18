@@ -246,11 +246,10 @@ public class NettyHttpResponse implements net.ion.nradon.HttpResponse {
 
 	private void setHeader(Response ares) {
 		Series<Header> headers = (Series<Header>) ares.getAttributes().get(RadonAttributeKey.ATTRIBUTE_HEADERS);
+		if (headers == null) headers = new Series(Header.class) ;
 		HeaderUtils.addEntityHeaders(ares.getEntity(), headers) ;
-		if (headers != null) {
-			for (Header header : headers) {
-				header(header.getName(), header.getValue());
-			}
+		for (Header header : headers) {
+			header(header.getName(), header.getValue());
 		}
 
 		Series<CookieSetting> cookies = ares.getCookieSettings();

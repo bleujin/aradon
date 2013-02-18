@@ -16,11 +16,11 @@ import net.ion.framework.util.TimeoutThread;
 import net.ion.nradon.EventSourceConnection;
 import net.ion.nradon.EventSourceMessage;
 import net.ion.nradon.HttpControl;
-import net.ion.nradon.HttpHandler;
 import net.ion.nradon.HttpRequest;
 import net.ion.nradon.HttpResponse;
 import net.ion.nradon.Radon;
 import net.ion.nradon.config.RadonConfiguration;
+import net.ion.nradon.handler.AbstractHttpHandler;
 import net.ion.nradon.handler.event.ServerEvent.EventType;
 
 import org.junit.Test;
@@ -111,7 +111,7 @@ public class TestEventSourceClient {
 		}
 	}
 
-	private static class HtmlHandler implements HttpHandler {
+	private static class HtmlHandler extends AbstractHttpHandler {
 		public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
 			response.header("Content-Type", "text/html").charset(Charset.forName("UTF-8")).content(
 					"" + "<!DOCTYPE html>\n" + "<html>\n" 

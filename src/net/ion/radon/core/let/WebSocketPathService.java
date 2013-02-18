@@ -161,6 +161,10 @@ public class WebSocketPathService implements ServerEventHandler, IService<WebSoc
 	}
 
 
+	public int order() {
+		return 9;
+	}
+
 }
 
 
@@ -190,5 +194,5 @@ class URIParser {
 		}
 		return result;
 	}
-
+	
 }
