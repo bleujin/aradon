@@ -26,7 +26,7 @@ public class Hixie75 implements WebSocketVersion {
     }
 
     public boolean matches() {
-        return false;
+        return true;
     }
 
     public void prepareHandshakeResponse(NettyWebSocketConnection webSocketConnection) {

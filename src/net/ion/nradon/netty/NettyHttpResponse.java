@@ -189,8 +189,8 @@ public class NettyHttpResponse implements net.ion.nradon.HttpResponse {
 					} else {
 						// Wrote the last chunk - close the connection if the write is done.
 						// System.out.println("DONE: " + fileLength);
-						chunkWriteFuture.addListener(ChannelFutureListener.CLOSE);
 						fis.close();
+						chunkWriteFuture.addListener(ChannelFutureListener.CLOSE);
 					}
 				}
 			});

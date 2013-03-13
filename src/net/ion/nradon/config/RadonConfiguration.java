@@ -2,6 +2,7 @@ package net.ion.nradon.config;
 
 import java.io.InputStream;
 import java.lang.Thread.UncaughtExceptionHandler;
+import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -117,6 +118,7 @@ public class RadonConfiguration {
 
 	public RadonConfiguration portNum(int portNum) throws URISyntaxException {
 		this.publicUri = new URI(publicUri.getScheme(), publicUri.getUserInfo(), publicUri.getHost(), portNum, publicUri.getPath(), publicUri.getQuery(), publicUri.getFragment()) ;
+		this.socketAddress = new InetSocketAddress(portNum) ;
 		return this ;
 	}
 

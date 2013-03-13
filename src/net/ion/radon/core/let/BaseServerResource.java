@@ -107,6 +107,8 @@ public abstract class BaseServerResource extends ServerResource {
 
 	protected Representation doHandle(AnnotationInfo annotationInfo, Variant variant, Object target) throws ResourceException{
 		Representation result = null;
+		if (annotationInfo == null) throw new ResourceException(405) ;
+		
 		Class<?>[] parameterTypes = annotationInfo.getJavaInputTypes();
 
 		// Invoke the annotated method and get the resulting object.

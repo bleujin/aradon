@@ -118,6 +118,10 @@ public class EventSourcePathService implements ServerEventHandler, IService<Even
 	public IService getParent() {
 		return handler.getParent();
 	}
+	
+	public AbstractEventSourceResource eventsourceResource(){
+		return handler ;
+	}
 
 	public TreeContext getServiceContext() {
 		return handler.getServiceContext();

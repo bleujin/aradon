@@ -214,7 +214,7 @@ public abstract class AbstractLet extends ServerResource implements RadonAttribu
 	protected Representation toRepresentation(List<Map<String, ?>> data) throws ResourceException {
 		return toRepresentation(IRequest.EMPTY_REQUEST, data, IResponse.EMPTY_RESPONSE);
 	}
-
+	
 	protected Representation toRepresentation(IRequest request, List<Map<String, ?>> datas, IResponse response) throws ResourceException {
 		return MapListRepresentationHandler.create(newMapListFormatHandler(), request, datas, response, getContext()).toRepresentation();
 	}

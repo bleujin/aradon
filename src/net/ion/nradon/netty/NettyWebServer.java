@@ -19,6 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.SSLEngine;
 
+import net.ion.framework.util.Debug;
 import net.ion.framework.util.ListUtil;
 import net.ion.nradon.HttpHandler;
 import net.ion.nradon.Radon;
@@ -91,7 +92,8 @@ public class NettyWebServer extends Radon {
 				if (isRunning()) {
 					throw new IllegalStateException("Server already started.");
 				}
-
+				
+				Debug.line("PORT", getConfig().getPort()) ;
 				getConfig().getServiceContext().putAttribute(AradonConstant.CONFIG_PORT, getConfig().getPort());
 				getConfig().getServiceContext().putAttribute(Radon.class.getCanonicalName(), this);
 
