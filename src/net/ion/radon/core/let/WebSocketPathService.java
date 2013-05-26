@@ -48,7 +48,7 @@ public class WebSocketPathService implements ServerEventHandler, IService<WebSoc
 	}
 
 	private void initService(SectionService parent, TreeContext context, WSPathConfiguration econfig){
-		handler.init(parent, context, econfig) ;
+		handler.onInit(parent, context, econfig) ;
 		getConfig().initFilter(this) ;
 	}
 
@@ -132,7 +132,7 @@ public class WebSocketPathService implements ServerEventHandler, IService<WebSoc
 		return "/" + getParent().getName() + "/" + getName();
 	}
 
-	public void reload() throws Exception {
+	public void reload() {
 		
 	}
 
@@ -140,8 +140,8 @@ public class WebSocketPathService implements ServerEventHandler, IService<WebSoc
 		
 	}
 
-	public void stop() throws Exception {
-		
+	public void stop() {
+		handler.onStop() ;
 	}
 
 	public void suspend() {

@@ -1,27 +1,33 @@
 package net.ion.nradon.client.eventsource.impl;
 
-import net.ion.framework.util.StringUtil;
-import net.ion.nradon.client.eventsource.EventSourceException;
-import net.ion.nradon.client.eventsource.EventSourceHandler;
-
-import org.jboss.netty.bootstrap.ClientBootstrap;
-import org.jboss.netty.channel.*;
-import org.jboss.netty.handler.codec.http.DefaultHttpRequest;
-import org.jboss.netty.handler.codec.http.HttpHeaders.Names;
-import org.jboss.netty.handler.codec.http.HttpMethod;
-import org.jboss.netty.handler.codec.http.HttpRequest;
-import org.jboss.netty.handler.codec.http.HttpVersion;
-import org.jboss.netty.util.HashedWheelTimer;
-import org.jboss.netty.util.Timeout;
-import org.jboss.netty.util.Timer;
-import org.jboss.netty.util.TimerTask;
-
 import java.net.ConnectException;
 import java.net.URI;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import net.ion.framework.util.StringUtil;
+import net.ion.nradon.client.eventsource.EventSourceException;
+import net.ion.nradon.client.eventsource.EventSourceHandler;
+
+import org.jboss.netty.bootstrap.ClientBootstrap;
+import org.jboss.netty.channel.Channel;
+import org.jboss.netty.channel.ChannelEvent;
+import org.jboss.netty.channel.ChannelHandlerContext;
+import org.jboss.netty.channel.ChannelStateEvent;
+import org.jboss.netty.channel.ExceptionEvent;
+import org.jboss.netty.channel.MessageEvent;
+import org.jboss.netty.channel.SimpleChannelUpstreamHandler;
+import org.jboss.netty.handler.codec.http.DefaultHttpRequest;
+import org.jboss.netty.handler.codec.http.HttpMethod;
+import org.jboss.netty.handler.codec.http.HttpRequest;
+import org.jboss.netty.handler.codec.http.HttpVersion;
+import org.jboss.netty.handler.codec.http.HttpHeaders.Names;
+import org.jboss.netty.util.HashedWheelTimer;
+import org.jboss.netty.util.Timeout;
+import org.jboss.netty.util.Timer;
+import org.jboss.netty.util.TimerTask;
 
 public class EventSourceChannelHandler extends SimpleChannelUpstreamHandler implements ConnectionHandler {
 	private static final Pattern STATUS_PATTERN = Pattern.compile("HTTP/1.1 (\\d+) (.*)");
@@ -88,7 +94,7 @@ public class EventSourceChannelHandler extends SimpleChannelUpstreamHandler impl
 			if (statusMatcher.matches()) {
 				status = Integer.parseInt(statusMatcher.group(1));
 				if (status != 200) {
-					eventSourceHandler.onError(new EventSourceException("Bad status from " + uri + ": " + status));
+					eventSourceHandler.onError(new EventSourceException("Bad status from " + uri + ": " + status + "[" + line + "]"));
 					reconnect();
 				}
 				return;

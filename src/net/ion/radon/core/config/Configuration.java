@@ -51,7 +51,7 @@ public class Configuration {
 	}
 	
 	
-	private void initConfig(final Aradon aradon, TreeContext rootContext) throws InstanceCreationException, ConfigurationException {
+	private void initConfig(final Aradon aradon, TreeContext rootContext) {
 
 //		// at this point, the default class loader has all the jars you indicated
 //		loadClassPath();

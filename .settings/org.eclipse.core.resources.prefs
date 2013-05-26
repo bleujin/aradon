@@ -1,7 +1,11 @@
-#Fri Nov 02 14:21:40 KST 2012
+#Sun May 26 19:18:13 KST 2013
 eclipse.preferences.version=1
 encoding//groovy/net/ion/bulletin/Fibonacci.groovy=UTF-8
 encoding//resource/docs/html/study.htm=UTF-8
+encoding//resource/slide/css/default.css=UTF-8
+encoding//resource/slide/css/sand.css=UTF-8
+encoding//resource/slide/css/sea_wave.css=UTF-8
+encoding//resource/slide/index.htm=UTF-8
 encoding//resource/template/helloworld.vm=UTF-8
 encoding//resource/template/list.vm=UTF-8
 encoding/<project>=UTF-8

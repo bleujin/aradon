@@ -11,7 +11,7 @@
 
 	<target name="test_aradon">
 		<path id="test.classpath">
-			<pathelement location="aradon_lib/imsi/junit4_5.jar" />
+			<pathelement location="aradon_lib/aradon/imsi/junit4_5.jar" />
 			<pathelement location="bin" />
 			<fileset dir="aradon_lib/aradon/embed">
 			    <include name="*.jar"/>

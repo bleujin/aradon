@@ -27,7 +27,7 @@ public class BroadEchoWebSocket implements WebSocketHandler {
 	public void onMessage(WebSocketConnection connection, String message) {
 		for (final WebSocketConnection conn : conns) {
 //			conn.send(message.toUpperCase() + " to " + conns.size()) ;
-			conn.sendFuture(message.toUpperCase() + " to " + conns.size()).addListener(new ChannelFutureListener() {
+			conn.sendFuture(message.toUpperCase() + "(conns :" + conns.size() + ")").addListener(new ChannelFutureListener() {
 				public void operationComplete(ChannelFuture future) throws Exception {
 					Debug.line(conn, future.getCause(), future.isDone(), future.isSuccess(), future.getCause()) ;
 				}

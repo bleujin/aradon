@@ -14,7 +14,7 @@ public abstract class AbstractWebSocketResource implements WebSocketHandler{
 	private WSPathConfiguration wsconfig ;
 	
 	
-	public void init(SectionService parent, TreeContext context, WSPathConfiguration wsconfig){
+	public void onInit(SectionService parent, TreeContext context, WSPathConfiguration wsconfig){
 		this.parent = parent ;
 		this.context = context ;
 		this.wsconfig = wsconfig ;
@@ -36,5 +36,9 @@ public abstract class AbstractWebSocketResource implements WebSocketHandler{
 		return wsconfig;
 	}
 
+	
+	public void onStop(){
+		
+	}
 	
 }

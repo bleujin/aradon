@@ -19,7 +19,7 @@ public interface IService<CT> {
 			throw new IllegalStateException("i am root service") ;
 		}
 		
-		public void reload() throws Exception {
+		public void reload() {
 			throw new IllegalStateException("i am root service") ;
 		}
 		
@@ -51,7 +51,7 @@ public interface IService<CT> {
 			throw new IllegalStateException("i am root service") ;
 		}
 
-		public void stop() throws Exception {
+		public void stop()  {
 			
 		}
 		public LetConfiguration getConfig() {
@@ -65,10 +65,10 @@ public interface IService<CT> {
 	
 	public void restart() ;
 	public void suspend() ;
-	public void stop() throws Exception ;
+	public void stop()  ;
 	// public void handle(Request request, Response response) ;
 	
-	public void reload() throws Exception ;
+	public void reload() ;
 	public CT getChildService(String childName);
 	public Collection<CT> getChildren() ;
 	public String getName(); 

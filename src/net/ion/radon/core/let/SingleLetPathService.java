@@ -97,7 +97,7 @@ public class SingleLetPathService implements IService<SingleLetPathService>, Htt
 		return resource.getServiceContext();
 	}
 
-	public void reload() throws Exception {
+	public void reload() {
 
 	}
 

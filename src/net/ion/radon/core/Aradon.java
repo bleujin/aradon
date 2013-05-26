@@ -47,6 +47,7 @@ import net.ion.radon.core.server.AradonServerHelper;
 import net.ion.radon.core.server.ServerFactory;
 import net.ion.radon.impl.filter.RevokeServiceFilter;
 
+import org.apache.commons.configuration.ConfigurationException;
 import org.restlet.Application;
 import org.restlet.Component;
 import org.restlet.Request;
@@ -68,6 +69,7 @@ public class Aradon extends Component implements IService<SectionService>, Arado
 
 	// private AradonConfig aconfig;
 	private AradonServerHelper serverHelper;
+
 	private Aradon() {
 		super();
 		this.rootContext = TreeContext.createRootContext(getDefaultHost());
@@ -102,25 +104,24 @@ public class Aradon extends Component implements IService<SectionService>, Arado
 			rootContext.putAttribute(entry.getKey(), entry.getValue());
 		}
 		this.config = config;
-		config.aradon().initFilter(this) ;
+		config.aradon().initFilter(this);
 		this.setContext(rootContext);
 		setLogService(new RadonLogService());
 
-		
 		for (SectionConfiguration sconfig : config.aradon().sections().restSections()) {
 			attach(sconfig);
 		}
 
-		for (Entry<String, AttributeValue> entry : config.plugin().attributes().entrySet()){
+		for (Entry<String, AttributeValue> entry : config.plugin().attributes().entrySet()) {
 			rootContext.putAttribute(entry.getKey(), entry.getValue());
 		}
-		
-		for (SectionConfiguration pconfig : config.plugin().sections()){
-			attach(pconfig) ;
+
+		for (SectionConfiguration pconfig : config.plugin().sections()) {
+			attach(pconfig);
 		}
 		rootContext.putAttribute(CONFIG_PORT, config.server().connector().port());
-		
-		//start();
+
+		// start();
 	}
 
 	private String getSectionName(Request request) {
@@ -182,7 +183,7 @@ public class Aradon extends Component implements IService<SectionService>, Arado
 			return;
 
 		fireEvent(AradonEvent.STOP, this);
-		List<String> sectionNames = ListUtil.newList() ;
+		List<String> sectionNames = ListUtil.newList();
 		for (SectionService section : sections.values()) {
 			sectionNames.add(section.getName());
 		}
@@ -190,7 +191,6 @@ public class Aradon extends Component implements IService<SectionService>, Arado
 			detach(sectionName);
 		}
 
-		
 		getServiceContext().closeAttribute();
 
 		getGlobalConfig().server().stopShell();
@@ -230,7 +230,7 @@ public class Aradon extends Component implements IService<SectionService>, Arado
 		try {
 			getServers().add(new Server(Protocol.RIAP));
 			super.start();
-//			getGlobalConfig().plugin().loadPlugIn(this);
+			// getGlobalConfig().plugin().loadPlugIn(this);
 		} catch (Exception e) {
 			throw new AradonRuntimeException(e);
 		}
@@ -271,17 +271,24 @@ public class Aradon extends Component implements IService<SectionService>, Arado
 		getLogger().warning("aradon started : " + cfig.port());
 	}
 
-	public synchronized void reload() throws Exception {
+	public synchronized void reload() {
 		// if (true) throw new UnsupportedOperationException("not yet") ;
 
 		// reload section
-		for (Application section : this.sections.values()) {
-			this.getDefaultHost().detach(section);
-		}
-		sections.clear();
+		try {
+			for (Application section : this.sections.values()) {
+				this.getDefaultHost().detach(section);
+			}
+			sections.clear();
 
-		config.init(this, rootContext);
-		fireEvent(AradonEvent.RELOAD, this);
+			config.init(this, rootContext);
+		} catch (ConfigurationException ex) {
+			throw new IllegalStateException(ex) ;
+		} catch (InstanceCreationException ex) {
+			throw new IllegalStateException(ex) ;
+		} finally {
+			fireEvent(AradonEvent.RELOAD, this);
+		}
 	}
 
 	private boolean useAlreadyPortNum(int port) {
@@ -305,40 +312,41 @@ public class Aradon extends Component implements IService<SectionService>, Arado
 	private void fireEvent(final AradonEvent event, IService iservice) {
 		TreeContext serviceContext = iservice.getServiceContext();
 		List<OnEventObject> temp = sortEventObject(event, serviceContext);
-		
+
 		for (OnEventObject eventObject : temp) {
-			 eventObject.onEvent(event, iservice);
+			eventObject.onEvent(event, iservice);
 		}
 
 		for (Object child : iservice.getChildren()) {
-			fireEvent(event, (IService)child);
+			fireEvent(event, (IService) child);
 		}
 	}
-	
 
 	private List<OnEventObject> sortEventObject(final AradonEvent event, TreeContext serviceContext) {
-		List<OnEventObject> result =  ListUtil.newList() ;
+		List<OnEventObject> result = ListUtil.newList();
 		for (Object key : serviceContext.getAttributes().keySet()) {
 			Object value = serviceContext.getAttributeObject(ObjectUtil.toString(key));
 			if (OnEventObject.class.isInstance(value)) {
-				result.add((OnEventObject) value) ;
+				result.add((OnEventObject) value);
 			}
 		}
-		
-		Collections.sort(result, new Comparator<OnEventObject>(){
-			private int order(OnEventObject o){
-				if (o instanceof OnOrderEventObject){
-					return ((OnOrderEventObject)o).order() ;
+
+		Collections.sort(result, new Comparator<OnEventObject>() {
+			private int order(OnEventObject o) {
+				if (o instanceof OnOrderEventObject) {
+					return ((OnOrderEventObject) o).order();
 				} else {
-					return 100 ;
+					return 100;
 				}
 			}
+
 			public int compare(OnEventObject o1, OnEventObject o2) {
 				return (order(o1) - order(o2)) * (event == AradonEvent.START ? 1 : -1);
-			}}) ;
+			}
+		});
 		return result;
 	}
-	
+
 	public SectionService attach(SectionConfiguration sconfig) {
 		if (sections.containsKey(sconfig.name())) {
 			throw new IllegalArgumentException("already exist section : " + sconfig);
@@ -486,25 +494,25 @@ public class Aradon extends Component implements IService<SectionService>, Arado
 		return Engine.getInstance();
 	}
 
-	public Radon toRadon() throws InterruptedException, ExecutionException, FileNotFoundException{
-		return toRadon(config.server().connector().port()) ;
+	public Radon toRadon() throws InterruptedException, ExecutionException, FileNotFoundException {
+		return toRadon(config.server().connector().port());
 	}
-	
+
 	public Radon toRadon(int port) throws InterruptedException, ExecutionException, FileNotFoundException {
 		RadonConfigurationBuilder rbuilder = RadonConfiguration.newBuilder(port);
-		rbuilder.rootContext(this.getServiceContext()) ;
-		AradonHandler aradonHandler = AradonHandler.create(this) ;
+		rbuilder.rootContext(this.getServiceContext());
+		AradonHandler aradonHandler = AradonHandler.create(this);
 
 		for (SectionService ss : this.getChildren()) {
-			ss.addToRadonBuilder(rbuilder, aradonHandler) ;	
+			ss.addToRadonBuilder(rbuilder, aradonHandler);
 		}
-		
+
 		Protocol protocol = config.server().connector().protocol();
-		if (protocol.HTTPS.equals(protocol)){
-			rbuilder.protocol(protocol).setupSsl(config.server().connector().getSslParam()) ;
+		if (protocol.HTTPS.equals(protocol)) {
+			rbuilder.protocol(protocol).setupSsl(config.server().connector().getSslParam());
 		}
-		
-		return rbuilder.createRadon() ;
+
+		return rbuilder.createRadon();
 	}
 
 }

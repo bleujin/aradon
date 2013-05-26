@@ -124,7 +124,7 @@ public class PathService extends Restlet implements IService<PathService> {
 		return context;
 	}
 
-	public void reload() throws Exception {
+	public void reload(){
 		
 	}
 

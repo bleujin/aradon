@@ -55,6 +55,7 @@ public class Main {
         final Pusher pusher = new Pusher();
 
         Radon webServer = RadonConfiguration.newBuilder(webThread, 9876)
+                .add(new SimpleStaticFileHandler("./sample/net/ion/nradon/eventsource/content/"))
                 .add("/events/my", new EventSourceHandler() {
                     public void onOpen(EventSourceConnection conn) throws Exception {
                         pusher.addConnection(conn);
@@ -64,7 +65,6 @@ public class Main {
                         pusher.removeConnection(conn);
                     }
                 })
-                .add(new SimpleStaticFileHandler("./sample/net/ion/nradon/eventsource/content/"))
                 .startRadon();
 
         System.out.println("EventSource demo running on: " + webServer.getConfig().publicUri());

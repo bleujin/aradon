@@ -27,6 +27,7 @@ public class DirLet extends AbstractServerResource{
 		MediaType mtype = getMetadataService().getMediaType(StringUtil.substringAfterLast(file.getName(), ".")) ;
 		if (mtype == null) mtype = MediaType.ALL ; 
 		
+		mtype = getMetadataService().getMediaType(StringUtil.substringAfter(file.getName(), ".")) ;
 		final FileRepresentation result = new FileRepresentation(file, mtype);
 		return result;
 	}

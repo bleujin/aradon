@@ -95,7 +95,7 @@ public class EventSourcePathService implements ServerEventHandler, IService<Even
 		return "/" + getParent().getName() + "/" + getName();
 	}
 
-	public void reload() throws Exception {
+	public void reload(){
 		// TODO Auto-generated method stub
 	}
 
@@ -103,7 +103,7 @@ public class EventSourcePathService implements ServerEventHandler, IService<Even
 		// TODO Auto-generated method stub
 	}
 
-	public void stop() throws Exception {
+	public void stop(){
 		// TODO Auto-generated method stub
 	}
 

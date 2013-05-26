@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 
 import net.ion.framework.util.ListUtil;
 import net.ion.framework.util.MapUtil;
+import net.ion.framework.util.ObjectUtil;
 import net.ion.framework.util.StringUtil;
 import net.ion.nradon.config.RadonConfigurationBuilder;
 import net.ion.nradon.handler.aradon.AradonHandler;
@@ -204,7 +205,7 @@ public class HttpRestSection extends SectionService  {
 	}
 
 	public IService getChildService(String childName) {
-		return paths.get(childName);
+		return ObjectUtil.coalesce(path(childName), spath(childName), wspath(childName), epath(childName));
 	}
 
 	public PathService path(String childName){
@@ -250,7 +251,7 @@ public class HttpRestSection extends SectionService  {
 		return context;
 	}
 
-	public void reload() throws Exception {
+	public void reload() {
 		// TODO Auto-generated method stub
 
 	}

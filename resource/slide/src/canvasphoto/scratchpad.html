@@ -1,0 +1,97 @@
+
+<!doctype html>
+<html>
+   <head>
+      <title>HTML5 Canvas Scratch Pad</title>
+      <meta charset="utf-8" />
+      <style>
+body
+{
+   background-color: #aaa;
+   color: #222;
+   margin: 0px;
+   font-family: ProximaNova-Light,"Helvetica Neue",Tahoma,Helvetica,sans-serif;
+}
+#canvas
+{
+   background-color: #fff;
+   border: 1px solid #222;
+}
+.codewrapper
+{
+   position: absolute;
+   top: 0px;
+   right: 0px;
+   z-index: 100;
+}
+#code
+{
+   width: 500px;
+   height: 496px;
+}
+#errors
+{
+   width: 496px;
+   font-family: "Courier New";
+   font-weight: bold;
+   font-size: 0.8em;
+   color: #000;
+   border: 1px dashed red;
+   padding: 2px;
+   display: none;
+}
+.vars
+{
+   font-size: 0.8em;
+   padding-left: 4px;
+}
+.vars code
+{
+   font-size: 1.2em;
+}
+.controls
+{
+   font-size: 0.8em;
+   padding-bottom: 6px;
+}
+.controls button
+{
+   font-size: 0.9em;
+}
+.title
+{
+   font-size: 1.2em;
+}
+      </style>
+      <script src="sandbox.js"></script>
+   </head>
+   <body>
+      <div>
+         <div class="title">HTML5 Canvas Output</div>
+         <canvas id="canvas"></canvas>
+         <div id="errors"></div>
+      </div>
+      
+      <div class="codewrapper">
+         <div class="title">JavaScript Code</div>
+         <textarea id="code"></textarea>
+         <div class="controls">
+            <input type="checkbox" id="control-realtime" checked title="Realtime code compiling as you type and immediate update on the Canvas." />
+            <label for="control-realtime" title="Realtime code compiling as you type and immediate update on the Canvas.">Realtime Update</label>
+            <button  style="padding-right:12px" id="control-run">Execute</button>
+            <input type="checkbox" id="control-animate" checked title="Run your code in an endless animation loop." />
+            <label for="control-animate" title="Run your code in an endless animation loop.">Animate</label>
+            <select style="margin-left:12px" id="control-demos">
+               <option value="">Select example code...</option>
+               <option value="example-rectangles.js">1. Random Rectangles</option>
+               <option value="example-cloud.js">2. Biezer Cloud</option>
+               <option value="example-plasma.js">3. Plasma Effect</option>
+               <option value="example-starfield.js">4. Starfield</option>
+               <option value="example-js1klove.js">5. JS1K Love Demo</option>
+               <option value="example-curvemorphing.js">6. Curve Morphing</option>
+            </select>
+         </div>
+        
+      </div>
+   </body>
+</html>
