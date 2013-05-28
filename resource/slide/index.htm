@@ -107,12 +107,13 @@
 			<section>
 				<ul>
 				<li>blog : http://bleujin.tistory.com/</li>
-				<li>i-on communications cxm팀 수석연구원</li>
+				<li>i-on communications, cxm team</li>
 				<li>표준프레임워크 커미터</li><br /><br />
 				
-				<li>https://github.com/bleujin/aradon(분산 미들웨어)</li>
-				<li>https://github.com/bleujin/craken(분산 레파지토리)</li>
-				<li>etc) aradonClient, isearcher, ionframework</li>
+				<li>Working</li>
+				<li> - https://github.com/bleujin/aradon(분산 미들웨어)</li>
+				<li> - https://github.com/bleujin/craken(분산 레파지토리)</li>
+				<li> - etc) aradonClient, isearcher, ionframework</li>
 				</ul>
 			</section>
 
@@ -200,12 +201,13 @@
         
 
         <div class="slide" id="formula-intro-html5-tech">
-          <header><h1>API and related technologies</h1></header>
+          <header><h1>API and related technologies.</h1></header>
           <section>
           	<fiture>
           	<img src="src/html5_tec.png" width="100%" />
           	
           	</fiture>
+          	<img src="/src/HTML5_Connectivity_32.png" width="100%" />
           </section>
           <aside class="note">
             <section>
@@ -227,6 +229,7 @@
          	<header><h1>Support Browser</h1></header>
          	
         	<section>
+
         	<figure>2013년 05월 현재 HTML5을 완벽하게 지원하는 브라우저는 없다. 점차 HTML5을 지원하는 범위가 확대되고 있다.</figure>
         	
         	<br /><br />
@@ -324,7 +327,7 @@
 				<th>-</th>
 				</tr>
 				</table>
-				<figure>브라우저 지원현황(From wiki)</figure>
+				<figcaption>브라우저 지원현황(From wiki)</figcaption>
 				
 				
 				
@@ -2916,6 +2919,12 @@ db.<b>transaction</b>(function(tx) {
             #indexeddb-example .error {
               color: red;
             }
+            #indexdb-example iframe {
+              width: 100%;
+              height: 300px;
+              border: none;
+              background: white;
+            }
           </style>
           <header><span class="js">JS</span> <h1>IndexedDB</h1></header>
           <section>
@@ -2928,205 +2937,10 @@ idbRequest.onsuccess = function(event) {
   curRequest.<b>onsuccess</b> = ...;
 };
 </pre>
-          <div class="center" id="indexeddb-example">
-            <input type="text" placeholder="key" id="idb-key" size="10" /> <input type="text" placeholder="value" id="idb-value" size="15" />
-            <button onclick="indexedDbSample.idbSet()">set</button>
-            <button onclick="indexedDbSample.idbCreate()">create objectStore</button>
-            <button onclick="indexedDbSample.idbRemove()">remove objectStore</button>
-            <div id="idb-log"></div>
-            <div class="record-list" id="idb-results-wrapper"></div>
-          </div>
-          <script defer>
-            var indexedDbSample = (function() {
-              var idb_;
-              var idbRequest_;
-              var idbLog_ = document.getElementById('idb-log');
-              var idResultsWrapper_ = document.getElementById('idb-results-wrapper');
-
-              // IndexedDB spec is still evolving, various browsers keep it
-              // behind various flags and implementation varies.
-              if ('webkitIndexedDB' in window) {
-                window.indexedDB = window.webkitIndexedDB;
-                window.IDBTransaction = window.webkitIDBTransaction;
-              } else if ('moz_indexedDB' in window) {
-                window.indexedDB = window.moz_indexedDB;
-              }
-
-              // Open our IndexedDB if the browser supports it.
-              
-              if ( window.indexedDB ) {
-                idbRequest_ = window.indexedDB.open("Test", "A test object store.");
-                alert(idbRequest_) ;
-                idbRequest_.onerror = idbError_;
-                idbRequest_.addEventListener('success', function(event) {
-                  idb_ = event.srcElement.result;
-                  idbShow_(event);
-                }, false);
-              }
-
-              function idbError_(event) {
-                idbLog_.innerHTML += '<p class="error">Error: ' +
-                                     event.message + ' (' + event.code + ')</p>';
-              }
-
-              function idbShow_(event) {
-                if (!idb_.objectStoreNames.contains('myObjectStore')) {
-                  idbLog_.innerHTML = "<p>Object store not yet created.</p>";
-                  return;
-                }
-
-                var html = [];
-                var transaction = idb_.transaction([], IDBTransaction.READ_ONLY); // Read is default.
-                var request = transaction.objectStore('myObjectStore').openCursor(); // Get all results.
-
-                // This callback will continue to be called until we have no more results.
-                request.onsuccess = function(e) {
-                  var cursor = e.srcElement.result;
-                  if (!cursor) {
-                    idResultsWrapper_.innerHTML = '<ul class="record-list" id="idb-results">' + html.join('') + '</ul>';
-                    return;
-                  }
-                  html.push('<li><span class="keyval" contenteditable onblur="indexedDbSample.updateKey(\'',
-                            cursor.key, '\', this)">', cursor.key, '</span> ',
-                            '=> <span class="keyval" contenteditable onblur="indexedDbSample.updateValue(\'',
-                            cursor.key, '\', this)">', cursor.value, '</span>&nbsp; ',
-                            '<a href="javascript:void(0)" onclick="indexedDbSample.deleteKey(\'',
-                            cursor.key, '\')">[Delete]</a></li>');
-                  cursor.continue();
-                }
-                request.onerror = idbError_;
-              }
-
-              function idbCreate_() {
-                if (!idb_) {
-                  if (idbRequest_) {
-                    idbRequest_.addEventListener('success', removeObjectStore, false); // If indexedDB is still opening, just queue this up.
-                  }
-                  return;
-                }
-
-                var request = idb_.setVersion('the new version string');
-                request.onerror = idbError_;
-                request.onsuccess = function(e) {
-                  if (!idb_.objectStoreNames.contains('myObjectStore')) {
-                    try {
-                      var objectStore = idb_.createObjectStore('myObjectStore', null); // FF is requiring the 2nd keyPath arg. It can be optional :(
-                      idbLog_.innerHTML = "<p>Object store created.</p>";
-                    } catch (err) {
-                      idbLog_.innerHTML = '<p class="error">' + err.toString() + '</p>';
-                    }
-                  } else {
-                    idbLog_.innerHTML = '<p class="error">Object store already exists.</p>';
-                  }
-                }
-              }
-
-              function idbSet_() {
-                if (!idb_) {
-                  if (idbRequest_) {
-                    idbRequest_.addEventListener('success', removeObjectStore, false); // If indexedDB is still opening, just queue this up.
-                  }
-                  return;
-                }
-
-                if (!idb_.objectStoreNames.contains('myObjectStore')) {
-                  idbLog_.innerHTML = "<p class=\"error\">Object store doesn't exist.</p>";
-                  return;
-                }
-
-                 // Create a transaction that locks the world.
-                var objectStore = idb_.transaction([], IDBTransaction.READ_WRITE)
-                                      .objectStore("myObjectStore");
-                var request = objectStore.put(
-                    document.getElementById('idb-value').value,
-                    document.getElementById('idb-key').value);
-                request.onerror = idbError_;
-                request.onsuccess = idbShow_;
-              }
-
-              function updateKey_(key, element) {
-                var newKey = element.textContent;
-                var transaction = idb_.transaction([], IDBTransaction.READ_WRITE); // Create a transaction that locks the world.
-                var objectStore = transaction.objectStore("myObjectStore");
-                var request = objectStore.get(key);
-                request.onerror = idbError_;
-                request.onsuccess = function(event) {
-                  var value = event.srcElement.result;
-                  if (objectStore.delete) {
-                    var request = objectStore.delete(key);
-                  } else {
-                    var request = objectStore.remove(key);
-                  }
-                  request.onerror = idbError_;
-                  request.onsuccess = function(event) {
-                    var request = objectStore.add(value, newKey);
-                    request.onerror = idbError_;
-                    request.onsuccess = idbShow_;
-                  };
-                };
-              }
-
-              function updateValue_(key, element) {
-                var transaction = idb_.transaction([], IDBTransaction.READ_WRITE); // Create a transaction that locks the world.
-                var objectStore = transaction.objectStore("myObjectStore");
-                var request = objectStore.put(element.textContent, key);
-                request.onerror = idbError_;
-                request.onsuccess = idbShow_;
-              }
-
-              function deleteKey_(key) {
-                var transaction = idb_.transaction([], IDBTransaction.READ_WRITE); // Create a transaction that locks the world.
-                var objectStore = transaction.objectStore("myObjectStore");
-                if (objectStore.delete) {
-                  var request = objectStore.delete(key);
-                } else {
-                  var request = objectStore.remove(key);
-                }
-                request.onerror = idbError_;
-                request.onsuccess = idbShow_;
-              }
-
-              function idbRemove_() {
-                if (!idb_) {
-                  if (idbRequest_) {
-                    idbRequest_.addEventListener('success', removeObjectStore, false); // If indexedDB is still opening, just queue this up.
-                  }
-                  return;
-                }
-
-                var request = idb_.setVersion("the new version string");
-                request.onerror = idbError_;
-                request.onsuccess = function(event) {
-
-                  if (idb_.objectStoreNames.contains('myObjectStore')) {
-                    try {
-                      // Spec has been updated to deleteObjectStore.
-                      if (idb_.deleteObjectStore) {
-                        idb_.deleteObjectStore('myObjectStore');
-                      } else {
-                        idb_.removeObjectStore('myObjectStore');
-                      }
-                      idResultsWrapper_.innerHTML = '';
-                      idbLog_.innerHTML = "<p>Object store removed.</p>";
-                    } catch (err) {
-                      idbLog_.innerHTML = '<p class="error">' + err.toString() + '</p>';
-                    }
-                  } else {
-                    idbLog_.innerHTML = "<p class=\"error\">Object store doesn't exist.</p>";
-                  }
-                };
-              }
-
-              return {
-                idbSet: idbSet_,
-                idbCreate: idbCreate_,
-                idbRemove: idbRemove_,
-                updateKey: updateKey_,
-                updateValue: updateValue_,
-                deleteKey: deleteKey_
-              }
-            })();
-          </script>
+         <div id="indexdb-example">
+         	<iframe _src="src/indexdb/indexdb_sample.htm" ></iframe>
+         </div>
+         
         </section>
 
       </div>
@@ -3492,8 +3306,6 @@ socket.<b>onclose</b> = function(event) { alert('closed'); }
                 <button id="wsClearLogBut">Clear log</button>
               </div>
             </div>
-            
-
           </section>
           <script src="src/websocket/websocket.js" defer></script>
         </div>
@@ -3502,121 +3314,71 @@ socket.<b>onclose</b> = function(event) { alert('closed'); }
         
 
 
-        <div class="slide realtime-communication" id="notifications-api">
+        <div class="slide realtime-communication" id="eventsource-api">
           <style>
-            #notifications-message {
+            #eventsource {
               text-align: center;
             }
+            #eventsource iframe {
+	            width: 100%;
+	            height: 100%;
+	            border: none;
+           }
           </style>
-          <header><span class="js">JS</span> <h1>Notifications</h1></header>
+          <header><span class="js">JS</span> <h1>EventSource</h1></header>
           <section>
-<pre>if (window.<b>webkitNotifications</b>.<b>checkPermission</b>() == 0) {
-  // you can pass any url as a parameter
-  window.<b>webkitNotifications</b>.<b>createNotification</b>(tweet.picture, tweet.title, 
-      tweet.text).<b>show</b>();
-} else {
-  window.<b>webkitNotifications</b>.<b>requestPermission</b>();
-}
-</pre>
-        <div id="notifications-message">
-          <p>
-            <button id="request-permission" href="#">Set notification permissions for this page</button>
-          </p>
-          <p>Note: Use this button if you also want to <em>reset</em> the permissions</p>
-
-          <br>
-          <p>Enter your twitter user name to show your last tweet as a notification</p>
-          <input type="text" id="username" placeholder="username" />
-          <button id="show-tweets">Show tweet notifications</button>
-        </div>
-
-          <script defer>
-          document.getElementById('request-permission').addEventListener('click', function() {
-            window.webkitNotifications.requestPermission();
-          }, false);
-
-          document.getElementById('show-tweets').addEventListener('click', function() {
-            readTweets();
-          }, false);
-
-          function readTweets() {
-            var username = document.getElementById('username').value;
-            if (username == 'username') {
-              alert('Enter a username first');
-              return;
-            }
-            var script = document.createElement("script");
-            script.src = 'http://twitter.com/statuses/user_timeline/'+ username+'.json?count=1&callback=fetchTweets';
-            document.body.appendChild(script);
-          }
-
-          function fetchTweets(data) {
-            var tweet;
-            var i = data.length;
-            while (i--) {
-              tweet = data[i];
-              if (window.webkitNotifications.checkPermission() == 0) {
-                // note the show()
-                window.webkitNotifications.createNotification(tweet.user.profile_image_url, tweet.user.name, tweet.text).show();
-              } else {
-                // Note that we can't call requestPermission from here as we are in the callback function and not triggered just on user action
-                alert('You have to click on "Set notification permissions for this page" first to be able to receive notifications.');
-                return;
-              }
-            }
-          }
-          </script>
+<pre>var es = new <b>EventSource</b>('events/my');
+es.<b>onopen</b> = function() { logText('OPEN'); };
+es.<b>onmessage</b> = function(event) {
+    logText(event.data);
+};
+es.<b>onerror</b> = function() { logText('ERROR'); };</pre>
+        <div id="eventsource">
+			<form>
+	          	<textarea id="data" rows="14" cols="100%"></textarea>
+				<input type="button" id="esStart" name="start" value="start" />
+				<input type="button" id="esEnd" name="close" value="close" />
+			</form>
         </section>
         
-        	<aside class="note">
-			<section></section>
-			</aside> 
+         <script defer>
+         (function() {
+             var es = null;
+             var textArea = null ;
+        	 function logText(msg) {
+                 textArea.value = textArea.value + msg + '\n';
+                 textArea.scrollTop = textArea.scrollHeight; // scroll into view
+             }
+
+             function start() {
+             	es = new EventSource('events/my');
+             	textArea = document.getElementById('data');
+                es.onopen = function() {
+                    logText('OPEN');
+                };
+                es.onmessage = function(event) {
+                    logText(event.data);
+                };
+                es.onerror = function() {
+                    logText('ERROR');
+                };
+             }
+
+			 function end(){
+				if (es != null) es.close() ;
+				es = null ;
+			 }
+             
+             esStart = document.getElementById("esStart");
+             esStart.onclick = start;
+             
+             esEnd = document.getElementById("esEnd");
+             esEnd.onclick = end;
+         })() ;
+         </script>
        
         </div>
         
-
-<!-- 
-		 <div class="slide realtime-communication" id="server-sent-event-api">
-          <style>
-            #notifications-message {
-              text-align: center;
-            }
-          </style>
-          <header><span class="js">JS</span> <h1>Server Sent Events</h1></header>
-          <section>
-          2012-9-20 Candidate Recommendation
-<pre>var es = new EventSource(<b>'/events/bleujin'</b>);
-        es.<b>onopen</b> = function() { logText('OPEN'); }
-        es.<b>onmessage</b> = function(event) { logText(event.data);}
-        es.<b>onerror</b> = function() { logText('ERROR');}
-
-</pre>
-
-            <p id="eventsource-message">opening an HTTP connection for receiving push notifications from a server in the form of DOM events</p>
-
-            <div id="es-left">
-              
-
-              <div id="es-config-location">
-                <h4>Location:</h4>
-                <input type="text" id="esUri" disabled />
-                <br>
-                <button id="esConnectBut" disabled>Connect</button>
-                <button id="esDisconnectBut" disabled>Disconnect</button>
-              </div>
-            </div>
-            <div id="es-right">
-              <div id="es-log">
-                <strong>Output:</strong>
-                <div id="esConsoleLog"></div>
-                <button id="esClearLogBut">Clear log</button>
-              </div>
-            </div>
-          </section>
-          <script src="src/websocket/websocket.js" defer></script>
-        </div>
--->
-
 
 
 
@@ -3736,6 +3498,333 @@ window.addEventListener('<em>popstate</em>', function(event) {
         </div>
 
 
+
+
+
+        <div class="slide transitionSlide" id="websocket-markup-title">
+          <section class="middle">
+            <h2>WebSocket</h2>
+            <p>Realtime-communications</p>
+            <img src="src/HTML5_Offline_Storage_32.png" title="HTML5 WebSocket" alt="HTML5 WebSocket">
+          </section>
+        </div>
+
+
+		<div class="slide websocket" id="p2websocket">
+		  <header><h1>WebSocket...</h1></header>
+          <section>
+            <ul class="bullets">
+            	<li>Why do we need WebSocket ?</li>
+            	<li>What is it ?</li>
+            	<li>How does it work ?</li>
+            	<li>When can we use it ?</li>
+            </ul>
+          </section>
+		</div>
+
+
+		<div class="slide websocket" id="why_websocket">
+		  <header><h1>Why ?</h1></header>
+          <section>
+          	<br/>
+            <h2>Web apps demand reliable "real-time"(event-drive) communication with minimal latency.</h2>
+            <pre>Social networking apps
+Online games
+Collaborative platforms
+Financial application
+etc...
+</pre>
+			<br/>
+            <h2>Problems with HTTP</h2>
+			<pre>HTTP is half-duplex(traffic flows in only on direction at a time)
+HTTP adds latency.
+</pre>
+
+          </section>
+		</div>
+
+
+		<div class="slide websocket" id="why_websocket_simulate">
+		  <header><h1>Why ? Simulate real-time</h1></header>
+          <section>
+         	<style type="text/css" media="screen">
+              #why_websocket_simulate div {
+                float: left;
+                width: 48%;
+                padding-right: 1%;
+                text-align: center;
+              }
+              #why_websocket_simulate img {
+                width: 100%;
+                -webkit-box-shadow: rgba(0, 0, 0, 0.3) 0 4px 6px;
+              }
+            </style>
+          	<br/>
+          	<div>
+          	<figure>
+          		<img src="src/websocket/polling.png">
+          		<figcaption>Polling Architecuture</figcaption></figure>
+          	</div>
+          	
+          	<div>
+          	<figure>
+          		<img src="src/websocket/longpolling.png">
+          		<figcaption>LongPolling Architecuture</figcaption></figure>
+			</div>
+          </section>
+          
+          <section>
+          <h2>Problem with this architecutre</h2>
+          <pre>Network Traffic(HttpHeader) OverHead
+Server Thread Overhead(동시성)
+구조적 문제
+Comet, Applet or Flash, Socket.IO(Node.js) 등의 다른 방법을 찾음
+</pre>
+          <section>
+		</div>
+
+
+		<div class="slide websocket" id="what_websocket_browser">
+		<header><h1>What is a WebSocket</h1></header>
+       	<section>
+       		<pre>- W3C/IETF Standard
+- Uses the WebSocket protocol based HTTP
+- True full-duplex communication channel(Both UTF-8 strings and binary frames can be send in any direction at the same time
+- Connection established by "upgrading" from HTTP to WebSocket protocol
+- It's not a raw TCP socket
+- Runs via port 80/443 - Proxy/Firewall friendly(HTTP-compatible handshake)
+- WebSockets and Secure WebSockets(ws://, wss:// )</pre>
+
+			<br />
+       	<table class="wikitable" border="1" cellspacing="0" cellpadding="3" width="100%">
+<caption>Protocol Implementation status</caption>
+<tr>
+<th>Protocol</th>
+<th>Draft date</th>
+<th>ie</th>
+<th>ff (PC/Mo)</th>
+<th>Chrome (PC, Mo)</th>
+<th>Safari (Mac, iOS)</th>
+<th>Android</th>
+</tr>
+<tr>
+<th>hixie-75</th>
+<td>2010.2</td>
+<td></td>
+<td></td>
+<td>4</td>
+<td>5.0.0</td>
+<td></td>
+</tr>
+<tr>
+<th>hixie-76<br />
+hybi-00</th>
+<td>2010.5</td>
+<td></td>
+<td>4.0 (disabled) /</td>
+<td>6</td>
+<td>5.0.1</td>
+<td></td>
+</tr>
+<tr>
+<th>7 hybi-07</th>
+<td>2011.4</td>
+<td></td>
+<td>6 /</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>8 hybi-10</th>
+<td>2011.7</td>
+<td></td>
+<td>7 / 7</td>
+<td>14</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>13 RFC 6455</th>
+<td>2011.12</td>
+<td>10</td>
+<td>11 / 11</td>
+<td>16</td>
+<td>6</td>
+<td></td>
+</tr>
+</table>
+       	</section>
+       	</div>
+
+
+		<div class="slide websocket" id="what_websocket">
+		<header><h1>What is a WebSocket</h1></header>
+       	<section>
+       		<style type="text/css" media="screen">
+              #what_websocket div{
+                float: left;
+                width: 48%;
+                padding-right: 1%;
+                text-align: center;
+                text-overflow: ellipsis;
+                overflow: hidden; 
+              }
+            </style>
+       		
+			<div>
+			Request Headers
+<pre>GET /mychat HTTP/1.1
+Host: server.example.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key: x3JJHMbDL1EzLkh9GBhXDw==
+Sec-WebSocket-Protocol: chat
+Sec-WebSocket-Version: 13
+Origin: http://example.com</pre>
+
+<br />
+Response Headers
+<pre>HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: HSmrc0sMlYUkAGmm5OPpG2HaGWk=
+Sec-WebSocket-Protocol: chat</pre>
+			</div>
+			
+			<div><br />
+				<figure><img src="src/websocket/websocket-lifecycle.png" width="100%" height="70%"><figure>
+			</div>          		
+		</section>
+		</div>
+
+		<div class="slide websocket" id="how_websocket">
+		<header><h1>How?</h1></header>
+       	<section>
+       		<style type="text/css" media="screen">
+              #how_websocket div{
+                float: left;
+                width: 48%;
+                padding-right: 1%;
+                text-align: center;
+                text-overflow: ellipsis;
+                overflow: hidden; 
+              }
+            </style>
+            <br />
+			<div>
+			Javascript client
+<pre>if ('WebSocket' in window) {
+    var ws = new WebSocket(“ws://localhost:80”);
+ 
+    ws.onmessage = function (e) {
+        console.log(e.data);
+    };
+ 
+    ws.onopen = function (e) {
+        console.log(“open”);
+    };
+ 
+    ws.onclose = function (e) {
+        console.log(“close”);
+    };
+ 
+    ws.send(“message”);
+    // ws.close();
+}
+</pre>
+			</div>
+			
+			<div>
+			Server implementation
+<pre>Kaazing WebSocket
+
+phpwebsockets
+
+web-socket-ruby
+
+mod_pywebsocket
+
+JWebSocket
+
+Jetty WebSocketServlet
+
+Aradon
+			</div>  
+            
+		</section>
+		</div>
+
+
+		<div class="slide websocket" id="how_websocket_jetty">
+		<header><h1>How? Jetty server example</h1></header>
+       	<section>
+
+		<div>
+		<pre>public class ChatServlet extends WebSocketServlet implements Servlet {
+	...
+	
+	protected WebSocket doWebSocketConnect(HttpServletRequest req, String arg){
+		return new ChatWebSocket() ;
+	}
+	
+	Set&lt;ChatWebSocket&gt; clients = new CopyOnWriteArraySet&lt;ChatWebSocket&gt;();
+	
+	class ChatWebSocket implements WebSocket {
+        private Outbound out ;
+        public void onConnect(Outbound outbound) {
+	        this.out = outbound ;
+            clients.add(this) ;
+        }
+        public void onMessage(byte frame, String data){
+            for(ChatWebSocket socket : clients){ // broadcast
+                socket.outbound.sendMessage(frame, data) ;
+            }
+        }
+        public void onDisconnect() {
+            clients.remove(this) ;
+        }
+    }</pre>
+		</div>
+
+       	
+       	</section>
+       	</div>
+
+		
+		<div class="slide" id="websocket-silverbullet1">
+          <header><h1>But It's not a silver bullet</h1></header>
+          <section>
+
+<pre>
+  close 이벤트 핸들링
+  - App은 Idle timeout이나 Network error시에 reopen를 할 수 있어야 한다.
+   
+  Keep-alive
+  - 이후에 ping-pong interface 추가
+  - WiFi나 Mobile device에서 close 이벤트 핸들링은 여전히 필요하다.
+  
+  Resend Queue
+  - 연결이 복구되었을때 메세지를 다시 보낼 수 있어야 한다. 
+  - 서버와 클라이언트 모두 중요하다. 
+  
+  Timeout
+  - 네트워크 문제는 항상 일어날 수 있다. 
+  - App은 network failure와 명시적인 close 이벤트를 구분해야 한다. 
+   
+  Message Reties
+  - 각 메세지는 순서대로 간다는 보장이 없으며 심지어 제대로 갔는지 조차 확신할 수 없다. 
+  - 심지어 Message보다 close 이벤트가 더 먼저 갈 수 있다.
+  - 서비스의 품질을 위해 각 메세지는 정확한 전달을 보장해야 하며 이를 위해 echo가 필요하다. 
+    
+  Other problem
+  - 서버가 다운되었을때 클라이언트는 무한 연결 시도를 할 수 있다.(retry backoff 고려)
+  - 메세지의 크기가 지나치게 크면 서버는 거부할 수 있으며 클라이언트 입장에서는 
+    Network error처럼 보인다.</pre>
+          </section>
+        </div>
+
+
         <div class="slide" id="browser-support">
           <header><h1>See it today?</h1></header>
           <section>
@@ -3747,49 +3836,6 @@ window.addEventListener('<em>popstate</em>', function(event) {
           </section>
         </div>
 
-
-        <div class="slide" id="chrome-frame">
-          <style>
-            span.space {
-              padding: 0 5px;
-            }
-          </style>
-          <header><h1>Chrome Frame</h1></header>
-          <section>
-            <ul class="bullets">
-              <li>Minimal effort for bringing IE6, 7 and 8 up to the latest HTML5 technologies</li>
-              <li>Two ways to get your websites ready for Chrome Frame:</li>
-            </ul>
-            <p>Client side:</p>
-            <pre>&lt;meta http-equiv="X-UA-Compatible" content="chrome=1"></pre>
-            <p>Server side:</p>
-            <pre>X-UA-Compatible: chrome=1</pre>
-            <p style="font-size: 30px">
-              Try to load this presentation in IE!
-            </p>
-          </section>
-        </div>
-
-        <div class="slide transitionSlide" id="websocket-markup-title">
-          <section class="middle">
-            <h2>WebSocket</h2>
-            <p>More meaningful elements(<b>to machine</b>)</p>
-            <img src="src/HTML5_Offline_Storage_32.png" title="HTML5 WebSocket" alt="HTML5 WebSocket">
-          </section>
-        </div>
-
-
-		<div class="slide websocket" id="p2websocket">
-			
-			Why do we need WebSocket ?
-			
-			What is it ?
-			
-			How does it work ?
-			
-			When can we use it ?
-			
-		</div>
 
 
         <div class="slide" id="formula-outro-slide">
@@ -3814,8 +3860,8 @@ window.addEventListener('<em>popstate</em>', function(event) {
               HTML5 <em class="stroke">=</em> Next Generation Features for Modern Web Development
             </p>
             <p class="resource-link">
-              <a href="http://slides.html5rocks.com">http://slides.html5rocks.com</a>
               <a href="http://www.html5rocks.com">http://www.html5rocks.com</a>
+              <a href="http://www.w3.org/html/ig/ko/Overview.ko.html">HYML5 Korea Newsgroup</a>
             </p>
           </section>
         </div>

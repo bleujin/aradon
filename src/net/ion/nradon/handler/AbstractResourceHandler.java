@@ -260,6 +260,10 @@ public abstract class AbstractResourceHandler extends AbstractHttpHandler {
 
 		// TODO: Don't respond with a mime type that violates the request's Accept header
 		private String guessMimeType(String path) {
+			if (path.endsWith(".appcache")){
+				return "text/cache-manifest" ;
+			}
+			
 			int lastDot = path.lastIndexOf('.');
 			if (lastDot == -1) {
 				return null;
