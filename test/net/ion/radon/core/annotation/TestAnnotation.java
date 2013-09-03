@@ -101,6 +101,13 @@ public class TestAnnotation {
 		assertEquals("246", res.getEntityAsText()) ;
 	}
 	
+	
+	@Test
+	public void testDash() throws Exception {
+		Response res = ac.createRequest("/test/123?m=dash").addParameter("serial-key", "vvv").handle(Method.POST);
+		assertEquals(200, res.getStatus().getCode()) ;
+		assertEquals("vvv", res.getEntityAsText()) ;
+	}
 }
 
 
@@ -145,6 +152,14 @@ class TestLet extends AbstractServerResource {
 	public String defaultValue(@DefaultValue("hello") @FormParam("fkey") String formValue, @DefaultValue("-1") @PathParam("pkey") int dft){
 		return formValue + dft;
 	}
+
+	@Post("?m=dash")
+	public String dashValue(@FormParam("serial-key") @DefaultValue("") String serialValue){
+		return serialValue;
+	}
+	
+
+	
 	
 	@Post("?m=formbean")
 	public String formValue(@FormBean User user, @FormBean  Another ano ){

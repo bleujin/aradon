@@ -3,6 +3,7 @@
 
 	<property name="baseDir" value="." />
 	<property name="binDir" value="./bin" />
+	<property name="sbinDir" value="./sbin" />
 	<property name="publishDir" value="./publish" />
 	
 	<tstamp>
@@ -49,6 +50,29 @@
 			</manifest>
 			<fileset dir="${binDir}/" includes="net/**" />
 			<fileset dir="${binDir}/" includes="org/**" />
+			<fileset dir="${sbinDir}/" includes="net/**" />
+			<fileset dir="${sbinDir}/" includes="org/**" />
+		</jar>
+	</target>
+	
+	
+
+	<target name="publish_mobile"  depends="test_aradon">
+		<delete file="publish/aradon_mobile_${version.number}.${build.number}.jar"></delete>
+		<jar destfile="publish/aradon_mobile_${version.number}.${build.number}.jar">
+			<manifest>
+			  <attribute name="Built-By" value="${user.name}"/>
+			  <attribute name="Created-By" value="${user.name}"/>
+			  <attribute name="Main-Class" value="${manifest.main.class}" />
+			  <attribute name="Built-Date" value="${TODAY_MY}" />
+			  <attribute name="Class-Path" value="${manifest.classpath}" />
+			  <section name="common">
+			    <attribute name="Specification-Title" value="i-on aradon platform"/>
+			    <attribute name="Specification-Version" value="${version.number}.${build.number}"/>
+			    <attribute name="Specification-Vendor" value="i-on"/>
+			  </section>
+			</manifest>
+			<fileset dir="${sbinDir}/" includes="net/**" />
 		</jar>
 	</target>
 	

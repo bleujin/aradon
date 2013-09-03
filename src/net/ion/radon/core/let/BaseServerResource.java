@@ -164,11 +164,11 @@ public abstract class BaseServerResource extends ServerResource {
 		} catch (IllegalAccessException e) {
 			throw new ResourceException(e);
 		} catch (InvocationTargetException e) {
-			e.printStackTrace();
 			if (e.getTargetException() instanceof ResourceException) {
 				throw (ResourceException) e.getTargetException();
 			}
-
+			
+			e.printStackTrace();
 			throw new ResourceException(e.getTargetException());
 		} catch (NoSuchMethodException e) {
 			throw new ResourceException(e);
@@ -398,14 +398,13 @@ class ParamAnnotation {
 					resultValue = typeValue(parameterType, matrix.getValues(valueName, (String) null, true));
 				} else if (an instanceof ContextParam) {
 					resultValue = context.getAttributeObject(valueName);
+				} else if (an instanceof DefaultValue) {
+					defaultValue = ((DefaultValue) an).value();
 				} else {
 					resultValue = null;
 				}
 			}
 
-			if (an instanceof DefaultValue) {
-				defaultValue = ((DefaultValue) an).value();
-			}
 		}
 
 		resultValue = ObjectUtil.coalesce(resultValue, typeValue(parameterType, defaultValue));

@@ -96,6 +96,13 @@ public class TestAradonClient {
 		}
 	}
 
+
+	public void testFirst() throws Exception {
+		
+	}
+	
+
+
 }
 
 class RequestLet extends AbstractServerResource {

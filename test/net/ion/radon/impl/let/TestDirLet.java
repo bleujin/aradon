@@ -21,6 +21,8 @@ import net.ion.nradon.handler.SimpleStaticFileHandler;
 import net.ion.radon.client.AradonClient;
 import net.ion.radon.client.AradonClientFactory;
 import net.ion.radon.core.Aradon;
+import net.ion.radon.core.EnumClass.IMatchMode;
+import net.ion.radon.core.config.ConnectorConfiguration;
 import net.ion.radon.util.AradonTester;
 
 import org.junit.Test;
@@ -48,12 +50,27 @@ public class TestDirLet {
 	
 	@Test
 	public void testSlideAradon() throws Exception {
-		Aradon aradon = AradonTester.create().register("", "/{file}", DirLet.class).getAradon() ;
+		Aradon aradon = AradonTester.create().register("", "/{file}", IMatchMode.STARTWITH, DirLet.class).getAradon() ;
 		aradon.getServiceContext().putAttribute("base.dir", "./resource/slide") ;
 		
-		aradon.startServer(9000) ;
+		aradon.startServer(ConnectorConfiguration.makeJettyHTTPConfig(9000)) ;
+		
+//		aradon.startServer(9000) ;
 		new InfinityThread().startNJoin() ;
 	}
+	
+
+	@Test
+	public void testSlideTeam() throws Exception {
+		Aradon aradon = AradonTester.create().register("", "/{file}", IMatchMode.STARTWITH, DirLet.class).getAradon() ;
+		aradon.getServiceContext().putAttribute("base.dir", "./resource/docs") ;
+		
+		aradon.startServer(ConnectorConfiguration.makeJettyHTTPConfig(9000)) ;
+		
+//		aradon.startServer(9000) ;
+		new InfinityThread().startNJoin() ;
+	}
+	
 	
 	@Test
 	public void testSlide() throws Exception {

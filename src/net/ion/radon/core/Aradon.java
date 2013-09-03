@@ -153,7 +153,7 @@ public class Aradon extends Component implements IService<SectionService>, Arado
 				super.handle(innerRequest, innerResponse);
 			}
 		} catch (ResourceException ex) {
-			ex.printStackTrace();
+//			ex.printStackTrace();
 			getLogger().warning(ex.getMessage());
 			response.setStatus(ex.getStatus());
 		} catch (Exception ex) {

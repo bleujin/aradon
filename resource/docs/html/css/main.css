@@ -241,13 +241,13 @@ html {
 	        transition: all .2s ease;
 }
 	
-	#reveal a:not(.image):hover {
-		color: hsl(185, 85%, 70%);
-		background: hsla(185, 25%, 20%, 0.4);
-		text-shadow: none;
-		border: none;
-		border-radius: 2px;
-	}
+#reveal a:not(.image):hover {
+	color: hsl(185, 85%, 70%);
+	background: hsla(185, 25%, 20%, 0.4);
+	text-shadow: none;
+	border: none;
+	border-radius: 2px;
+}
 
 #reveal section img {
 	margin: 30px 0 0 0;
@@ -266,15 +266,21 @@ html {
 	        transition: all .2s linear;
 }
 
-	#reveal a:hover img {
-		background: rgba(255,255,255,0.2);
-		border-color: #13DAEC;
-		
-		-webkit-box-shadow: 0 0 20px rgba(0, 0, 0, 0.55);
-		   -moz-box-shadow: 0 0 20px rgba(0, 0, 0, 0.55);
-		     -o-box-shadow: 0 0 20px rgba(0, 0, 0, 0.55);
-		        box-shadow: 0 0 20px rgba(0, 0, 0, 0.55);
-	}
+
+#reveal section b {
+	color: hsl(185, 85%, 70%);
+	font-size : 30px ;
+}
+
+#reveal a:hover img {
+	background: rgba(255,255,255,0.2);
+	border-color: #13DAEC;
+	
+	-webkit-box-shadow: 0 0 20px rgba(0, 0, 0, 0.55);
+	   -moz-box-shadow: 0 0 20px rgba(0, 0, 0, 0.55);
+	     -o-box-shadow: 0 0 20px rgba(0, 0, 0, 0.55);
+	        box-shadow: 0 0 20px rgba(0, 0, 0, 0.55);
+}
 
 
 /*********************************************
@@ -291,40 +297,40 @@ html {
 	bottom: 0;
 }
 	
-	#reveal .controls a {
-		font-size: 30px;
-		position: absolute;
-		opacity: 0.1;
-		color: #fff;
+#reveal .controls a {
+	font-size: 30px;
+	position: absolute;
+	opacity: 0.1;
+	color: #fff;
+}
+	#reveal .controls a.enabled {
+		opacity: 0.6;
+		color: hsl(185, 85%, 70%);
+
+		text-shadow: 0px 0px 2px hsla(185, 45%, 70%, 0.3);
 	}
-		#reveal .controls a.enabled {
-			opacity: 0.6;
-			color: hsl(185, 85%, 70%);
-
-			text-shadow: 0px 0px 2px hsla(185, 45%, 70%, 0.3);
-		}
-		#reveal .controls a.enabled:active {
-			margin-top: 1px;
-		}
-
-	#reveal .controls .left {
-		top: 30px;
+	#reveal .controls a.enabled:active {
+		margin-top: 1px;
 	}
 
-	#reveal .controls .right {
-		left: 60px;
-		top: 30px;
-	}
+#reveal .controls .left {
+	top: 30px;
+}
 
-	#reveal .controls .up {
-		left: 30px;
-	}
+#reveal .controls .right {
+	left: 60px;
+	top: 30px;
+}
 
-	#reveal .controls .down {
-		left: 30px;
-		top: 60px;
+#reveal .controls .up {
+	left: 30px;
+}
 
-	}
+#reveal .controls .down {
+	left: 30px;
+	top: 60px;
+
+}
 
 
 /*********************************************

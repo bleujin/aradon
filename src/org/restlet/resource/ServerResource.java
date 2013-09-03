@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
+import net.ion.framework.util.ObjectUtil;
 import net.ion.nradon.let.IServiceLet;
 
 import org.restlet.Uniform;
@@ -361,7 +362,7 @@ public abstract class ServerResource extends UniformResource  implements IServic
 	}
 
 	public List getVariants() {
-		return getVariants(getMethod());
+		return getVariants(ObjectUtil.coalesce(getMethod(), Method.GET));
 	}
 
 	protected List getVariants(Method method) {
@@ -375,17 +376,19 @@ public abstract class ServerResource extends UniformResource  implements IServic
 				do {
 					if (!i$.hasNext())
 						break;
+					
 					AnnotationInfo annotationInfo = (AnnotationInfo) i$.next();
-					if (annotationInfo.isCompatible(method, getQuery(), getRequestEntity(), getMetadataService(), getConverterService())) {
-						annoVariants = annotationInfo.getResponseVariants(getMetadataService(), getConverterService());
-						if (annoVariants != null) {
-							Iterator it = annoVariants.iterator();
-							while (it.hasNext()) {
-								Variant v = (Variant) it.next();
-								result.add(new VariantInfo(v, annotationInfo));
-							}
-						}
-					}
+//					if (annotationInfo.isCompatible(method, getQuery(), getRequestEntity(), getMetadataService(), getConverterService())) {
+//						annoVariants = annotationInfo.getResponseVariants(getMetadataService(), getConverterService());
+//						if (annoVariants != null) {
+//							Iterator it = annoVariants.iterator();
+//							while (it.hasNext()) {
+//								Variant v = (Variant) it.next();
+//								result.add(new VariantInfo(v, annotationInfo));
+//							}
+//						}
+//					}
+					
 				} while (true);
 			}
 			variants = result;

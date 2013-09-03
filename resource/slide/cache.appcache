@@ -1,8 +1,6 @@
 CACHE MANIFEST
-#2013-05-05 13:48:11.23
+#2013-05-06 13:48:15.3344
 
-CACHE:
-/index.htm
 /src/android-form-number.png
 /src/android-form-text.png
 /src/chrome.png
@@ -32,11 +30,7 @@ CACHE:
 /src/dnd/dnd-lib.js
 /src/fonts/inconsolata/Inconsolata.ttf
 /src/fonts/junction02/junction02-webfont.eot
-/src/fonts/junction02/junction02-webfont.svg
-/src/fonts/junction02/junction02-webfont.ttf
 /src/fonts/junction02/junction02-webfont.woff
-/src/fonts/leaguegothic/leaguegothic-webfont.eot
-/src/fonts/leaguegothic/leaguegothic-webfont.svg
 /src/fonts/leaguegothic/leaguegothic-webfont.ttf
 /src/fonts/leaguegothic/leaguegothic-webfont.woff
 /src/fonts/yanone/YanoneKaffeesatz-Regular.ttf
@@ -107,8 +101,5 @@ CACHE:
 /src/HTML5_Styling_64.png
 /src/html5_tec.png
 
-
 NETWORK:
 *
-
-FALLBACK:
