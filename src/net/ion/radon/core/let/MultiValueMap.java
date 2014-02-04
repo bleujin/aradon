@@ -15,12 +15,18 @@ import net.ion.framework.util.ObjectUtil;
 //Thread Unsafe
 public class MultiValueMap implements Map, Serializable {
 
-	private HashMap inner = new HashMap<String, Object>();
+	private Map inner = new HashMap<String, Object>();
 
 	MultiValueMap() {
 		super();
 	}
 
+	public static MultiValueMap create(Map<String, Object> map){
+		final MultiValueMap result = new MultiValueMap();
+		result.inner = map ;
+		return result ;
+	}
+	
 	public Object getFirstValue(String name) {
 		Object value = inner.get(name);
 		if (value == null)

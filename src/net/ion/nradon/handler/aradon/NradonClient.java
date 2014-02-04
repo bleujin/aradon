@@ -94,10 +94,13 @@ class AradonUtil {
 				request.setEntity(entity);
 			} else {
 				Form form = new Form();
+				
 				for (String key : hreq.postParamKeys()) {
 					if (hreq.postParam(key) == null)
 						continue;
-					form.add(key, hreq.postParam(key));
+					for (String value : hreq.postParams(key)) {
+						form.add(key, value);
+					}
 				}
 				request.setEntity(form.getWebRepresentation());
 			}
