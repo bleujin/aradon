@@ -4,7 +4,7 @@ Legend
 	R : Required 
 	P : Preferred
 	D : Desired, but optional
-	
+
 
 ARadon
 
@@ -40,7 +40,6 @@ ARadon
 	- Push
 		: Comet 
 		: HTML5(WebSocket)
-		
 
 
 * Support Other Infrastructure (Ext
@@ -50,7 +49,7 @@ ARadon
 		: Groovy(R), Rhino(R)
 	- Support Avro(P)
 		: provides efficient (de)serialization for a binary format and an RPC solution that uses this binary format. 
-		The formats as well as the RPC interfaces (¡°protocols¡±) are described using an IDL, allowing to support different programming languages.
+		The formats as well as the RPC interfaces (protocols) are described using an IDL, allowing to support different programming languages.
 		
 		
 * Management API / Tools
@@ -65,8 +64,6 @@ ARadon
 	- Packaging(R)
 	- Upgrade(P)
 	
-
-
 
 ARadon Extend
 	

@@ -4,6 +4,7 @@
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="src" path="groovy"/>
 	<classpathentry kind="src" path="sample"/>
+	<classpathentry kind="src" path="bleujin"/>
 	<classpathentry kind="lib" path="aradon_lib/aradon/embed/apache_extend_fat.jar"/>
 	<classpathentry kind="lib" path="aradon_lib/aradon/embed/rest_fat.jar"/>
 	<classpathentry kind="lib" path="aradon_lib/aradon/embed/jci_fat.jar"/>

@@ -9,7 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class HelloServlet extends HttpServlet {
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	private static final long serialVersionUID = -2575396681110339309L;
+	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String q = req.getParameter("q");
 		PrintWriter out = resp.getWriter();
 
@@ -20,7 +21,7 @@ public class HelloServlet extends HttpServlet {
 		out.println("</html>");
 	}
 
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String field = req.getParameter("field");
 		PrintWriter out = resp.getWriter();
 
