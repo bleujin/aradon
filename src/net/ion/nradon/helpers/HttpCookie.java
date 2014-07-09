@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
+
+import net.ion.framework.util.ListUtil;
+import net.ion.framework.util.StringUtil;
  
 /**
  * An HttpCookie object represents an http cookie, which carries state
@@ -143,6 +146,7 @@ public final class HttpCookie implements Cloneable {
      * @throws NullPointerException     if the header string is <tt>null</tt>
      */
     public static List<HttpCookie> parse(String header) {
+    	if (StringUtil.isBlank(header)) return ListUtil.EMPTY ;
         int version = guessCookieVersion(header);
          
         // if header start with set-cookie or set-cookie2, strip it off

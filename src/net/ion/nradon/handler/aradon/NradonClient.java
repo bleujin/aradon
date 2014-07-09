@@ -12,6 +12,7 @@ import net.ion.framework.util.MapUtil;
 import net.ion.framework.util.StringUtil;
 import net.ion.nradon.HttpRequest;
 import net.ion.nradon.HttpResponse;
+import net.ion.nradon.helpers.HttpCookie;
 import net.ion.radon.core.Aradon;
 import net.ion.radon.core.let.InnerRequest;
 
@@ -111,8 +112,8 @@ class AradonUtil {
 			ireq.setClientInfo(clientInfo);
 
 			Series<Cookie> cookies = ireq.getCookies();
-			for (Cookie hc : hreq.cookies()) {
-				cookies.add(hc);
+			for (HttpCookie hc : hreq.cookies()) {
+				cookies.add(new Cookie(hc.getVersion(), hc.getName(), hc.getValue(), hc.getPath(), hc.getDomain()));
 			}
 
 			Series headers = ireq.getHeaders();

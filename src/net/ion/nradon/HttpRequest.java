@@ -6,7 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.restlet.data.Cookie;
+import net.ion.nradon.helpers.HttpCookie;
+
 import org.restlet.data.MediaType;
 import org.restlet.representation.Representation;
 
@@ -24,9 +25,9 @@ public interface HttpRequest extends DataHolder {
 
 	boolean hasHeader(String name);
 
-	List<Cookie> cookies();
+	List<HttpCookie> cookies();
 
-	Cookie cookie(String name);
+	HttpCookie cookie(String name);
 
 	String queryParam(String key);
 

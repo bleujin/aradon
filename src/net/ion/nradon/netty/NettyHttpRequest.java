@@ -9,14 +9,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.ion.nradon.InboundCookieParser;
+import net.ion.nradon.helpers.HttpCookie;
 import net.ion.nradon.helpers.QueryParameters;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.channel.MessageEvent;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.util.CharsetUtil;
-import org.restlet.data.Cookie;
 import org.restlet.data.MediaType;
 import org.restlet.representation.Representation;
 import org.restlet.representation.WritableRepresentation;
@@ -60,12 +59,12 @@ public class NettyHttpRequest implements net.ion.nradon.HttpRequest {
 		return httpRequest.containsHeader(name);
 	}
 
-	public List<Cookie> cookies() {
-		return InboundCookieParser.parse(headers(COOKIE_HEADER));
+	public List<HttpCookie> cookies() {
+		return HttpCookie.parse(header(COOKIE_HEADER));
 	}
 
-	public Cookie cookie(String name) {
-		for (Cookie cookie : cookies()) {
+	public HttpCookie cookie(String name) {
+		for (HttpCookie cookie : cookies()) {
 			if (cookie.getName().equals(name)) {
 				return cookie;
 			}
@@ -112,7 +111,7 @@ public class NettyHttpRequest implements net.ion.nradon.HttpRequest {
 	}
 
 	public String cookieValue(String name) {
-		Cookie cookie = cookie(name);
+		HttpCookie cookie = cookie(name);
 		return cookie == null ? null : cookie.getValue();
 	}
 

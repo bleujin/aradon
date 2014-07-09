@@ -21,6 +21,10 @@
 	<classpathentry kind="lib" path="aradon_lib/aradon/embed/netty-3.2.7.Final.jar"/>
 	<classpathentry kind="lib" path="aradon_lib/aradon/imsi/ojdbc5_11g.jar"/>
 	<classpathentry kind="lib" path="aradon_lib/aradon/imsi/jmxtools-1.2.jar"/>
+	<classpathentry kind="lib" path="lib_source/jsr311/jsr311-api-1.1.1.jar"/>
+	<classpathentry kind="lib" path="lib_source/jsr311/resteasy-jaxrs-2.1.0.GA.jar"/>
+	<classpathentry kind="lib" path="lib_source/jsr311/scannotation-1.0.2.jar"/>
+	<classpathentry kind="lib" path="lib_source/jsr311/javassist-3.8.0.GA.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk6_45"/>
 	<classpathentry kind="output" path="bin"/>

@@ -22,16 +22,16 @@ import org.junit.Test;
 
 public class TestWebSocketClient {
 
-	private Radon wserver ;
+	private Radon radon ;
 
 	@Before
 	public void setUp() throws Exception {
-		wserver = RadonConfiguration.newBuilder(9000).add("/websocket", new DebugHandler()).startRadon() ;
+		radon = RadonConfiguration.newBuilder(9000).add("/websocket", new DebugHandler()).startRadon() ;
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		if (wserver != null) wserver.stop() ;
+		if (radon != null) radon.stop() ;
 	}
 	
 	@Test
@@ -48,6 +48,24 @@ public class TestWebSocketClient {
 		TimeoutThread.createWithMili(500).startNJoin() ;
 		wclient.disconnect() ;
 	}
+	
+	@Test
+	public void testPath() throws Exception {
+		radon.add("/path/{userId}", new DebugHandler()) ;
+		
+		WebSocketClient wclient = WebSocketClient.create() ;
+		wclient.connect(new URI("ws://61.250.201.157:9000/path/bleujin")) ;
+		
+		wclient.ping() ;
+		
+		for (int i : ListUtil.rangeNum(10)) {
+			wclient.sendMessage("Message #" + i) ;
+		}
+		
+		TimeoutThread.createWithMili(500).startNJoin() ;
+		wclient.disconnect() ;
+	}
+	
 	
 	@Test
 	public void testBinary() throws Exception {
@@ -75,7 +93,7 @@ class DebugHandler implements WebSocketHandler {
 	}
 
 	public void onMessage(WebSocketConnection conn, String msg) throws Throwable {
-		Debug.line(msg + " onMessage") ;
+		Debug.line(msg + " onMessage " + conn.data("userId")) ;
 		conn.send(msg) ; // echo
 	}
 
@@ -84,7 +102,7 @@ class DebugHandler implements WebSocketHandler {
 	}
 
 	public void onOpen(WebSocketConnection conn) throws Exception {
-		Debug.line(conn + " onOpen)") ;
+		Debug.line(conn + " onOpen) "  + conn.data("userId")) ;
 	}
 
 	public void onPong(WebSocketConnection conn, byte[] msg) throws Throwable {

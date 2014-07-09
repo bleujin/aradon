@@ -10,11 +10,11 @@ import java.util.Map;
 import java.util.Set;
 
 import net.ion.nradon.HttpRequest;
-import net.ion.nradon.InboundCookieParser;
+import net.ion.nradon.helpers.HttpCookie;
 import net.ion.nradon.helpers.QueryParameters;
 
 import org.apache.commons.collections.DefaultMapEntry;
-import org.restlet.data.Cookie;
+import org.jboss.netty.handler.codec.http.HttpMethod;
 import org.restlet.data.MediaType;
 import org.restlet.representation.Representation;
 import org.restlet.representation.StringRepresentation;
@@ -66,12 +66,12 @@ public class StubHttpRequest extends StubDataHolder implements HttpRequest {
 		return false;
 	}
 
-	public List<Cookie> cookies() {
-		return InboundCookieParser.parse(headers(COOKIE_HEADER));
+	public List<HttpCookie> cookies() {
+		return HttpCookie.parse(header(COOKIE_HEADER)) ;
 	}
 
-	public Cookie cookie(String name) {
-		for (Cookie cookie : cookies()) {
+	public HttpCookie cookie(String name) {
+		for (HttpCookie cookie : cookies()) {
 			if (cookie.getName().equals(name)) {
 				return cookie;
 			}
@@ -104,7 +104,7 @@ public class StubHttpRequest extends StubDataHolder implements HttpRequest {
 	}
 
 	public String cookieValue(String name) {
-		Cookie cookie = cookie(name);
+		HttpCookie cookie = cookie(name);
 		return cookie == null ? null : cookie.getValue();
 	}
 
@@ -150,6 +150,13 @@ public class StubHttpRequest extends StubDataHolder implements HttpRequest {
 		this.method = method;
 		return this;
 	}
+	
+	public StubHttpRequest method(HttpMethod method) {
+		this.method = method.toString();
+		return this;
+	}
+	
+	
 
 	public StubHttpRequest header(String name, String value) {
 		headers.add(new DefaultMapEntry(name, value));

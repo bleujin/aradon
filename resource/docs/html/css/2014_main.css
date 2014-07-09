@@ -268,9 +268,15 @@ html {
 
 
 #reveal section b {
-	color: hsl(185, 85%, 70%);
+	color: hsl(185, 95%, 90%);
 	font-size : 30px ;
 }
+
+#reveal section i {
+	color: hsl(125, 85%, 70%);
+	font-size : 30px ;
+}
+
 
 #reveal a:hover img {
 	background: rgba(255,255,255,0.2);

@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
-import net.ion.framework.util.ListUtil;
 import net.ion.nradon.HttpControl;
 import net.ion.nradon.HttpRequest;
 import net.ion.nradon.HttpResponse;
@@ -25,7 +24,6 @@ import net.ion.nradon.helpers.HttpCookie;
 import org.junit.After;
 import org.junit.Test;
 import org.restlet.data.Cookie;
-import org.restlet.engine.header.CookieReader;
 import org.restlet.engine.header.CookieWriter;
 
 public class TestCookie {
@@ -44,7 +42,7 @@ public class TestCookie {
 			}
 		}).startRadon();
 		URLConnection urlConnection = httpGet(webServer, "/");
-		List<Cookie> cookies = cookies(urlConnection);
+		List<HttpCookie> cookies = cookies(urlConnection);
 		assertEquals(1, cookies.size());
 		assertEquals("a", cookies.get(0).getName());
 		assertEquals("b", cookies.get(0).getValue());
@@ -58,7 +56,7 @@ public class TestCookie {
 			}
 		}).startRadon();
 		URLConnection urlConnection = httpGet(webServer, "/");
-		List<Cookie> cookies = cookies(urlConnection);
+		List<HttpCookie> cookies = cookies(urlConnection);
 		assertEquals(2, cookies.size());
 		assertEquals("a", cookies.get(0).getName());
 		assertEquals("b", cookies.get(0).getValue());
@@ -84,8 +82,8 @@ public class TestCookie {
 		this.webServer = configBuilder.add(new AbstractHttpHandler() {
 			public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
 				String body = "Your cookies:";
-				List<Cookie> cookies = sort(request.cookies());
-				for (Cookie cookie : cookies) {
+				List<HttpCookie> cookies = sort(request.cookies());
+				for (HttpCookie cookie : cookies) {
 					body += " " + cookie.getName() + "=" + cookie.getValue();
 				}
 				response.header("Content-Length", body.length()).content(body).end();
@@ -110,23 +108,23 @@ public class TestCookie {
 	}
 
 	// You wouldn't have thought it was that convoluted, but it is.
-	private List<Cookie> cookies(URLConnection urlConnection) throws IOException {
-		List<Cookie> cookies = new ArrayList<Cookie>();
+	private List<HttpCookie> cookies(URLConnection urlConnection) throws IOException {
+		List<HttpCookie> cookies = new ArrayList<HttpCookie>();
 		Map<String, List<String>> headerFields = urlConnection.getHeaderFields();
 		for (Map.Entry<String, List<String>> header : headerFields.entrySet()) {
 			if ("Set-Cookie".equals(header.getKey())) {
 				List<String> value = header.getValue();
-				for (String cookie : value) {
-					cookies.addAll(ListUtil.toList(CookieReader.read(cookie)));
+				for (String hvalue : value) {
+					cookies.addAll(HttpCookie.parse(hvalue));
 				}
 			}
 		}
 		return sort(cookies);
 	}
 
-	private List<Cookie> sort(List<Cookie> cookies) {
-		Collections.sort(cookies, new Comparator<Cookie>() {
-			public int compare(Cookie a, Cookie b) {
+	private List<HttpCookie> sort(List<HttpCookie> cookies) {
+		Collections.sort(cookies, new Comparator<HttpCookie>() {
+			public int compare(HttpCookie a, HttpCookie b) {
 				return a.getName().compareTo(b.getName());
 			}
 		});

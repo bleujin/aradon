@@ -7,8 +7,8 @@ import java.util.Map;
 import java.util.Set;
 
 import net.ion.nradon.HttpRequest;
+import net.ion.nradon.helpers.HttpCookie;
 
-import org.restlet.data.Cookie;
 import org.restlet.data.MediaType;
 import org.restlet.representation.Representation;
 
@@ -55,11 +55,11 @@ public class HttpRequestWrapper implements HttpRequest {
 		return request.hasHeader(name);
 	}
 
-	public List<Cookie> cookies() {
+	public List<HttpCookie> cookies() {
 		return request.cookies();
 	}
 
-	public Cookie cookie(String name) {
+	public HttpCookie cookie(String name) {
 		return request.cookie(name);
 	}
 
